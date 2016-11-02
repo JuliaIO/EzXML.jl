@@ -8,6 +8,8 @@
 
 **Still alpha-quality package.**
 
+<img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="210"/>
+
 EzXML.jl is a package to handle XML/HTML documents for primates.
 
 The main features are:
