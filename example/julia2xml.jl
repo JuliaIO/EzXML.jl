@@ -5,7 +5,7 @@ using EzXML
 # Convert a Julia expression to an XML document.
 function expr2xml(expr)
     doc = Document()
-    add_child_node!(doc.node, expr2elem(expr))
+    set_root!(doc, expr2elem(expr))
     return doc
 end
 
