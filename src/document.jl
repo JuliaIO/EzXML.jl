@@ -54,11 +54,12 @@ end
 
 function Base.write(filename::AbstractString, doc::Document)
     format = 0
+    encoding = "UTF-8"
     ret = ccall(
         (:xmlSaveFormatFileEnc, libxml2),
         Cint,
-        (Cstring, Ptr{Void}, Cint),
-        filename, doc.node.ptr, format)
+        (Cstring, Ptr{Void}, Cstring, Cint),
+        filename, doc.node.ptr, encoding, format)
     if ret == -1
         throw_xml_error()
     end
