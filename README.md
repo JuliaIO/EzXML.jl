@@ -1,4 +1,4 @@
-<img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" style="width: 250px; display: block; margin: 0 auto;"/>
+<p align="center"><img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="250" /></p>
 
 # EzXML.jl - XML/HTML tools for primates
 
