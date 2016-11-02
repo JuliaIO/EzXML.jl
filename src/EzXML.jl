@@ -13,6 +13,8 @@ export
     has_child_node,
     first_child_node,
     last_child_node,
+    first_child_element,
+    last_child_element,
     has_next_node,
     next_node,
     has_prev_node,

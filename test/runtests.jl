@@ -50,6 +50,22 @@ end
 
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
+<r>
+    <c1/>
+    <c2/>
+    <c3/>
+</r>
+""")
+r = root(doc)
+@test nodetype(first_child_node(r)) === EzXML.XML_TEXT_NODE
+@test nodetype(last_child_node(r)) === EzXML.XML_TEXT_NODE
+@test nodetype(first_child_element(r)) === EzXML.XML_ELEMENT_NODE
+@test name(first_child_element(r)) == "c1"
+@test nodetype(last_child_element(r)) === EzXML.XML_ELEMENT_NODE
+@test name(last_child_element(r)) == "c3"
+
+doc = parse(EzXML.Document, """
+<?xml version="1.0"?>
 <root attr="some attribute value"><child>some content</child></root>
 """)
 @test content(root(doc)) == "some content"

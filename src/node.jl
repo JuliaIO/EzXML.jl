@@ -393,7 +393,7 @@ Return the first child node of `node`.
 """
 function first_child_node(node::Node)
     if !has_child_node(node)
-        throw(ArgumentError("no children"))
+        throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).children)
 end
@@ -405,9 +405,58 @@ Return the last child node of `node`.
 """
 function last_child_node(node::Node)
     if !has_child_node(node)
-        throw(ArgumentError("no children"))
+        throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).last)
+end
+
+"""
+    has_child_element(node::Node)
+
+Return if `node` has a child element.
+"""
+function has_child_element(node::Node)
+    @assert node.ptr != C_NULL
+    ptr = ccall(
+        (:xmlFirstElementChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return ptr != C_NULL
+end
+
+"""
+    first_child_element(node::Node)
+
+Return the first child element of `node`.
+"""
+function first_child_element(node::Node)
+    if !has_child_element(node)
+        throw(ArgumentError("no child elements"))
+    end
+    ptr = ccall(
+        (:xmlFirstElementChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return Node(ptr)
+end
+
+"""
+    last_child_element(node::Node)
+
+Return the last child element of `node`.
+"""
+function last_child_element(node::Node)
+    if !has_child_element(node)
+        throw(ArgumentError("no child elements"))
+    end
+    ptr = ccall(
+        (:xmlLastElementChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return Node(ptr)
 end
 
 """
