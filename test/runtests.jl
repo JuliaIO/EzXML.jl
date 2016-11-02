@@ -82,6 +82,10 @@ r = root(doc)
 @test nodetype(last_child_element(r)) === EzXML.XML_ELEMENT_NODE
 @test name(last_child_element(r)) == "c3"
 c1 = first_child_element(r)
+@test has_next_node(c1)
+@test has_prev_node(c1)
+@test nodetype(next_node(c1)) === EzXML.XML_TEXT_NODE
+@test nodetype(prev_node(c1)) === EzXML.XML_TEXT_NODE
 @test has_next_element(c1)
 @test !has_prev_element(c1)
 c2 = next_element(c1)
