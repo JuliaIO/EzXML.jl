@@ -83,7 +83,7 @@ end
 """
     root(doc::Document)
 
-Return the root node of `doc`.
+Return the root element of `doc`.
 """
 function root(doc::Document)
     if !has_root(doc)
@@ -98,4 +98,26 @@ function root(doc::Document)
         throw_xml_error()
     end
     return Node(ptr)
+end
+
+"""
+    set_root!(doc::Document, node::Node)
+
+Set the root element of `doc` to `node`.
+"""
+function set_root!(doc::Document, root::Node)
+    if nodetype(root) != XML_ELEMENT_NODE
+        throw(ArgumentError("not an element node"))
+    end
+    old_root_ptr = ccall(
+        (:xmlDocSetRootElement, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}),
+        doc.node.ptr, root.ptr)
+    update_owners!(root, doc.node)
+    if old_root_ptr != C_NULL
+        old_root = Node(old_root_ptr)
+        update_owners!(old_root, old_root)
+    end
+    return doc
 end

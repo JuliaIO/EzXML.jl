@@ -30,6 +30,7 @@ export
     unlink_node!,
     has_root,
     root,
+    set_root!,
     nodetype,
     document,
     name,

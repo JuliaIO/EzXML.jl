@@ -11,6 +11,15 @@ doc = EzXML.Document()
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 @test !has_root(doc)
 @test_throws ArgumentError root(doc)
+r1 = ElementNode("r1")
+@test set_root!(doc, r1) == doc
+@test has_root(doc)
+@test root(doc) === r1
+@test_throws ArgumentError set_root!(doc, TextNode("some text"))
+r2 = ElementNode("r2")
+set_root!(doc, r2)
+@test root(doc) == r2
+@test r1.owner === r1
 
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
