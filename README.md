@@ -1,3 +1,5 @@
+<img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" style="width: 250px; display: block; margin: 0 auto;"/>
+
 # EzXML.jl - XML/HTML tools for primates
 
 [![Build Status](https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master)](https://travis-ci.org/bicycle1885/EzXML.jl)
@@ -7,8 +9,6 @@
 [![codecov.io](http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master)](http://codecov.io/github/bicycle1885/EzXML.jl?branch=master)
 
 **Still alpha-quality package.**
-
-<img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="210"/>
 
 EzXML.jl is a package to handle XML/HTML documents for primates.
 
