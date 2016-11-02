@@ -28,6 +28,7 @@ export
     add_next_sibling!,
     add_prev_sibling!,
     unlink_node!,
+    has_root,
     root,
     nodetype,
     document,

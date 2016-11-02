@@ -67,12 +67,26 @@ function Base.write(filename::AbstractString, doc::Document)
 end
 
 """
+    has_root(doc::Document)
+
+Return if `doc` has a root element.
+"""
+function has_root(doc::Document)
+    ptr = ccall(
+        (:xmlDocGetRootElement, libxml2),
+        Ptr{Void},
+        (Ptr{Void},),
+        doc.node.ptr)
+    return ptr != C_NULL
+end
+
+"""
     root(doc::Document)
 
 Return the root node of `doc`.
 """
 function root(doc::Document)
-    if !has_child_element(doc.node)
+    if !has_root(doc)
         throw(ArgumentError("no root element"))
     end
     ptr = ccall(

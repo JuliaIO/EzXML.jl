@@ -9,6 +9,7 @@ using Base.Test
 doc = EzXML.Document()
 @test isa(doc, EzXML.Document)
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+@test !has_root(doc)
 @test_throws ArgumentError root(doc)
 
 doc = parse(EzXML.Document, """
@@ -17,6 +18,7 @@ doc = parse(EzXML.Document, """
 """)
 @test isa(doc, EzXML.Document)
 @test isa(root(doc), EzXML.Node)
+@test has_root(doc)
 @test root(doc) == root(doc)
 @test root(doc) === root(doc)
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
