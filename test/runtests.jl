@@ -223,11 +223,11 @@ doc = parse(EzXML.Document, """
     </c1>
 </root>
 """)
-@test length(child_elements(root(doc))) == 1
-c1 = child_elements(root(doc))[1]
-c2 = child_elements(child_elements(root(doc))[1])[1]
+@test has_child_element(root(doc))
+c1 = first_child_element(root(doc))
+c2 = first_child_element(c1)
 @test unlink_node!(c1) == c1
-@test length(child_elements(root(doc))) == 0
+@test !has_child_element(root(doc))
 @test c1.owner == c1
 @test c2.owner == c1
 
