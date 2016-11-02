@@ -153,11 +153,11 @@ doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
 <root attr1="foo" attr2="bar"></root>
 """)
-for (attr, val) in each_attributes(root(doc))
+for (attr, val) in each_attribute(root(doc))
     @test val == (attr == "attr1" ? "foo" : "bar")
 end
 @test attributes(root(doc)) == ["attr1" => "foo", "attr2" => "bar"]
-@test_throws ArgumentError each_attributes(doc.node)
+@test_throws ArgumentError each_attribute(doc.node)
 @test_throws ArgumentError attributes(doc.node)
 
 n = ElementNode("node")

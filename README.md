@@ -87,7 +87,7 @@ Accessors:
 Iterators:
 * `each_node(node)`: create an iterator over child nodes.
 * `each_element(node)`: create an iterator over child elements.
-* `each_attributes(node)`: create an iterator over attributes (key-value pairs).
+* `each_attribute(node)`: create an iterator over attributes (key-value pairs).
 
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.

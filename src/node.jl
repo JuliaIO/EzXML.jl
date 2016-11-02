@@ -954,15 +954,15 @@ function Base.next(::ChildElementIterator, cur_ptr)
 end
 
 """
-    each_attributes(node::Node)
+    each_attribute(node::Node)
 
 Create an iterator of attributes.
 """
-function each_attributes(node::Node)
+function each_attribute(node::Node)
     if unsafe_load(node.ptr).typ != XML_ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
-    return AttributesIterator(node.ptr)
+    return AttributeIterator(node.ptr)
 end
 
 """
@@ -971,33 +971,33 @@ end
 Create a vector of attributes.
 """
 function attributes(node::Node)
-    return collect(each_attributes(node))
+    return collect(each_attribute(node))
 end
 
-immutable AttributesIterator
+immutable AttributeIterator
     ptr::Ptr{_Node}
 end
 
-function Base.iteratorsize(::Type{AttributesIterator})
+function Base.iteratorsize(::Type{AttributeIterator})
     return Base.SizeUnknown()
 end
 
-function Base.eltype(::Type{AttributesIterator})
+function Base.eltype(::Type{AttributeIterator})
     return Pair{String,String}
 end
 
-function Base.start(iter::AttributesIterator)
+function Base.start(iter::AttributeIterator)
     @assert iter.ptr != C_NULL
     @assert unsafe_load(iter.ptr).typ == XML_ELEMENT_NODE
     elm_str = unsafe_load(convert(Ptr{_Element}, iter.ptr))
     return elm_str.properties
 end
 
-function Base.done(::AttributesIterator, cur_ptr)
+function Base.done(::AttributeIterator, cur_ptr)
     return cur_ptr == C_NULL
 end
 
-function Base.next(::AttributesIterator, cur_ptr)
+function Base.next(::AttributeIterator, cur_ptr)
     cur_str = unsafe_load(cur_ptr)
     text_ptr = ccall(
         (:xmlNodeGetContent, libxml2),

@@ -39,7 +39,7 @@ export
     child_nodes,
     each_element,
     child_elements,
-    each_attributes,
+    each_attribute,
     attributes,
     namespace,
     namespaces,
