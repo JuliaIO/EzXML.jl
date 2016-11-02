@@ -93,3 +93,9 @@ Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.
 * `findfirst(doc|node, xpath)`: find the first matching node.
 * `findlast(doc|node, xpath)`: find the last matching node.
+
+
+## Examples
+
+* [primates.jl](/example/primates.jl): "primates" example shown above.
+* [julia2xml.jl](/example/julia2xml.jl): convert a Julia expression to XML.
