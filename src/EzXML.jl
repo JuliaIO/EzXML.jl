@@ -24,6 +24,7 @@ export
     document,
     name,
     content,
+    set_content!,
     each_node,
     child_nodes,
     each_element,

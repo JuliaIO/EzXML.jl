@@ -22,6 +22,8 @@ doc = parse(EzXML.Document, """
 @test isa(content(root(doc)), String)
 @test content(root(doc)) == ""
 @test content(doc.node) == ""
+@test set_content!(root(doc), "root content") == "root content"
+@test content(root(doc)) == "root content"
 @test document(root(doc)) == doc
 @test document(root(doc)) === doc
 @test document(doc.node) === doc

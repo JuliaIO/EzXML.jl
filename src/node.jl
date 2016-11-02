@@ -520,32 +520,6 @@ function nodetype(node::Node)
     return convert(NodeType, node_str.typ)
 end
 
-#=
-function type2symbol(typ)
-    typ ==  1 ? :element_node       :
-    typ ==  2 ? :attribute_node     :
-    typ ==  3 ? :text_node          :
-    typ ==  4 ? :cdata_section_node :
-    typ ==  5 ? :entity_ref_node    :
-    typ ==  6 ? :entity_node        :
-    typ ==  7 ? :pi_node            :
-    typ ==  8 ? :comment_node       :
-    typ ==  9 ? :document_node      :
-    typ == 10 ? :document_type_node :
-    typ == 11 ? :document_frag_node :
-    typ == 12 ? :notation_node      :
-    typ == 13 ? :html_document_node :
-    typ == 14 ? :dtd_node           :
-    typ == 15 ? :element_decl       :
-    typ == 16 ? :attribute_decl     :
-    typ == 17 ? :entity_decl        :
-    typ == 18 ? :namespace_decl     :
-    typ == 19 ? :xinclude_start     :
-    typ == 20 ? :xinclude_end       :
-    typ == 21 ? :docb_document_node : error("invalid type: $(typ)")
-end
-=#
-
 """
     document(node::Node)
 
@@ -587,6 +561,20 @@ function content(node::Node)
         throw_xml_error()
     end
     return unsafe_wrap(String, ptr, true)
+end
+
+"""
+    set_content!(node::Node, content::AbstractString)
+
+Replace the conteot of `node`.
+"""
+function set_content!(node::Node, content::AbstractString)
+    ccall(
+        (:xmlNodeSetContentLen, libxml2),
+        Void,
+        (Ptr{Void}, Cstring, Cint),
+        node.ptr, content, length(content))
+    return content
 end
 
 
