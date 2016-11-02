@@ -111,6 +111,16 @@ function Base.print(io::IO, x::NodeType)
     print(io, convert(Cint, x))
 end
 
+# Fields of namespace (_xmlNs).
+immutable _Ns
+    next::Ptr{_Ns}
+    typ::Cint
+    href::Cstring
+    prefix::Cstring
+    _private::Ptr{Void}
+    context::Ptr{Void}
+end
+
 # Fields of element node (_xmlNode).
 immutable _Element
     _private::Ptr{Void}
@@ -123,13 +133,30 @@ immutable _Element
     prev::Ptr{_Node}
     doc::Ptr{_Node}
 
-    ns::Ptr{Void}
+    ns::Ptr{_Ns}
     content::Ptr{Void}
     properties::Ptr{_Node}
     nsDef::Ptr{Void}
     psvi::Ptr{Void}
     line::Cshort
     extra::Cshort
+end
+
+# Fields of attribute node (_xmlAttr).
+immutable _Attribute
+    _private::Ptr{Void}
+    typ::Cint
+    name::Cstring
+    children::Ptr{_Node}
+    last::Ptr{_Node}
+    parent::Ptr{_Node}
+    next::Ptr{_Node}
+    prev::Ptr{_Node}
+    doc::Ptr{_Node}
+
+    ns::Ptr{_Ns}
+    atype::Cint
+    psvi::Ptr{Void}
 end
 
 
@@ -825,15 +852,6 @@ end
 # Namespaces
 # ----------
 
-immutable _Ns
-    next::Ptr{_Ns}
-    typ::Cint
-    href::Cstring
-    prefix::Cstring
-    _private::Ptr{Void}
-    context::Ptr{Void}
-end
-
 function free(ptr::Ptr{_Ns})
     ccall(
         (:xmlFreeNsList, libxml2),
@@ -848,15 +866,18 @@ end
 Return the namespace associated with `node`.
 """
 function namespace(node::Node)
-    if unsafe_load(node.ptr).typ != XML_ELEMENT_NODE
-        throw(ArgumentError("not an element node"))
+    t = nodetype(node)
+    if t == XML_ELEMENT_NODE
+        ns_ptr = unsafe_load(convert(Ptr{_Element}, node.ptr)).ns
+    elseif t == XML_ATTRIBUTE_NODE
+        ns_ptr = unsafe_load(convert(Ptr{_Attribute}, node.ptr)).ns
+    else
+        throw(ArgumentError("neither element nor attribute node"))
     end
-    elm_ptr = convert(Ptr{_Element}, node.ptr)
-    ns_ptr = unsafe_load(elm_ptr).ns
     if ns_ptr == C_NULL
         throw(ArgumentError("no namespace"))
     end
-    ptr = unsafe_load(convert(Ptr{_Ns}, ns_ptr)).href
+    ptr = unsafe_load(ns_ptr).href
     @assert ptr != C_NULL
     return unsafe_string(ptr)
 end
