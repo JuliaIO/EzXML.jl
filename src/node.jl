@@ -508,7 +508,23 @@ function add_prev_sibling!(target::Node, node::Node)
     return node
 end
 
-# Update owners of the `root` tree.
+"""
+    unlink_node!(node::Ndoe)
+
+Unlink `node` from its parent.
+"""
+function unlink_node!(node::Node)
+    ccall(
+        (:xmlUnlinkNode, libxml2),
+        Void,
+        (Ptr{Void},),
+        node.ptr)
+    update_owners!(node, node)
+    return node
+end
+
+# Update owners of the `root` tree.  NOTE: This function must not throw an
+# exception; otherwise it may lead to a devastating tree.
 function update_owners!(root, new_owner)
     traverse_tree(root.ptr) do node_ptr
         proxy = try_extract_proxy(unsafe_load(node_ptr))

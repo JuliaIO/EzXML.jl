@@ -198,6 +198,24 @@ add_prev_sibling!(c1, c0)
 @test child_nodes(root(doc)) == [c0, c1, c2]
 
 doc = parse(EzXML.Document, """
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <c1>
+        <c2>
+            <c3>ok</c3>
+        </c2>
+    </c1>
+</root>
+""")
+@test length(child_elements(root(doc))) == 1
+c1 = child_elements(root(doc))[1]
+c2 = child_elements(child_elements(root(doc))[1])[1]
+@test unlink_node!(c1) == c1
+@test length(child_elements(root(doc))) == 0
+@test c1.owner == c1
+@test c2.owner == c1
+
+doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
 <root>
     <foo>

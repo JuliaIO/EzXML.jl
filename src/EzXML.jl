@@ -20,6 +20,7 @@ export
     add_child_node!,
     add_next_sibling!,
     add_prev_sibling!,
+    unlink_node!,
     root,
     nodetype,
     document,
