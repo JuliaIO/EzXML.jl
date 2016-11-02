@@ -63,6 +63,21 @@ r = root(doc)
 @test name(first_child_element(r)) == "c1"
 @test nodetype(last_child_element(r)) === EzXML.XML_ELEMENT_NODE
 @test name(last_child_element(r)) == "c3"
+c1 = first_child_element(r)
+@test has_next_element(c1)
+@test !has_prev_element(c1)
+c2 = next_element(c1)
+@test name(c2) == "c2"
+@test has_next_element(c2)
+@test has_prev_element(c2)
+@test prev_element(c2) == c1
+c3 = next_element(c2)
+@test name(c3) == "c3"
+@test !has_next_element(c3)
+@test has_prev_element(c3)
+@test prev_element(c3) == c2
+@test_throws ArgumentError prev_element(c1)
+@test_throws ArgumentError next_element(c3)
 
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>

@@ -504,6 +504,70 @@ function prev_node(node::Node)
 end
 
 """
+    has_next_element(node::Node)
+
+Return if `node` has a next node.
+"""
+function has_next_element(node::Node)
+    @assert node.ptr != C_NULL
+    ptr = ccall(
+        (:xmlNextElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return ptr != C_NULL
+end
+
+"""
+    next_element(node::Node)
+
+Return the next element of `node`.
+"""
+function next_element(node::Node)
+    if !has_next_element(node)
+        throw(ArgumentError("no next elements"))
+    end
+    ptr = ccall(
+        (:xmlNextElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return Node(ptr)
+end
+
+"""
+    has_prev_element(node::Node)
+
+Return if `node` has a previous node.
+"""
+function has_prev_element(node::Node)
+    @assert node.ptr != C_NULL
+    ptr = ccall(
+        (:xmlPreviousElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return ptr != C_NULL
+end
+
+"""
+    prev_element(node::Node)
+
+Return the previous element of `node`.
+"""
+function prev_element(node::Node)
+    if !has_prev_element(node)
+        throw(ArgumentError("no previous elements"))
+    end
+    ptr = ccall(
+        (:xmlPreviousElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node.ptr)
+    return Node(ptr)
+end
+
+"""
     add_child_node!(parent::Node, child::Node)
 
 Add `child` at the end of children of `parent`.
