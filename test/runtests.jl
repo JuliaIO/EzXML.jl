@@ -36,6 +36,8 @@ doc = parse(EzXML.Document, """
 @test document(doc.node) === doc
 @test parent_node(root(doc)) === doc.node
 @test_throws ArgumentError parent_node(doc.node)
+@test ismatch(r"Node\(<[A-Z_]+@0x[a-f0-9]+>\)", repr(root(doc)))
+@test ismatch(r"Node\(<[A-Z_]+@0x[a-f0-9]+>\)", repr(doc.node))
 
 docstr = """
 <?xml version="1.0" encoding="UTF-8"?>

@@ -190,7 +190,8 @@ end
 
 function Base.show(io::IO, node::Node)
     node_str = unsafe_load(node.ptr)
-    print(io, @sprintf("Node(<type:%d>@%p", node_str.typ, node.ptr), ")")
+    type_string = repr(nodetype(node))
+    print(io, @sprintf("Node(<%s@%p>)", type_string, node.ptr))
 end
 
 function Base.print(io::IO, node::Node)
