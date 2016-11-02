@@ -399,7 +399,33 @@ Return the parent of `node`.
 """
 function parent_node(node::Node)
     if !has_parent_node(node)
-        throw(ArgumentError("no parent"))
+        throw(ArgumentError("no parent node"))
+    end
+    return Node(unsafe_load(node.ptr).parent)
+end
+
+"""
+    has_parent_element(node::Node)
+
+Return if `node` has a parent node.
+"""
+function has_parent_element(node::Node)
+    @assert node.ptr != C_NULL
+    parent_ptr = unsafe_load(node.ptr).parent
+    if parent_ptr == C_NULL
+        return false
+    end
+    return unsafe_load(parent_ptr).typ == XML_ELEMENT_NODE
+end
+
+"""
+    parent_element(node::Node)
+
+Return the parent element of `node`.
+"""
+function parent_element(node::Node)
+    if !has_parent_element(node)
+        throw(ArgumentError("no parent element"))
     end
     return Node(unsafe_load(node.ptr).parent)
 end

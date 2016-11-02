@@ -250,6 +250,18 @@ c0 = ElementNode("c0")
 add_prev_sibling!(c1, c0)
 @test child_nodes(root(doc)) == [c0, c1, c2]
 
+doc = Document()
+@test !has_parent_node(doc.node)
+@test !has_parent_element(doc.node)
+x = ElementNode("x")
+set_root!(doc, x)
+@test has_parent_node(x)
+@test !has_parent_element(x)
+y = ElementNode("y")
+add_child_node!(x, y)
+@test has_parent_node(y)
+@test has_parent_element(y)
+
 doc = parse(EzXML.Document, """
 <?xml version="1.0" encoding="UTF-8"?>
 <root>

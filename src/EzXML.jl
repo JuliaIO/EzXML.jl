@@ -10,6 +10,8 @@ export
     Document,
     has_parent_node,
     parent_node,
+    has_parent_element,
+    parent_element,
     has_child_node,
     first_child_node,
     last_child_node,
