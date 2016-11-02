@@ -23,6 +23,7 @@ export
     nodetype,
     document,
     name,
+    set_name!,
     content,
     set_content!,
     each_node,

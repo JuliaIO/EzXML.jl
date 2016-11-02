@@ -18,11 +18,13 @@ doc = parse(EzXML.Document, """
 @test nodetype(root(doc)) === EzXML.XML_ELEMENT_NODE
 @test isa(name(root(doc)), String)
 @test name(root(doc)) == "root"
+@test set_name!(root(doc), "root2") == root(doc)
+@test name(root(doc)) == "root2"
 @test_throws ArgumentError name(doc.node)
 @test isa(content(root(doc)), String)
 @test content(root(doc)) == ""
 @test content(doc.node) == ""
-@test set_content!(root(doc), "root content") == "root content"
+@test set_content!(root(doc), "root content") == root(doc)
 @test content(root(doc)) == "root content"
 @test document(root(doc)) == doc
 @test document(root(doc)) === doc

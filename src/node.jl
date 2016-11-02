@@ -547,6 +547,20 @@ function name(node::Node)
 end
 
 """
+    set_name!(node::Node, name::AbstractString)
+
+Set the name of `node`.
+"""
+function set_name!(node::Node, name::AbstractString)
+    ccall(
+        (:xmlNodeSetName, libxml2),
+        Void,
+        (Ptr{Void}, Cstring),
+        node.ptr, name)
+    return node
+end
+
+"""
     content(node::Node)
 
 Return the node content of `node`.
@@ -566,7 +580,7 @@ end
 """
     set_content!(node::Node, content::AbstractString)
 
-Replace the conteot of `node`.
+Replace the content of `node`.
 """
 function set_content!(node::Node, content::AbstractString)
     ccall(
@@ -574,7 +588,7 @@ function set_content!(node::Node, content::AbstractString)
         Void,
         (Ptr{Void}, Cstring, Cint),
         node.ptr, content, length(content))
-    return content
+    return node
 end
 
 
