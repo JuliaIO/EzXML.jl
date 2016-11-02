@@ -6,6 +6,11 @@ using Base.Test
 @test_throws XMLError parse(EzXML.Document, "abracadabra")
 @test_throws XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
 
+doc = EzXML.Document()
+@test isa(doc, EzXML.Document)
+@test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+@test_throws ArgumentError root(doc)
+
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
 <root></root>

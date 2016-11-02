@@ -14,8 +14,8 @@ immutable Document
     end
 end
 
-function Document()
-    node = DocumentNode()
+function Document(version::AbstractString="1.0")
+    node = DocumentNode(version)
     return Document(node.ptr)
 end
 
@@ -71,6 +71,9 @@ end
 Return the root node of `doc`.
 """
 function root(doc::Document)
+    if !has_child_element(doc.node)
+        throw(ArgumentError("no root element"))
+    end
     ptr = ccall(
         (:xmlDocGetRootElement, libxml2),
         Ptr{_Node},
