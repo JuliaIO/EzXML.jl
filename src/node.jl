@@ -737,27 +737,57 @@ end
 # ----------
 
 function Base.getindex(node::Node, attr::AbstractString)
-    ptr = ccall(
-        (:xmlGetProp, libxml2),
-        Cstring,
-        (Ptr{Void}, Cstring),
-        node.ptr, attr)
+    i = searchindex(attr, ':')
+    if i == 0
+        ptr = ccall(
+            (:xmlGetProp, libxml2),
+            Cstring,
+            (Ptr{Void}, Cstring),
+            node.ptr, attr)
+    else
+        prefix = attr[1:i-1]
+        ns_ptr = search_ns_ptr(node, prefix)
+        if ns_ptr == C_NULL
+            throw(ArgumentError("unknown namespace prefix: '$(prefix)'"))
+        end
+        ptr = ccall(
+            (:xmlGetNsProp, libxml2),
+            Cstring,
+            (Ptr{Void}, Cstring, Cstring),
+            node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
+    end
     if ptr == C_NULL
         throw(KeyError(attr))
     end
+    # take ownership
     return unsafe_wrap(String, ptr, true)
 end
 
 function Base.haskey(node::Node, attr::AbstractString)
-    ptr = ccall(
-        (:xmlHasProp, libxml2),
-        Ptr{Void},
-        (Ptr{Void}, Cstring),
-        node.ptr, attr)
+    i = searchindex(attr, ':')
+    if i == 0
+        ptr = ccall(
+            (:xmlHasProp, libxml2),
+            Ptr{Void},
+            (Ptr{Void}, Cstring),
+            node.ptr, attr)
+    else
+        prefix = attr[1:i-1]
+        ns_ptr = search_ns_ptr(node, prefix)
+        if ns_ptr == C_NULL
+            return false
+        end
+        ptr = ccall(
+            (:xmlHasNsProp, libxml2),
+            Ptr{Void},
+            (Ptr{Void}, Cstring, Cstring),
+            node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
+    end
     return ptr != C_NULL
 end
 
 function Base.setindex!(node::Node, val, attr::AbstractString)
+    # This function handles QName properly.
     ptr = ccall(
         (:xmlSetProp, libxml2),
         Ptr{Void},
@@ -770,11 +800,22 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
 end
 
 function Base.delete!(node::Node, attr::AbstractString)
-    ccall(
-        (:xmlUnsetProp, libxml2),
-        Cint,
-        (Ptr{Void}, Cstring),
-        node.ptr, attr)
+    i = searchindex(attr, ':')
+    if i == 0
+        ccall(
+            (:xmlUnsetProp, libxml2),
+            Cint,
+            (Ptr{Void}, Cstring),
+            node.ptr, attr)
+    else
+        prefix = attr[1:i-1]
+        ns_ptr = search_ns_ptr(node, prefix)
+        ccall(
+            (:xmlUnsetNsProp, libxml2),
+            Cint,
+            (Ptr{Void}, Ptr{Void}, Cstring),
+            node.ptr, ns_ptr, attr[i+1:end])
+    end
     # ignore the returned value
     return node
 end
@@ -852,6 +893,15 @@ function namespaces(node::Node)
     # Calling xmlFreeNsList results in error.
     Libc.free(nslist_ptr)
     return nslist
+end
+
+function search_ns_ptr(node::Node, prefix::AbstractString)
+    ns_ptr = ccall(
+        (:xmlSearchNs, libxml2),
+        Ptr{_Ns},
+        (Ptr{Void}, Ptr{Void}, Cstring),
+        unsafe_load(node.ptr).doc, node.ptr, prefix)
+    return ns_ptr
 end
 
 

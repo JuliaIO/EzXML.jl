@@ -316,6 +316,38 @@ doc = parse(EzXML.Document, """
 @test namespace(root(doc)) == "http://www.w3.org/HTML/1998/html4"
 @test namespace(child_elements(child_elements(root(doc))[2])[1]) == "http://www.xml.com/books"
 
+doc = parse(EzXML.Document, """
+<root xmlns:x="http://xxx.org/" xmlns:y="http://yyy.org/">
+    <c x:attr="x-attr" y:attr="y-attr"/>
+    <c y:attr="y-attr" x:attr="x-attr"/>
+    <c x:attr=""/>
+</root>
+""")
+c = first_child_element(root(doc))
+@test haskey(c, "attr")
+@test haskey(c, "x:attr")
+@test haskey(c, "y:attr")
+@test !haskey(c, "z:attr")
+@test c["attr"] == c["x:attr"] == "x-attr"
+@test c["y:attr"] == "y-attr"
+@test_throws ArgumentError c["z:attr"]
+c = next_element(c)
+@test haskey(c, "attr")
+@test haskey(c, "x:attr")
+@test haskey(c, "y:attr")
+@test c["attr"] == c["y:attr"] == "y-attr"
+@test c["x:attr"] == "x-attr"
+c = next_element(c)
+c["x:attr"] = "x-attr"
+@test c["x:attr"] == "x-attr"
+c["y:attr"] = "y-attr"
+@test c["y:attr"] == "y-attr"
+delete!(c, "x:attr")
+@test !haskey(c, "x:attr")
+delete!(c, "y:attr")
+@test !haskey(c, "y:attr")
+delete!(c, "z:attr")
+
 # default namespace
 doc = parse(EzXML.Document, """
 <html xmlns="http://www.w3.org/HTML/1998/html4"
