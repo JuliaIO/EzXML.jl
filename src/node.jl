@@ -303,6 +303,18 @@ function CDataNode(content::AbstractString)
     return Node(node_ptr)
 end
 
+function DocumentNode(version::AbstractString)
+    node_ptr = ccall(
+        (:xmlNewDoc, libxml2),
+        Ptr{_Node},
+        (Cstring,),
+        version)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
 
 # DOM
 # ---

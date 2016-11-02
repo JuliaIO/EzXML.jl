@@ -153,6 +153,12 @@ n = CDataNode("some CDATA")
 @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
 @test_throws ArgumentError document(n)
 
+n = DocumentNode("1.0")
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
 doc = parse(EzXML.Document, """
 <root></root>
 """)

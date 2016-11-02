@@ -6,6 +6,7 @@ export
     TextNode,
     CommentNode,
     CDataNode,
+    DocumentNode,
     Document,
     has_parent_node,
     parent_node,

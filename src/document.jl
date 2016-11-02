@@ -14,6 +14,11 @@ immutable Document
     end
 end
 
+function Document()
+    node = DocumentNode()
+    return Document(node.ptr)
+end
+
 function Base.print(io::IO, doc::Document)
     print(io, doc.node)
 end
