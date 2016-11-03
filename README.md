@@ -91,7 +91,10 @@ Accessors:
     * `last_child_element(node)`: return the last child element of a node.
     * `parent_node(node)`: return the parent node of a node.
     * `parent_element(node)`: return the parent element of a node.
-* Vectorized:
+* Iterators:
+    * `each_node(node)`: create an iterator over child nodes.
+    * `each_element(node)`: create an iterator over child elements.
+    * `each_attribute(node)`: create an iterator over attributes (key-value pairs).
     * `child_nodes(node)`: create a vector of child nodes.
     * `child_elements(node)`: create a vector of child elements.
     * `attributes(node)`: create a vector of attributes.
@@ -102,11 +105,6 @@ Accessors:
 * Namespaces:
     * `namespace(node)`: return the namespace of a node.
     * `namespaces(node)`: create a vector of namespaces applying to a node.
-
-Iterators:
-* `each_node(node)`: create an iterator over child nodes.
-* `each_element(node)`: create an iterator over child elements.
-* `each_attribute(node)`: create an iterator over attributes (key-value pairs).
 
 Constructors:
 * `Document(version="1.0")`: create a document.
