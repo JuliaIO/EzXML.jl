@@ -6,6 +6,12 @@ using Base.Test
 @test_throws XMLError parse(EzXML.Document, "abracadabra")
 @test_throws XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
 
+for i in 1:21
+    t = convert(EzXML.NodeType, i)
+    @test ismatch(r"^XML_[A-Z_]+$", repr(t))
+    @test string(t) == string(i)
+end
+
 doc = EzXML.Document()
 @test isa(doc, EzXML.Document)
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
@@ -249,6 +255,14 @@ add_next_sibling!(c1, c2)
 c0 = ElementNode("c0")
 add_prev_sibling!(c1, c0)
 @test child_nodes(root(doc)) == [c0, c1, c2]
+
+el = ElementNode("el")
+el["attr1"] = "1"
+el["attr2"] = "2"
+doc = Document()
+set_root!(doc, el)
+@test root(doc) == el
+@test attributes(root(doc)) == ["attr1" => "1", "attr2" => "2"]
 
 doc = Document()
 @test !has_parent_node(doc.node)
