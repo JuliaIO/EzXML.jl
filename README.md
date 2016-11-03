@@ -74,21 +74,47 @@ IO:
 * `print(io, doc)`: print an XML document.
 
 Accessors:
-* `root(doc)`: return the root node of a document.
-* `name(node)`: return the name of a node.
-* `content(node)`: return the content of a node.
-* `document(node)`: return the document of a node.
-* `node[name]`: return an attribute value of a node by name.
-* `child_nodes(node)`: create a vector of child nodes.
-* `child_elements(node)`: create a vector of child elements.
-* `attributes(node)`: create a vector of attributes.
-* `namespace(node)`: return the namespace of a node.
-* `namespaces(node)`: create a vector of namespaces applying to a node.
+* Node information:
+    * `nodetype(node)`: return the type of a node.
+    * `name(node)`: return the name of a node.
+    * `content(node)`: return the content of a node.
+    * `document(node)`: return the document of a node.
+* Attributes:
+    * `node[name]`: return an attribute value of a node by name.
+    * `node[name] = value`: set a value to an attribute of a node.
+    * `delete!(node, name)`: delete an attribute of a node.
+* Tree traversal (prefixing `has_` check existence):
+    * `root(doc)`: return the root node of a document.
+    * `first_child_node(node)`: return the first child node of a node.
+    * `last_child_node(node)`: return the last child node of a node.
+    * `first_child_element(node)`: return the first child element of a node.
+    * `last_child_element(node)`: return the last child element of a node.
+    * `parent_node(node)`: return the parent node of a node.
+    * `parent_element(node)`: return the parent element of a node.
+* Vectorized:
+    * `child_nodes(node)`: create a vector of child nodes.
+    * `child_elements(node)`: create a vector of child elements.
+    * `attributes(node)`: create a vector of attributes.
+* Counters:
+    * `count_nodes(node)`: count the number of child nodes.
+    * `count_elements(node)`: count the number of child elements.
+    * `count_attributes(node)`: count the number of attributes.
+* Namespaces:
+    * `namespace(node)`: return the namespace of a node.
+    * `namespaces(node)`: create a vector of namespaces applying to a node.
 
 Iterators:
 * `each_node(node)`: create an iterator over child nodes.
 * `each_element(node)`: create an iterator over child elements.
 * `each_attribute(node)`: create an iterator over attributes (key-value pairs).
+
+Constructors:
+* `Document(version="1.0")`: create a document.
+* `ElementNode(name)`: create an element node.
+* `TextNode(content)`: create a text node.
+* `CommentNode(content)`: create a comment node.
+* `CDataNode(content)`: create a CDATA node.
+* `DocumentNode(version="1.0")`: create a document node.
 
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.
