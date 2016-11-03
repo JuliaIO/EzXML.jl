@@ -35,31 +35,7 @@ immutable _XPathObject
 end
 
 function Base.find(doc::Document, xpath::AbstractString)
-    context_ptr = make_xpath_context(doc)
-    if context_ptr == C_NULL
-        throw_xml_error()
-    end
-    result_ptr = eval_xpath(context_ptr, xpath)
-    if result_ptr == C_NULL
-        free(context_ptr)
-        throw_xml_error()
-    end
-    result = unsafe_load(result_ptr)
-    if result.typ != XPATH_NODESET || result.nodesetval == C_NULL
-        free(context_ptr)
-        free(result_ptr)
-        throw_xml_error()
-    end
-    try
-        nodeset = unsafe_load(result.nodesetval)
-        return [Node(unsafe_load(nodeset.nodeTab, i)) for i in 1:nodeset.nodeNr]
-    catch
-        rethrow()
-    finally
-        free(context_ptr)
-        # Does this release nodesetval?
-        free(result_ptr)
-    end
+    return find(doc.node, xpath)
 end
 
 function Base.findfirst(doc::Document, xpath::AbstractString)
@@ -95,7 +71,6 @@ function Base.find(node::Node, xpath::AbstractString)
         rethrow()
     finally
         free(context_ptr)
-        # Does this release nodesetval?
         free(result_ptr)
     end
 end
@@ -119,21 +94,14 @@ function make_xpath_context(doc)
     return context_ptr
 end
 
-function eval_xpath(context_ptr, xpath)
+function eval_xpath(node, context_ptr, xpath)
+    # set the pointer to `node` in the cotnext
+    unsafe_store!(Ptr{UInt}(context_ptr), convert(UInt, node.ptr), 2)
     result_ptr = ccall(
         (:xmlXPathEval, libxml2),
         Ptr{_XPathObject},
         (Cstring, Ptr{Void}),
         xpath, context_ptr)
-    return result_ptr
-end
-
-function eval_xpath(node, context_ptr, xpath)
-    result_ptr = ccall(
-        (:xmlXPathNodeEval, libxml2),
-        Ptr{_XPathObject},
-        (Ptr{Void}, Cstring, Ptr{Void}),
-        node.ptr, xpath, context_ptr)
     return result_ptr
 end
 
@@ -146,6 +114,7 @@ function free(ptr::Ptr{_XPathContext})
 end
 
 function free(ptr::Ptr{_XPathObject})
+    # Does this release nodesetval?
     ccall(
         (:xmlXPathFreeObject, libxml2),
         Void,
