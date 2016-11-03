@@ -236,6 +236,14 @@ function Base.print(io::IO, node::Node)
     print(io, unsafe_wrap(String, unsafe_load(buf.ptr).content, len))
 end
 
+function Base.:(==)(n1::Node, n2::Node)
+    return n1.ptr == n2.ptr
+end
+
+function Base.hash(node::Node, h::UInt)
+    return hash(node.ptr, h)
+end
+
 # Try to extract the proxy object from the `_private` field if any.
 function try_extract_proxy(str)
     proxy_ptr = str._private

@@ -42,6 +42,7 @@ doc = parse(EzXML.Document, """
 @test has_root(doc)
 @test root(doc) == root(doc)
 @test root(doc) === root(doc)
+@test hash(root(doc)) === hash(root(doc))
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 @test nodetype(root(doc)) === EzXML.XML_ELEMENT_NODE
 @test isa(name(root(doc)), String)
