@@ -139,6 +139,15 @@ end
 @test child_elements(root(doc)) == nodes
 
 doc = parse(EzXML.Document, """
+<root></root>
+""")
+@test !has_child_node(root(doc))
+@test add_element!(root(doc), "c1") == root(doc)
+@test length(child_elements(root(doc))) == 1
+@test add_element!(root(doc), "c2", "some content") == root(doc)
+@test length(child_elements(root(doc))) == 2
+
+doc = parse(EzXML.Document, """
 <root><c1></c1><c2></c2></root>
 """)
 nodes = EzXML.Node[]

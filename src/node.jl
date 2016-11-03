@@ -676,6 +676,24 @@ function add_prev_sibling!(target::Node, node::Node)
 end
 
 """
+    add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+
+Add a new child element of `name` with `content` to `parent`.
+"""
+function add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+    ns_ptr = C_NULL
+    node_ptr = ccall(
+        (:xmlNewTextChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
+        parent.ptr, ns_ptr, name, content)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return parent
+end
+
+"""
     unlink_node!(node::Ndoe)
 
 Unlink `node` from its parent.

@@ -29,6 +29,7 @@ export
     add_child_node!,
     add_next_sibling!,
     add_prev_sibling!,
+    add_element!,
     unlink_node!,
     has_root,
     root,
