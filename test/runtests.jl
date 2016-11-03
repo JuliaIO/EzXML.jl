@@ -12,6 +12,12 @@ for i in 1:21
     @test string(t) == string(i)
 end
 
+err = XMLError(1, "some parser error")
+@test isa(err, XMLError)
+buf = IOBuffer()
+showerror(buf, err)
+@test takebuf_string(buf) == "XMLError: some parser error (from XML parser)"
+
 doc = EzXML.Document()
 @test isa(doc, EzXML.Document)
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
