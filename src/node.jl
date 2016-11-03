@@ -728,6 +728,24 @@ function count_elements(parent::Node)
 end
 
 """
+    count_attributes(elem::Node)
+
+Count the number of attributes of `elem`.
+"""
+function count_attributes(elem::Node)
+    if nodetype(elem) != XML_ELEMENT_NODE
+        throw(ArgumentError("not an element node"))
+    end
+    n = 0
+    prop_ptr = unsafe_load(convert(Ptr{_Element}, elem.ptr)).properties
+    while prop_ptr != C_NULL
+        n += 1
+        prop_ptr = unsafe_load(prop_ptr).next
+    end
+    return n
+end
+
+"""
     unlink_node!(node::Ndoe)
 
 Unlink `node` from its parent.

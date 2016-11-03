@@ -32,6 +32,7 @@ export
     add_element!,
     count_nodes,
     count_elements,
+    count_attributes,
     unlink_node!,
     has_root,
     root,

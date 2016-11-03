@@ -148,12 +148,17 @@ doc = parse(EzXML.Document, "<root/>")
 @test !has_child_node(root(doc))
 @test count_nodes(root(doc)) === 0
 @test count_elements(root(doc)) === 0
+@test count_attributes(root(doc)) === 0
 @test add_element!(root(doc), "c1") == root(doc)
+root(doc)["attr1"] = "1"
 @test count_nodes(root(doc)) === 1
 @test count_elements(root(doc)) === 1
+@test count_elements(root(doc)) === 1
+@test count_attributes(root(doc)) === 1
 @test add_element!(root(doc), "c2", "some content") == root(doc)
 @test count_nodes(root(doc)) === 2
 @test count_elements(root(doc)) === 2
+@test_throws ArgumentError count_attributes(doc.node)
 
 doc = parse(EzXML.Document, """
 <root><c1></c1><c2></c2></root>
