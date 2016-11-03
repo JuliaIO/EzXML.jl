@@ -2,8 +2,8 @@
 
 using EzXML
 
-# Parse an XML string.
-# `read(EzXML.Document, <filename>)` reads a document from a file.
+# Parse an XML string
+# (use `read(Document, <filename>)` to read a document from a file).
 doc = parse(EzXML.Document, """
 <primates>
     <genus name="Homo">

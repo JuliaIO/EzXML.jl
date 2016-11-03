@@ -25,10 +25,9 @@ In addition, reading extremely large files will be supported.
 ```julia
 using EzXML
 
-# Parse an XML string.
-# `read(Document, <filename>)` reads a document from a file.
-doc = parse(Document, """
-<?xml version="1.0"?>
+# Parse an XML string
+# (use `read(Document, <filename>)` to read a document from a file).
+doc = parse(EzXML.Document, """
 <primates>
     <genus name="Homo">
         <species name="sapiens">Human</species>
@@ -47,16 +46,17 @@ primates = root(doc)
 for genus in each_element(primates)
     # Get an attribute value by name.
     genus_name = genus["name"]
-    println(genus_name)
+    println("- ", genus_name)
     for species in each_element(genus)
         # Get the content within an element.
         species_name = content(species)
-        println("  - ", species_name)
+        println("  └ ", species["name"], " (", species_name, ")")
     end
 end
+println()
 
 # Find texts using XPath query.
-for species_name in find(primates, "//species/text()")
+for species_name in content.(find(primates, "//species/text()"))
     println("- ", species_name)
 end
 ```
