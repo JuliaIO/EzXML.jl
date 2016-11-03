@@ -268,7 +268,10 @@ function finalize_node(node)
         if unsafe_load(node_ptr).typ == XML_DOCUMENT_NODE
             ccall((:xmlFreeDoc, libxml2), Void, (Ptr{Void},), node_ptr)
         else
-            ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
+            # TODO: Calling this function results in segmentation fault.  Not
+            # sure why, but minor memory leak would be better than unpredictable
+            # segfault.
+            #ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
         end
     elseif node_ptr != C_NULL
         # indicate the proxy does not exit anymore
@@ -691,6 +694,37 @@ function add_element!(parent::Node, name::AbstractString, content::AbstractStrin
         throw_xml_error()
     end
     return parent
+end
+
+"""
+    count_nodes(parent::Node)
+
+Count the number of child nodes of `parent`.
+"""
+function count_nodes(parent::Node)
+    @assert parent.ptr != C_NULL
+    n = 0
+    cur_ptr = unsafe_load(parent.ptr).children
+    while cur_ptr != C_NULL
+        n += 1
+        cur_ptr = unsafe_load(cur_ptr).next
+    end
+    return n
+end
+
+"""
+    count_elements(parent::Node)
+
+Count the number of child elements of `parent`.
+"""
+function count_elements(parent::Node)
+    @assert parent.ptr != C_NULL
+    n = ccall(
+        (:xmlChildElementCount, libxml2),
+        Culong,
+        (Ptr{Void},),
+        parent.ptr)
+    return Int(n)
 end
 
 """

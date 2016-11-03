@@ -30,6 +30,8 @@ export
     add_next_sibling!,
     add_prev_sibling!,
     add_element!,
+    count_nodes,
+    count_elements,
     unlink_node!,
     has_root,
     root,

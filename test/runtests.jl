@@ -138,14 +138,16 @@ end
 @test length(nodes) == 0
 @test child_elements(root(doc)) == nodes
 
-doc = parse(EzXML.Document, """
-<root></root>
-""")
+doc = parse(EzXML.Document, "<root/>")
 @test !has_child_node(root(doc))
+@test count_nodes(root(doc)) === 0
+@test count_elements(root(doc)) === 0
 @test add_element!(root(doc), "c1") == root(doc)
-@test length(child_elements(root(doc))) == 1
+@test count_nodes(root(doc)) === 1
+@test count_elements(root(doc)) === 1
 @test add_element!(root(doc), "c2", "some content") == root(doc)
-@test length(child_elements(root(doc))) == 2
+@test count_nodes(root(doc)) === 2
+@test count_elements(root(doc)) === 2
 
 doc = parse(EzXML.Document, """
 <root><c1></c1><c2></c2></root>
