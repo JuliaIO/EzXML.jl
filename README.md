@@ -121,8 +121,22 @@ Accessors:
     * `last_node(node)`: return the last child node of a node.
     * `first_element(node)`: return the first child element of a node.
     * `last_element(node)`: return the last child element of a node.
+    * `next_node(node)`: return the next node of a node.
+    * `prev_node(node)`: return the previous node of a node.
+    * `next_element(node)`: return the next element of a node.
+    * `prev_element(node)`: return the previous element of a node.
     * `parent_node(node)`: return the parent node of a node.
     * `parent_element(node)`: return the parent element of a node.
+* Node predicate:
+    * `has_root(doc)`: return if a document has a root element.
+    * `has_node(node)`: return if a node has a child node.
+    * `has_element(node)`: return if a node has a child element.
+    * `has_next_node(node)`: return if a node has a next node.
+    * `has_prev_node(node)`: return if a node has a previous node.
+    * `has_next_element(node)`: return if a node has a next element.
+    * `has_prev_element(node)`: return if a node has a previous element.
+    * `has_parent_node(node)`: return if a node has a parent node.
+    * `has_parent_element(node)`: return if a node has a parent element.
 * Iterators:
     * `each_node(node)`: create an iterator over child nodes.
     * `each_element(node)`: create an iterator over child elements.
