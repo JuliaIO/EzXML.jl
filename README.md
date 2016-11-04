@@ -126,10 +126,10 @@ Accessors:
 * Iterators:
     * `each_node(node)`: create an iterator over child nodes.
     * `each_element(node)`: create an iterator over child elements.
-    * `each_attribute(node)`: create an iterator over attributes (key-value pairs).
+    * `each_attribute(node)`: create an iterator over attribute nodes.
     * `nodes(node)`: create a vector of child nodes.
     * `elements(node)`: create a vector of child elements.
-    * `attributes(node)`: create a vector of attributes.
+    * `attributes(node)`: create a vector of attribute nodes.
 * Counters:
     * `count_nodes(node)`: count the number of child nodes.
     * `count_elements(node)`: count the number of child elements.

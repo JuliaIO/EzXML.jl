@@ -216,10 +216,12 @@ doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
 <root attr1="foo" attr2="bar"></root>
 """)
-for (attr, val) in each_attribute(root(doc))
+for node in each_attribute(root(doc))
+    attr = name(node)
+    val = content(node)
     @test val == (attr == "attr1" ? "foo" : "bar")
 end
-@test attributes(root(doc)) == ["attr1" => "foo", "attr2" => "bar"]
+@test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
 @test_throws ArgumentError each_attribute(doc.node)
 @test_throws ArgumentError attributes(doc.node)
 
@@ -297,7 +299,7 @@ el["attr2"] = "2"
 doc = Document()
 set_root!(doc, el)
 @test root(doc) == el
-@test attributes(root(doc)) == ["attr1" => "1", "attr2" => "2"]
+@test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
 doc = Document()
 @test !has_parent_node(doc.node)

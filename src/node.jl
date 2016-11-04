@@ -1034,6 +1034,16 @@ end
 # Iterators
 # ---------
 
+abstract AbstractNodeIterator
+
+function Base.eltype{T<:AbstractNodeIterator}(::Type{T})
+    return Node
+end
+
+function Base.iteratorsize{T<:AbstractNodeIterator}(::Type{T})
+    return Base.SizeUnknown()
+end
+
 """
     each_node(node::Node)
 
@@ -1052,16 +1062,8 @@ function nodes(node::Node)
     return collect(each_node(node))
 end
 
-immutable ChildNodeIterator
+immutable ChildNodeIterator <: AbstractNodeIterator
     node::Ptr{_Node}
-end
-
-function Base.iteratorsize(::Type{ChildNodeIterator})
-    return Base.SizeUnknown()
-end
-
-function Base.eltype(::Type{ChildNodeIterator})
-    return Node
 end
 
 function Base.start(iter::ChildNodeIterator)
@@ -1095,16 +1097,8 @@ function elements(node::Node)
     return collect(each_element(node))
 end
 
-immutable ChildElementIterator
+immutable ChildElementIterator <: AbstractNodeIterator
     ptr::Ptr{_Node}
-end
-
-function Base.iteratorsize(::Type{ChildElementIterator})
-    return Base.SizeUnknown()
-end
-
-function Base.eltype(::Type{ChildElementIterator})
-    return Node
 end
 
 function Base.start(iter::ChildElementIterator)
@@ -1150,16 +1144,8 @@ function attributes(node::Node)
     return collect(each_attribute(node))
 end
 
-immutable AttributeIterator
+immutable AttributeIterator <: AbstractNodeIterator
     ptr::Ptr{_Node}
-end
-
-function Base.iteratorsize(::Type{AttributeIterator})
-    return Base.SizeUnknown()
-end
-
-function Base.eltype(::Type{AttributeIterator})
-    return Pair{String,String}
 end
 
 function Base.start(iter::AttributeIterator)
@@ -1175,15 +1161,5 @@ end
 
 function Base.next(::AttributeIterator, cur_ptr)
     cur_str = unsafe_load(cur_ptr)
-    text_ptr = ccall(
-        (:xmlNodeGetContent, libxml2),
-        Cstring,
-        (Ptr{Void},),
-        cur_str.children)
-    if text_ptr == C_NULL
-        throw_xml_error()
-    end
-    name = unsafe_wrap(String, cur_str.name)
-    text = unsafe_wrap(String, text_ptr, true)
-    return (name => text), cur_str.next
+    return Node(cur_ptr), cur_str.next
 end
