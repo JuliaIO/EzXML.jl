@@ -9,7 +9,8 @@ immutable Document
 
     function Document(ptr::Ptr{_Node})
         @assert ptr != C_NULL
-        @assert unsafe_load(ptr).typ ∈ (9, 13)
+        ntype = unsafe_load(ptr).typ
+        @assert ntype ∈ (XML_DOCUMENT_NODE, XML_HTML_DOCUMENT_NODE)
         return new(Node(ptr))
     end
 end
