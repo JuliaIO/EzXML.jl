@@ -124,3 +124,4 @@ Queries:
 
 * [primates.jl](/example/primates.jl): "primates" example shown above.
 * [julia2xml.jl](/example/julia2xml.jl): convert a Julia expression to XML.
+* [issues.jl](/example/issues.jl): list latest issues of the Julia repository.

@@ -2,14 +2,14 @@
 # ------------
 
 """
-An XML document type.
+An XML/HTML document type.
 """
 immutable Document
     node::Node
 
     function Document(ptr::Ptr{_Node})
         @assert ptr != C_NULL
-        @assert unsafe_load(ptr).typ == 9
+        @assert unsafe_load(ptr).typ ∈ (9, 13)
         return new(Node(ptr))
     end
 end
@@ -23,7 +23,30 @@ function Base.print(io::IO, doc::Document)
     print(io, doc.node)
 end
 
-function Base.parse(::Type{Document}, xmlstring::AbstractString)
+function Base.parse(::Type{Document}, inputstring::AbstractString)
+    if is_html_like(inputstring)
+        return parsehtml(inputstring)
+    else
+        return parsexml(inputstring)
+    end
+end
+
+# Try to infer whether an input is formatted in HTML.
+function is_html_like(inputstring)
+    if ismatch(r"^\s*<!DOCTYPE html", inputstring)
+        return true
+    elseif ismatch(r"^\s*<?xml", inputstring)
+        return false
+    end
+    i = searchindex(inputstring, "<html")
+    if 0 < i < 100
+        return true
+    else
+        return false
+    end
+end
+
+function parsexml(xmlstring::AbstractString)
     if isempty(xmlstring)
         throw(ArgumentError("empty XML string"))
     end
@@ -38,13 +61,53 @@ function Base.parse(::Type{Document}, xmlstring::AbstractString)
     return Document(ptr)
 end
 
+function parsehtml(htmlstring::AbstractString)
+    if isempty(htmlstring)
+        throw(ArgumentError("empty HTML string"))
+    end
+    url = C_NULL
+    encoding = C_NULL
+    options = 1
+    ptr = ccall(
+        (:htmlReadMemory, libxml2),
+        Ptr{_Node},
+        (Cstring, Cint, Cstring, Cstring, Cint),
+        htmlstring, length(htmlstring), url, encoding, options)
+    if ptr == C_NULL
+        throw_xml_error()
+    end
+    return Document(ptr)
+end
+
 function Base.read(::Type{Document}, filename::AbstractString)
+    if endswith(filename, ".html") || endswith(filename, ".htm")
+        return readhtml(filename)
+    else
+        return readxml(filename)
+    end
+end
+
+function readxml(filename::AbstractString)
     encoding = C_NULL
     options = 0
     ptr = ccall(
         (:xmlReadFile, libxml2),
         Ptr{_Node},
         (Cstring, Ptr{UInt8}, Cint),
+        filename, encoding, options)
+    if ptr == C_NULL
+        throw_xml_error()
+    end
+    return Document(ptr)
+end
+
+function readhtml(filename::AbstractString)
+    encoding = C_NULL
+    options = 0
+    ptr = ccall(
+        (:htmlReadFile, libxml2),
+        Ptr{_Node},
+        (Cstring, Cstring, Cint),
         filename, encoding, options)
     if ptr == C_NULL
         throw_xml_error()

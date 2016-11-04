@@ -51,7 +51,7 @@ end
 function throw_xml_error()
     @assert !isempty(global_error)
     if length(global_error) > 1
-        warn("uncaught error found")
+        warn("caught some errors; show the last one")
     end
     err_str = pop!(global_error)
     msg = chomp(unsafe_string(err_str.message))

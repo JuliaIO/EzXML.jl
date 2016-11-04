@@ -6,6 +6,18 @@ using Base.Test
 @test_throws XMLError parse(EzXML.Document, "abracadabra")
 @test_throws XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
 
+doc = parse(EzXML.Document, """
+<?xml version="1.0"?>
+<root/>
+""")
+@test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+
+doc = parse(EzXML.Document, """
+<!DOCTYPE html>
+<html><head></head><body></body></html>
+""")
+@test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
 for i in 1:21
     t = convert(EzXML.NodeType, i)
     @test ismatch(r"^XML_[A-Z_]+$", repr(t))
@@ -366,7 +378,7 @@ end
 @test findlast(root(doc), "foo") === findlast(doc, "//foo")
 
 # http://www.xml.com/pub/a/1999/01/namespaces.html
-doc = parse(EzXML.Document, """
+doc = EzXML.parsexml("""
 <h:html xmlns:xdc="http://www.xml.com/books"
         xmlns:h="http://www.w3.org/HTML/1998/html4">
  <h:head><h:title>Book Review</h:title></h:head>
@@ -430,7 +442,7 @@ delete!(c, "y:attr")
 delete!(c, "z:attr")
 
 # default namespace
-doc = parse(EzXML.Document, """
+doc = EzXML.parsexml("""
 <html xmlns="http://www.w3.org/HTML/1998/html4"
       xmlns:xdc="http://www.xml.com/books">
 </html>
@@ -440,7 +452,7 @@ doc = parse(EzXML.Document, """
     "xdc" => "http://www.xml.com/books"]
 @test namespace(root(doc)) == "http://www.w3.org/HTML/1998/html4"
 
-doc = parse(EzXML.Document, """
+doc = EzXML.parsexml("""
 <html xmlns=""
       xmlns:xdc="http://www.xml.com/books">
 </html>
@@ -450,7 +462,7 @@ doc = parse(EzXML.Document, """
     "xdc" => "http://www.xml.com/books"]
 
 # no namespace
-doc = parse(EzXML.Document, """
+doc = EzXML.parsexml("""
 <root></root>
 """)
 @test isempty(namespaces(root(doc)))
