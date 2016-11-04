@@ -13,9 +13,21 @@ doc = parse(EzXML.Document, """
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 
 doc = parse(EzXML.Document, """
+<?xml version="1.0"?>
+<root/>
+""".data)
+@test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+
+doc = parse(EzXML.Document, """
 <!DOCTYPE html>
 <html><head></head><body></body></html>
 """)
+@test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+doc = parse(EzXML.Document, """
+<!DOCTYPE html>
+<html><head></head><body></body></html>
+""".data)
 @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
 
 for i in 1:21

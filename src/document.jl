@@ -32,6 +32,10 @@ function Base.parse(::Type{Document}, inputstring::AbstractString)
     end
 end
 
+function Base.parse(::Type{Document}, inputdata::Vector{UInt8})
+    return parse(Document, String(inputdata))
+end
+
 # Try to infer whether an input is formatted in HTML.
 function is_html_like(inputstring)
     if ismatch(r"^\s*<!DOCTYPE html", inputstring)
@@ -62,6 +66,10 @@ function parsexml(xmlstring::AbstractString)
     return Document(ptr)
 end
 
+function parsexml(xmldata::Vector{UInt8})
+    return parsexml(String(xmldata))
+end
+
 function parsehtml(htmlstring::AbstractString)
     if isempty(htmlstring)
         throw(ArgumentError("empty HTML string"))
@@ -78,6 +86,10 @@ function parsehtml(htmlstring::AbstractString)
         throw_xml_error()
     end
     return Document(ptr)
+end
+
+function parsehtml(htmldata::Vector{UInt8})
+    return parsehtml(String(htmldata))
 end
 
 function Base.read(::Type{Document}, filename::AbstractString)
