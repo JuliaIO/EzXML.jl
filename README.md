@@ -61,11 +61,40 @@ end
 ```
 
 
+## Core concepts
+
+The main types exported from this package are `Document` and `Node`.  `Document`
+represents an entire XML document and `Node` are components of it.  Everything
+in an XML tree is a `Node` object: document, element, text, attribute, comments,
+and so on. A document object of `Document` type is a thin wrapper to a document
+node of `Node` type. This design leads to simplicity of interfaces because
+tree-traversal functions always return `Node` objects. In addition, the type
+stability of this design may enable the Julia compiler to generate faster code.
+
+In this package, a `Node` object is regarded as a container of its child nodes.
+This idea is reflected on function names; for example, a function returning the
+first child node is named as `first_node` instead of `first_child_node` because
+it is apparent that we are interested in **child** nodes. If the user is
+interested in a special type of nodes like element nodes, functions like
+`first_element` are provided.
+
+Internally, a `Node` object is a proxy object to a node-like struct allocated by
+the libxml2 library. Additionally, a node-like struct also has a pointer to
+Julia's `Node` object, which enables to extract a unique proxy object from C's
+struct. Therefore, two `Node` objects pointing to the same node in an XML
+document are identical even if they are generated from different ways. A `Node`
+object also keeps an owner node that is responsible for releasing memories of
+nodes.
+
+* [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
+* [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
+
 ## Quick reference
 
 Types:
 * `Document`: an XML document
 * `Node`: an XML node including elements, attributes, texts, etc.
+* `XMLError`: an error happened in libxml2
 
 IO:
 * `read(EzXML.Document, filename)`: read an XML document from a file.
@@ -82,21 +111,22 @@ Accessors:
 * Attributes:
     * `node[name]`: return an attribute value of a node by name.
     * `node[name] = value`: set a value to an attribute of a node.
+    * `haskey(node, name)`: return if a node has an attribute name.
     * `delete!(node, name)`: delete an attribute of a node.
 * Tree traversal (prefixing `has_` check existence):
-    * `root(doc)`: return the root node of a document.
-    * `first_child_node(node)`: return the first child node of a node.
-    * `last_child_node(node)`: return the last child node of a node.
-    * `first_child_element(node)`: return the first child element of a node.
-    * `last_child_element(node)`: return the last child element of a node.
+    * `root(doc)`: return the root element of a document.
+    * `first_node(node)`: return the first child node of a node.
+    * `last_node(node)`: return the last child node of a node.
+    * `first_element(node)`: return the first child element of a node.
+    * `last_element(node)`: return the last child element of a node.
     * `parent_node(node)`: return the parent node of a node.
     * `parent_element(node)`: return the parent element of a node.
 * Iterators:
     * `each_node(node)`: create an iterator over child nodes.
     * `each_element(node)`: create an iterator over child elements.
     * `each_attribute(node)`: create an iterator over attributes (key-value pairs).
-    * `child_nodes(node)`: create a vector of child nodes.
-    * `child_elements(node)`: create a vector of child elements.
+    * `nodes(node)`: create a vector of child nodes.
+    * `elements(node)`: create a vector of child elements.
     * `attributes(node)`: create a vector of attributes.
 * Counters:
     * `count_nodes(node)`: count the number of child nodes.

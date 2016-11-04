@@ -100,13 +100,13 @@ doc = parse(EzXML.Document, """
 </r>
 """)
 r = root(doc)
-@test nodetype(first_child_node(r)) === EzXML.XML_TEXT_NODE
-@test nodetype(last_child_node(r)) === EzXML.XML_TEXT_NODE
-@test nodetype(first_child_element(r)) === EzXML.XML_ELEMENT_NODE
-@test name(first_child_element(r)) == "c1"
-@test nodetype(last_child_element(r)) === EzXML.XML_ELEMENT_NODE
-@test name(last_child_element(r)) == "c3"
-c1 = first_child_element(r)
+@test nodetype(first_node(r)) === EzXML.XML_TEXT_NODE
+@test nodetype(last_node(r)) === EzXML.XML_TEXT_NODE
+@test nodetype(first_element(r)) === EzXML.XML_ELEMENT_NODE
+@test name(first_element(r)) == "c1"
+@test nodetype(last_element(r)) === EzXML.XML_ELEMENT_NODE
+@test name(last_element(r)) == "c3"
+c1 = first_element(r)
 @test has_next_node(c1)
 @test has_prev_node(c1)
 @test nodetype(next_node(c1)) === EzXML.XML_TEXT_NODE
@@ -142,23 +142,23 @@ doc = parse(EzXML.Document, """
 doc = parse(EzXML.Document, """
 <root></root>
 """)
-nodes = EzXML.Node[]
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_node(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 0
-@test child_nodes(root(doc)) == nodes
-nodes = EzXML.Node[]
+@test length(ns) == 0
+@test nodes(root(doc)) == ns
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_element(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 0
-@test child_elements(root(doc)) == nodes
+@test length(ns) == 0
+@test elements(root(doc)) == ns
 
 doc = parse(EzXML.Document, "<root/>")
-@test !has_child_node(root(doc))
+@test !has_node(root(doc))
 @test count_nodes(root(doc)) === 0
 @test count_elements(root(doc)) === 0
 @test count_attributes(root(doc)) === 0
@@ -176,20 +176,20 @@ root(doc)["attr1"] = "1"
 doc = parse(EzXML.Document, """
 <root><c1></c1><c2></c2></root>
 """)
-nodes = EzXML.Node[]
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_node(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 2
-@test child_nodes(root(doc)) == nodes
-nodes = EzXML.Node[]
+@test length(ns) == 2
+@test nodes(root(doc)) == ns
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_element(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 2
-@test child_elements(root(doc)) == nodes
+@test length(ns) == 2
+@test elements(root(doc)) == ns
 
 doc = parse(EzXML.Document, """
 <root>
@@ -197,20 +197,20 @@ doc = parse(EzXML.Document, """
     <c2></c2>
 </root>
 """)
-nodes = EzXML.Node[]
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_node(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 5
-@test child_nodes(root(doc)) == nodes
-nodes = EzXML.Node[]
+@test length(ns) == 5
+@test nodes(root(doc)) == ns
+ns = EzXML.Node[]
 for (i, node) in enumerate(each_element(root(doc)))
     @test isa(node, EzXML.Node)
-    push!(nodes, node)
+    push!(ns, node)
 end
-@test length(nodes) == 2
-@test child_elements(root(doc)) == nodes
+@test length(ns) == 2
+@test elements(root(doc)) == ns
 
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
@@ -260,36 +260,36 @@ doc = parse(EzXML.Document, """
 <?xml version="1.0" encoding="UTF-8"?>
 <root/>
 """
-@test !has_child_node(root(doc))
+@test !has_node(root(doc))
 c1 = ElementNode("child1")
-add_child_node!(root(doc), c1)
-@test has_child_node(root(doc))
+add_node!(root(doc), c1)
+@test has_node(root(doc))
 c2 = ElementNode("child2")
-add_child_node!(root(doc), c2)
-@test child_nodes(root(doc)) == [c1, c2]
-@test !has_child_node(c1)
-add_child_node!(c1, TextNode("some text"))
-@test has_child_node(c1)
+add_node!(root(doc), c2)
+@test nodes(root(doc)) == [c1, c2]
+@test !has_node(c1)
+add_node!(c1, TextNode("some text"))
+@test has_node(c1)
 c3 = CommentNode("some comment")
-add_child_node!(root(doc), c3)
+add_node!(root(doc), c3)
 c4 = CDataNode("<cdata>")
-add_child_node!(root(doc), c4)
+add_node!(root(doc), c4)
 @test string(doc.node) == """
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child1>some text</child1><child2/><!--some comment--><![CDATA[<cdata>]]></root>
 """
 
 doc = parse(EzXML.Document, "<root/>")
-@test isempty(child_nodes(root(doc)))
+@test isempty(nodes(root(doc)))
 c1 = ElementNode("c1")
-add_child_node!(root(doc), c1)
-@test child_nodes(root(doc)) == [c1]
+add_node!(root(doc), c1)
+@test nodes(root(doc)) == [c1]
 c2 = ElementNode("c2")
 add_next_sibling!(c1, c2)
-@test child_nodes(root(doc)) == [c1, c2]
+@test nodes(root(doc)) == [c1, c2]
 c0 = ElementNode("c0")
 add_prev_sibling!(c1, c0)
-@test child_nodes(root(doc)) == [c0, c1, c2]
+@test nodes(root(doc)) == [c0, c1, c2]
 
 el = ElementNode("el")
 el["attr1"] = "1"
@@ -309,7 +309,7 @@ set_root!(doc, x)
 @test !has_parent_element(x)
 @test_throws ArgumentError parent_element(x)
 y = ElementNode("y")
-add_child_node!(x, y)
+add_node!(x, y)
 @test has_parent_node(y)
 @test has_parent_element(y)
 @test parent_element(y) == x
@@ -317,10 +317,10 @@ add_child_node!(x, y)
 doc = Document()
 x = ElementNode("x")
 set_root!(doc, x)
-@test_throws ArgumentError first_child_node(x)
-@test_throws ArgumentError last_child_node(x)
-@test_throws ArgumentError first_child_element(x)
-@test_throws ArgumentError last_child_element(x)
+@test_throws ArgumentError first_node(x)
+@test_throws ArgumentError last_node(x)
+@test_throws ArgumentError first_element(x)
+@test_throws ArgumentError last_element(x)
 @test_throws ArgumentError next_node(x)
 @test_throws ArgumentError prev_node(x)
 @test_throws ArgumentError next_element(x)
@@ -336,11 +336,11 @@ doc = parse(EzXML.Document, """
     </c1>
 </root>
 """)
-@test has_child_element(root(doc))
-c1 = first_child_element(root(doc))
-c2 = first_child_element(c1)
+@test has_element(root(doc))
+c1 = first_element(root(doc))
+c2 = first_element(c1)
 @test unlink_node!(c1) == c1
-@test !has_child_element(root(doc))
+@test !has_element(root(doc))
 @test c1.owner == c1
 @test c2.owner == c1
 
@@ -359,8 +359,8 @@ doc = parse(EzXML.Document, """
 @test length(find(doc, "/root")) == 1
 @test find(doc, "/root")[1] === root(doc)
 @test length(find(doc, "/root/foo")) == 2
-@test find(doc, "/root/foo")[1] === child_elements(root(doc))[1]
-@test find(doc, "/root/foo")[2] === child_elements(root(doc))[2]
+@test find(doc, "/root/foo")[1] === elements(root(doc))[1]
+@test find(doc, "/root/foo")[2] === elements(root(doc))[2]
 for (i, node) in enumerate(find(doc, "//bar"))
     @test name(node) == "bar"
     @test content(node) == string(i)
@@ -401,13 +401,13 @@ doc = EzXML.parsexml("""
 </h:html>
 """)
 @test namespaces(root(doc)) ==
-      namespaces(child_elements(root(doc))[1]) ==
-      namespaces(child_elements(root(doc))[2]) == [
+      namespaces(elements(root(doc))[1]) ==
+      namespaces(elements(root(doc))[2]) == [
     "xdc" => "http://www.xml.com/books",
     "h"   => "http://www.w3.org/HTML/1998/html4"]
 @test name(root(doc)) == "html"
 @test namespace(root(doc)) == "http://www.w3.org/HTML/1998/html4"
-@test namespace(child_elements(child_elements(root(doc))[2])[1]) == "http://www.xml.com/books"
+@test namespace(elements(elements(root(doc))[2])[1]) == "http://www.xml.com/books"
 
 doc = parse(EzXML.Document, """
 <root xmlns:x="http://xxx.org/" xmlns:y="http://yyy.org/">
@@ -416,7 +416,7 @@ doc = parse(EzXML.Document, """
     <c x:attr=""/>
 </root>
 """)
-c = first_child_element(root(doc))
+c = first_element(root(doc))
 @test haskey(c, "attr")
 @test haskey(c, "x:attr")
 @test haskey(c, "y:attr")

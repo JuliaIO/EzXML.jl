@@ -15,20 +15,20 @@ function expr2elem(expr)
         expr_node = ElementNode("expr")
         # <head/>
         head_node = ElementNode("head")
-        add_child_node!(head_node, TextNode(repr(expr.head)))
-        add_child_node!(expr_node, head_node)
+        add_node!(head_node, TextNode(repr(expr.head)))
+        add_node!(expr_node, head_node)
         # <args/>
         args_node = ElementNode("args")
         for arg in expr.args
-            add_child_node!(args_node, expr2elem(arg))
+            add_node!(args_node, expr2elem(arg))
         end
-        add_child_node!(expr_node, args_node)
+        add_node!(expr_node, args_node)
         return expr_node
     else
         # <literal/>
         literal_node = ElementNode("literal")
         literal_node["type"] = string(typeof(expr))
-        add_child_node!(literal_node, TextNode(repr(expr)))
+        add_node!(literal_node, TextNode(repr(expr)))
         return literal_node
     end
 end

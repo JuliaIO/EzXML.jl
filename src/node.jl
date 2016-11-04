@@ -442,45 +442,45 @@ function parent_element(node::Node)
 end
 
 """
-    has_child_node(node::Node)
+    has_node(node::Node)
 
 Return if `node` has a child node.
 """
-function has_child_node(node::Node)
+function has_node(node::Node)
     @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).children != C_NULL
 end
 
 """
-    first_child_node(node::Node)
+    first_node(node::Node)
 
 Return the first child node of `node`.
 """
-function first_child_node(node::Node)
-    if !has_child_node(node)
+function first_node(node::Node)
+    if !has_node(node)
         throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).children)
 end
 
 """
-    last_child_node(node::Node)
+    last_node(node::Node)
 
 Return the last child node of `node`.
 """
-function last_child_node(node::Node)
-    if !has_child_node(node)
+function last_node(node::Node)
+    if !has_node(node)
         throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).last)
 end
 
 """
-    has_child_element(node::Node)
+    has_element(node::Node)
 
 Return if `node` has a child element.
 """
-function has_child_element(node::Node)
+function has_element(node::Node)
     @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlFirstElementChild, libxml2),
@@ -491,12 +491,12 @@ function has_child_element(node::Node)
 end
 
 """
-    first_child_element(node::Node)
+    first_element(node::Node)
 
 Return the first child element of `node`.
 """
-function first_child_element(node::Node)
-    if !has_child_element(node)
+function first_element(node::Node)
+    if !has_element(node)
         throw(ArgumentError("no child elements"))
     end
     ptr = ccall(
@@ -508,12 +508,12 @@ function first_child_element(node::Node)
 end
 
 """
-    last_child_element(node::Node)
+    last_element(node::Node)
 
 Return the last child element of `node`.
 """
-function last_child_element(node::Node)
-    if !has_child_element(node)
+function last_element(node::Node)
+    if !has_element(node)
         throw(ArgumentError("no child elements"))
     end
     ptr = ccall(
@@ -633,17 +633,17 @@ function prev_element(node::Node)
 end
 
 """
-    add_child_node!(parent::Node, child::Node)
+    add_node!(parent::Node, child::Node)
 
 Add `child` at the end of children of `parent`.
 """
-function add_child_node!(parent::Node, child::Node)
-    child_ptr = ccall(
+function add_node!(parent::Node, child::Node)
+    ptr = ccall(
         (:xmlAddChild, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}),
         parent.ptr, child.ptr)
-    if child_ptr == C_NULL
+    if ptr == C_NULL
         throw_xml_error()
     end
     update_owners!(child, parent.owner)
@@ -1044,11 +1044,11 @@ function each_node(node::Node)
 end
 
 """
-    child_nodes(node::Node)
+    nodes(node::Node)
 
 Create a vector of child nodes.
 """
-function child_nodes(node::Node)
+function nodes(node::Node)
     return collect(each_node(node))
 end
 
@@ -1087,11 +1087,11 @@ function each_element(node::Node)
 end
 
 """
-    child_elements(node::Node)
+    elements(node::Node)
 
 Create a vector of child elements.
 """
-function child_elements(node::Node)
+function elements(node::Node)
     return collect(each_element(node))
 end
 
