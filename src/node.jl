@@ -1067,16 +1067,16 @@ immutable ChildNodeIterator <: AbstractNodeIterator
 end
 
 function Base.start(iter::ChildNodeIterator)
-    current = unsafe_load(iter.node).children
-    return current
+    cur_ptr = unsafe_load(iter.node).children
+    return cur_ptr
 end
 
-function Base.done(::ChildNodeIterator, current)
-    return current == C_NULL
+function Base.done(::ChildNodeIterator, cur_ptr)
+    return cur_ptr == C_NULL
 end
 
-function Base.next(::ChildNodeIterator, current)
-    return Node(current), unsafe_load(current).next
+function Base.next(::ChildNodeIterator, cur_ptr)
+    return Node(cur_ptr), unsafe_load(cur_ptr).next
 end
 
 """
@@ -1160,6 +1160,5 @@ function Base.done(::AttributeIterator, cur_ptr)
 end
 
 function Base.next(::AttributeIterator, cur_ptr)
-    cur_str = unsafe_load(cur_ptr)
-    return Node(cur_ptr), cur_str.next
+    return Node(cur_ptr), unsafe_load(cur_ptr).next
 end
