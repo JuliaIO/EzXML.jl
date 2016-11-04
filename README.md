@@ -64,8 +64,8 @@ end
 ## Core concepts
 
 The main types exported from this package are `Document` and `Node`.  `Document`
-represents an entire XML document and `Node` are components of it.  Everything
-in an XML tree is a `Node` object: document, element, text, attribute, comments,
+represents an entire XML/HTML document and `Node` are components of it.  Everything
+in an XML/HTML tree is a `Node` object: document, element, text, attribute, comments,
 and so on. A document object of `Document` type is a thin wrapper to a document
 node of `Node` type. This design leads to simplicity of interfaces because
 tree-traversal functions always return `Node` objects. In addition, the type
@@ -81,26 +81,28 @@ interested in a special type of nodes like element nodes, functions like
 Internally, a `Node` object is a proxy object to a node-like struct allocated by
 the libxml2 library. Additionally, a node-like struct also has a pointer to
 Julia's `Node` object, which enables to extract a unique proxy object from C's
-struct. Therefore, two `Node` objects pointing to the same node in an XML
+struct. Therefore, two `Node` objects pointing to the same node in an XML/HTML
 document are identical even if they are generated from different ways. A `Node`
 object also keeps an owner node that is responsible for releasing memories of
 nodes.
 
-* [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
-* [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
 
 ## Quick reference
 
 Types:
-* `Document`: an XML document
-* `Node`: an XML node including elements, attributes, texts, etc.
+* `Document`: an XML/HTML document
+* `Node`: an XML/HTML node including elements, attributes, texts, etc.
 * `XMLError`: an error happened in libxml2
 
 IO:
-* `read(EzXML.Document, filename)`: read an XML document from a file.
-* `write(filename, doc)`: write an XML document to a file.
-* `parse(EzXML.Document, xml_string)`: parse an XML string.
-* `print(io, doc)`: print an XML document.
+* `read(Document, filename)`: read an XML/HTML document from a file.
+* `readxml(filename)`: read an XML document from file.
+* `readhtml(filename)`: read an HTML document from file.
+* `write(filename, doc)`: write a document to a file.
+* `parse(Document, string)`: parse an XML/HTML string.
+* `parsexml(string)`: parse an XML string.
+* `parsehtml(string)`: parse an HTML string.
+* `print(io, doc)`: print a document.
 
 Accessors:
 * Node information:
@@ -113,7 +115,7 @@ Accessors:
     * `node[name] = value`: set a value to an attribute of a node.
     * `haskey(node, name)`: return if a node has an attribute name.
     * `delete!(node, name)`: delete an attribute of a node.
-* Tree traversal (prefixing `has_` check existence):
+* Tree traversal:
     * `root(doc)`: return the root element of a document.
     * `first_node(node)`: return the first child node of a node.
     * `last_node(node)`: return the last child node of a node.
@@ -155,3 +157,9 @@ Queries:
 * [primates.jl](/example/primates.jl): "primates" example shown above.
 * [julia2xml.jl](/example/julia2xml.jl): convert a Julia expression to XML.
 * [issues.jl](/example/issues.jl): list latest issues of the Julia repository.
+
+
+## Other XML/HTML packages in Julia.
+
+* [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
+* [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)

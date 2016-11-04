@@ -51,6 +51,10 @@ export
     attributes,
     namespace,
     namespaces,
+    readxml,
+    readhtml,
+    parsexml,
+    parsehtml,
     XMLError
 
 const libxml2 = "libxml2"
