@@ -15,8 +15,23 @@ immutable Document
     end
 end
 
-function Document(version::AbstractString="1.0")
-    node = DocumentNode(version)
+"""
+    XMLDocument(version="1.0")
+
+Create an XML document.
+"""
+function XMLDocument(version::AbstractString="1.0")
+    node = XMLDocumentNode(version)
+    return Document(node.ptr)
+end
+
+"""
+    HTMLDocument()
+
+Create an HTML document.
+"""
+function HTMLDocument()
+    node = HTMLDocumentNode()
     return Document(node.ptr)
 end
 

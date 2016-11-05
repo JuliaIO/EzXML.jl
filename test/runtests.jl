@@ -42,7 +42,7 @@ buf = IOBuffer()
 showerror(buf, err)
 @test takebuf_string(buf) == "XMLError: some parser error (from XML parser)"
 
-doc = EzXML.Document()
+doc = EzXML.XMLDocument()
 @test isa(doc, EzXML.Document)
 @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 @test !has_root(doc)
@@ -261,10 +261,16 @@ n = CDataNode("some CDATA")
 @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
 @test_throws ArgumentError document(n)
 
-n = DocumentNode("1.0")
+n = XMLDocumentNode("1.0")
 @test isa(n, Node)
 @test n.owner == n
 @test nodetype(n) === EzXML.XML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
+n = HTMLDocumentNode()
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
 @test document(n) === Document(n.ptr)
 
 doc = parse(EzXML.Document, """
@@ -308,12 +314,12 @@ add_prev_sibling!(c1, c0)
 el = ElementNode("el")
 el["attr1"] = "1"
 el["attr2"] = "2"
-doc = Document()
+doc = XMLDocument()
 set_root!(doc, el)
 @test root(doc) == el
 @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
-doc = Document()
+doc = XMLDocument()
 @test !has_parent_node(doc.node)
 @test !has_parent_element(doc.node)
 @test_throws ArgumentError parent_element(doc.node)
@@ -328,7 +334,7 @@ add_node!(x, y)
 @test has_parent_element(y)
 @test parent_element(y) == x
 
-doc = Document()
+doc = XMLDocument()
 x = ElementNode("x")
 set_root!(doc, x)
 @test_throws ArgumentError first_node(x)
