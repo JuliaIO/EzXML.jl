@@ -720,11 +720,11 @@ function add_node!(parent::Node, child::Node)
 end
 
 """
-    add_next_sibling!(target::Node, node::Node)
+    add_next!(target::Node, node::Node)
 
 Add `node` as the next sibling of `target`.
 """
-function add_next_sibling!(target::Node, node::Node)
+function add_next!(target::Node, node::Node)
     node_ptr = ccall(
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
@@ -738,11 +738,11 @@ function add_next_sibling!(target::Node, node::Node)
 end
 
 """
-    add_prev_sibling!(target::Node, node::Node)
+    add_prev!(target::Node, node::Node)
 
 Add `node` as the prev sibling of `target`.
 """
-function add_prev_sibling!(target::Node, node::Node)
+function add_prev!(target::Node, node::Node)
     node_ptr = ccall(
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},

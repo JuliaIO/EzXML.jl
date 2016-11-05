@@ -323,10 +323,10 @@ c1 = ElementNode("c1")
 add_node!(root(doc), c1)
 @test nodes(root(doc)) == [c1]
 c2 = ElementNode("c2")
-add_next_sibling!(c1, c2)
+add_next!(c1, c2)
 @test nodes(root(doc)) == [c1, c2]
 c0 = ElementNode("c0")
-add_prev_sibling!(c1, c0)
+add_prev!(c1, c0)
 @test nodes(root(doc)) == [c0, c1, c2]
 
 el = ElementNode("el")
