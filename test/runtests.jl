@@ -242,6 +242,25 @@ end
 @test_throws ArgumentError each_attribute(doc.node)
 @test_throws ArgumentError attributes(doc.node)
 
+n = XMLDocumentNode("1.0")
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
+n = HTMLDocumentNode(nothing, nothing)
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
+n = HTMLDocumentNode("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
+                     "-//W3C//DTD XHTML 1.0 Strict//EN")
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
 n = ElementNode("node")
 @test isa(n, Node)
 @test n.owner == n
@@ -266,24 +285,11 @@ n = CDataNode("some CDATA")
 @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
 @test_throws ArgumentError document(n)
 
-n = XMLDocumentNode("1.0")
+n = AttributeNode("attr", "value")
 @test isa(n, Node)
 @test n.owner == n
-@test nodetype(n) === EzXML.XML_DOCUMENT_NODE
-@test document(n) === Document(n.ptr)
-
-n = HTMLDocumentNode(nothing, nothing)
-@test isa(n, Node)
-@test n.owner == n
-@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
-@test document(n) === Document(n.ptr)
-
-n = HTMLDocumentNode("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
-                     "-//W3C//DTD XHTML 1.0 Strict//EN")
-@test isa(n, Node)
-@test n.owner == n
-@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
-@test document(n) === Document(n.ptr)
+@test nodetype(n) == EzXML.XML_ATTRIBUTE_NODE
+@test_throws ArgumentError document(n)
 
 doc = parse(EzXML.Document, """
 <root></root>

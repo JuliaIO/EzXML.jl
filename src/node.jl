@@ -405,6 +405,24 @@ function CDataNode(content::AbstractString)
     return Node(node_ptr)
 end
 
+"""
+    AttributeNode(name, value)
+
+Create an attribute node with `name` and `value`.
+"""
+function AttributeNode(name::AbstractString, value::AbstractString)
+    doc_ptr = C_NULL
+    node_ptr = ccall(
+        (:xmlNewDocProp, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Cstring, Cstring),
+        doc_ptr, name, value)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
 
 # DOM
 # ---

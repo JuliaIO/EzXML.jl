@@ -155,12 +155,13 @@ Accessors:
 Constructors:
 * `XMLDocument(version="1.0")`: create an XML document.
 * `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
+* `XMLDocumentNode(version="1.0")`: create an XML document node.
+* `HTMLDocumentNode()`: create an HTML document node.
 * `ElementNode(name)`: create an element node.
 * `TextNode(content)`: create a text node.
 * `CommentNode(content)`: create a comment node.
 * `CDataNode(content)`: create a CDATA node.
-* `XMLDocumentNode(version="1.0")`: create an XML document node.
-* `HTMLDocumentNode()`: create an HTML document node.
+* `AttributeNode(name, value)`: create an attribute node.
 
 Modifiers:
 * `add_node!(parent_node, child_node)`: add a child node to a parent node.

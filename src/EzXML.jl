@@ -2,12 +2,13 @@ module EzXML
 
 export
     Node,
+    XMLDocumentNode,
+    HTMLDocumentNode,
     ElementNode,
     TextNode,
     CommentNode,
     CDataNode,
-    XMLDocumentNode,
-    HTMLDocumentNode,
+    AttributeNode,
     Document,
     XMLDocument,
     HTMLDocument,
