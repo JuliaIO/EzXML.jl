@@ -35,6 +35,7 @@ for i in 1:21
     @test ismatch(r"^XML_[A-Z_]+$", repr(t))
     @test string(t) == string(i)
 end
+@test_throws AssertionError repr(convert(EzXML.NodeType, 100))
 
 err = XMLError(1, "some parser error")
 @test isa(err, XMLError)
