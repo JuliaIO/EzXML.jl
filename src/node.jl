@@ -218,7 +218,7 @@ end
 function Base.show(io::IO, node::Node)
     node_str = unsafe_load(node.ptr)
     type_string = repr(nodetype(node))
-    print(io, @sprintf("Node(<%s@%p>)", type_string, node.ptr))
+    print(io, @sprintf("EzXML.Node(<%s@%p>)", type_string, node.ptr))
 end
 
 function Base.print(io::IO, node::Node)
