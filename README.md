@@ -153,15 +153,17 @@ Accessors:
     * `namespaces(node)`: create a vector of namespaces applying to a node.
 
 Constructors:
-* `XMLDocument(version="1.0")`: create an XML document.
-* `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
-* `XMLDocumentNode(version="1.0")`: create an XML document node.
-* `HTMLDocumentNode()`: create an HTML document node.
-* `ElementNode(name)`: create an element node.
-* `TextNode(content)`: create a text node.
-* `CommentNode(content)`: create a comment node.
-* `CDataNode(content)`: create a CDATA node.
-* `AttributeNode(name, value)`: create an attribute node.
+* `Document` type:
+    * `XMLDocument(version="1.0")`: create an XML document.
+    * `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
+* `Node` type:
+    * `XMLDocumentNode(version="1.0")`: create an XML document node.
+    * `HTMLDocumentNode()`: create an HTML document node.
+    * `ElementNode(name)`: create an element node.
+    * `TextNode(content)`: create a text node.
+    * `CommentNode(content)`: create a comment node.
+    * `CDataNode(content)`: create a CDATA node.
+    * `AttributeNode(name, value)`: create an attribute node.
 
 Modifiers:
 * `add_node!(parent_node, child_node)`: add a child node to a parent node.
