@@ -26,12 +26,12 @@ function XMLDocument(version::AbstractString="1.0")
 end
 
 """
-    HTMLDocument()
+    HTMLDocument(uri=nothing, externalID=nothing)
 
 Create an HTML document.
 """
-function HTMLDocument()
-    node = HTMLDocumentNode()
+function HTMLDocument(uri=nothing, externalID=nothing)
+    node = HTMLDocumentNode(uri, externalID)
     return Document(node.ptr)
 end
 

@@ -304,9 +304,13 @@ function XMLDocumentNode(version::AbstractString)
     return Node(node_ptr)
 end
 
-function HTMLDocumentNode()
-    uri = C_NULL
-    externalID = C_NULL
+function HTMLDocumentNode(uri::Union{AbstractString,Void}, externalID::Union{AbstractString,Void})
+    if uri === nothing
+        uri = C_NULL
+    end
+    if externalID === nothing
+        externalID = C_NULL
+    end
     node_ptr = ccall(
         (:htmlNewDoc, libxml2),
         Ptr{_Node},

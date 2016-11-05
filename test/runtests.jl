@@ -57,6 +57,11 @@ set_root!(doc, r2)
 @test root(doc) == r2
 @test r1.owner === r1
 
+doc = EzXML.HTMLDocument("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
+                         "-//W3C//DTD XHTML 1.0 Strict//EN")
+@test isa(doc, EzXML.Document)
+@test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
 doc = parse(EzXML.Document, """
 <?xml version="1.0"?>
 <root></root>
@@ -267,7 +272,14 @@ n = XMLDocumentNode("1.0")
 @test nodetype(n) === EzXML.XML_DOCUMENT_NODE
 @test document(n) === Document(n.ptr)
 
-n = HTMLDocumentNode()
+n = HTMLDocumentNode(nothing, nothing)
+@test isa(n, Node)
+@test n.owner == n
+@test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
+@test document(n) === Document(n.ptr)
+
+n = HTMLDocumentNode("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
+                     "-//W3C//DTD XHTML 1.0 Strict//EN")
 @test isa(n, Node)
 @test n.owner == n
 @test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE

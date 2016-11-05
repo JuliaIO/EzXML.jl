@@ -154,7 +154,7 @@ Accessors:
 
 Constructors:
 * `XMLDocument(version="1.0")`: create an XML document.
-* `HTMLDocument()`: create an HTML document.
+* `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
 * `ElementNode(name)`: create an element node.
 * `TextNode(content)`: create a text node.
 * `CommentNode(content)`: create a comment node.
