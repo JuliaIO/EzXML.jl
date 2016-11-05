@@ -1,34 +1,110 @@
 using EzXML
 using Base.Test
 
-@test_throws ArgumentError parse(EzXML.Document, "")
-@test_throws XMLError parse(EzXML.Document, " ")
-@test_throws XMLError parse(EzXML.Document, "abracadabra")
-@test_throws XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
+@testset "Reader" begin
+    @testset "XML" begin
+        valid_file = joinpath(dirname(@__FILE__), "sample1.xml")
+        invalid_file = joinpath(dirname(@__FILE__), "sample1.invalid.xml")
+        doc = read(Document, valid_file)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(readxml(valid_file).node) === EzXML.XML_DOCUMENT_NODE
+        @test_throws XMLError read(Document, invalid_file)
+    end
 
-doc = parse(EzXML.Document, """
-<?xml version="1.0"?>
-<root/>
-""")
-@test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+    @testset "HTML" begin
+        valid_file = joinpath(dirname(@__FILE__), "sample1.html")
+        doc = read(Document, valid_file)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(readhtml(valid_file).node) === EzXML.XML_HTML_DOCUMENT_NODE
+    end
+end
 
-doc = parse(EzXML.Document, """
-<?xml version="1.0"?>
-<root/>
-""".data)
-@test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+@testset "Parser" begin
+    @testset "XML" begin
+        doc = parse(Document, """
+        <?xml version="1.0"?>
+        <root>
+            <child attr="value">content</child>
+        </root>
+        """)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 
-doc = parse(EzXML.Document, """
-<!DOCTYPE html>
-<html><head></head><body></body></html>
-""")
-@test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        doc = parse(Document, """
+        <root>
+            <child attr="value">content</child>
+        </root>
+        """)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
 
-doc = parse(EzXML.Document, """
-<!DOCTYPE html>
-<html><head></head><body></body></html>
-""".data)
-@test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        doc = parse(Document, """
+        <?xml version="1.0"?>
+        <root>
+            <child attr="value">content</child>
+        </root>
+        """.data)
+        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+
+        @test nodetype(parsexml("<xml/>").node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(parsexml("<html/>").node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(parsexml("<xml/>".data).node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(parsexml("<html/>".data).node) === EzXML.XML_DOCUMENT_NODE
+
+        @test_throws ArgumentError parse(Document, "")
+        @test_throws XMLError parse(Document, " ")
+        @test_throws XMLError parse(EzXML.Document, "abracadabra")
+        @test_throws XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
+    end
+
+    @testset "HTML" begin
+        doc = parse(Document, """
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Title</title>
+            </head>
+            <body>
+                Hello, world!
+            </body>
+        </html>
+        """)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+        doc = parse(Document, """
+        <html>
+            <head>
+                <title>Title</title>
+            </head>
+            <body>
+                Hello, world!
+            </body>
+        </html>
+        """)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+        doc = parse(Document, """
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <title>Title</title>
+            </head>
+            <body>
+                Hello, world!
+            </body>
+        </html>
+        """.data)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+        @test nodetype(parsehtml("<html/>").node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(parsehtml("<html/>".data).node) === EzXML.XML_HTML_DOCUMENT_NODE
+    end
+end
 
 for i in 1:21
     t = convert(EzXML.NodeType, i)
