@@ -701,77 +701,9 @@ function prev_element(node::Node)
     return Node(ptr)
 end
 
-"""
-    add_node!(parent::Node, child::Node)
 
-Add `child` at the end of children of `parent`.
-"""
-function add_node!(parent::Node, child::Node)
-    ptr = ccall(
-        (:xmlAddChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
-        parent.ptr, child.ptr)
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    update_owners!(child, parent.owner)
-    return child
-end
-
-"""
-    add_next!(target::Node, node::Node)
-
-Add `node` as the next sibling of `target`.
-"""
-function add_next!(target::Node, node::Node)
-    node_ptr = ccall(
-        (:xmlAddNextSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
-        target.ptr, node.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
-    update_owners!(node, target.owner)
-    return node
-end
-
-"""
-    add_prev!(target::Node, node::Node)
-
-Add `node` as the prev sibling of `target`.
-"""
-function add_prev!(target::Node, node::Node)
-    node_ptr = ccall(
-        (:xmlAddPrevSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
-        target.ptr, node.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
-    update_owners!(node, target.owner)
-    return node
-end
-
-"""
-    add_element!(parent::Node, name::AbstractString, content::AbstractString="")
-
-Add a new child element of `name` with `content` to `parent`.
-"""
-function add_element!(parent::Node, name::AbstractString, content::AbstractString="")
-    ns_ptr = C_NULL
-    node_ptr = ccall(
-        (:xmlNewTextChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
-        parent.ptr, ns_ptr, name, content)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
-    return parent
-end
+# Counters
+# --------
 
 """
     count_nodes(parent::Node)
@@ -822,12 +754,70 @@ function count_attributes(elem::Node)
     return n
 end
 
+
+# Tree modifiers
+# --------------
+
 """
-    unlink_node!(node::Ndoe)
+    link!(parent::Node, child::Node)
+
+Link `child` at the end of children of `parent`.
+"""
+function link!(parent::Node, child::Node)
+    ptr = ccall(
+        (:xmlAddChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}),
+        parent.ptr, child.ptr)
+    if ptr == C_NULL
+        throw_xml_error()
+    end
+    update_owners!(child, parent.owner)
+    return child
+end
+
+"""
+    link_next!(target::Node, node::Node)
+
+Link `node` as the next sibling of `target`.
+"""
+function link_next!(target::Node, node::Node)
+    node_ptr = ccall(
+        (:xmlAddNextSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}),
+        target.ptr, node.ptr)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    update_owners!(node, target.owner)
+    return node
+end
+
+"""
+    link_prev!(target::Node, node::Node)
+
+Link `node` as the prev sibling of `target`.
+"""
+function link_prev!(target::Node, node::Node)
+    node_ptr = ccall(
+        (:xmlAddPrevSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}),
+        target.ptr, node.ptr)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    update_owners!(node, target.owner)
+    return node
+end
+
+"""
+    unlink!(node::Ndoe)
 
 Unlink `node` from its context.
 """
-function unlink_node!(node::Node)
+function unlink!(node::Node)
     ccall(
         (:xmlUnlinkNode, libxml2),
         Void,
@@ -835,6 +825,24 @@ function unlink_node!(node::Node)
         node.ptr)
     update_owners!(node, node)
     return node
+end
+
+"""
+    add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+
+Add a new child element of `name` with `content` to `parent`.
+"""
+function add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+    ns_ptr = C_NULL
+    node_ptr = ccall(
+        (:xmlNewTextChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
+        parent.ptr, ns_ptr, name, content)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return parent
 end
 
 # Update owners of the `root` tree.  NOTE: This function must not throw an

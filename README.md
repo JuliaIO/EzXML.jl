@@ -166,11 +166,11 @@ Constructors:
     * `AttributeNode(name, value)`: create an attribute node.
 
 Modifiers:
-* `add_node!(parent_node, child_node)`: add a child node to a parent node.
+* `link!(parent_node, child_node)`: add a child node to a parent node.
+* `link_next!(target_node, node)`: add a node next to a target node.
+* `link_prev!(target_node, node)`: add a node previous to a target node.
+* `unlink!(node)`: Unlink a node from its context (parent and siblings).
 * `add_element!(parent_node, name, content="")`: add a child element with content to a parent node.
-* `add_next!(target_node, node)`: add a node next to a target node.
-* `add_prev!(target_node, node)`: add a node previous to a target node.
-* `unlink_node!(node)`: Unlink a node from its context (parent and siblings).
 
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.

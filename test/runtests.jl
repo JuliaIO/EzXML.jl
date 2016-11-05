@@ -300,18 +300,18 @@ doc = parse(EzXML.Document, """
 """
 @test !has_node(root(doc))
 c1 = ElementNode("child1")
-add_node!(root(doc), c1)
+link!(root(doc), c1)
 @test has_node(root(doc))
 c2 = ElementNode("child2")
-add_node!(root(doc), c2)
+link!(root(doc), c2)
 @test nodes(root(doc)) == [c1, c2]
 @test !has_node(c1)
-add_node!(c1, TextNode("some text"))
+link!(c1, TextNode("some text"))
 @test has_node(c1)
 c3 = CommentNode("some comment")
-add_node!(root(doc), c3)
+link!(root(doc), c3)
 c4 = CDataNode("<cdata>")
-add_node!(root(doc), c4)
+link!(root(doc), c4)
 @test string(doc.node) == """
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child1>some text</child1><child2/><!--some comment--><![CDATA[<cdata>]]></root>
@@ -320,13 +320,13 @@ add_node!(root(doc), c4)
 doc = parse(EzXML.Document, "<root/>")
 @test isempty(nodes(root(doc)))
 c1 = ElementNode("c1")
-add_node!(root(doc), c1)
+link!(root(doc), c1)
 @test nodes(root(doc)) == [c1]
 c2 = ElementNode("c2")
-add_next!(c1, c2)
+link_next!(c1, c2)
 @test nodes(root(doc)) == [c1, c2]
 c0 = ElementNode("c0")
-add_prev!(c1, c0)
+link_prev!(c1, c0)
 @test nodes(root(doc)) == [c0, c1, c2]
 
 el = ElementNode("el")
@@ -347,7 +347,7 @@ set_root!(doc, x)
 @test !has_parent_element(x)
 @test_throws ArgumentError parent_element(x)
 y = ElementNode("y")
-add_node!(x, y)
+link!(x, y)
 @test has_parent_node(y)
 @test has_parent_element(y)
 @test parent_element(y) == x
@@ -377,7 +377,7 @@ doc = parse(EzXML.Document, """
 @test has_element(root(doc))
 c1 = first_element(root(doc))
 c2 = first_element(c1)
-@test unlink_node!(c1) == c1
+@test unlink!(c1) == c1
 @test !has_element(root(doc))
 @test c1.owner == c1
 @test c2.owner == c1
