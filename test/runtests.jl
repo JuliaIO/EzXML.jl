@@ -455,6 +455,35 @@ end
     @test root(doc) == r2
     @test r1.owner === r1
 
+    # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
+    doc = XMLDocument()
+    e1 = ElementNode("e1")
+    e2 = ElementNode("e2")
+    e3 = ElementNode("e3")
+    t1 = TextNode("t1")
+    t2 = TextNode("t2")
+    a1 = AttributeNode("a1", "val")
+    set_root!(doc, e1)
+    link!(e1, t1)
+    link!(e1, e2)
+    link!(e2, t2)
+    link!(e2, e3)
+    link!(e3, a1)
+    @test root(doc) === e1
+    @test doc === document(e1) === document(e2) === document(e3) ===
+          document(t1) === document(t2) === document(a1)
+    @test doc.node === e1.owner === e2.owner === e3.owner ===
+          t1.owner === t2.owner === a1.owner
+    @test e2 ∈ nodes(e1)
+    unlink!(e2)
+    @test e2 ∉ nodes(e1)
+    @test root(doc) === e1
+    @test doc === document(e1) === document(e2) === document(e3) ===
+          document(t1) === document(t2) === document(a1)
+    @test doc.node === e1.owner === t1.owner
+    @test e2 === e2.owner === e3.owner == t2.owner === a1.owner
+    @test document(e2) === doc
+
     doc = parse(Document, "<root/>")
     @test isempty(nodes(root(doc)))
     c1 = ElementNode("c1")
