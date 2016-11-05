@@ -292,6 +292,11 @@ end
 # Node constructors
 # -----------------
 
+"""
+    XMLDocumentNode(version)
+
+Create an XML document node with `version`.
+"""
 function XMLDocumentNode(version::AbstractString)
     node_ptr = ccall(
         (:xmlNewDoc, libxml2),
@@ -304,7 +309,15 @@ function XMLDocumentNode(version::AbstractString)
     return Node(node_ptr)
 end
 
-function HTMLDocumentNode(uri::Union{AbstractString,Void}, externalID::Union{AbstractString,Void})
+"""
+    HTMLDocumentNode(uri, externalID)
+
+Create an HTML document node.
+
+`uri` and `externalID` are either a string or `nothing`.
+"""
+function HTMLDocumentNode(uri::Union{AbstractString,Void},
+                          externalID::Union{AbstractString,Void})
     if uri === nothing
         uri = C_NULL
     end
@@ -322,6 +335,11 @@ function HTMLDocumentNode(uri::Union{AbstractString,Void}, externalID::Union{Abs
     return Node(node_ptr)
 end
 
+"""
+    ElementNode(name)
+
+Create an element node with `name`.
+"""
 function ElementNode(name::AbstractString)
     ns = C_NULL
     node_ptr = ccall(
@@ -335,6 +353,11 @@ function ElementNode(name::AbstractString)
     return Node(node_ptr)
 end
 
+"""
+    TextNode(content)
+
+Create a text node with `content`.
+"""
 function TextNode(content::AbstractString)
     node_ptr = ccall(
         (:xmlNewText, libxml2),
@@ -347,6 +370,11 @@ function TextNode(content::AbstractString)
     return Node(node_ptr)
 end
 
+"""
+    CommentNode(content)
+
+Create a comment node with `content`.
+"""
 function CommentNode(content::AbstractString)
     node_ptr = ccall(
         (:xmlNewComment, libxml2),
@@ -359,6 +387,11 @@ function CommentNode(content::AbstractString)
     return Node(node_ptr)
 end
 
+"""
+    CDataNode(content)
+
+Create a CDATA node with `content`.
+"""
 function CDataNode(content::AbstractString)
     doc_ptr = C_NULL
     node_ptr = ccall(
