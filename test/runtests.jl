@@ -103,6 +103,8 @@ end
 
         @test nodetype(parsehtml("<html/>").node) === EzXML.XML_HTML_DOCUMENT_NODE
         @test nodetype(parsehtml("<html/>".data).node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+        @test_throws ArgumentError parsehtml("")
     end
 end
 
