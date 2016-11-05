@@ -292,6 +292,32 @@ end
 # Node constructors
 # -----------------
 
+function XMLDocumentNode(version::AbstractString)
+    node_ptr = ccall(
+        (:xmlNewDoc, libxml2),
+        Ptr{_Node},
+        (Cstring,),
+        version)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
+function HTMLDocumentNode()
+    uri = C_NULL
+    externalID = C_NULL
+    node_ptr = ccall(
+        (:htmlNewDoc, libxml2),
+        Ptr{_Node},
+        (Cstring, Cstring),
+        uri, externalID)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
 function ElementNode(name::AbstractString)
     ns = C_NULL
     node_ptr = ccall(
@@ -336,32 +362,6 @@ function CDataNode(content::AbstractString)
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cint),
         doc_ptr, content, length(content))
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
-    return Node(node_ptr)
-end
-
-function XMLDocumentNode(version::AbstractString)
-    node_ptr = ccall(
-        (:xmlNewDoc, libxml2),
-        Ptr{_Node},
-        (Cstring,),
-        version)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
-    return Node(node_ptr)
-end
-
-function HTMLDocumentNode()
-    uri = C_NULL
-    externalID = C_NULL
-    node_ptr = ccall(
-        (:htmlNewDoc, libxml2),
-        Ptr{_Node},
-        (Cstring, Cstring),
-        uri, externalID)
     if node_ptr == C_NULL
         throw_xml_error()
     end
