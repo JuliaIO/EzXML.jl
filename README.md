@@ -158,7 +158,7 @@ Constructors:
     * `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
 * `Node` type:
     * `XMLDocumentNode(version="1.0")`: create an XML document node.
-    * `HTMLDocumentNode()`: create an HTML document node.
+    * `HTMLDocumentNode(uri, externalID)`: create an HTML document node.
     * `ElementNode(name)`: create an element node.
     * `TextNode(content)`: create a text node.
     * `CommentNode(content)`: create a comment node.
