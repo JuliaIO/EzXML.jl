@@ -160,6 +160,13 @@ Constructors:
 * `CDataNode(content)`: create a CDATA node.
 * `DocumentNode(version="1.0")`: create a document node.
 
+Modifiers:
+* `add_node!(parent_node, child_node)`: add a child node to a parent node.
+* `add_element!(parent_node, name, content="")`: add a child element with content to a parent node.
+* `add_next_sibling!(target_node, node)`: add a node next to a target node.
+* `add_prev_sibling!(target_node, node)`: add a node previous to a target node.
+* `unlink_node!(node)`: Unlink a node from its context (parent and siblings).
+
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.
 * `findfirst(doc|node, xpath)`: find the first matching node.

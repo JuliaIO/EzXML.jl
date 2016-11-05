@@ -756,7 +756,7 @@ end
 """
     unlink_node!(node::Ndoe)
 
-Unlink `node` from its parent.
+Unlink `node` from its context.
 """
 function unlink_node!(node::Node)
     ccall(
