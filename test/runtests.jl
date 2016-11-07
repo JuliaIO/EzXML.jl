@@ -460,6 +460,13 @@ end
     @test root(doc) == r2
     @test r1.owner === r1
 
+    doc = XMLDocument()
+    el = ElementNode("el")
+    set_root!(doc, el)
+    @test name(el) == "el"
+    set_name!(el, "EL")
+    @test name(el) == "EL"
+
     # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
     doc = XMLDocument()
     e1 = ElementNode("e1")
