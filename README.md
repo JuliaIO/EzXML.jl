@@ -7,7 +7,7 @@
 <!-- [![Coverage Status](https://coveralls.io/repos/bicycle1885/EzXML.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/bicycle1885/EzXML.jl?branch=master) -->
 
 
-**Still alpha-quality package.**
+**Still in alpha-quality package; the APIs may change in the future.**
 
 EzXML.jl is a package to handle XML/HTML documents for primates.
 
@@ -19,7 +19,7 @@ The main features are:
 * Capturing error messages.
 * Automatic memory management.
 
-In addition, reading extremely large files will be supported.
+Streaming parsing is planned to be supported in the future.
 
 ```julia
 using EzXML
