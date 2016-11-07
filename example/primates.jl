@@ -4,7 +4,7 @@ using EzXML
 
 # Parse an XML string
 # (use `read(Document, <filename>)` to read a document from a file).
-doc = parse(EzXML.Document, """
+doc = parse(Document, """
 <primates>
     <genus name="Homo">
         <species name="sapiens">Human</species>

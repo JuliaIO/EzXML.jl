@@ -26,7 +26,7 @@ using EzXML
 
 # Parse an XML string
 # (use `read(Document, <filename>)` to read a document from a file).
-doc = parse(EzXML.Document, """
+doc = parse(Document, """
 <primates>
     <genus name="Homo">
         <species name="sapiens">Human</species>
@@ -74,9 +74,9 @@ stability of this design may enable the Julia compiler to generate faster code.
 In this package, a `Node` object is regarded as a container of its child nodes.
 This idea is reflected on function names; for example, a function returning the
 first child node is named as `first_node` instead of `first_child_node` because
-it is apparent that we are interested in **child** nodes. If the user is
-interested in a special type of nodes like element nodes, functions like
-`first_element` are provided.
+it is apparent that we are interested in child nodes. If the user is interested
+in a special type of nodes like element nodes, functions like `first_element`
+are provided.
 
 Internally, a `Node` object is a proxy object to a node-like struct allocated by
 the libxml2 library. Additionally, a node-like struct also has a pointer to
@@ -186,7 +186,7 @@ Queries:
 * [issues.jl](/example/issues.jl): list latest issues of the Julia repository.
 
 
-## Other XML/HTML packages in Julia.
+## Other XML/HTML packages in Julia
 
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
