@@ -59,12 +59,9 @@ function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
         throw_xml_error()
     end
     result = unsafe_load(result_ptr)
-    if result.typ != XPATH_NODESET || result.nodesetval == C_NULL
-        free(context_ptr)
-        free(result_ptr)
-        throw_xml_error()
-    end
     try
+        @assert result.typ == XPATH_NODESET
+        @assert result.nodesetval != C_NULL
         nodeset = unsafe_load(result.nodesetval)
         return [Node(unsafe_load(nodeset.nodeTab, i)) for i in 1:nodeset.nodeNr]
     catch
@@ -114,17 +111,8 @@ function free(ptr::Ptr{_XPathContext})
 end
 
 function free(ptr::Ptr{_XPathObject})
-    # Does this release nodesetval?
     ccall(
         (:xmlXPathFreeObject, libxml2),
-        Void,
-        (Ptr{Void},),
-        ptr)
-end
-
-function free(ptr::Ptr{_NodeSet})
-    ccall(
-        (:xmlXPathFreeNodeSet, libxml2),
         Void,
         (Ptr{Void},),
         ptr)
