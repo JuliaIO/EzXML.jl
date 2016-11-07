@@ -20,11 +20,11 @@ doc = parse(Document, """
 primates = root(doc)
 
 # Iterate over child elements.
-for genus in each_element(primates)
+for genus in eachelement(primates)
     # Get an attribute value by name.
     genus_name = genus["name"]
     println("- ", genus_name)
-    for species in each_element(genus)
+    for species in eachelement(genus)
         # Get the content within an element.
         species_name = content(species)
         println("  └ ", species["name"], " (", species_name, ")")

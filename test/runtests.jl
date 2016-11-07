@@ -166,49 +166,49 @@ end
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_ELEMENT_NODE
-    @test is_element(n)
+    @test iselement(n)
     @test_throws ArgumentError document(n)
 
     n = TextNode("some text")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_TEXT_NODE
-    @test is_text(n)
+    @test EzXML.istext(n)  # Base.istext is deprecated.
     @test_throws ArgumentError document(n)
 
     n = CommentNode("some comment")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_COMMENT_NODE
-    @test is_comment(n)
+    @test iscomment(n)
     @test_throws ArgumentError document(n)
 
     n = CDataNode("some CDATA")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
-    @test is_cdata(n)
+    @test iscdata(n)
     @test_throws ArgumentError document(n)
 
     n = AttributeNode("attr", "value")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) == EzXML.XML_ATTRIBUTE_NODE
-    @test is_attribute(n)
+    @test isattribute(n)
     @test_throws ArgumentError document(n)
 
     doc = XMLDocument()
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
-    @test !has_root(doc)
+    @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 
     doc = HTMLDocument()
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) == EzXML.XML_HTML_DOCUMENT_NODE
-    @test !has_root(doc)
+    @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 
     doc = HTMLDocument("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
@@ -216,13 +216,13 @@ end
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) == EzXML.XML_HTML_DOCUMENT_NODE
-    @test !has_root(doc)
+    @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 end
 
 @testset "Traversal" begin
     doc = parsexml("<root/>") 
-    @test has_root(doc)
+    @test hasroot(doc)
     @test isa(root(doc), Node)
     @test root(doc) == root(doc)
     @test root(doc) === root(doc)
@@ -232,10 +232,10 @@ end
     @test content(root(doc)) == ""
     @test document(root(doc)) == doc
     @test document(root(doc)) === doc
-    @test !has_parent_node(doc.node)
-    @test_throws ArgumentError parent_node(doc.node)
-    @test has_parent_node(root(doc))
-    @test parent_node(root(doc)) === doc.node
+    @test !hasparentnode(doc.node)
+    @test_throws ArgumentError parentnode(doc.node)
+    @test hasparentnode(root(doc))
+    @test parentnode(root(doc)) === doc.node
 
     doc = parse(Document, """
     <?xml version="1.0"?>
@@ -246,31 +246,31 @@ end
     </r>
     """)
     r = root(doc)
-    @test nodetype(first_node(r)) === EzXML.XML_TEXT_NODE
-    @test nodetype(last_node(r)) === EzXML.XML_TEXT_NODE
-    @test nodetype(first_element(r)) === EzXML.XML_ELEMENT_NODE
-    @test name(first_element(r)) == "c1"
-    @test nodetype(last_element(r)) === EzXML.XML_ELEMENT_NODE
-    @test name(last_element(r)) == "c3"
-    c1 = first_element(r)
-    @test has_next_node(c1)
-    @test has_prev_node(c1)
-    @test nodetype(next_node(c1)) === EzXML.XML_TEXT_NODE
-    @test nodetype(prev_node(c1)) === EzXML.XML_TEXT_NODE
-    @test has_next_element(c1)
-    @test !has_prev_element(c1)
-    c2 = next_element(c1)
+    @test nodetype(firstnode(r)) === EzXML.XML_TEXT_NODE
+    @test nodetype(lastnode(r)) === EzXML.XML_TEXT_NODE
+    @test nodetype(firstelement(r)) === EzXML.XML_ELEMENT_NODE
+    @test name(firstelement(r)) == "c1"
+    @test nodetype(lastelement(r)) === EzXML.XML_ELEMENT_NODE
+    @test name(lastelement(r)) == "c3"
+    c1 = firstelement(r)
+    @test hasnextnode(c1)
+    @test hasprevnode(c1)
+    @test nodetype(nextnode(c1)) === EzXML.XML_TEXT_NODE
+    @test nodetype(prevnode(c1)) === EzXML.XML_TEXT_NODE
+    @test hasnextelement(c1)
+    @test !hasprevelement(c1)
+    c2 = nextelement(c1)
     @test name(c2) == "c2"
-    @test has_next_element(c2)
-    @test has_prev_element(c2)
-    @test prev_element(c2) == c1
-    c3 = next_element(c2)
+    @test hasnextelement(c2)
+    @test hasprevelement(c2)
+    @test prevelement(c2) == c1
+    c3 = nextelement(c2)
     @test name(c3) == "c3"
-    @test !has_next_element(c3)
-    @test has_prev_element(c3)
-    @test prev_element(c3) == c2
-    @test_throws ArgumentError prev_element(c1)
-    @test_throws ArgumentError next_element(c3)
+    @test !hasnextelement(c3)
+    @test hasprevelement(c3)
+    @test prevelement(c3) == c2
+    @test_throws ArgumentError prevelement(c1)
+    @test_throws ArgumentError nextelement(c3)
 
     doc = parse(Document, """
     <?xml version="1.0"?>
@@ -287,21 +287,21 @@ end
 
     doc = parse(Document, "<root/>")
     x = root(doc)
-    @test_throws ArgumentError first_node(x)
-    @test_throws ArgumentError last_node(x)
-    @test_throws ArgumentError first_element(x)
-    @test_throws ArgumentError last_element(x)
-    @test_throws ArgumentError next_node(x)
-    @test_throws ArgumentError prev_node(x)
-    @test_throws ArgumentError next_element(x)
-    @test_throws ArgumentError prev_element(x)
+    @test_throws ArgumentError firstnode(x)
+    @test_throws ArgumentError lastnode(x)
+    @test_throws ArgumentError firstelement(x)
+    @test_throws ArgumentError lastelement(x)
+    @test_throws ArgumentError nextnode(x)
+    @test_throws ArgumentError prevnode(x)
+    @test_throws ArgumentError nextelement(x)
+    @test_throws ArgumentError prevelement(x)
 
     doc = parsexml("""
     <root xmlns:x="http://xxx.com" xmlns:y="http://yyy.com">
         <x:child x:attr="xxx" y:attr="yyy"/>
     </root>
     """)
-    x = first_element(root(doc))
+    x = firstelement(root(doc))
     @test namespace(x) == "http://xxx.com"
     @test namespace(attributes(x)[1]) == "http://xxx.com"
     @test namespace(attributes(x)[2]) == "http://yyy.com"
@@ -367,33 +367,33 @@ end
 
     @testset "Counters" begin
         doc = parse(Document, "<root/>")
-        @test !has_node(root(doc))
-        @test count_nodes(root(doc)) === 0
-        @test count_elements(root(doc)) === 0
-        @test count_attributes(root(doc)) === 0
-        @test add_element!(root(doc), "c1") == root(doc)
+        @test !hasnode(root(doc))
+        @test countnodes(root(doc)) === 0
+        @test countelements(root(doc)) === 0
+        @test countattributes(root(doc)) === 0
+        @test addelement!(root(doc), "c1") == root(doc)
         root(doc)["attr1"] = "1"
-        @test count_nodes(root(doc)) === 1
-        @test count_elements(root(doc)) === 1
-        @test count_elements(root(doc)) === 1
-        @test count_attributes(root(doc)) === 1
-        @test add_element!(root(doc), "c2", "some content") == root(doc)
-        @test count_nodes(root(doc)) === 2
-        @test count_elements(root(doc)) === 2
-        @test_throws ArgumentError count_attributes(doc.node)
+        @test countnodes(root(doc)) === 1
+        @test countelements(root(doc)) === 1
+        @test countelements(root(doc)) === 1
+        @test countattributes(root(doc)) === 1
+        @test addelement!(root(doc), "c2", "some content") == root(doc)
+        @test countnodes(root(doc)) === 2
+        @test countelements(root(doc)) === 2
+        @test_throws ArgumentError countattributes(doc.node)
     end
 
     @testset "Iterators" begin
         doc = parse(Document, "<root/>")
         ns = Node[]
-        for (i, node) in enumerate(each_node(root(doc)))
+        for (i, node) in enumerate(eachnode(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
         @test length(ns) == 0
         @test nodes(root(doc)) == ns
         ns = Node[]
-        for (i, node) in enumerate(each_element(root(doc)))
+        for (i, node) in enumerate(eachelement(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
@@ -404,14 +404,14 @@ end
         <root><c1></c1><c2></c2></root>
         """)
         ns = Node[]
-        for (i, node) in enumerate(each_node(root(doc)))
+        for (i, node) in enumerate(eachnode(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
         @test length(ns) == 2
         @test nodes(root(doc)) == ns
         ns = Node[]
-        for (i, node) in enumerate(each_element(root(doc)))
+        for (i, node) in enumerate(eachelement(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
@@ -425,14 +425,14 @@ end
         </root>
         """)
         ns = Node[]
-        for (i, node) in enumerate(each_node(root(doc)))
+        for (i, node) in enumerate(eachnode(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
         @test length(ns) == 5
         @test nodes(root(doc)) == ns
         ns = Node[]
-        for (i, node) in enumerate(each_element(root(doc)))
+        for (i, node) in enumerate(eachelement(root(doc)))
             @test isa(node, Node)
             push!(ns, node)
         end
@@ -443,13 +443,13 @@ end
         <?xml version="1.0"?>
         <root attr1="foo" attr2="bar"></root>
         """)
-        for node in each_attribute(root(doc))
+        for node in eachattribute(root(doc))
             attr = name(node)
             val = content(node)
             @test val == (attr == "attr1" ? "foo" : "bar")
         end
         @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
-        @test_throws ArgumentError each_attribute(doc.node)
+        @test_throws ArgumentError eachattribute(doc.node)
         @test_throws ArgumentError attributes(doc.node)
     end
 end
@@ -458,26 +458,26 @@ end
     doc = XMLDocument()
     @test isa(doc, Document)
     @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
-    @test !has_root(doc)
+    @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
     r1 = ElementNode("r1")
-    @test set_root!(doc, r1) == doc
-    @test has_root(doc)
+    @test setroot!(doc, r1) == doc
+    @test hasroot(doc)
     @test root(doc) === r1
-    @test_throws ArgumentError set_root!(doc, TextNode("some text"))
+    @test_throws ArgumentError setroot!(doc, TextNode("some text"))
     r2 = ElementNode("r2")
-    set_root!(doc, r2)
+    setroot!(doc, r2)
     @test root(doc) == r2
     @test r1.owner === r1
 
     doc = XMLDocument()
     el = ElementNode("el")
-    set_root!(doc, el)
+    setroot!(doc, el)
     @test name(el) == "el"
-    set_name!(el, "EL")
+    setname!(el, "EL")
     @test name(el) == "EL"
     @test content(el) == ""
-    set_content!(el, "some content")
+    setcontent!(el, "some content")
     @test content(el) == "some content"
 
     # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
@@ -488,7 +488,7 @@ end
     t1 = TextNode("t1")
     t2 = TextNode("t2")
     a1 = AttributeNode("a1", "val")
-    set_root!(doc, e1)
+    setroot!(doc, e1)
     link!(e1, t1)
     link!(e1, e2)
     link!(e2, t2)
@@ -513,10 +513,10 @@ end
     @test root(doc) === e1
     @test document(e1) === doc
     @test document(t1) === doc
-    @test !has_document(e2)
-    @test !has_document(e3)
-    @test !has_document(t2)
-    @test !has_document(a1)
+    @test !hasdocument(e2)
+    @test !hasdocument(e3)
+    @test !hasdocument(t2)
+    @test !hasdocument(a1)
     @test e1.owner === doc.node
     @test t1.owner === doc.node
     @test e2.owner === e2
@@ -530,32 +530,32 @@ end
     link!(root(doc), c1)
     @test nodes(root(doc)) == [c1]
     c2 = ElementNode("c2")
-    link_next!(c1, c2)
+    linknext!(c1, c2)
     @test nodes(root(doc)) == [c1, c2]
     c0 = ElementNode("c0")
-    link_prev!(c1, c0)
+    linkprev!(c1, c0)
     @test nodes(root(doc)) == [c0, c1, c2]
 
     doc = XMLDocument()
-    @test !has_parent_node(doc.node)
-    @test !has_parent_element(doc.node)
-    @test_throws ArgumentError parent_element(doc.node)
+    @test !hasparentnode(doc.node)
+    @test !hasparentelement(doc.node)
+    @test_throws ArgumentError parentelement(doc.node)
     x = ElementNode("x")
-    set_root!(doc, x)
-    @test has_parent_node(x)
-    @test !has_parent_element(x)
-    @test_throws ArgumentError parent_element(x)
+    setroot!(doc, x)
+    @test hasparentnode(x)
+    @test !hasparentelement(x)
+    @test_throws ArgumentError parentelement(x)
     y = ElementNode("y")
     link!(x, y)
-    @test has_parent_node(y)
-    @test has_parent_element(y)
-    @test parent_element(y) == x
+    @test hasparentnode(y)
+    @test hasparentelement(y)
+    @test parentelement(y) == x
 
     el = ElementNode("el")
     el["attr1"] = "1"
     el["attr2"] = "2"
     doc = XMLDocument()
-    set_root!(doc, el)
+    setroot!(doc, el)
     @test root(doc) == el
     @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
@@ -566,16 +566,16 @@ end
     <?xml version="1.0" encoding="UTF-8"?>
     <root/>
     """
-    @test !has_node(root(doc))
+    @test !hasnode(root(doc))
     c1 = ElementNode("child1")
     link!(root(doc), c1)
-    @test has_node(root(doc))
+    @test hasnode(root(doc))
     c2 = ElementNode("child2")
     link!(root(doc), c2)
     @test nodes(root(doc)) == [c1, c2]
-    @test !has_node(c1)
+    @test !hasnode(c1)
     link!(c1, TextNode("some text"))
-    @test has_node(c1)
+    @test hasnode(c1)
     c3 = CommentNode("some comment")
     link!(root(doc), c3)
     c4 = CDataNode("<cdata>")
@@ -595,11 +595,11 @@ end
         </c1>
     </root>
     """)
-    @test has_element(root(doc))
-    c1 = first_element(root(doc))
-    c2 = first_element(c1)
+    @test haselement(root(doc))
+    c1 = firstelement(root(doc))
+    c2 = firstelement(c1)
     @test unlink!(c1) == c1
-    @test !has_element(root(doc))
+    @test !haselement(root(doc))
     @test c1.owner == c1
     @test c2.owner == c1
 
@@ -610,7 +610,7 @@ end
         <c x:attr=""/>
     </root>
     """)
-    c = first_element(root(doc))
+    c = firstelement(root(doc))
     @test haskey(c, "attr")
     @test haskey(c, "x:attr")
     @test haskey(c, "y:attr")
@@ -618,13 +618,13 @@ end
     @test c["attr"] == c["x:attr"] == "x-attr"
     @test c["y:attr"] == "y-attr"
     @test_throws ArgumentError c["z:attr"]
-    c = next_element(c)
+    c = nextelement(c)
     @test haskey(c, "attr")
     @test haskey(c, "x:attr")
     @test haskey(c, "y:attr")
     @test c["attr"] == c["y:attr"] == "y-attr"
     @test c["x:attr"] == "x-attr"
-    c = next_element(c)
+    c = nextelement(c)
     c["x:attr"] = "x-attr"
     @test c["x:attr"] == "x-attr"
     c["y:attr"] = "y-attr"

@@ -463,33 +463,33 @@ function traverse_tree(f, root_ptr)
 end
 
 """
-    has_parent_node(node::Node)
+    hasparentnode(node::Node)
 
 Return if `node` has a parent node.
 """
-function has_parent_node(node::Node)
+function hasparentnode(node::Node)
     @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).parent != C_NULL
 end
 
 """
-    parent_node(node::Node)
+    parentnode(node::Node)
 
 Return the parent of `node`.
 """
-function parent_node(node::Node)
-    if !has_parent_node(node)
+function parentnode(node::Node)
+    if !hasparentnode(node)
         throw(ArgumentError("no parent node"))
     end
     return Node(unsafe_load(node.ptr).parent)
 end
 
 """
-    has_parent_element(node::Node)
+    hasparentelement(node::Node)
 
 Return if `node` has a parent node.
 """
-function has_parent_element(node::Node)
+function hasparentelement(node::Node)
     @assert node.ptr != C_NULL
     parent_ptr = unsafe_load(node.ptr).parent
     if parent_ptr == C_NULL
@@ -499,57 +499,57 @@ function has_parent_element(node::Node)
 end
 
 """
-    parent_element(node::Node)
+    parentelement(node::Node)
 
 Return the parent element of `node`.
 """
-function parent_element(node::Node)
-    if !has_parent_element(node)
+function parentelement(node::Node)
+    if !hasparentelement(node)
         throw(ArgumentError("no parent element"))
     end
     return Node(unsafe_load(node.ptr).parent)
 end
 
 """
-    has_node(node::Node)
+    hasnode(node::Node)
 
 Return if `node` has a child node.
 """
-function has_node(node::Node)
+function hasnode(node::Node)
     @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).children != C_NULL
 end
 
 """
-    first_node(node::Node)
+    firstnode(node::Node)
 
 Return the first child node of `node`.
 """
-function first_node(node::Node)
-    if !has_node(node)
+function firstnode(node::Node)
+    if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).children)
 end
 
 """
-    last_node(node::Node)
+    lastnode(node::Node)
 
 Return the last child node of `node`.
 """
-function last_node(node::Node)
-    if !has_node(node)
+function lastnode(node::Node)
+    if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
     return Node(unsafe_load(node.ptr).last)
 end
 
 """
-    has_element(node::Node)
+    haselement(node::Node)
 
 Return if `node` has a child element.
 """
-function has_element(node::Node)
+function haselement(node::Node)
     @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlFirstElementChild, libxml2),
@@ -560,12 +560,12 @@ function has_element(node::Node)
 end
 
 """
-    first_element(node::Node)
+    firstelement(node::Node)
 
 Return the first child element of `node`.
 """
-function first_element(node::Node)
-    if !has_element(node)
+function firstelement(node::Node)
+    if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
     ptr = ccall(
@@ -577,12 +577,12 @@ function first_element(node::Node)
 end
 
 """
-    last_element(node::Node)
+    lastelement(node::Node)
 
 Return the last child element of `node`.
 """
-function last_element(node::Node)
-    if !has_element(node)
+function lastelement(node::Node)
+    if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
     ptr = ccall(
@@ -594,55 +594,55 @@ function last_element(node::Node)
 end
 
 """
-    has_next_node(node::Node)
+    hasnextnode(node::Node)
 
 Return if `node` has a next node.
 """
-function has_next_node(node::Node)
+function hasnextnode(node::Node)
     @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).next != C_NULL
 end
 
 """
-    next_node(node::Node)
+    nextnode(node::Node)
 
 Return the next node of `node`.
 """
-function next_node(node::Node)
-    if !has_next_node(node)
+function nextnode(node::Node)
+    if !hasnextnode(node)
         throw(ArgumentError("no next node"))
     end
     return Node(unsafe_load(node.ptr).next)
 end
 
 """
-    has_prev_node(node::Node)
+    hasprevnode(node::Node)
 
 Return if `node` has a previous node.
 """
-function has_prev_node(node::Node)
+function hasprevnode(node::Node)
     @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).prev != C_NULL
 end
 
 """
-    prev_node(node::Node)
+    prevnode(node::Node)
 
 Return the previous node of `node`.
 """
-function prev_node(node::Node)
-    if !has_prev_node(node)
+function prevnode(node::Node)
+    if !hasprevnode(node)
         throw(ArgumentError("no previous node"))
     end
     return Node(unsafe_load(node.ptr).prev)
 end
 
 """
-    has_next_element(node::Node)
+    hasnextelement(node::Node)
 
 Return if `node` has a next node.
 """
-function has_next_element(node::Node)
+function hasnextelement(node::Node)
     @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlNextElementSibling, libxml2),
@@ -653,12 +653,12 @@ function has_next_element(node::Node)
 end
 
 """
-    next_element(node::Node)
+    nextelement(node::Node)
 
 Return the next element of `node`.
 """
-function next_element(node::Node)
-    if !has_next_element(node)
+function nextelement(node::Node)
+    if !hasnextelement(node)
         throw(ArgumentError("no next elements"))
     end
     ptr = ccall(
@@ -670,11 +670,11 @@ function next_element(node::Node)
 end
 
 """
-    has_prev_element(node::Node)
+    hasprevelement(node::Node)
 
 Return if `node` has a previous node.
 """
-function has_prev_element(node::Node)
+function hasprevelement(node::Node)
     @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlPreviousElementSibling, libxml2),
@@ -685,12 +685,12 @@ function has_prev_element(node::Node)
 end
 
 """
-    prev_element(node::Node)
+    prevelement(node::Node)
 
 Return the previous element of `node`.
 """
-function prev_element(node::Node)
-    if !has_prev_element(node)
+function prevelement(node::Node)
+    if !hasprevelement(node)
         throw(ArgumentError("no previous elements"))
     end
     ptr = ccall(
@@ -706,11 +706,11 @@ end
 # --------
 
 """
-    count_nodes(parent::Node)
+    countnodes(parent::Node)
 
 Count the number of child nodes of `parent`.
 """
-function count_nodes(parent::Node)
+function countnodes(parent::Node)
     @assert parent.ptr != C_NULL
     n = 0
     cur_ptr = unsafe_load(parent.ptr).children
@@ -722,11 +722,11 @@ function count_nodes(parent::Node)
 end
 
 """
-    count_elements(parent::Node)
+    countelements(parent::Node)
 
 Count the number of child elements of `parent`.
 """
-function count_elements(parent::Node)
+function countelements(parent::Node)
     @assert parent.ptr != C_NULL
     n = ccall(
         (:xmlChildElementCount, libxml2),
@@ -737,11 +737,11 @@ function count_elements(parent::Node)
 end
 
 """
-    count_attributes(elem::Node)
+    countattributes(elem::Node)
 
 Count the number of attributes of `elem`.
 """
-function count_attributes(elem::Node)
+function countattributes(elem::Node)
     if nodetype(elem) != XML_ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
@@ -777,11 +777,11 @@ function link!(parent::Node, child::Node)
 end
 
 """
-    link_next!(target::Node, node::Node)
+    linknext!(target::Node, node::Node)
 
 Link `node` as the next sibling of `target`.
 """
-function link_next!(target::Node, node::Node)
+function linknext!(target::Node, node::Node)
     node_ptr = ccall(
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
@@ -795,11 +795,11 @@ function link_next!(target::Node, node::Node)
 end
 
 """
-    link_prev!(target::Node, node::Node)
+    linkprev!(target::Node, node::Node)
 
 Link `node` as the prev sibling of `target`.
 """
-function link_prev!(target::Node, node::Node)
+function linkprev!(target::Node, node::Node)
     node_ptr = ccall(
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},
@@ -831,11 +831,11 @@ function unlink!(node::Node)
 end
 
 """
-    add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+    addelement!(parent::Node, name::AbstractString, content::AbstractString="")
 
 Add a new child element of `name` with `content` to `parent`.
 """
-function add_element!(parent::Node, name::AbstractString, content::AbstractString="")
+function addelement!(parent::Node, name::AbstractString, content::AbstractString="")
     ns_ptr = C_NULL
     node_ptr = ccall(
         (:xmlNewTextChild, libxml2),
@@ -884,56 +884,56 @@ function nodetype(node::Node)
 end
 
 """
-    is_element(node::Node)
+    iselement(node::Node)
 
 Return if `node` is an element node.
 """
-function is_element(node::Node)
+function iselement(node::Node)
     return nodetype(node) === XML_ELEMENT_NODE
 end
 
 """
-    is_attribute(node::Node)
+    isattribute(node::Node)
 
 Return if `node` is an attribute node.
 """
-function is_attribute(node::Node)
+function isattribute(node::Node)
     return nodetype(node) === XML_ATTRIBUTE_NODE
 end
 
 """
-    is_text(node::Node)
+    istext(node::Node)
 
 Return if `node` is a text node.
 """
-function is_text(node::Node)
+function istext(node::Node)
     return nodetype(node) === XML_TEXT_NODE
 end
 
 """
-    is_cdata(node::Node)
+    iscdata(node::Node)
 
 Return if `node` is a CDATA node.
 """
-function is_cdata(node::Node)
+function iscdata(node::Node)
     return nodetype(node) === XML_CDATA_SECTION_NODE
 end
 
 """
-    is_comment(node::Node)
+    iscomment(node::Node)
 
 Return if `node` is a comment node.
 """
-function is_comment(node::Node)
+function iscomment(node::Node)
     return nodetype(node) === XML_COMMENT_NODE
 end
 
 """
-    has_document(node::Node)
+    hasdocument(node::Node)
 
 Return if `node` belongs to a document.
 """
-function has_document(node::Node)
+function hasdocument(node::Node)
     return unsafe_load(node.ptr).doc != C_NULL
 end
 
@@ -943,7 +943,7 @@ end
 Return the document of `node`.
 """
 function document(node::Node)
-    if !has_document(node)
+    if !hasdocument(node)
         throw(ArgumentError("no document"))
     end
     doc_ptr = unsafe_load(node.ptr).doc
@@ -964,11 +964,11 @@ function name(node::Node)
 end
 
 """
-    set_name!(node::Node, name::AbstractString)
+    setname!(node::Node, name::AbstractString)
 
 Set the name of `node`.
 """
-function set_name!(node::Node, name::AbstractString)
+function setname!(node::Node, name::AbstractString)
     ccall(
         (:xmlNodeSetName, libxml2),
         Void,
@@ -995,11 +995,11 @@ function content(node::Node)
 end
 
 """
-    set_content!(node::Node, content::AbstractString)
+    setcontent!(node::Node, content::AbstractString)
 
 Replace the content of `node`.
 """
-function set_content!(node::Node, content::AbstractString)
+function setcontent!(node::Node, content::AbstractString)
     ccall(
         (:xmlNodeSetContentLen, libxml2),
         Void,
@@ -1181,11 +1181,11 @@ function Base.iteratorsize{T<:AbstractNodeIterator}(::Type{T})
 end
 
 """
-    each_node(node::Node)
+    eachnode(node::Node)
 
 Create an iterator of child nodes.
 """
-function each_node(node::Node)
+function eachnode(node::Node)
     return ChildNodeIterator(node.ptr)
 end
 
@@ -1195,7 +1195,7 @@ end
 Create a vector of child nodes.
 """
 function nodes(node::Node)
-    return collect(each_node(node))
+    return collect(eachnode(node))
 end
 
 immutable ChildNodeIterator <: AbstractNodeIterator
@@ -1216,11 +1216,11 @@ function Base.next(::ChildNodeIterator, cur_ptr)
 end
 
 """
-    each_element(node::Node)
+    eachelement(node::Node)
 
 Create an iterator of child elements.
 """
-function each_element(node::Node)
+function eachelement(node::Node)
     return ChildElementIterator(node.ptr)
 end
 
@@ -1230,7 +1230,7 @@ end
 Create a vector of child elements.
 """
 function elements(node::Node)
-    return collect(each_element(node))
+    return collect(eachelement(node))
 end
 
 immutable ChildElementIterator <: AbstractNodeIterator
@@ -1260,11 +1260,11 @@ function Base.next(::ChildElementIterator, cur_ptr)
 end
 
 """
-    each_attribute(node::Node)
+    eachattribute(node::Node)
 
 Create an iterator of attributes.
 """
-function each_attribute(node::Node)
+function eachattribute(node::Node)
     if unsafe_load(node.ptr).typ != XML_ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
@@ -1277,7 +1277,7 @@ end
 Create a vector of attributes.
 """
 function attributes(node::Node)
-    return collect(each_attribute(node))
+    return collect(eachattribute(node))
 end
 
 immutable AttributeIterator <: AbstractNodeIterator
