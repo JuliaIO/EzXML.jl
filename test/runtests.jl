@@ -470,19 +470,34 @@ end
     link!(e2, e3)
     link!(e3, a1)
     @test root(doc) === e1
-    @test doc === document(e1) === document(e2) === document(e3) ===
-          document(t1) === document(t2) === document(a1)
-    @test doc.node === e1.owner === e2.owner === e3.owner ===
-          t1.owner === t2.owner === a1.owner
+    @test document(e1) === doc
+    @test document(e2) === doc
+    @test document(e3) === doc
+    @test document(t1) === doc
+    @test document(t2) === doc
+    @test document(a1) === doc
+    @test e1.owner === doc.node
+    @test e2.owner === doc.node
+    @test e3.owner === doc.node
+    @test t1.owner === doc.node
+    @test t2.owner === doc.node
+    @test a1.owner === doc.node
     @test e2 ∈ nodes(e1)
     unlink!(e2)
     @test e2 ∉ nodes(e1)
     @test root(doc) === e1
-    @test doc === document(e1) === document(e2) === document(e3) ===
-          document(t1) === document(t2) === document(a1)
-    @test doc.node === e1.owner === t1.owner
-    @test e2 === e2.owner === e3.owner == t2.owner === a1.owner
-    @test document(e2) === doc
+    @test document(e1) === doc
+    @test document(t1) === doc
+    @test !has_document(e2)
+    @test !has_document(e3)
+    @test !has_document(t2)
+    @test !has_document(a1)
+    @test e1.owner === doc.node
+    @test t1.owner === doc.node
+    @test e2.owner === e2
+    @test e3.owner === e2
+    @test t2.owner === e2
+    @test a1.owner === e2
 
     doc = parse(Document, "<root/>")
     @test isempty(nodes(root(doc)))

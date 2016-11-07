@@ -42,6 +42,7 @@ export
     root,
     set_root!,
     nodetype,
+    has_document,
     document,
     name,
     set_name!,

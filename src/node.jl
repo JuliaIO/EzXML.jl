@@ -279,7 +279,7 @@ function finalize_node(node)
             # TODO: Calling this function results in segmentation fault.  Not
             # sure why, but minor memory leak would be better than unpredictable
             # segfault.
-            #ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
+            ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
         end
     elseif node_ptr != C_NULL
         # indicate the proxy does not exit anymore
@@ -824,6 +824,9 @@ function unlink!(node::Node)
         (Ptr{Void},),
         node.ptr)
     update_owners!(node, node)
+    # Unlinking must remove documents as well because
+    # a node can free resources its document owns.
+    unset_documents!(node)
     return node
 end
 
@@ -856,6 +859,19 @@ function update_owners!(root, new_owner)
     end
 end
 
+# Unset the .doc field of the `root` tree.
+function unset_documents!(root)
+    traverse_tree(root.ptr) do node_ptr
+        offset = sizeof(Ptr{Void}) +
+                 sizeof(Int) +
+                 sizeof(Cstring) +
+                 sizeof(Ptr{_Node}) * 5
+        unsafe_store!(
+            convert(Ptr{UInt}, node_ptr + offset),
+            convert(UInt, C_NULL))
+    end
+end
+
 
 # Utils
 # -----
@@ -871,15 +887,24 @@ function nodetype(node::Node)
 end
 
 """
+    has_document(node::Node)
+
+Return if `node` belongs to a document.
+"""
+function has_document(node::Node)
+    return unsafe_load(node.ptr).doc != C_NULL
+end
+
+"""
     document(node::Node)
 
 Return the document of `node`.
 """
 function document(node::Node)
-    doc_ptr = unsafe_load(node.ptr).doc
-    if doc_ptr == C_NULL
+    if !has_document(node)
         throw(ArgumentError("no document"))
     end
+    doc_ptr = unsafe_load(node.ptr).doc
     return Document(doc_ptr)
 end
 
