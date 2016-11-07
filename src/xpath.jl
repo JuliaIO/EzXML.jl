@@ -48,7 +48,7 @@ function Base.findlast(doc::Document, xpath::AbstractString)
     return last(find(doc, xpath))
 end
 
-function Base.find(node::Node, xpath::AbstractString)
+function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
     context_ptr = make_xpath_context(document(node))
     if context_ptr == C_NULL
         throw_xml_error()
