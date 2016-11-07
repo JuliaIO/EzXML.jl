@@ -42,11 +42,11 @@ doc = parse(Document, """
 primates = root(doc)
 
 # Iterate over child elements.
-for genus in each_element(primates)
+for genus in eachelement(primates)
     # Get an attribute value by name.
     genus_name = genus["name"]
     println("- ", genus_name)
-    for species in each_element(genus)
+    for species in eachelement(genus)
         # Get the content within an element.
         species_name = content(species)
         println("  └ ", species["name"], " (", species_name, ")")
@@ -73,9 +73,9 @@ stability of this design may enable the Julia compiler to generate faster code.
 
 In this package, a `Node` object is regarded as a container of its child nodes.
 This idea is reflected on function names; for example, a function returning the
-first child node is named as `first_node` instead of `first_child_node` because
+first child node is named as `firstnode` instead of `firstchildnode` because
 it is apparent that we are interested in child nodes. If the user is interested
-in a special type of nodes like element nodes, functions like `first_element`
+in a special type of nodes like element nodes, functions like `firstelement`
 are provided.
 
 Internally, a `Node` object is a proxy object to a node-like struct allocated by
@@ -117,43 +117,43 @@ Accessors:
     * `delete!(node, name)`: delete an attribute of a node.
 * Tree traversal:
     * `root(doc)`: return the root element of a document.
-    * `first_node(node)`: return the first child node of a node.
-    * `last_node(node)`: return the last child node of a node.
-    * `first_element(node)`: return the first child element of a node.
-    * `last_element(node)`: return the last child element of a node.
-    * `next_node(node)`: return the next node of a node.
-    * `prev_node(node)`: return the previous node of a node.
-    * `next_element(node)`: return the next element of a node.
-    * `prev_element(node)`: return the previous element of a node.
-    * `parent_node(node)`: return the parent node of a node.
-    * `parent_element(node)`: return the parent element of a node.
+    * `firstnode(node)`: return the first child node of a node.
+    * `lastnode(node)`: return the last child node of a node.
+    * `firstelement(node)`: return the first child element of a node.
+    * `lastelement(node)`: return the last child element of a node.
+    * `nextnode(node)`: return the next node of a node.
+    * `prevnode(node)`: return the previous node of a node.
+    * `nextelement(node)`: return the next element of a node.
+    * `prevelement(node)`: return the previous element of a node.
+    * `parentnode(node)`: return the parent node of a node.
+    * `parentelement(node)`: return the parent element of a node.
 * Node predicate:
-    * `has_root(doc)`: return if a document has a root element.
-    * `has_document(node)`: return if a node has an associated document.
-    * `has_node(node)`: return if a node has a child node.
-    * `has_element(node)`: return if a node has a child element.
-    * `has_next_node(node)`: return if a node has a next node.
-    * `has_prev_node(node)`: return if a node has a previous node.
-    * `has_next_element(node)`: return if a node has a next element.
-    * `has_prev_element(node)`: return if a node has a previous element.
-    * `has_parent_node(node)`: return if a node has a parent node.
-    * `has_parent_element(node)`: return if a node has a parent element.
-    * `is_element(node)`: return if a node is an element node.
-    * `is_attribute(node)`: return if a node is an attribute node.
-    * `is_text(node)`: return if a node is a text node.
-    * `is_cdata(node)`: return if a node is a CDATA node.
-    * `is_comment(node)`: return if a node is a comment node.
+    * `hasroot(doc)`: return if a document has a root element.
+    * `hasdocument(node)`: return if a node has an associated document.
+    * `hasnode(node)`: return if a node has a child node.
+    * `haselement(node)`: return if a node has a child element.
+    * `hasnextnode(node)`: return if a node has a next node.
+    * `hasprevnode(node)`: return if a node has a previous node.
+    * `hasnextelement(node)`: return if a node has a next element.
+    * `hasprevelement(node)`: return if a node has a previous element.
+    * `hasparentnode(node)`: return if a node has a parent node.
+    * `hasparentelement(node)`: return if a node has a parent element.
+    * `iselement(node)`: return if a node is an element node.
+    * `isattribute(node)`: return if a node is an attribute node.
+    * `istext(node)`: return if a node is a text node.
+    * `iscdata(node)`: return if a node is a CDATA node.
+    * `iscomment(node)`: return if a node is a comment node.
 * Iterators:
-    * `each_node(node)`: create an iterator over child nodes.
-    * `each_element(node)`: create an iterator over child elements.
-    * `each_attribute(node)`: create an iterator over attribute nodes.
+    * `eachnode(node)`: create an iterator over child nodes.
+    * `eachelement(node)`: create an iterator over child elements.
+    * `eachattribute(node)`: create an iterator over attribute nodes.
     * `nodes(node)`: create a vector of child nodes.
     * `elements(node)`: create a vector of child elements.
     * `attributes(node)`: create a vector of attribute nodes.
 * Counters:
-    * `count_nodes(node)`: count the number of child nodes.
-    * `count_elements(node)`: count the number of child elements.
-    * `count_attributes(node)`: count the number of attributes.
+    * `countnodes(node)`: count the number of child nodes.
+    * `countelements(node)`: count the number of child elements.
+    * `countattributes(node)`: count the number of attributes.
 * Namespaces:
     * `namespace(node)`: return the namespace of a node.
     * `namespaces(node)`: create a vector of namespaces applying to a node.
@@ -173,10 +173,10 @@ Constructors:
 
 Modifiers:
 * `link!(parent_node, child_node)`: add a child node to a parent node.
-* `link_next!(target_node, node)`: add a node next to a target node.
-* `link_prev!(target_node, node)`: add a node previous to a target node.
+* `linknext!(target_node, node)`: add a node next to a target node.
+* `linkprev!(target_node, node)`: add a node previous to a target node.
 * `unlink!(node)`: Unlink a node from its context (parent and siblings).
-* `add_element!(parent_node, name, content="")`: add a child element with content to a parent node.
+* `addelement!(parent_node, name, content="")`: add a child element with content to a parent node.
 
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.
