@@ -1100,14 +1100,6 @@ end
 # Namespaces
 # ----------
 
-function free(ptr::Ptr{_Ns})
-    ccall(
-        (:xmlFreeNsList, libxml2),
-        Void,
-        (Ptr{Void},),
-        ptr)
-end
-
 """
     namespace(node::Node)
 
