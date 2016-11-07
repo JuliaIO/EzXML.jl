@@ -661,4 +661,4 @@ end
 end
 
 # Check no uncaught errors.
-@test isempty(EzXML.global_error)
+@test isempty(EzXML.XML_GLOBAL_ERROR_STACK)

@@ -28,15 +28,14 @@ function Base.showerror(io::IO, err::XMLError)
     print(io, "XMLError: ", err.message, " (from ", errordomain2string(err.domain), ")")
 end
 
-# global error stack (the size should be 0 or 1)
-const global_error = _Error[]
+const XML_GLOBAL_ERROR_STACK = _Error[]
 
 # Initialize an error handler.
 function init_error_handler()
     error_handler = cfunction(Void, (Ptr{Void}, Ptr{Void})) do ctx, err_ptr
         if ctx === C_NULL
             err = unsafe_load(convert(Ptr{_Error}, err_ptr))
-            push!(global_error, err)
+            push!(XML_GLOBAL_ERROR_STACK, err)
         end
         return
     end
@@ -49,11 +48,11 @@ end
 
 # Throw an XMLError exception.
 function throw_xml_error()
-    @assert !isempty(global_error)
-    if length(global_error) > 1
+    @assert !isempty(XML_GLOBAL_ERROR_STACK)
+    if length(XML_GLOBAL_ERROR_STACK) > 1
         warn("caught some errors; show the last one")
     end
-    err_str = pop!(global_error)
+    err_str = pop!(XML_GLOBAL_ERROR_STACK)
     msg = chomp(unsafe_string(err_str.message))
     throw(XMLError(err_str.domain, msg))
 end
