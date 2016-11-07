@@ -466,6 +466,9 @@ end
     @test name(el) == "el"
     set_name!(el, "EL")
     @test name(el) == "EL"
+    @test content(el) == ""
+    set_content!(el, "some content")
+    @test content(el) == "some content"
 
     # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
     doc = XMLDocument()
