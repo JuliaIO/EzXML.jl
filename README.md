@@ -138,6 +138,11 @@ Accessors:
     * `has_prev_element(node)`: return if a node has a previous element.
     * `has_parent_node(node)`: return if a node has a parent node.
     * `has_parent_element(node)`: return if a node has a parent element.
+    * `is_element(node)`: return if a node is an element node.
+    * `is_attribute(node)`: return if a node is an attribute node.
+    * `is_text(node)`: return if a node is a text node.
+    * `is_cdata(node)`: return if a node is a CDATA node.
+    * `is_comment(node)`: return if a node is a comment node.
 * Iterators:
     * `each_node(node)`: create an iterator over child nodes.
     * `each_element(node)`: create an iterator over child elements.

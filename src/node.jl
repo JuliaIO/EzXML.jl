@@ -884,6 +884,51 @@ function nodetype(node::Node)
 end
 
 """
+    is_element(node::Node)
+
+Return if `node` is an element node.
+"""
+function is_element(node::Node)
+    return nodetype(node) === XML_ELEMENT_NODE
+end
+
+"""
+    is_attribute(node::Node)
+
+Return if `node` is an attribute node.
+"""
+function is_attribute(node::Node)
+    return nodetype(node) === XML_ATTRIBUTE_NODE
+end
+
+"""
+    is_text(node::Node)
+
+Return if `node` is a text node.
+"""
+function is_text(node::Node)
+    return nodetype(node) === XML_TEXT_NODE
+end
+
+"""
+    is_cdata(node::Node)
+
+Return if `node` is a CDATA node.
+"""
+function is_cdata(node::Node)
+    return nodetype(node) === XML_CDATA_SECTION_NODE
+end
+
+"""
+    is_comment(node::Node)
+
+Return if `node` is a comment node.
+"""
+function is_comment(node::Node)
+    return nodetype(node) === XML_COMMENT_NODE
+end
+
+"""
     has_document(node::Node)
 
 Return if `node` belongs to a document.

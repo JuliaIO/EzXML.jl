@@ -166,30 +166,35 @@ end
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_ELEMENT_NODE
+    @test is_element(n)
     @test_throws ArgumentError document(n)
 
     n = TextNode("some text")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_TEXT_NODE
+    @test is_text(n)
     @test_throws ArgumentError document(n)
 
     n = CommentNode("some comment")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_COMMENT_NODE
+    @test is_comment(n)
     @test_throws ArgumentError document(n)
 
     n = CDataNode("some CDATA")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
+    @test is_cdata(n)
     @test_throws ArgumentError document(n)
 
     n = AttributeNode("attr", "value")
     @test isa(n, Node)
     @test n.owner == n
     @test nodetype(n) == EzXML.XML_ATTRIBUTE_NODE
+    @test is_attribute(n)
     @test_throws ArgumentError document(n)
 
     doc = XMLDocument()
