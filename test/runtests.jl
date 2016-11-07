@@ -296,6 +296,16 @@ end
     @test_throws ArgumentError next_element(x)
     @test_throws ArgumentError prev_element(x)
 
+    doc = parsexml("""
+    <root xmlns:x="http://xxx.com" xmlns:y="http://yyy.com">
+        <x:child x:attr="xxx" y:attr="yyy"/>
+    </root>
+    """)
+    x = first_element(root(doc))
+    @test namespace(x) == "http://xxx.com"
+    @test namespace(attributes(x)[1]) == "http://xxx.com"
+    @test namespace(attributes(x)[2]) == "http://yyy.com"
+
     # http://www.xml.com/pub/a/1999/01/namespaces.html
     doc = parsexml("""
     <h:html xmlns:xdc="http://www.xml.com/books"
