@@ -644,6 +644,8 @@ end
     @test find(root(doc), "foo") == find(doc, "//foo")
     @test findfirst(root(doc), "foo") === findfirst(doc, "//foo")
     @test findlast(root(doc), "foo") === findlast(doc, "//foo")
+    @test find(doc, "root") == find(root(doc), "/root")
+    @test find(root(doc), "foo") == find(doc, "//foo")
     @inferred find(doc, "root")
     @inferred findfirst(doc, "root")
     @inferred findlast(doc, "root")
