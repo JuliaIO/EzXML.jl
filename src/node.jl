@@ -861,11 +861,8 @@ end
 
 # Unset the .doc field of the `root` tree.
 function unset_documents!(root)
+    offset = fieldoffset(_Node, 9)
     traverse_tree(root.ptr) do node_ptr
-        offset = sizeof(Ptr{Void}) +
-                 sizeof(Int) +
-                 sizeof(Cstring) +
-                 sizeof(Ptr{_Node}) * 5
         unsafe_store!(
             convert(Ptr{UInt}, node_ptr + offset),
             convert(UInt, C_NULL))
