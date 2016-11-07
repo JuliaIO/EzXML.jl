@@ -129,6 +129,7 @@ Accessors:
     * `parent_element(node)`: return the parent element of a node.
 * Node predicate:
     * `has_root(doc)`: return if a document has a root element.
+    * `has_document(node)`: return if a node has an associated document.
     * `has_node(node)`: return if a node has a child node.
     * `has_element(node)`: return if a node has a child element.
     * `has_next_node(node)`: return if a node has a next node.
