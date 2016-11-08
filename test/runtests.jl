@@ -143,6 +143,26 @@ end
 end
 
 @testset "Streaming Reader" begin
+    sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
+    reader = open(XMLReader, sample2)
+    @test isa(reader, XMLReader)
+    typs = []
+    names = []
+    contents = []
+    for typ in reader
+        push!(typs, typ)
+        push!(names, name(reader))
+        if typ == EzXML.XML_READER_TYPE_ELEMENT && name(reader) == "elm"
+            push!(contents, content(reader))
+        end
+    end
+    @test typs[1] === EzXML.XML_READER_TYPE_ELEMENT
+    @test typs[2] === EzXML.XML_READER_TYPE_SIGNIFICANT_WHITESPACE
+    @test names[1] == "root"
+    @test names[3] == "elm"
+    @test contents[1] == "some content 1"
+    @test contents[2] == "some content 2"
+
     simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
     reader = open(XMLReader, simple_graphml)
     @test isa(reader, XMLReader)

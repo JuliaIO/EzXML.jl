@@ -189,3 +189,15 @@ function name(reader::XMLReader)
     end
     return unsafe_string(name_ptr)
 end
+
+function content(reader::XMLReader)
+    content_ptr = ccall(
+        (:xmlTextReaderReadString, libxml2),
+        Cstring,
+        (Ptr{Void},),
+        reader.ptr)
+    if content_ptr == C_NULL
+        throw(ArgumentError("no content"))
+    end
+    return unsafe_wrap(String, content_ptr, true)
+end
