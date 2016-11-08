@@ -14,7 +14,7 @@ immutable _Node
     doc::Ptr{_Node}
 end
 
-# Node types (enum xmlElementType).
+# Node type (enum xmlElementType).
 if sizeof(Cint) == 2
     bitstype 16 NodeType <: Integer
 elseif sizeof(Cint) == 4

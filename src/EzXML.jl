@@ -5,6 +5,7 @@ export
     Node,
     Document,
     XMLError,
+    XMLReader,
 
     # node constructors
     XMLDocumentNode,
@@ -81,6 +82,7 @@ include("node.jl")
 include("document.jl")
 include("buffer.jl")
 include("xpath.jl")
+include("reader.jl")
 include("error.jl")
 
 function __init__()

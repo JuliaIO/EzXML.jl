@@ -142,6 +142,15 @@ end
     end
 end
 
+@testset "Streaming Reader" begin
+    reader = open(XMLReader, joinpath(dirname(@__FILE__), "simple.graphml"))
+    @test isa(reader, XMLReader)
+    for typ in reader
+        @test isa(typ, EzXML.ReaderType)
+    end
+    @test close(reader) === nothing
+end
+
 @testset "Constructors" begin
     n = XMLDocumentNode("1.0")
     @test isa(n, Node)
