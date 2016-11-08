@@ -226,3 +226,22 @@ function namespace(reader::XMLReader)
     end
     return unsafe_string(ns_ptr)
 end
+
+"""
+    expandtree(reader::XMLReader)
+
+Expand the current node of `reader` into a full subtree that will be available
+until the next read of node.
+"""
+function expandtree(reader::XMLReader)
+    node_ptr = ccall(
+        (:xmlTextReaderExpand, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        reader.ptr)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    # do not automatically free memories
+    return Node(node_ptr, false)
+end

@@ -74,7 +74,8 @@ export
     readxml,
     readhtml,
     parsexml,
-    parsehtml
+    parsehtml,
+    expandtree
 
 const libxml2 = "libxml2"
 

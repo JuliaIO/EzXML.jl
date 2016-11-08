@@ -167,6 +167,7 @@ end
             push!(contents, content(reader))
             push!(attributes, reader["attr1"])
         end
+        @test isa(expandtree(reader), Node)
     end
     @test typs[1] === EzXML.XML_READER_TYPE_ELEMENT
     @test typs[2] === EzXML.XML_READER_TYPE_SIGNIFICANT_WHITESPACE
@@ -190,6 +191,7 @@ end
         if typ == EzXML.XML_READER_TYPE_ELEMENT
             push!(namespaces, namespace(reader))
         end
+        @test isa(expandtree(reader), Node)
     end
     @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
     @test first(names) == "#comment"

@@ -184,7 +184,7 @@ type Node
     ptr::Ptr{_Node}
     owner::Node
 
-    function Node(ptr::Ptr{_Node})
+    function Node(ptr::Ptr{_Node}, autofinalize::Bool=true)
         @assert ptr != C_NULL
 
         # return a preallocated proxy object if any
@@ -195,25 +195,29 @@ type Node
             return get(proxy)
         end
 
-        # determine the owner of this node
-        owner_ptr = ptr
-        while unsafe_load(owner_ptr).parent != C_NULL
-            owner_ptr = unsafe_load(owner_ptr).parent
-        end
+        if autofinalize
+            # determine the owner of this node
+            owner_ptr = ptr
+            while unsafe_load(owner_ptr).parent != C_NULL
+                owner_ptr = unsafe_load(owner_ptr).parent
+            end
 
-        if ptr == owner_ptr
-            # manage itself
-            node = new(ptr)
-            node.owner = node
+            if ptr == owner_ptr
+                # manage itself
+                node = new(ptr)
+                node.owner = node
+            else
+                # delegate management to its owner
+                owner = Node(owner_ptr)
+                node = new(ptr, owner)
+            end
+
+            finalizer(node, finalize_node)
         else
-            # delegate management to its owner
-            owner = Node(owner_ptr)
-            node = new(ptr, owner)
+            node = new(ptr)
         end
 
-        # do memory management stuffs
         store_proxy_pointer!(node, pointer_from_objref(node))
-        finalizer(node, finalize_node)
 
         return node
     end
