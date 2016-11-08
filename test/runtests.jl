@@ -183,14 +183,19 @@ end
     @test isa(reader, XMLReader)
     typs = []
     names = []
+    namespaces = []
     for typ in reader
         push!(typs, typ)
         push!(names, name(reader))
+        if typ == EzXML.XML_READER_TYPE_ELEMENT
+            push!(namespaces, namespace(reader))
+        end
     end
     @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
     @test first(names) == "#comment"
     @test last(typs) === EzXML.XML_READER_TYPE_END_ELEMENT
     @test last(names) == "graphml"
+    @test first(namespaces) == "http://graphml.graphdrawing.org/xmlns"
     @test close(reader) === nothing
 
     reader = open(XMLReader, simple_graphml)

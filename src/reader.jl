@@ -214,3 +214,15 @@ function Base.getindex(reader::XMLReader, name::AbstractString)
         reader.ptr, name)
     return unsafe_wrap(String, value_ptr, true)
 end
+
+function namespace(reader::XMLReader)
+    ns_ptr = ccall(
+        (:xmlTextReaderConstNamespaceUri, libxml2),
+        Cstring,
+        (Ptr{Void},),
+        reader.ptr)
+    if ns_ptr == C_NULL
+        throw(ArgumentError("no namespace"))
+    end
+    return unsafe_string(ns_ptr)
+end
