@@ -205,3 +205,12 @@ function content(reader::XMLReader)
     end
     return unsafe_wrap(String, content_ptr, true)
 end
+
+function Base.getindex(reader::XMLReader, name::AbstractString)
+    value_ptr = ccall(
+        (:xmlTextReaderGetAttribute, libxml2),
+        Cstring,
+        (Ptr{Void}, Cstring),
+        reader.ptr, name)
+    return unsafe_wrap(String, value_ptr, true)
+end

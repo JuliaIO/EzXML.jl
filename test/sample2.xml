@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <elm attr1="attr1 value" attr2="attr2 value">some content 1</elm>
-    <elm attr1="attr1 value" attr2="attr2 value">some content 2</elm>
+    <elm attr1="attr1 value 1" attr2="attr2 value">some content 1</elm>
+    <elm attr1="attr1 value 2" attr2="attr2 value">some content 2</elm>
 </root>

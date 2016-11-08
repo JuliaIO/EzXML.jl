@@ -159,11 +159,13 @@ end
     typs = []
     names = []
     contents = []
+    attributes = []
     for typ in reader
         push!(typs, typ)
         push!(names, name(reader))
         if typ == EzXML.XML_READER_TYPE_ELEMENT && name(reader) == "elm"
             push!(contents, content(reader))
+            push!(attributes, reader["attr1"])
         end
     end
     @test typs[1] === EzXML.XML_READER_TYPE_ELEMENT
@@ -172,6 +174,8 @@ end
     @test names[3] == "elm"
     @test contents[1] == "some content 1"
     @test contents[2] == "some content 2"
+    @test attributes[1] == "attr1 value 1"
+    @test attributes[2] == "attr1 value 2"
     @test open(collect, XMLReader, sample2) == typs
 
     simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
