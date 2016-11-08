@@ -143,11 +143,32 @@ end
 end
 
 @testset "Streaming Reader" begin
-    reader = open(XMLReader, joinpath(dirname(@__FILE__), "simple.graphml"))
+    simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
+    reader = open(XMLReader, simple_graphml)
     @test isa(reader, XMLReader)
+    typs = []
+    names = []
     for typ in reader
-        @test isa(typ, EzXML.ReaderType)
+        push!(typs, typ)
+        push!(names, name(reader))
     end
+    @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
+    @test first(names) == "#comment"
+    @test last(typs) === EzXML.XML_READER_TYPE_END_ELEMENT
+    @test last(names) == "graphml"
+    @test close(reader) === nothing
+
+    reader = open(XMLReader, simple_graphml)
+    typs = []
+    names = []
+    while !done(reader)
+        push!(typs, next(reader))
+        push!(names, name(reader))
+    end
+    @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
+    @test first(names) == "#comment"
+    @test last(typs) === EzXML.XML_READER_TYPE_END_ELEMENT
+    @test last(names) == "graphml"
     @test close(reader) === nothing
 end
 

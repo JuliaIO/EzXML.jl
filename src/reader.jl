@@ -138,10 +138,11 @@ function Base.iteratorsize(::Type{XMLReader})
 end
 
 function Base.start(reader::XMLReader)
-    return read_node(reader)
+    return nothing
 end
 
-function Base.done(::XMLReader, ret)
+function Base.done(reader::XMLReader, _=nothing)
+    ret = read_node(reader)
     if ret == 0
         return true
     elseif ret == 1
@@ -151,9 +152,21 @@ function Base.done(::XMLReader, ret)
     end
 end
 
-function Base.next(reader::XMLReader, ret)
-    ret = read_node(reader)
-    return nodetype(reader), ret
+function Base.next(reader::XMLReader, _)
+    return nodetype(reader), nothing
+end
+
+function Base.next(reader::XMLReader)
+    return nodetype(reader)
+end
+
+# Read a next node.
+function read_node(reader)
+    ccall(
+        (:xmlTextReaderRead, libxml2),
+        Cint,
+        (Ptr{Void},),
+        reader.ptr)
 end
 
 function nodetype(reader::XMLReader)
@@ -165,11 +178,14 @@ function nodetype(reader::XMLReader)
     return convert(ReaderType, typ)
 end
 
-# Read a next node.
-function read_node(reader)
-    ccall(
-        (:xmlTextReaderRead, libxml2),
-        Cint,
+function name(reader::XMLReader)
+    name_ptr = ccall(
+        (:xmlTextReaderConstName, libxml2),
+        Cstring,
         (Ptr{Void},),
         reader.ptr)
+    if name_ptr == C_NULL
+        throw(ArgumentError("no node name"))
+    end
+    return unsafe_string(name_ptr)
 end
