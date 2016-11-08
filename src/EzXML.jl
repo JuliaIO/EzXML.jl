@@ -1,7 +1,12 @@
 module EzXML
 
 export
+    # types
     Node,
+    Document,
+    XMLError,
+
+    # node constructors
     XMLDocumentNode,
     HTMLDocumentNode,
     ElementNode,
@@ -9,9 +14,12 @@ export
     CommentNode,
     CDataNode,
     AttributeNode,
-    Document,
+
+    # document constructors
     XMLDocument,
     HTMLDocument,
+
+    # functions
     hasparentnode,
     parentnode,
     hasparentelement,
@@ -64,8 +72,7 @@ export
     readxml,
     readhtml,
     parsexml,
-    parsehtml,
-    XMLError
+    parsehtml
 
 const libxml2 = "libxml2"
 
