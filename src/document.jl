@@ -39,6 +39,19 @@ function Base.print(io::IO, doc::Document)
     print(io, doc.node)
 end
 
+"""
+    prettyprint(doc::Document)
+
+Print `doc` with formatting.
+"""
+function prettyprint(doc::Document)
+    prettyprint(STDOUT, doc)
+end
+
+function prettyprint(io::IO, doc::Document)
+    prettyprint(io, doc.node)
+end
+
 function Base.parse(::Type{Document}, inputstring::AbstractString)
     if is_html_like(inputstring)
         return parsehtml(inputstring)

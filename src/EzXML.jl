@@ -69,6 +69,7 @@ export
     attributes,
     namespace,
     namespaces,
+    prettyprint,
     readxml,
     readhtml,
     parsexml,

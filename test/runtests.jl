@@ -683,6 +683,26 @@ end
         @test ismatch(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(doc.node))
         @test ismatch(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
     end
+
+    @testset "print" begin
+        doc = parsexml("<e1><e2/></e1>")
+        buf = IOBuffer()
+        print(buf, doc)
+        @test takebuf_string(buf) == """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <e1><e2/></e1>
+        """
+
+        doc = parsexml("<e1><e2/></e1>")
+        buf = IOBuffer()
+        prettyprint(buf, doc)
+        @test takebuf_string(buf) == """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <e1>
+          <e2/>
+        </e1>
+        """
+    end
 end
 
 # Check no uncaught errors.

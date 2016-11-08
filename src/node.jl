@@ -222,9 +222,22 @@ function Base.show(io::IO, node::Node)
 end
 
 function Base.print(io::IO, node::Node)
+    dump_node(io, node, false)
+end
+
+function prettyprint(node::Node)
+    prettyprint(STDOUT, node)
+end
+
+function prettyprint(io::IO, node::Node)
+    dump_node(io, node, true)
+end
+
+# Dump `node` to `io`.
+function dump_node(io, node, format)
     doc = document(node)
     buf = Buffer()
-    level = format = 0
+    level = 0
     len = ccall(
         (:xmlNodeDump, libxml2),
         Cint,
