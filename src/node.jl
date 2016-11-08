@@ -33,6 +33,10 @@ function Base.convert{T<:Integer}(::Type{T}, x::NodeType)
     return convert(T, reinterpret(Cint, x))
 end
 
+function Base.convert(::Type{NodeType}, x::NodeType)
+    return x
+end
+
 function Base.promote_rule{T<:Union{Cint,Int}}(::Type{NodeType}, ::Type{T})
     return T
 end

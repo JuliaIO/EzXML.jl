@@ -36,6 +36,10 @@ function Base.convert{T<:Integer}(::Type{T}, x::ReaderType)
     return convert(T, reinterpret(Cint, x))
 end
 
+function Base.convert(::Type{ReaderType}, x::ReaderType)
+    return x
+end
+
 function Base.promote_rule{T<:Union{Cint,Int}}(::Type{ReaderType}, ::Type{T})
     return T
 end

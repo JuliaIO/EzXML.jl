@@ -6,6 +6,7 @@ using Base.Test
         t = convert(EzXML.NodeType, i)
         @test ismatch(r"^XML_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
+        @test convert(EzXML.NodeType, t) === t
     end
     @test_throws AssertionError repr(convert(EzXML.NodeType, 0))
     @test_throws AssertionError repr(convert(EzXML.NodeType, 100))
@@ -143,6 +144,15 @@ end
 end
 
 @testset "Streaming Reader" begin
+    for i in 0:17
+        t = convert(EzXML.ReaderType, i)
+        @test ismatch(r"XML_READER_[A-Z_]+$", repr(t))
+        @test string(t) == string(i)
+        @test convert(EzXML.ReaderType, t) === t
+    end
+    @test_throws AssertionError repr(convert(EzXML.ReaderType, -1))
+    @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
+
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
     reader = open(XMLReader, sample2)
     @test isa(reader, XMLReader)
@@ -162,6 +172,7 @@ end
     @test names[3] == "elm"
     @test contents[1] == "some content 1"
     @test contents[2] == "some content 2"
+    @test open(collect, XMLReader, sample2) == typs
 
     simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
     reader = open(XMLReader, simple_graphml)
