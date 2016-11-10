@@ -301,9 +301,6 @@ function finalize_node(node)
         if unsafe_load(node_ptr).typ == XML_DOCUMENT_NODE
             ccall((:xmlFreeDoc, libxml2), Void, (Ptr{Void},), node_ptr)
         else
-            # TODO: Calling this function results in segmentation fault.  Not
-            # sure why, but minor memory leak would be better than unpredictable
-            # segfault.
             ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
         end
     elseif node_ptr != C_NULL
