@@ -87,6 +87,18 @@ end
         @test nodetype(parsexml("<xml/>".data).node) === EzXML.XML_DOCUMENT_NODE
         @test nodetype(parsexml("<html/>".data).node) === EzXML.XML_DOCUMENT_NODE
 
+        # This includes multi-byte characters.
+        doc = parse(Document, """
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <Link>
+            <Name>pubmed_pubmed</Name>
+            <Menu>Similar articles</Menu>
+            <Description>... “linked from” ...</Description>
+            <DbTo>pubmed</DbTo>
+        </Link>
+        """)
+        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+
         @test_throws ArgumentError parse(Document, "")
         @test_throws XMLError parse(Document, " ")
         @test_throws XMLError parse(Document, "abracadabra")
