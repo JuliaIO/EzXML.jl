@@ -18,8 +18,7 @@ The main features are:
 * Proper namespace handling.
 * Capturing error messages.
 * Automatic memory management.
-
-Streaming parsing is planned to be supported in the future.
+* Streaming parsing for large XML files.
 
 ```julia
 using EzXML
