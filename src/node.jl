@@ -243,14 +243,18 @@ end
 
 # Dump `node` to `io`.
 function dump_node(io, node, format)
-    doc = document(node)
+    if hasdocument(node)
+        doc_ptr = document(node).node.ptr
+    else
+        doc_ptr = C_NULL
+    end
     buf = Buffer()
     level = 0
     len = ccall(
         (:xmlNodeDump, libxml2),
         Cint,
         (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
-        buf.ptr, doc.node.ptr, node.ptr, level, format)
+        buf.ptr, doc_ptr, node.ptr, level, format)
     if len == -1
         throw_xml_error()
     end

@@ -769,6 +769,18 @@ end
     end
 
     @testset "print" begin
+        elm = ElementNode("elm")
+        @test string(elm) == "<elm/>"
+
+        txt = TextNode("42 > 41")
+        @test string(txt) == "42 &gt; 41"
+
+        cdata = CDataNode("42 > 41")
+        @test string(cdata) == "<![CDATA[42 > 41]]>"
+
+        comment = CommentNode("some comment")
+        @test string(comment) == "<!--some comment-->"
+
         doc = parsexml("<e1><e2/></e1>")
         buf = IOBuffer()
         print(buf, doc)
