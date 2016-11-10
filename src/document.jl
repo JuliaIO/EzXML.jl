@@ -87,7 +87,7 @@ function parsexml(xmlstring::AbstractString)
         (:xmlParseMemory, libxml2),
         Ptr{_Node},
         (Cstring, Cint),
-        xmlstring, length(xmlstring))
+        xmlstring, sizeof(xmlstring))
     if ptr == C_NULL
         throw_xml_error()
     end
