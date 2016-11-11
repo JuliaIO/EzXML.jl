@@ -170,11 +170,13 @@ end
     @test isa(reader, XMLReader)
     typs = []
     names = []
+    depths = []
     contents = []
     attributes = []
     for typ in reader
         push!(typs, typ)
         push!(names, name(reader))
+        push!(depths, depth(reader))
         if typ == EzXML.XML_READER_TYPE_ELEMENT && name(reader) == "elm"
             push!(contents, content(reader))
             push!(attributes, reader["attr1"])
@@ -185,6 +187,9 @@ end
     @test typs[2] === EzXML.XML_READER_TYPE_SIGNIFICANT_WHITESPACE
     @test names[1] == "root"
     @test names[3] == "elm"
+    @test depths[1] == 0
+    @test depths[end] == 0
+    @test maximum(depths) == 2
     @test contents[1] == "some content 1"
     @test contents[2] == "some content 2"
     @test attributes[1] == "attr1 value 1"

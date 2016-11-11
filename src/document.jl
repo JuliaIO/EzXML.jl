@@ -40,7 +40,7 @@ function Base.print(io::IO, doc::Document)
 end
 
 """
-    prettyprint(doc::Document)
+    prettyprint([io], doc::Document)
 
 Print `doc` with formatting.
 """

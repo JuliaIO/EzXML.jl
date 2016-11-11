@@ -1,10 +1,20 @@
 References
 ==========
 
+Types
+-----
+
+```@docs
+Document
+Node
+```
+
 Constructors
 ------------
 
 ```@docs
+XMLDocument
+HTMLDocument
 XMLDocumentNode
 HTMLDocumentNode
 ElementNode
@@ -25,8 +35,8 @@ readhtml
 prettyprint
 ```
 
-DOM accessors
--------------
+DOM tree accessors
+------------------
 
 ```@docs
 document
@@ -50,8 +60,8 @@ eachattribute
 attributes
 ```
 
-Linking and unlinking functions
--------------------------------
+DOM tree modifiers
+------------------
 
 ```@docs
 setroot!

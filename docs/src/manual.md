@@ -50,7 +50,7 @@ for species_name in content.(find(primates, "//species/text()"))
 end
 ```
 
-Data Types
+Data types
 ----------
 
 There are two types that constitute an XML document and components: `Document`
@@ -99,7 +99,7 @@ node struct of libxml2 within the angle brackets so that you can quickly check
 the type of a node and its identity. The `print` method of `Node` shows an XML
 tree rooted at the node. `prettyprint` is also provided to print formatted XML.
 
-DOM Interfaces
+DOM interfaces
 --------------
 
 DOM interfaces regard an XML document as a tree of nodes. There is a root node
@@ -259,7 +259,7 @@ julia> elements(primates)
 There are so many functions to traverse XML document trees. The complete list of
 these functions is available at the reference page.
 
-Constructing Documents
+Constructing documents
 ----------------------
 
 ExXML.jl also supports constructing XML/HTML documents.
@@ -330,5 +330,107 @@ shell> cat out.xml
 
 ```
 
-Streaming Interfaces
+Streaming interfaces
 --------------------
+
+In addition to DOM interfaces, EzXML.jl provides a streaming reader of XML
+files. The streaming reader processes, as the name suggests, a stream of an XML
+data read from a file instead of reading a whole XML tree into the memory. This
+enables reading extremely large files that do not fit in RAM.
+
+Let's use the following XML file (undirected.graphml) that represents an undirected graph formatted
+in [GraphML](http://graphml.graphdrawing.org/) (slightly simplified for
+brevity):
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <graphml>
+        <graph edgedefault="undirected">
+            <node id="n0"/>
+            <node id="n1"/>
+            <node id="n2"/>
+            <node id="n3"/>
+            <node id="n4"/>
+            <edge source="n0" target="n2"/>
+            <edge source="n1" target="n2"/>
+            <edge source="n2" target="n3"/>
+            <edge source="n3" target="n4"/>
+        </graph>
+    </graphml>
+
+The interfaces of streaming reader are totally different from the DOM interfaces
+introduced above. The first thing the user needs to do is creating an
+`XMLReader` object using the `open` function:
+```jlcon
+julia> reader = open(XMLReader, "undirected.graphml")
+EzXML.XMLReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
+
+```
+
+Iteration is advanced by the `done(<reader>)` method, which updates the current
+reading position of the reader and returns `false` when there is al least one
+node to read from the stram:
+```jlcon
+julia> done(reader)  # Read the 1st node.
+false
+
+julia> nodetype(reader)
+XML_READER_TYPE_ELEMENT
+
+julia> name(reader)
+"graphml"
+
+julia> done(reader)  # Read the 2nd node.
+false
+
+julia> nodetype(reader)
+XML_READER_TYPE_SIGNIFICANT_WHITESPACE
+
+julia> name(reader)
+"#text"
+
+julia> done(reader)  # Read the 3rd node.
+false
+
+julia> nodetype(reader)
+XML_READER_TYPE_ELEMENT
+
+julia> name(reader)
+"graph"
+
+julia> reader["edgedefault"]
+"undirected"
+
+```
+
+Unlike DOM interfaces, methods are applied to a reader object. This is because
+the streaming reader does not construct a DOM tree while reading and hence we
+have no access to actual nodes of an XML document. Methods like `nodetype`,
+`name`, `content`, `namespace` and `getindex` are overloaded for the reader
+type.
+
+An important thing to be noted is that while the value of `nodetype` for the XML
+reader returns the current node type, the domain is slightly different from that
+of `nodetype` for `Node`, but slightly different meanings. For example, there
+are two kinds of values that will be returned when reading an element node:
+`XML_READER_TYPE_ELEMENT` and `XML_READER_TYPE_END_ELEMENT`. The former
+indicates the reader just read an opening tag of an element node while the
+latter does the reader just read an ending tag of an element node.
+
+An idiomatic way of stream reading would look like this:
+```julia
+reader = open(Document, "undirected.graphml")
+while !done(reader)
+    typ = nodetype(reader)
+    # body
+end
+close(reader)
+```
+
+Alternatively, EzXML.jl supports `for` loop, too:
+```julia
+reader = open(Document, "undirected.graphml")
+for typ in reader
+    # body
+end
+close(reader)
+```

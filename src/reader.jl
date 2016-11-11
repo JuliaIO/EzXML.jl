@@ -141,7 +141,7 @@ function Base.iteratorsize(::Type{XMLReader})
     return Base.SizeUnknown()
 end
 
-function Base.start(reader::XMLReader)
+function Base.start(::XMLReader)
     return nothing
 end
 
@@ -171,6 +171,15 @@ function read_node(reader)
         Cint,
         (Ptr{Void},),
         reader.ptr)
+end
+
+function depth(reader::XMLReader)
+    ret = ccall(
+        (:xmlTextReaderDepth, libxml2),
+        Cint,
+        (Ptr{Void},),
+        reader.ptr)
+    return ret
 end
 
 function nodetype(reader::XMLReader)
