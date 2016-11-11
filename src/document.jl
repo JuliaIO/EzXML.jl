@@ -79,6 +79,11 @@ function is_html_like(inputstring)
     end
 end
 
+"""
+    parsexml(xmlstring)
+
+Parse `xmlstring` and create an XML document.
+"""
 function parsexml(xmlstring::AbstractString)
     if isempty(xmlstring)
         throw(ArgumentError("empty XML string"))
@@ -98,6 +103,11 @@ function parsexml(xmldata::Vector{UInt8})
     return parsexml(String(xmldata))
 end
 
+"""
+    parsehtml(htmlstring)
+
+Parse `htmlstring` and create an HTML document.
+"""
 function parsehtml(htmlstring::AbstractString)
     if isempty(htmlstring)
         throw(ArgumentError("empty HTML string"))
@@ -128,6 +138,11 @@ function Base.read(::Type{Document}, filename::AbstractString)
     end
 end
 
+"""
+    readxml(filename)
+
+Read `filename` and create an XML document.
+"""
 function readxml(filename::AbstractString)
     encoding = C_NULL
     options = 0
@@ -142,6 +157,11 @@ function readxml(filename::AbstractString)
     return Document(ptr)
 end
 
+"""
+    readhtml(filename)
+
+Read `filename` and create an HTML document.
+"""
 function readhtml(filename::AbstractString)
     encoding = C_NULL
     options = 0

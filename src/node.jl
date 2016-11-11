@@ -233,6 +233,11 @@ function Base.print(io::IO, node::Node)
     dump_node(io, node, false)
 end
 
+"""
+    prettyprint([io], node::Node)
+
+Print `node` with formatting.
+"""
 function prettyprint(node::Node)
     prettyprint(STDOUT, node)
 end
