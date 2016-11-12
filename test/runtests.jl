@@ -818,3 +818,28 @@ end
 
 # Check no uncaught errors.
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
+
+if is_unix()
+    @testset "Examples" begin
+        # Check examples work without error.
+        cd(joinpath(dirname(@__FILE__), "..", "example")) do
+            stdout = DevNull
+            @testset "primates.jl" begin
+                try
+                    run(pipeline(`./primates.jl`, stdout=stdout))
+                    @test true
+                catch
+                    @test false
+                end
+            end
+            @testset "julia2xml.jl" begin
+                try
+                    run(pipeline(pipeline(`echo "1 + sum([2,3])"`, `./julia2xml.jl`), stdout=stdout))
+                    @test true
+                catch
+                    @test false
+                end
+            end
+        end
+    end
+end
