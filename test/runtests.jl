@@ -48,7 +48,7 @@ end
     doc = parse(Document, docstr)
     tmp = tempname()
     try
-        @test write(tmp, doc) == length(docstr)
+        @test write(tmp, doc) == sizeof(docstr)
         @test readstring(tmp) == docstr
         @test string(read(Document, tmp)) == docstr
     finally
@@ -145,6 +145,16 @@ end
             </body>
         </html>
         """.data)
+        @test isa(doc, Document)
+        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+
+        doc = parsehtml("""
+        <!DOCTYPE html>
+        <html>
+            <head><title>題名</title></head>
+            <body>こんにちは、世界！</body>
+        </html>
+        """)
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
 

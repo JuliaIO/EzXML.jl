@@ -425,7 +425,7 @@ function CDataNode(content::AbstractString)
         (:xmlNewCDataBlock, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cint),
-        doc_ptr, content, length(content))
+        doc_ptr, content, sizeof(content))
     if node_ptr == C_NULL
         throw_xml_error()
     end
@@ -1031,7 +1031,7 @@ function setcontent!(node::Node, content::AbstractString)
         (:xmlNodeSetContentLen, libxml2),
         Void,
         (Ptr{Void}, Cstring, Cint),
-        node.ptr, content, length(content))
+        node.ptr, content, sizeof(content))
     return node
 end
 

@@ -119,7 +119,7 @@ function parsehtml(htmlstring::AbstractString)
         (:htmlReadMemory, libxml2),
         Ptr{_Node},
         (Cstring, Cint, Cstring, Cstring, Cint),
-        htmlstring, length(htmlstring), url, encoding, options)
+        htmlstring, sizeof(htmlstring), url, encoding, options)
     if ptr == C_NULL
         throw_xml_error()
     end
