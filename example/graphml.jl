@@ -1,3 +1,5 @@
+#!/usr/bin/env julia
+
 using LightGraphs
 using EzXML
 
@@ -9,7 +11,7 @@ function load_graphml(filename)
 
         # scan nodes
         for typ in reader
-            if typ == EzXML.XML_READER_TYPE_ELEMENT
+            if typ == EzXML.READER_ELEMENT
                 elname = name(reader)
                 if elname == "node"
                     serial += 1

@@ -23,7 +23,7 @@ element node, and `TextNode` does a text node:
 julia> using EzXML
 
 julia> doc = XMLDocument()
-EzXML.Document(EzXML.Node(<XML_DOCUMENT_NODE@0x00007fa2ec190b70>))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fa2ec190b70>))
 
 julia> typeof(doc)
 EzXML.Document
@@ -32,7 +32,7 @@ julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
 
 julia> elm = ElementNode("elm")
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fcd5bd42920>)
+EzXML.Node(<ELEMENT_NODE@0x00007fcd5bd42920>)
 
 julia> typeof(elm)
 EzXML.Node
@@ -41,7 +41,7 @@ julia> println(elm)
 <elm/>
 
 julia> txt = TextNode("some text")
-EzXML.Node(<XML_TEXT_NODE@0x00007fcd5be9aaf0>)
+EzXML.Node(<TEXT_NODE@0x00007fcd5be9aaf0>)
 
 julia> typeof(txt)
 EzXML.Node
@@ -81,12 +81,12 @@ memory.  On the other hand `parse(Document, <string or byte array>)` parses an
 XML string or a byte array and builds a document object like the `read` method:
 ```jlcon
 julia> doc = read(Document, "primates.xml")
-EzXML.Document(EzXML.Node(<XML_DOCUMENT_NODE@0x00007fff3cfe8a50>))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3cfe8a50>))
 
 julia> data = readstring("primates.xml");
 
 julia> doc = parse(Document, data)
-EzXML.Document(EzXML.Node(<XML_DOCUMENT_NODE@0x00007fff3d161380>))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3d161380>))
 
 ```
 
@@ -95,10 +95,10 @@ Before traversing the document we need to retrieve the root of the document tree
 traversal there:
 ```jlcon
 julia> primates = root(doc)  # Get the root element.
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3d109ef0>)
+EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 
 julia> nodetype(primates)    # The node is an element node.
-XML_ELEMENT_NODE
+ELEMENT_NODE
 
 julia> name(primates)        # `name` returns the tag name of an element.
 "primates"
@@ -108,8 +108,8 @@ true
 
 julia> genus = elements(primates)  # `elements` returns all child elements.
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
 julia> name.(genus)          # Broadcasting syntax (dot function) works.
 2-element Array{String,1}:
@@ -172,16 +172,16 @@ julia> haselement(primates)    # `primates` contains child elements?
 true
 
 julia> firstnode(primates)     # Get the first child node, which is a text node.
-EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe92f0>)
+EzXML.Node(<TEXT_NODE@0x00007fff3cfe92f0>)
 
 julia> lastnode(primates)      # Get the last child node, which is a text node, too.
-EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe4b60>)
+EzXML.Node(<TEXT_NODE@0x00007fff3cfe4b60>)
 
 julia> firstelement(primates)  # Get the first child element, which is apparently an element node.
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
+EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
 
 julia> lastelement(primates)   # Get the last child element, which is apparently an element node, too.
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
+EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
 ```
 
@@ -195,30 +195,30 @@ elements, respectively:
 julia> for genus in eachnode(primates)
            @show genus
        end
-genus = EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe92f0>)
-genus = EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
-genus = EzXML.Node(<XML_TEXT_NODE@0x00007fff3d10a090>)
-genus = EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
-genus = EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe4b60>)
+genus = EzXML.Node(<TEXT_NODE@0x00007fff3cfe92f0>)
+genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+genus = EzXML.Node(<TEXT_NODE@0x00007fff3d10a090>)
+genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
+genus = EzXML.Node(<TEXT_NODE@0x00007fff3cfe4b60>)
 
 julia> for genus in eachelement(primates)
            @show genus
        end
-genus = EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
-genus = EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
+genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
 julia> nodes(primates)
 5-element Array{EzXML.Node,1}:
- EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe92f0>)
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
- EzXML.Node(<XML_TEXT_NODE@0x00007fff3d10a090>)
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
- EzXML.Node(<XML_TEXT_NODE@0x00007fff3cfe4b60>)
+ EzXML.Node(<TEXT_NODE@0x00007fff3cfe92f0>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+ EzXML.Node(<TEXT_NODE@0x00007fff3d10a090>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
+ EzXML.Node(<TEXT_NODE@0x00007fff3cfe4b60>)
 
 julia> elements(primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cff0000>)
- EzXML.Node(<XML_ELEMENT_NODE@0x00007fff3cfbdf00>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
 ```
 
@@ -234,17 +234,17 @@ The components of an XML document can be created using document/node
 constructors introduced above:
 ```jlcon
 julia> doc = XMLDocument()
-EzXML.Document(EzXML.Node(<XML_DOCUMENT_NODE@0x00007fe4b57bfbc0>))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>))
 
 julia> r = ElementNode("root")
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b581c5a0>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b581c5a0>)
 ```
 
 Setting a root element to a document can be done by the `setroot!(<document>,
 <root>)` function:
 ```jlcon
 julia> setroot!(doc, r)
-EzXML.Document(EzXML.Node(<XML_DOCUMENT_NODE@0x00007fe4b57bfbc0>))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>))
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -256,27 +256,27 @@ Other child elements or subtrees can be linked to an existing element using
 `link!(<parent node>, <child node>)`:
 ```jlcon
 julia> c = ElementNode("child")
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b57de820>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b57de820>)
 
 julia> link!(r, c)
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b57de820>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b57de820>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child/></root>
 
 julia> setcontent!(c, "some content")
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b57de820>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b57de820>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child>some content</child></root>
 
 julia> c = ElementNode("child")
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b5841f00>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b5841f00>)
 
 julia> link!(r, c)
-EzXML.Node(<XML_ELEMENT_NODE@0x00007fe4b5841f00>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b5841f00>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -340,7 +340,7 @@ julia> done(reader)  # Read the 1st node.
 false
 
 julia> nodetype(reader)
-XML_READER_TYPE_ELEMENT
+READER_ELEMENT
 
 julia> name(reader)
 "graphml"
@@ -349,7 +349,7 @@ julia> done(reader)  # Read the 2nd node.
 false
 
 julia> nodetype(reader)
-XML_READER_TYPE_SIGNIFICANT_WHITESPACE
+READER_SIGNIFICANT_WHITESPACE
 
 julia> name(reader)
 "#text"
@@ -358,7 +358,7 @@ julia> done(reader)  # Read the 3rd node.
 false
 
 julia> nodetype(reader)
-XML_READER_TYPE_ELEMENT
+READER_ELEMENT
 
 julia> name(reader)
 "graph"
@@ -378,7 +378,7 @@ An important thing to be noted is that while the value of `nodetype` for the XML
 reader returns the current node type, the domain is slightly different from that
 of `nodetype` for `Node`, but slightly different meanings. For example, there
 are two kinds of values that will be returned when reading an element node:
-`XML_READER_TYPE_ELEMENT` and `XML_READER_TYPE_END_ELEMENT`. The former
+`READER_ELEMENT` and `READER_END_ELEMENT`. The former
 indicates the reader just read an opening tag of an element node while the
 latter does the reader just read an ending tag of an element node.
 
