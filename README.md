@@ -2,10 +2,9 @@
 
 # EzXML.jl - XML/HTML tools for primates
 
-[![Build Status](https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master)](https://travis-ci.org/bicycle1885/EzXML.jl)
-[![codecov.io](http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master)](http://codecov.io/github/bicycle1885/EzXML.jl?branch=master)
-<!-- [![Coverage Status](https://coveralls.io/repos/bicycle1885/EzXML.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/bicycle1885/EzXML.jl?branch=master) -->
-
+[![Docs Latest][docs-latest-img]][docs-latest-url]
+[![Build Status][build-latest-img]][build-latest-url]
+[![codecov.io][codecov-img]][codecov-url]
 
 **Still in alpha-quality package; the APIs may change in the future.**
 
@@ -194,3 +193,11 @@ Queries:
 
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
+
+
+[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest
+[build-latest-img]: https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master
+[build-latest-url]: https://travis-ci.org/bicycle1885/EzXML.jl
+[codecov-img]: http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master
+[codecov-url]: http://codecov.io/github/bicycle1885/EzXML.jl?branch=master
