@@ -68,7 +68,7 @@ end
 function is_html_like(inputstring)
     if ismatch(r"^\s*<!DOCTYPE html", inputstring)
         return true
-    elseif ismatch(r"^\s*<?xml", inputstring)
+    elseif ismatch(r"^\s*<\?xml", inputstring)
         return false
     end
     i = searchindex(inputstring, "<html")
