@@ -4,7 +4,7 @@ using Base.Test
 @testset "Error" begin
     for i in 1:21
         t = convert(EzXML.NodeType, i)
-        @test ismatch(r"^XML_[A-Z_]+$", repr(t))
+        @test ismatch(r"^[A-Z_]+_(NODE|DECL|START|END)$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.NodeType, t) === t
     end
@@ -24,8 +24,8 @@ end
         invalid_file = joinpath(dirname(@__FILE__), "sample1.invalid.xml")
         doc = read(Document, valid_file)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
-        @test nodetype(readxml(valid_file).node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
+        @test nodetype(readxml(valid_file).node) === EzXML.DOCUMENT_NODE
         @test_throws XMLError read(Document, invalid_file)
     end
 
@@ -33,8 +33,8 @@ end
         valid_file = joinpath(dirname(@__FILE__), "sample1.html")
         doc = read(Document, valid_file)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
-        @test nodetype(readhtml(valid_file).node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test nodetype(readhtml(valid_file).node) === EzXML.HTML_DOCUMENT_NODE
     end
 end
 
@@ -65,7 +65,7 @@ end
         </root>
         """)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
         doc = parse(Document, """
         <root>
@@ -73,7 +73,7 @@ end
         </root>
         """)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
         doc = parse(Document, """
         <?xml version="1.0"?>
@@ -81,12 +81,12 @@ end
             <child attr="value">content</child>
         </root>
         """.data)
-        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
-        @test nodetype(parsexml("<xml/>").node) === EzXML.XML_DOCUMENT_NODE
-        @test nodetype(parsexml("<html/>").node) === EzXML.XML_DOCUMENT_NODE
-        @test nodetype(parsexml("<xml/>".data).node) === EzXML.XML_DOCUMENT_NODE
-        @test nodetype(parsexml("<html/>".data).node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(parsexml("<xml/>").node) === EzXML.DOCUMENT_NODE
+        @test nodetype(parsexml("<html/>").node) === EzXML.DOCUMENT_NODE
+        @test nodetype(parsexml("<xml/>".data).node) === EzXML.DOCUMENT_NODE
+        @test nodetype(parsexml("<html/>".data).node) === EzXML.DOCUMENT_NODE
 
         # This includes multi-byte characters.
         doc = parse(Document, """
@@ -98,7 +98,7 @@ end
             <DbTo>pubmed</DbTo>
         </Link>
         """)
-        @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
         @test_throws ArgumentError parse(Document, "")
         @test_throws XMLError parse(Document, " ")
@@ -119,7 +119,7 @@ end
         </html>
         """)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         doc = parse(Document, """
         <html>
@@ -132,7 +132,7 @@ end
         </html>
         """)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         doc = parse(Document, """
         <!DOCTYPE html>
@@ -146,7 +146,7 @@ end
         </html>
         """.data)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         doc = parsehtml("""
         <!DOCTYPE html>
@@ -156,10 +156,10 @@ end
         </html>
         """)
         @test isa(doc, Document)
-        @test nodetype(doc.node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
-        @test nodetype(parsehtml("<html/>").node) === EzXML.XML_HTML_DOCUMENT_NODE
-        @test nodetype(parsehtml("<html/>".data).node) === EzXML.XML_HTML_DOCUMENT_NODE
+        @test nodetype(parsehtml("<html/>").node) === EzXML.HTML_DOCUMENT_NODE
+        @test nodetype(parsehtml("<html/>".data).node) === EzXML.HTML_DOCUMENT_NODE
 
         @test_throws ArgumentError parsehtml("")
     end
@@ -245,68 +245,68 @@ end
     n = XMLDocumentNode("1.0")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_DOCUMENT_NODE
+    @test nodetype(n) === EzXML.DOCUMENT_NODE
     @test document(n) === Document(n.ptr)
 
     n = HTMLDocumentNode(nothing, nothing)
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
+    @test nodetype(n) === EzXML.HTML_DOCUMENT_NODE
     @test document(n) === Document(n.ptr)
 
     n = HTMLDocumentNode("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
                          "-//W3C//DTD XHTML 1.0 Strict//EN")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_HTML_DOCUMENT_NODE
+    @test nodetype(n) === EzXML.HTML_DOCUMENT_NODE
     @test document(n) === Document(n.ptr)
 
     n = ElementNode("node")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_ELEMENT_NODE
+    @test nodetype(n) === EzXML.ELEMENT_NODE
     @test iselement(n)
     @test_throws ArgumentError document(n)
 
     n = TextNode("some text")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_TEXT_NODE
+    @test nodetype(n) === EzXML.TEXT_NODE
     @test EzXML.istext(n)  # Base.istext is deprecated.
     @test_throws ArgumentError document(n)
 
     n = CommentNode("some comment")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_COMMENT_NODE
+    @test nodetype(n) === EzXML.COMMENT_NODE
     @test iscomment(n)
     @test_throws ArgumentError document(n)
 
     n = CDataNode("some CDATA")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) === EzXML.XML_CDATA_SECTION_NODE
+    @test nodetype(n) === EzXML.CDATA_SECTION_NODE
     @test iscdata(n)
     @test_throws ArgumentError document(n)
 
     n = AttributeNode("attr", "value")
     @test isa(n, Node)
     @test n.owner == n
-    @test nodetype(n) == EzXML.XML_ATTRIBUTE_NODE
+    @test nodetype(n) == EzXML.ATTRIBUTE_NODE
     @test isattribute(n)
     @test_throws ArgumentError document(n)
 
     doc = XMLDocument()
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
-    @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+    @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 
     doc = HTMLDocument()
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
-    @test nodetype(doc.node) == EzXML.XML_HTML_DOCUMENT_NODE
+    @test nodetype(doc.node) == EzXML.HTML_DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 
@@ -314,7 +314,7 @@ end
                        "-//W3C//DTD XHTML 1.0 Strict//EN")
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
-    @test nodetype(doc.node) == EzXML.XML_HTML_DOCUMENT_NODE
+    @test nodetype(doc.node) == EzXML.HTML_DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 end
@@ -326,7 +326,7 @@ end
     @test root(doc) == root(doc)
     @test root(doc) === root(doc)
     @test hash(root(doc)) === hash(root(doc))
-    @test nodetype(root(doc)) === EzXML.XML_ELEMENT_NODE
+    @test nodetype(root(doc)) === EzXML.ELEMENT_NODE
     @test name(root(doc)) == "root"
     @test content(root(doc)) == ""
     @test document(root(doc)) == doc
@@ -345,17 +345,17 @@ end
     </r>
     """)
     r = root(doc)
-    @test nodetype(firstnode(r)) === EzXML.XML_TEXT_NODE
-    @test nodetype(lastnode(r)) === EzXML.XML_TEXT_NODE
-    @test nodetype(firstelement(r)) === EzXML.XML_ELEMENT_NODE
+    @test nodetype(firstnode(r)) === EzXML.TEXT_NODE
+    @test nodetype(lastnode(r)) === EzXML.TEXT_NODE
+    @test nodetype(firstelement(r)) === EzXML.ELEMENT_NODE
     @test name(firstelement(r)) == "c1"
-    @test nodetype(lastelement(r)) === EzXML.XML_ELEMENT_NODE
+    @test nodetype(lastelement(r)) === EzXML.ELEMENT_NODE
     @test name(lastelement(r)) == "c3"
     c1 = firstelement(r)
     @test hasnextnode(c1)
     @test hasprevnode(c1)
-    @test nodetype(nextnode(c1)) === EzXML.XML_TEXT_NODE
-    @test nodetype(prevnode(c1)) === EzXML.XML_TEXT_NODE
+    @test nodetype(nextnode(c1)) === EzXML.TEXT_NODE
+    @test nodetype(prevnode(c1)) === EzXML.TEXT_NODE
     @test hasnextelement(c1)
     @test !hasprevelement(c1)
     c2 = nextelement(c1)
@@ -556,7 +556,7 @@ end
 @testset "Construction" begin
     doc = XMLDocument()
     @test isa(doc, Document)
-    @test nodetype(doc.node) === EzXML.XML_DOCUMENT_NODE
+    @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
     r1 = ElementNode("r1")

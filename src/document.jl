@@ -10,7 +10,7 @@ immutable Document
     function Document(ptr::Ptr{_Node})
         @assert ptr != C_NULL
         ntype = unsafe_load(ptr).typ
-        @assert ntype ∈ (XML_DOCUMENT_NODE, XML_HTML_DOCUMENT_NODE)
+        @assert ntype ∈ (DOCUMENT_NODE, HTML_DOCUMENT_NODE)
         return new(Node(ptr))
     end
 end
@@ -230,7 +230,7 @@ end
 Set the root element of `doc` to `node`.
 """
 function setroot!(doc::Document, root::Node)
-    if nodetype(root) != XML_ELEMENT_NODE
+    if nodetype(root) != ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
     old_root_ptr = ccall(

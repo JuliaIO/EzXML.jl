@@ -41,71 +41,71 @@ function Base.promote_rule{T<:Union{Cint,Int}}(::Type{NodeType}, ::Type{T})
     return T
 end
 
-const XML_ELEMENT_NODE       = NodeType( 1)
-const XML_ATTRIBUTE_NODE     = NodeType( 2)
-const XML_TEXT_NODE          = NodeType( 3)
-const XML_CDATA_SECTION_NODE = NodeType( 4)
-const XML_ENTITY_REF_NODE    = NodeType( 5)
-const XML_ENTITY_NODE        = NodeType( 6)
-const XML_PI_NODE            = NodeType( 7)
-const XML_COMMENT_NODE       = NodeType( 8)
-const XML_DOCUMENT_NODE      = NodeType( 9)
-const XML_DOCUMENT_TYPE_NODE = NodeType(10)
-const XML_DOCUMENT_FRAG_NODE = NodeType(11)
-const XML_NOTATION_NODE      = NodeType(12)
-const XML_HTML_DOCUMENT_NODE = NodeType(13)
-const XML_DTD_NODE           = NodeType(14)
-const XML_ELEMENT_DECL       = NodeType(15)
-const XML_ATTRIBUTE_DECL     = NodeType(16)
-const XML_ENTITY_DECL        = NodeType(17)
-const XML_NAMESPACE_DECL     = NodeType(18)
-const XML_XINCLUDE_START     = NodeType(19)
-const XML_XINCLUDE_END       = NodeType(20)
-const XML_DOCB_DOCUMENT_NODE = NodeType(21)
+const ELEMENT_NODE       = NodeType( 1)
+const ATTRIBUTE_NODE     = NodeType( 2)
+const TEXT_NODE          = NodeType( 3)
+const CDATA_SECTION_NODE = NodeType( 4)
+const ENTITY_REF_NODE    = NodeType( 5)
+const ENTITY_NODE        = NodeType( 6)
+const PI_NODE            = NodeType( 7)
+const COMMENT_NODE       = NodeType( 8)
+const DOCUMENT_NODE      = NodeType( 9)
+const DOCUMENT_TYPE_NODE = NodeType(10)
+const DOCUMENT_FRAG_NODE = NodeType(11)
+const NOTATION_NODE      = NodeType(12)
+const HTML_DOCUMENT_NODE = NodeType(13)
+const DTD_NODE           = NodeType(14)
+const ELEMENT_DECL       = NodeType(15)
+const ATTRIBUTE_DECL     = NodeType(16)
+const ENTITY_DECL        = NodeType(17)
+const NAMESPACE_DECL     = NodeType(18)
+const XINCLUDE_START     = NodeType(19)
+const XINCLUDE_END       = NodeType(20)
+const DOCB_DOCUMENT_NODE = NodeType(21)
 
 function Base.show(io::IO, x::NodeType)
-    if x == XML_ELEMENT_NODE
-        print(io, "XML_ELEMENT_NODE")
-    elseif x == XML_ATTRIBUTE_NODE
-        print(io, "XML_ATTRIBUTE_NODE")
-    elseif x == XML_TEXT_NODE
-        print(io, "XML_TEXT_NODE")
-    elseif x == XML_CDATA_SECTION_NODE
-        print(io, "XML_CDATA_SECTION_NODE")
-    elseif x == XML_ENTITY_REF_NODE
-        print(io, "XML_ENTITY_REF_NODE")
-    elseif x == XML_ENTITY_NODE
-        print(io, "XML_ENTITY_NODE")
-    elseif x == XML_PI_NODE
-        print(io, "XML_PI_NODE")
-    elseif x == XML_COMMENT_NODE
-        print(io, "XML_COMMENT_NODE")
-    elseif x == XML_DOCUMENT_NODE
-        print(io, "XML_DOCUMENT_NODE")
-    elseif x == XML_DOCUMENT_TYPE_NODE
-        print(io, "XML_DOCUMENT_TYPE_NODE")
-    elseif x == XML_DOCUMENT_FRAG_NODE
-        print(io, "XML_DOCUMENT_FRAG_NODE")
-    elseif x == XML_NOTATION_NODE
-        print(io, "XML_NOTATION_NODE")
-    elseif x == XML_HTML_DOCUMENT_NODE
-        print(io, "XML_HTML_DOCUMENT_NODE")
-    elseif x == XML_DTD_NODE
-        print(io, "XML_DTD_NODE")
-    elseif x == XML_ELEMENT_DECL
-        print(io, "XML_ELEMENT_DECL")
-    elseif x == XML_ATTRIBUTE_DECL
-        print(io, "XML_ATTRIBUTE_DECL")
-    elseif x == XML_ENTITY_DECL
-        print(io, "XML_ENTITY_DECL")
-    elseif x == XML_NAMESPACE_DECL
-        print(io, "XML_NAMESPACE_DECL")
-    elseif x == XML_XINCLUDE_START
-        print(io, "XML_XINCLUDE_START")
-    elseif x == XML_XINCLUDE_END
-        print(io, "XML_XINCLUDE_END")
-    elseif x == XML_DOCB_DOCUMENT_NODE
-        print(io, "XML_DOCB_DOCUMENT_NODE")
+    if x == ELEMENT_NODE
+        print(io, "ELEMENT_NODE")
+    elseif x == ATTRIBUTE_NODE
+        print(io, "ATTRIBUTE_NODE")
+    elseif x == TEXT_NODE
+        print(io, "TEXT_NODE")
+    elseif x == CDATA_SECTION_NODE
+        print(io, "CDATA_SECTION_NODE")
+    elseif x == ENTITY_REF_NODE
+        print(io, "ENTITY_REF_NODE")
+    elseif x == ENTITY_NODE
+        print(io, "ENTITY_NODE")
+    elseif x == PI_NODE
+        print(io, "PI_NODE")
+    elseif x == COMMENT_NODE
+        print(io, "COMMENT_NODE")
+    elseif x == DOCUMENT_NODE
+        print(io, "DOCUMENT_NODE")
+    elseif x == DOCUMENT_TYPE_NODE
+        print(io, "DOCUMENT_TYPE_NODE")
+    elseif x == DOCUMENT_FRAG_NODE
+        print(io, "DOCUMENT_FRAG_NODE")
+    elseif x == NOTATION_NODE
+        print(io, "NOTATION_NODE")
+    elseif x == HTML_DOCUMENT_NODE
+        print(io, "HTML_DOCUMENT_NODE")
+    elseif x == DTD_NODE
+        print(io, "DTD_NODE")
+    elseif x == ELEMENT_DECL
+        print(io, "ELEMENT_DECL")
+    elseif x == ATTRIBUTE_DECL
+        print(io, "ATTRIBUTE_DECL")
+    elseif x == ENTITY_DECL
+        print(io, "ENTITY_DECL")
+    elseif x == NAMESPACE_DECL
+        print(io, "NAMESPACE_DECL")
+    elseif x == XINCLUDE_START
+        print(io, "XINCLUDE_START")
+    elseif x == XINCLUDE_END
+        print(io, "XINCLUDE_END")
+    elseif x == DOCB_DOCUMENT_NODE
+        print(io, "DOCB_DOCUMENT_NODE")
     else
         @assert false "unknown node type"
     end
@@ -303,7 +303,7 @@ function finalize_node(node)
             end
         end
         # free the descendants
-        if unsafe_load(node_ptr).typ == XML_DOCUMENT_NODE
+        if unsafe_load(node_ptr).typ == DOCUMENT_NODE
             ccall((:xmlFreeDoc, libxml2), Void, (Ptr{Void},), node_ptr)
         else
             ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
@@ -462,7 +462,7 @@ function traverse_tree(f, root_ptr)
         n_nodes += 1
         f(cur_ptr)
         cur_str = unsafe_load(cur_ptr)
-        if cur_str.typ == XML_ELEMENT_NODE
+        if cur_str.typ == ELEMENT_NODE
             # Attributes of element nodes aren't attached as `children` nodes.
             elm_str = unsafe_load(convert(Ptr{_Element}, cur_ptr))
             prop_ptr = elm_str.properties
@@ -522,7 +522,7 @@ function hasparentelement(node::Node)
     if parent_ptr == C_NULL
         return false
     end
-    return unsafe_load(parent_ptr).typ == XML_ELEMENT_NODE
+    return unsafe_load(parent_ptr).typ == ELEMENT_NODE
 end
 
 """
@@ -769,7 +769,7 @@ end
 Count the number of attributes of `elem`.
 """
 function countattributes(elem::Node)
-    if nodetype(elem) != XML_ELEMENT_NODE
+    if nodetype(elem) != ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
     n = 0
@@ -916,7 +916,7 @@ end
 Return if `node` is an element node.
 """
 function iselement(node::Node)
-    return nodetype(node) === XML_ELEMENT_NODE
+    return nodetype(node) === ELEMENT_NODE
 end
 
 """
@@ -925,7 +925,7 @@ end
 Return if `node` is an attribute node.
 """
 function isattribute(node::Node)
-    return nodetype(node) === XML_ATTRIBUTE_NODE
+    return nodetype(node) === ATTRIBUTE_NODE
 end
 
 """
@@ -934,7 +934,7 @@ end
 Return if `node` is a text node.
 """
 function istext(node::Node)
-    return nodetype(node) === XML_TEXT_NODE
+    return nodetype(node) === TEXT_NODE
 end
 
 """
@@ -943,7 +943,7 @@ end
 Return if `node` is a CDATA node.
 """
 function iscdata(node::Node)
-    return nodetype(node) === XML_CDATA_SECTION_NODE
+    return nodetype(node) === CDATA_SECTION_NODE
 end
 
 """
@@ -952,7 +952,7 @@ end
 Return if `node` is a comment node.
 """
 function iscomment(node::Node)
-    return nodetype(node) === XML_COMMENT_NODE
+    return nodetype(node) === COMMENT_NODE
 end
 
 """
@@ -1134,9 +1134,9 @@ Return the namespace associated with `node`.
 """
 function namespace(node::Node)
     t = nodetype(node)
-    if t == XML_ELEMENT_NODE
+    if t == ELEMENT_NODE
         ns_ptr = unsafe_load(convert(Ptr{_Element}, node.ptr)).ns
-    elseif t == XML_ATTRIBUTE_NODE
+    elseif t == ATTRIBUTE_NODE
         ns_ptr = unsafe_load(convert(Ptr{_Attribute}, node.ptr)).ns
     else
         throw(ArgumentError("neither element nor attribute node"))
@@ -1292,7 +1292,7 @@ end
 Create an iterator of attributes.
 """
 function eachattribute(node::Node)
-    if unsafe_load(node.ptr).typ != XML_ELEMENT_NODE
+    if unsafe_load(node.ptr).typ != ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
     return AttributeIterator(node.ptr)
@@ -1313,7 +1313,7 @@ end
 
 function Base.start(iter::AttributeIterator)
     @assert iter.ptr != C_NULL
-    @assert unsafe_load(iter.ptr).typ == XML_ELEMENT_NODE
+    @assert unsafe_load(iter.ptr).typ == ELEMENT_NODE
     elm_str = unsafe_load(convert(Ptr{_Element}, iter.ptr))
     return elm_str.properties
 end
