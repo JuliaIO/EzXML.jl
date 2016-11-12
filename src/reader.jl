@@ -179,7 +179,7 @@ function depth(reader::XMLReader)
         Cint,
         (Ptr{Void},),
         reader.ptr)
-    return ret
+    return Int(ret)
 end
 
 function nodetype(reader::XMLReader)

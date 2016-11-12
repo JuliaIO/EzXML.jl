@@ -187,9 +187,9 @@ end
     @test typs[2] === EzXML.XML_READER_TYPE_SIGNIFICANT_WHITESPACE
     @test names[1] == "root"
     @test names[3] == "elm"
-    @test depths[1] == 0
-    @test depths[end] == 0
-    @test maximum(depths) == 2
+    @test depths[1] === 0
+    @test depths[end] === 0
+    @test maximum(depths) === 2
     @test contents[1] == "some content 1"
     @test contents[2] == "some content 2"
     @test attributes[1] == "attr1 value 1"
