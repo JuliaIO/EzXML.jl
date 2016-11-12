@@ -9,6 +9,17 @@ Document
 Node
 ```
 
+I/O
+---
+
+```@docs
+parsexml
+parsehtml
+readxml
+readhtml
+prettyprint
+```
+
 Constructors
 ------------
 
@@ -24,15 +35,31 @@ CDataNode
 AttributeNode
 ```
 
-I/O
----
+Node accessors
+--------------
 
 ```@docs
-parsexml
-parsehtml
-readxml
-readhtml
-prettyprint
+nodetype(::Node)
+name(::Node)
+content(::Node)
+namespace(::Node)
+namespaces(::Node)
+iselement(::Node)
+isattribute(::Node)
+EzXML.istext(::Node)
+iscdata(::Node)
+iscomment(::Node)
+countnodes(::Node)
+countelements(::Node)
+countattributes(::Node)
+```
+
+Node modifiers
+--------------
+
+```@docs
+setname!(::Node, ::AbstractString)
+setcontent!(::Node, ::AbstractString)
 ```
 
 DOM tree accessors
@@ -50,8 +77,6 @@ nextnode
 prevnode
 nextelement
 prevelement
-name
-content
 eachnode
 nodes
 eachelement
@@ -65,13 +90,23 @@ DOM tree modifiers
 
 ```@docs
 setroot!
-setname!
-setcontent!
 link!
 linknext!
 linkprev!
 unlink!
 addelement!
+```
+
+XPath query
+-----------
+
+```@docs
+find(doc::Document, xpath::AbstractString)
+findfirst(doc::Document, xpath::AbstractString)
+findlast(doc::Document, xpath::AbstractString)
+find(node::Node, xpath::AbstractString)
+findfirst(node::Node, xpath::AbstractString)
+findlast(node::Node, xpath::AbstractString)
 ```
 
 Streaming reader
