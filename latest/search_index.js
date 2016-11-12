@@ -1,6 +1,22 @@
 var documenterSearchIndex = {"docs": [
 
 {
+    "location": "index.html#",
+    "page": "Home",
+    "title": "Home",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "index.html#Home-1",
+    "page": "Home",
+    "title": "Home",
+    "category": "section",
+    "text": "EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and support a range of functionalities including:Traversing XML/HTML documents with DOM-like interfaces.\nSearching elements using XPath.\nHandling XML namespaces.\nParsing with streaming APIs.\nAutomatic memory management.Here is an example of parsing and traversing an XML document:using EzXML\n\n# Parse an XML string\n# (use `read(Document, <filename>)` to read a document from a file).\ndoc = parse(Document, \"\"\"\n<primates>\n    <genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n    <genus name=\"Pan\">\n        <species name=\"paniscus\">Bonobo</species>\n        <species name=\"troglodytes\">Chimpanzee</species>\n    </genus>\n</primates>\n\"\"\")\n\n# Get the root element from `doc`.\nprimates = root(doc)\n\n# Iterate over child elements.\nfor genus in eachelement(primates)\n    # Get an attribute value by name.\n    genus_name = genus[\"name\"]\n    println(\"- \", genus_name)\n    for species in eachelement(genus)\n        # Get the content within an element.\n        species_name = content(species)\n        println(\"  └ \", species[\"name\"], \" (\", species_name, \")\")\n    end\nend\nprintln()\n\n# Find texts using XPath query.\nfor species_name in content.(find(primates, \"//species/text()\"))\n    println(\"- \", species_name)\nendIf you are new to this package, read the manual page first. It provides a general guide to the package. The references page offers a full documentation for each function and the developer notes page explains about the internal design for developers."
+},
+
+{
     "location": "manual.html#",
     "page": "Manual",
     "title": "Manual",
@@ -13,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "Manual",
     "category": "section",
-    "text": "EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and support various functionalities including:Traversing XML/HTML documents with DOM-like interfaces.\nSearching elements using XPath.\nHandling XML namespaces.\nParsing with streaming APIs.\nAutomatic memory management.Here is an example of parsing and traversing an XML document:using EzXML\n\n# Parse an XML string\n# (use `read(Document, <filename>)` to read a document from a file).\ndoc = parse(Document, \"\"\"\n<primates>\n    <genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n    <genus name=\"Pan\">\n        <species name=\"paniscus\">Bonobo</species>\n        <species name=\"troglodytes\">Chimpanzee</species>\n    </genus>\n</primates>\n\"\"\")\n\n# Get the root element from `doc`.\nprimates = root(doc)\n\n# Iterate over child elements.\nfor genus in eachelement(primates)\n    # Get an attribute value by name.\n    genus_name = genus[\"name\"]\n    println(\"- \", genus_name)\n    for species in eachelement(genus)\n        # Get the content within an element.\n        species_name = content(species)\n        println(\"  └ \", species[\"name\"], \" (\", species_name, \")\")\n    end\nend\nprintln()\n\n# Find texts using XPath query.\nfor species_name in content.(find(primates, \"//species/text()\"))\n    println(\"- \", species_name)\nend"
+    "text": "This page is dedicated to those who are new to EzXML.jl. It is recommended to read this page before reading other pages to grasp the concepts of the package first. Once you have read it, the references page would be a better place to find necessary functions. The developer notes page is for developers and most users do not need to read it."
 },
 
 {
