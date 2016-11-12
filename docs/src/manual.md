@@ -147,14 +147,23 @@ julia> println(genus[1])             # The "genus" element has been updated.
 
 ```
 
+In this package, a `Node` object is regarded as a container of its child nodes.
+This idea is reflected on function names; for example, a function returning the
+first child node is named as `firstnode` instead of `firstchildnode`. All
+functions provided by the `EzXML` module are named in this way and tree
+traversal functions works on its child nodes by default. Functions with a
+direction prefix works on that direction; for example, `nextnode` returns the
+next sibling node and `parentnode` returns the parent node.
+
 Distinction between nodes and elements is what every user should know about
 before using DOM APIs.  There are good explanations on this topic:
 <http://www.w3schools.com/xml/dom_nodes.asp>,
 <http://stackoverflow.com/questions/132564/whats-the-difference-between-an-element-and-a-node-in-xml>.
-Once you get it, tree traversal functions of EzXML.jl must be quite natural to
-you. For example, `hasnode(<parent node>)` checks if a (parent) node has one or
-more child *nodes* while `haselement(<parent node>)` checks if a (parent) node
-has one or more child *elements*. All functions are also named in this way:
+Some functions have a suffix like `node` or `element` that indicates the node
+type the function is interested in. For example, `hasnode(<parent node>)` checks
+if a (parent) node has one or more child *nodes* while `haselement(<parent
+node>)` checks if a (parent) node has one or more child *elements*. All
+functions are also named in this way:
 ```jlcon
 julia> hasnode(primates)       # `primates` contains child nodes?
 true

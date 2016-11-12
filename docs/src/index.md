@@ -2,12 +2,11 @@ Home
 ====
 
 EzXML.jl is a package for handling XML and HTML documents. The APIs are simple
-and support a range of functionalities including:
-* Traversing XML/HTML documents with
-  [DOM](https://en.wikipedia.org/wiki/Document_Object_Model)-like interfaces.
-* Searching elements using [XPath](https://en.wikipedia.org/wiki/XPath).
-* Handling [XML namespaces](https://en.wikipedia.org/wiki/XML_namespace).
-* Parsing with [streaming APIs](http://xmlsoft.org/xmlreader.html).
+and consistent, and provide a range of functionalities including:
+* Traversing XML/HTML documents with DOM-like interfaces.
+* Properly handling XML namespaces.
+* Searching elements using XPath.
+* Parsing large files with streaming APIs.
 * Automatic memory management.
 
 Here is an example of parsing and traversing an XML document:

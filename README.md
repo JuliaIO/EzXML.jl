@@ -1,6 +1,7 @@
 <p align="center"><img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="250" /></p>
 
-# EzXML.jl - XML/HTML tools for primates
+EzXML.jl - XML/HTML tools for primates
+======================================
 
 [![Docs Latest][docs-latest-img]][docs-latest-url]
 [![Build Status][build-latest-img]][build-latest-url]
@@ -58,34 +59,8 @@ for species_name in content.(find(primates, "//species/text()"))
 end
 ```
 
-
-## Core concepts
-
-The main types exported from this package are `Document` and `Node`.  `Document`
-represents an entire XML/HTML document and `Node` are components of it.  Everything
-in an XML/HTML tree is a `Node` object: document, element, text, attribute, comments,
-and so on. A document object of `Document` type is a thin wrapper to a document
-node of `Node` type. This design leads to simplicity of interfaces because
-tree-traversal functions always return `Node` objects. In addition, the type
-stability of this design may enable the Julia compiler to generate faster code.
-
-In this package, a `Node` object is regarded as a container of its child nodes.
-This idea is reflected on function names; for example, a function returning the
-first child node is named as `firstnode` instead of `firstchildnode` because
-it is apparent that we are interested in child nodes. If the user is interested
-in a special type of nodes like element nodes, functions like `firstelement`
-are provided.
-
-Internally, a `Node` object is a proxy object to a node-like struct allocated by
-the libxml2 library. Additionally, a node-like struct also has a pointer to
-Julia's `Node` object, which enables to extract a unique proxy object from C's
-struct. Therefore, two `Node` objects pointing to the same node in an XML/HTML
-document are identical even if they are generated from different ways. A `Node`
-object also keeps an owner node that is responsible for releasing memories of
-nodes.
-
-
-## Quick reference
+Quick reference
+---------------
 
 Types:
 * `Document`: an XML/HTML document
@@ -181,16 +156,16 @@ Queries:
 * `findfirst(doc|node, xpath)`: find the first matching node.
 * `findlast(doc|node, xpath)`: find the last matching node.
 
-
-## Examples
+Examples
+--------
 
 * [primates.jl](/example/primates.jl): "primates" example shown above.
 * [julia2xml.jl](/example/julia2xml.jl): convert a Julia expression to XML.
 * [issues.jl](/example/issues.jl): list latest issues of the Julia repository.
 * [graphml.jl](/example/graphml.jl): read a GraphML file with streaming reader.
 
-
-## Other XML/HTML packages in Julia
+Other XML/HTML packages in Julia
+--------------------------------
 
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
