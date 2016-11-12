@@ -168,7 +168,7 @@ end
 @testset "Streaming Reader" begin
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
-        @test ismatch(r"XML_READER_[A-Z_]+$", repr(t))
+        @test ismatch(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
     end
@@ -187,14 +187,14 @@ end
         push!(typs, typ)
         push!(names, name(reader))
         push!(depths, depth(reader))
-        if typ == EzXML.XML_READER_TYPE_ELEMENT && name(reader) == "elm"
+        if typ == EzXML.READER_ELEMENT && name(reader) == "elm"
             push!(contents, content(reader))
             push!(attributes, reader["attr1"])
         end
         @test isa(expandtree(reader), Node)
     end
-    @test typs[1] === EzXML.XML_READER_TYPE_ELEMENT
-    @test typs[2] === EzXML.XML_READER_TYPE_SIGNIFICANT_WHITESPACE
+    @test typs[1] === EzXML.READER_ELEMENT
+    @test typs[2] === EzXML.READER_SIGNIFICANT_WHITESPACE
     @test names[1] == "root"
     @test names[3] == "elm"
     @test depths[1] === 0
@@ -215,14 +215,14 @@ end
     for typ in reader
         push!(typs, typ)
         push!(names, name(reader))
-        if typ == EzXML.XML_READER_TYPE_ELEMENT
+        if typ == EzXML.READER_ELEMENT
             push!(namespaces, namespace(reader))
         end
         @test isa(expandtree(reader), Node)
     end
-    @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
+    @test first(typs) === EzXML.READER_COMMENT
     @test first(names) == "#comment"
-    @test last(typs) === EzXML.XML_READER_TYPE_END_ELEMENT
+    @test last(typs) === EzXML.READER_END_ELEMENT
     @test last(names) == "graphml"
     @test first(namespaces) == "http://graphml.graphdrawing.org/xmlns"
     @test close(reader) === nothing
@@ -234,9 +234,9 @@ end
         push!(typs, next(reader))
         push!(names, name(reader))
     end
-    @test first(typs) === EzXML.XML_READER_TYPE_COMMENT
+    @test first(typs) === EzXML.READER_COMMENT
     @test first(names) == "#comment"
-    @test last(typs) === EzXML.XML_READER_TYPE_END_ELEMENT
+    @test last(typs) === EzXML.READER_END_ELEMENT
     @test last(names) == "graphml"
     @test close(reader) === nothing
 end
