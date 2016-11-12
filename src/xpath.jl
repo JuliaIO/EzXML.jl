@@ -34,20 +34,40 @@ immutable _XPathObject
     index2::Cint
 end
 
+"""
+    find(doc::Document, xpath::AbstractString)
+
+Find nodes matching `xpath` XPath query from `doc`.
+"""
 function Base.find(doc::Document, xpath::AbstractString)
     return find(doc.node, xpath)
 end
 
+"""
+    findfirst(doc::Document, xpath::AbstractString)
+
+Find the first node matching `xpath` XPath query from `doc`.
+"""
 function Base.findfirst(doc::Document, xpath::AbstractString)
     # string("(", xpath, ")[position()=1]") may be faster
     return first(find(doc, xpath))
 end
 
+"""
+    findlast(doc::Document, xpath::AbstractString)
+
+Find the last node matching `xpath` XPath query from `doc`.
+"""
 function Base.findlast(doc::Document, xpath::AbstractString)
     # string("(", xpath, ")[position()=last()]") may be faster
     return last(find(doc, xpath))
 end
 
+"""
+    find(node::Node, xpath::AbstractString)
+
+Find nodes matching `xpath` XPath query starting from `node`.
+"""
 function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
     context_ptr = make_xpath_context(document(node))
     if context_ptr == C_NULL
@@ -72,11 +92,21 @@ function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
     end
 end
 
+"""
+    findfirst(node::Node, xpath::AbstractString)
+
+Find the first node matching `xpath` XPath query starting from `node`.
+"""
 function Base.findfirst(node::Node, xpath::AbstractString)
     # string("(", xpath, ")[position()=1]") may be faster
     return first(find(node, xpath))
 end
 
+"""
+    findlast(node::Node, xpath::AbstractString)
+
+Find the last node matching `xpath` XPath query starting from `node`.
+"""
 function Base.findlast(node::Node, xpath::AbstractString)
     # string("(", xpath, ")[position()=last()]") may be faster
     return last(find(node, xpath))
