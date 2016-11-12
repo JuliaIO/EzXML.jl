@@ -73,3 +73,15 @@ linkprev!
 unlink!
 addelement!
 ```
+
+Streaming reader
+----------------
+
+```@docs
+depth(::XMLReader)
+expandtree(::XMLReader)
+nodetype(::XMLReader)
+name(::XMLReader)
+content(::XMLReader)
+namespace(::XMLReader)
+```

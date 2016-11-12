@@ -173,6 +173,11 @@ function read_node(reader)
         reader.ptr)
 end
 
+"""
+    depth(reader::XMLReader)
+
+Return the depth of the current node of `reader`.
+"""
 function depth(reader::XMLReader)
     ret = ccall(
         (:xmlTextReaderDepth, libxml2),
@@ -182,6 +187,11 @@ function depth(reader::XMLReader)
     return Int(ret)
 end
 
+"""
+    nodetype(reader::XMLReader)
+
+Return the type of the current node of `reader`.
+"""
 function nodetype(reader::XMLReader)
     typ = ccall(
         (:xmlTextReaderNodeType, libxml2),
@@ -191,6 +201,11 @@ function nodetype(reader::XMLReader)
     return convert(ReaderType, typ)
 end
 
+"""
+    name(reader::XMLReader)
+
+Return the name of the current node of `reader`.
+"""
 function name(reader::XMLReader)
     name_ptr = ccall(
         (:xmlTextReaderConstName, libxml2),
@@ -203,6 +218,11 @@ function name(reader::XMLReader)
     return unsafe_string(name_ptr)
 end
 
+"""
+    content(reader::XMLReader)
+
+Return the content of the current node of `reader`.
+"""
 function content(reader::XMLReader)
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
@@ -224,6 +244,11 @@ function Base.getindex(reader::XMLReader, name::AbstractString)
     return unsafe_wrap(String, value_ptr, true)
 end
 
+"""
+    namespace(reader::XMLReader)
+
+Return the namespace of the current node of `reader`.
+"""
 function namespace(reader::XMLReader)
     ns_ptr = ccall(
         (:xmlTextReaderConstNamespaceUri, libxml2),
