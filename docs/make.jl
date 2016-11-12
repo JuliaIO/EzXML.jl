@@ -8,4 +8,6 @@ makedocs(
 
 deploydocs(
     repo="github.com/bicycle1885/EzXML.jl.git",
-    julia="0.5")
+    julia="0.5",
+    deps=nothing,
+    make=nothing)
