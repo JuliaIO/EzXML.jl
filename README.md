@@ -4,7 +4,8 @@ EzXML.jl - XML/HTML tools for primates
 ======================================
 
 [![Docs Latest][docs-latest-img]][docs-latest-url]
-[![Build Status][build-latest-img]][build-latest-url]
+[![TravisCI Status][travisci-img]][travisci-url]
+[![Appveyor Status][appveyor-img]][appveyor-url]
 [![codecov.io][codecov-img]][codecov-url]
 
 **Still in alpha-quality package; the APIs may change in the future.**
@@ -173,7 +174,9 @@ Other XML/HTML packages in Julia
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest
-[build-latest-img]: https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master
-[build-latest-url]: https://travis-ci.org/bicycle1885/EzXML.jl
+[travisci-img]: https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master
+[travisci-url]: https://travis-ci.org/bicycle1885/EzXML.jl
+[appveyor-img]: https://ci.appveyor.com/api/projects/status/n5d7o2mmy8ckdjc8?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/bicycle1885/ezxml-jl
 [codecov-img]: http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master
 [codecov-url]: http://codecov.io/github/bicycle1885/EzXML.jl?branch=master
