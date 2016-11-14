@@ -17,6 +17,7 @@ export
     CommentNode,
     CDataNode,
     AttributeNode,
+    DTDNode,
 
     # document constructors
     XMLDocument,
@@ -52,6 +53,9 @@ export
     hasroot,
     root,
     setroot!,
+    hasdtd,
+    dtd,
+    setdtd!,
     nodetype,
     iselement,
     isattribute,
@@ -64,6 +68,8 @@ export
     setname!,
     content,
     setcontent!,
+    systemID,
+    externalID,
     eachnode,
     nodes,
     eachelement,
