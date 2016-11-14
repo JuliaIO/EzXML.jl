@@ -78,7 +78,11 @@ export
     depth,
     expandtree
 
-const libxml2 = "libxml2"
+if is_windows()
+    const libxml2 = Pkg.dir("WinRPM","deps","usr","$(Sys.ARCH)-w64-mingw32","sys-root","mingw","bin","libxml2-2")
+else
+    const libxml2 = "libxml2"
+end
 
 include("node.jl")
 include("document.jl")
