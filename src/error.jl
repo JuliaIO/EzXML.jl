@@ -19,6 +19,9 @@ immutable _Error
     node::Ptr{Void}
 end
 
+"""
+An error detected by libxml2.
+"""
 immutable XMLError
     domain::Int
     message::String

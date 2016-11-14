@@ -7,6 +7,7 @@ Types
 ```@docs
 Document
 Node
+XMLError
 ```
 
 I/O
