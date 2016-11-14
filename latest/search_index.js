@@ -97,11 +97,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.XMLError",
+    "page": "References",
+    "title": "EzXML.XMLError",
+    "category": "Type",
+    "text": "An error detected by libxml2.\n\n\n\n"
+},
+
+{
     "location": "references.html#Types-1",
     "page": "References",
     "title": "Types",
     "category": "section",
-    "text": "Document\nNode"
+    "text": "Document\nNode\nXMLError"
 },
 
 {
