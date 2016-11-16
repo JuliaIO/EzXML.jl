@@ -28,6 +28,9 @@ end
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
         @test nodetype(readxml(valid_file).node) === EzXML.DOCUMENT_NODE
         @test_throws XMLError read(Document, invalid_file)
+        @assert !isfile("not-exist.xml")
+        @test_throws XMLError read(Document, "not-exist.xml")
+        @test_throws XMLError readxml("not-exist.xml")
 
         compressed = joinpath(dirname(@__FILE__), "sample1.xml.gz")
         @test isa(read(Document, compressed), Document)
@@ -40,6 +43,9 @@ end
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test nodetype(readhtml(valid_file).node) === EzXML.HTML_DOCUMENT_NODE
+        @assert !isfile("not-exist.html")
+        @test_throws XMLError read(Document, "not-exist.html")
+        @test_throws XMLError readhtml("not-exist.html")
 
         compressed = joinpath(dirname(@__FILE__), "sample1.html.gz")
         @test isa(read(Document, compressed), Document)
@@ -249,6 +255,10 @@ end
     @test last(typs) === EzXML.READER_END_ELEMENT
     @test last(names) == "graphml"
     @test close(reader) === nothing
+
+    # TODO: Activate this test.
+    #@assert !isfile("not-exist.xml")
+    #@test_throws XMLError open(XMLReader, "not-exist.xml")
 end
 
 @testset "Constructors" begin
