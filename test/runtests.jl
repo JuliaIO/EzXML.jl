@@ -4,6 +4,7 @@ using Base.Test
 @testset "Error" begin
     for i in 1:21
         t = convert(EzXML.NodeType, i)
+        @test t == i
         @test ismatch(r"^[A-Z_]+_(NODE|DECL|START|END)$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.NodeType, t) === t
@@ -176,6 +177,7 @@ end
 @testset "Streaming Reader" begin
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
+        @test t == i
         @test ismatch(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
