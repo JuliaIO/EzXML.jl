@@ -97,6 +97,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.XMLReader",
+    "page": "References",
+    "title": "EzXML.XMLReader",
+    "category": "Type",
+    "text": "A streaming XML reader type.\n\n\n\n"
+},
+
+{
     "location": "references.html#EzXML.XMLError",
     "page": "References",
     "title": "EzXML.XMLError",
@@ -109,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "Types",
     "category": "section",
-    "text": "Document\nNode\nXMLError"
+    "text": "Document\nNode\nXMLReader\nXMLError"
 },
 
 {
@@ -409,6 +417,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.parentelement",
+    "page": "References",
+    "title": "EzXML.parentelement",
+    "category": "Function",
+    "text": "parentelement(node::Node)\n\nReturn the parent element of node.\n\n\n\n"
+},
+
+{
     "location": "references.html#EzXML.firstnode",
     "page": "References",
     "title": "EzXML.firstnode",
@@ -521,11 +537,91 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.hasroot",
+    "page": "References",
+    "title": "EzXML.hasroot",
+    "category": "Function",
+    "text": "hasroot(doc::Document)\n\nReturn if doc has a root element.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasnode",
+    "page": "References",
+    "title": "EzXML.hasnode",
+    "category": "Function",
+    "text": "hasnode(node::Node)\n\nReturn if node has a child node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasnextnode",
+    "page": "References",
+    "title": "EzXML.hasnextnode",
+    "category": "Function",
+    "text": "hasnextnode(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasprevnode",
+    "page": "References",
+    "title": "EzXML.hasprevnode",
+    "category": "Function",
+    "text": "hasprevnode(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.haselement",
+    "page": "References",
+    "title": "EzXML.haselement",
+    "category": "Function",
+    "text": "haselement(node::Node)\n\nReturn if node has a child element.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasnextelement",
+    "page": "References",
+    "title": "EzXML.hasnextelement",
+    "category": "Function",
+    "text": "hasnextelement(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasprevelement",
+    "page": "References",
+    "title": "EzXML.hasprevelement",
+    "category": "Function",
+    "text": "hasprevelement(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasdocument",
+    "page": "References",
+    "title": "EzXML.hasdocument",
+    "category": "Function",
+    "text": "hasdocument(node::Node)\n\nReturn if node belongs to a document.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasparentnode",
+    "page": "References",
+    "title": "EzXML.hasparentnode",
+    "category": "Function",
+    "text": "hasparentnode(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasparentelement",
+    "page": "References",
+    "title": "EzXML.hasparentelement",
+    "category": "Function",
+    "text": "hasparentelement(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
+},
+
+{
     "location": "references.html#DOM-tree-accessors-1",
     "page": "References",
     "title": "DOM tree accessors",
     "category": "section",
-    "text": "document\nroot\nparentnode\nfirstnode\nlastnode\nfirstelement\nlastelement\nnextnode\nprevnode\nnextelement\nprevelement\neachnode\nnodes\neachelement\nelements\neachattribute\nattributes"
+    "text": "document\nroot\nparentnode\nparentelement\nfirstnode\nlastnode\nfirstelement\nlastelement\nnextnode\nprevnode\nnextelement\nprevelement\neachnode\nnodes\neachelement\nelements\neachattribute\nattributes\nhasroot\nhasnode\nhasnextnode\nhasprevnode\nhaselement\nhasnextelement\nhasprevelement\nhasdocument\nhasparentnode\nhasparentelement"
 },
 
 {
@@ -621,7 +717,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "Base.findfirst",
     "category": "Method",
-    "text": "findfirst(A, v)\n\nReturn the linear index of the first element equal to v in A. Returns 0 if v is not found.\n\njulia> A = [4 6; 2 2]\n2×2 Array{Int64,2}:\n 4  6\n 2  2\n\njulia> findfirst(A,2)\n2\n\njulia> findfirst(A,3)\n0\n\n\n\nfindfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
+    "text": "findfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
 },
 
 {
@@ -629,7 +725,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "Base.findlast",
     "category": "Method",
-    "text": "findlast(A, v)\n\nReturn the linear index of the last element equal to v in A. Returns 0 if there is no element of A equal to v.\n\njulia> A = [1 2; 2 1]\n2×2 Array{Int64,2}:\n 1  2\n 2  1\n\njulia> findlast(A,1)\n4\n\njulia> findlast(A,2)\n3\n\njulia> findlast(A,3)\n0\n\n\n\nfindlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the last node matching xpath XPath query starting from node.\n\n\n\n"
+    "text": "findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the last node matching xpath XPath query starting from node.\n\n\n\n"
 },
 
 {
