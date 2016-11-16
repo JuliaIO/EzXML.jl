@@ -27,6 +27,10 @@ end
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
         @test nodetype(readxml(valid_file).node) === EzXML.DOCUMENT_NODE
         @test_throws XMLError read(Document, invalid_file)
+
+        compressed = joinpath(dirname(@__FILE__), "sample1.xml.gz")
+        @test isa(read(Document, compressed), Document)
+        @test isa(readxml(compressed), Document)
     end
 
     @testset "HTML" begin
@@ -35,6 +39,10 @@ end
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test nodetype(readhtml(valid_file).node) === EzXML.HTML_DOCUMENT_NODE
+
+        compressed = joinpath(dirname(@__FILE__), "sample1.html.gz")
+        @test isa(read(Document, compressed), Document)
+        @test isa(readhtml(compressed), Document)
     end
 end
 
