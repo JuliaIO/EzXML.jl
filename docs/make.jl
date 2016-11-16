@@ -4,6 +4,7 @@ using EzXML
 makedocs(
     format=:html,
     sitename="EzXML.jl",
+    modules=[EzXML],
     pages=["index.md", "manual.md", "references.md", "devnotes.md"])
 
 deploydocs(
