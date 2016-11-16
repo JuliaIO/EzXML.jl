@@ -7,6 +7,7 @@ Types
 ```@docs
 Document
 Node
+XMLReader
 XMLError
 ```
 
@@ -97,6 +98,7 @@ DOM tree accessors
 document
 root
 parentnode
+parentelement
 firstnode
 lastnode
 firstelement
@@ -111,6 +113,16 @@ eachelement
 elements
 eachattribute
 attributes
+hasroot
+hasnode
+hasnextnode
+hasprevnode
+haselement
+hasnextelement
+hasprevelement
+hasdocument
+hasparentnode
+hasparentelement
 ```
 
 DOM tree modifiers
