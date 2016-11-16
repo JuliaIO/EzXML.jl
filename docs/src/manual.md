@@ -296,6 +296,56 @@ shell> cat out.xml
 
 ```
 
+XPath queries
+-------------
+
+[XPath](https://en.wikipedia.org/wiki/XPath) is a query language for XML. The
+user can retrieve target elements using a short string query. For example,
+`"//genus/species"` selects all "species" elements just under a "genus" element.
+
+The `find` (`findfirst` and `findlast`) function is overloaded for XPath query and returns a vector of
+selected nodes:
+```jlcon
+julia> primates = readxml("primates.xml")
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
+
+julia> find(primates, "/primates")  # Find the "primates" element just under the document
+1-element Array{EzXML.Node,1}:
+ EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)
+
+julia> find(primates, "//genus")
+2-element Array{EzXML.Node,1}:
+ EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
+ EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
+
+julia> println(findfirst(primates, "//genus"))
+<genus name="Homo">
+        <species name="sapiens">Human</species>
+    </genus>
+
+```
+
+If you would like to change the starting node of a query, you can pass the node
+as the first argument of `find`:
+```jlcon
+julia> genus = findfirst(primates, "//genus")
+EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
+
+julia> println(genus)
+<genus name="Homo">
+        <species name="sapiens">Human</species>
+    </genus>
+
+julia> println(findfirst(genus, "species"))
+<species name="sapiens">Human</species>
+
+```
+
+`find(<node>, <xpath>)` automatically registers namespaces applied to `<node>`,
+which means prefixes are available in the XPath query. This is especially useful
+when an XML document is composed of elements originated from different
+namespaces.
+
 Streaming interfaces
 --------------------
 
