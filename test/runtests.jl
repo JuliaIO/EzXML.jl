@@ -781,6 +781,12 @@ end
     @inferred find(doc, "root")
     @inferred findfirst(doc, "root")
     @inferred findlast(doc, "root")
+
+    go = readxml(joinpath(dirname(@__FILE__), "go.sample.xml"))
+    @test find(root(go), "/go:go") == [root(go)]
+    @test findfirst(root(go), "/go:go") === root(go)
+    @test name.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
+    @test find(root(go), "/go:go/rdf:RDF/go:term") == find(root(go), "//go:term")
 end
 
 @testset "Misc" begin

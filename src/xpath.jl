@@ -69,17 +69,21 @@ end
 Find nodes matching `xpath` XPath query starting from `node`.
 """
 function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
-    context_ptr = make_xpath_context(document(node))
+    context_ptr = new_xpath_context(document(node))
     if context_ptr == C_NULL
         throw_xml_error()
+    end
+    for (prefix, uri) in namespaces(node)
+        ret = register_namespace(context_ptr, prefix, uri)
+        @assert ret == 0
     end
     result_ptr = eval_xpath(node, context_ptr, xpath)
     if result_ptr == C_NULL
         free(context_ptr)
         throw_xml_error()
     end
-    result = unsafe_load(result_ptr)
     try
+        result = unsafe_load(result_ptr)
         @assert result.typ == XPATH_NODESET
         @assert result.nodesetval != C_NULL
         nodeset = unsafe_load(result.nodesetval)
@@ -112,13 +116,22 @@ function Base.findlast(node::Node, xpath::AbstractString)
     return last(find(node, xpath))
 end
 
-function make_xpath_context(doc)
+function new_xpath_context(doc)
     context_ptr = ccall(
         (:xmlXPathNewContext, libxml2),
         Ptr{_XPathContext},
         (Ptr{_XPathObject},),
         doc.node.ptr)
     return context_ptr
+end
+
+function register_namespace(context_ptr, prefix, uri)
+    ret = ccall(
+        (:xmlXPathRegisterNs, libxml2),
+        Cint,
+        (Ptr{Void}, Cstring, Cstring),
+        context_ptr, prefix, uri)
+    return ret
 end
 
 function eval_xpath(node, context_ptr, xpath)

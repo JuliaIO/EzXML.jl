@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE go:go PUBLIC "-//Gene Ontology//Custom XML/RDF Version 2.0//EN" "http://www.geneontology.org/dtd/go.dtd">
+
+<go:go xmlns:go="http://www.geneontology.org/dtds/go.dtd#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <rdf:RDF>
+        <go:term rdf:about="http://www.geneontology.org/go#GO:0000001">
+            <go:accession>GO:0000001</go:accession>
+            <go:name>mitochondrion inheritance</go:name>
+            <go:synonym>mitochondrial inheritance</go:synonym>
+            <go:definition>The distribution of mitochondria, including the mitochondrial genome, into daughter cells after mitosis or meiosis, mediated by interactions between mitochondria and the cytoskeleton.</go:definition>
+            <go:is_a rdf:resource="http://www.geneontology.org/go#GO:0048308" />
+            <go:is_a rdf:resource="http://www.geneontology.org/go#GO:0048311" />
+            <go:dbxref rdf:parseType="Resource">
+                <go:database_symbol>InterPro</go:database_symbol>
+                <go:reference>IPR012571</go:reference>
+            </go:dbxref>
+            <go:dbxref rdf:parseType="Resource">
+                <go:database_symbol>Pfam</go:database_symbol>
+                <go:reference>PF08118</go:reference>
+            </go:dbxref>
+        </go:term>
+        <go:term rdf:about="http://www.geneontology.org/go#GO:0000002">
+            <go:accession>GO:0000002</go:accession>
+            <go:name>mitochondrial genome maintenance</go:name>
+            <go:definition>The maintenance of the structure and integrity of the mitochondrial genome; includes replication and segregation of the mitochondrial chromosome.</go:definition>
+            <go:is_a rdf:resource="http://www.geneontology.org/go#GO:0007005" />
+            <go:dbxref rdf:parseType="Resource">
+                <go:database_symbol>InterPro</go:database_symbol>
+                <go:reference>IPR009446</go:reference>
+            </go:dbxref>
+        </go:term>
+    </rdf:RDF>
+</go:go>
