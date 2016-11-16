@@ -57,6 +57,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "manual.html#XPath-queries-1",
+    "page": "Manual",
+    "title": "XPath queries",
+    "category": "section",
+    "text": "XPath is a query language for XML. The user can retrieve target elements using a short string query. For example, \"//genus/species\" selects all \"species\" elements just under a \"genus\" element.The find (findfirst and findlast) function is overloaded for XPath query and returns a vector of selected nodes:julia> primates = readxml(\"primates.xml\")\nEzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))\n\njulia> find(primates, \"/primates\")  # Find the \"primates\" element just under the document\n1-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)\n\njulia> find(primates, \"//genus\")\n2-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)\n\njulia> println(findfirst(primates, \"//genus\"))\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\nIf you would like to change the starting node of a query, you can pass the node as the first argument of find:julia> genus = findfirst(primates, \"//genus\")\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n\njulia> println(genus)\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n\njulia> println(findfirst(genus, \"species\"))\n<species name=\"sapiens\">Human</species>\nfind(<node>, <xpath>) automatically registers namespaces applied to <node>, which means prefixes are available in the XPath query. This is especially useful when an XML document is composed of elements originated from different namespaces."
+},
+
+{
     "location": "manual.html#Streaming-interfaces-1",
     "page": "Manual",
     "title": "Streaming interfaces",
