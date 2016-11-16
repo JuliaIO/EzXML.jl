@@ -783,8 +783,13 @@ end
     @inferred findlast(doc, "root")
 
     go = readxml(joinpath(dirname(@__FILE__), "go.sample.xml"))
+    go_uri =  "http://www.geneontology.org/dtds/go.dtd#"
     @test find(root(go), "/go:go") == [root(go)]
     @test findfirst(root(go), "/go:go") === root(go)
+    @test findlast(root(go), "/go:go") === root(go)
+    @test find(root(go), "/g:go", ["g" => go_uri]) == [root(go)]
+    @test findfirst(root(go), "/g:go", ["g" => go_uri]) === root(go)
+    @test findlast(root(go), "/g:go", ["g" => go_uri]) === root(go)
     @test name.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
     @test find(root(go), "/go:go/rdf:RDF/go:term") == find(root(go), "//go:term")
 end

@@ -64,17 +64,19 @@ function Base.findlast(doc::Document, xpath::AbstractString)
 end
 
 """
-    find(node::Node, xpath::AbstractString)
+    find(node::Node, xpath::AbstractString, [ns=namespaces(node)])
 
 Find nodes matching `xpath` XPath query starting from `node`.
+
+The `ns` argument is an iterator of namespace prefix and URI pairs.
 """
-function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
+function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))::Vector{Node}
     context_ptr = new_xpath_context(document(node))
     if context_ptr == C_NULL
         throw_xml_error()
     end
-    for (prefix, uri) in namespaces(node)
-        ret = register_namespace(context_ptr, prefix, uri)
+    for (prefix, uri) in ns
+        ret = register_namespace!(context_ptr, prefix, uri)
         @assert ret == 0
     end
     result_ptr = eval_xpath(node, context_ptr, xpath)
@@ -97,23 +99,23 @@ function Base.find(node::Node, xpath::AbstractString)::Vector{Node}
 end
 
 """
-    findfirst(node::Node, xpath::AbstractString)
+    findfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])
 
 Find the first node matching `xpath` XPath query starting from `node`.
 """
-function Base.findfirst(node::Node, xpath::AbstractString)
+function Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node))
     # string("(", xpath, ")[position()=1]") may be faster
-    return first(find(node, xpath))
+    return first(find(node, xpath, ns))
 end
 
 """
-    findlast(node::Node, xpath::AbstractString)
+    findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])
 
 Find the last node matching `xpath` XPath query starting from `node`.
 """
-function Base.findlast(node::Node, xpath::AbstractString)
+function Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node))
     # string("(", xpath, ")[position()=last()]") may be faster
-    return last(find(node, xpath))
+    return last(find(node, xpath, ns))
 end
 
 function new_xpath_context(doc)
@@ -125,7 +127,7 @@ function new_xpath_context(doc)
     return context_ptr
 end
 
-function register_namespace(context_ptr, prefix, uri)
+function register_namespace!(context_ptr, prefix, uri)
     ret = ccall(
         (:xmlXPathRegisterNs, libxml2),
         Cint,
