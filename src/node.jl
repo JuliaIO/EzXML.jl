@@ -457,16 +457,16 @@ function traverse_tree(f, root_ptr)
     n_nodes = 0
     cur_ptr = root_ptr
     while cur_ptr != C_NULL
-        n_nodes += 1
         f(cur_ptr)
+        n_nodes += 1
         cur_str = unsafe_load(cur_ptr)
         if cur_str.typ == ELEMENT_NODE
             # Attributes of element nodes aren't attached as `children` nodes.
             elm_str = unsafe_load(convert(Ptr{_Element}, cur_ptr))
             prop_ptr = elm_str.properties
             while prop_ptr != C_NULL
-                n_nodes += traverse_tree(f, prop_ptr)
                 f(prop_ptr)
+                n_nodes += traverse_tree(f, prop_ptr)
                 prop_ptr = unsafe_load(prop_ptr).next
             end
         end
