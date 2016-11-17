@@ -812,6 +812,11 @@ end
         @test ismatch(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(root(doc)))
         @test ismatch(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(doc.node))
         @test ismatch(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
+
+        sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
+        reader = open(XMLReader, sample2)
+        @test ismatch(r"^EzXML.XMLReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
+        close(reader)
     end
 
     @testset "print" begin

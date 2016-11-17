@@ -17,6 +17,10 @@ type XMLReader
     end
 end
 
+function Base.show(io::IO, reader::XMLReader)
+    @printf(io, "EzXML.XMLReader(<%s@%p>)", repr(nodetype(reader)), reader.ptr)
+end
+
 # Reader type (enum xmlReaderTypes).
 if sizeof(Cint) == 2
     bitstype 16 ReaderType <: Integer
