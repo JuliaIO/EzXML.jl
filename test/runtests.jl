@@ -1,6 +1,9 @@
 using EzXML
 using Base.Test
 
+# Unit tests
+# ----------
+
 @testset "Error" begin
     for i in 1:21
         t = convert(EzXML.NodeType, i)
@@ -878,4 +881,63 @@ if is_unix()
             end
         end
     end
+end
+
+# Stress tests
+# ------------
+#
+# Check the memory usage using the top command or something.
+
+macro showprogress(name, loop)
+    push!(loop.args[2].args, :(if n % 1000 == 0; print('\r', rpad($(name), 12), round(Int, n / N * 100), "%"); end))
+    return :($loop; println())
+end
+
+if "stress" in ARGS
+    const N = 1_000_000
+
+    function parse_xml()
+        @showprogress "parse_xml" for n in 1:N
+            parsexml("""
+            <?xml version="1.0" encoding="UTF-8"?>
+            <root>
+                <child>text</child>
+                <child>text</child>
+                <child>text</child>
+            </root>
+            """)
+        end
+    end
+
+    function link_xml()
+        @showprogress "link_xml" for n in 1:N
+            doc = parsexml("""
+            <?xml version="1.0" encoding="UTF-8"?>
+            <root/>
+            """)
+            child = ElementNode("child")
+            link!(root(doc), child)
+            grandchild = ElementNode("grandchild")
+            link!(child, grandchild)
+        end
+    end
+
+    function unlink_xml()
+        @showprogress "unlink_xml" for n in 1:N
+            doc = parsexml("""
+            <?xml version="1.0" encoding="UTF-8"?>
+            <root>
+                <child>
+                    <grandchild attr="attribute value">text</grandchild>
+                </child>
+            </root>
+            """)
+            child = firstelement(root(doc))
+            unlink!(child)
+        end
+    end
+
+    parse_xml()
+    link_xml()
+    unlink_xml()
 end
