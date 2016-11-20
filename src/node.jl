@@ -789,6 +789,7 @@ end
 Link `child` at the end of children of `parent`.
 """
 function link!(parent::Node, child::Node)
+    check_topmost(child)
     ptr = ccall(
         (:xmlAddChild, libxml2),
         Ptr{_Node},
@@ -807,6 +808,7 @@ end
 Link `node` as the next sibling of `target`.
 """
 function linknext!(target::Node, node::Node)
+    check_topmost(node)
     node_ptr = ccall(
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
@@ -825,6 +827,7 @@ end
 Link `node` as the prev sibling of `target`.
 """
 function linkprev!(target::Node, node::Node)
+    check_topmost(node)
     node_ptr = ccall(
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},
@@ -835,6 +838,13 @@ function linkprev!(target::Node, node::Node)
     end
     update_owners!(node, target.owner)
     return node
+end
+
+function check_topmost(node::Node)
+    if node !== node.owner
+        throw(ArgumentError("the node is not a topmost one; must be unlinked first"))
+    end
+    return nothing
 end
 
 """

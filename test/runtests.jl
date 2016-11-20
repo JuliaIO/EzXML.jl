@@ -756,6 +756,23 @@ end
     delete!(c, "y:attr")
     @test !haskey(c, "y:attr")
     delete!(c, "z:attr")
+
+    # move <child/> of doc1 to doc2
+    doc1 = parsexml("<root><child/></root>")
+    doc2 = parsexml("<root/>")
+    child = firstelement(root(doc1))
+    @test_throws ArgumentError link!(root(doc2), child)
+    unlink!(child)
+    link!(root(doc2), child)
+    @test child ∉ eachnode(root(doc1))
+    @test child ∈ eachnode(root(doc2))
+
+    doc1 = parsexml("<root><child/></root>")
+    doc2 = parsexml("<root><target/></root>")
+    child = firstelement(root(doc1))
+    target = firstelement(root(doc2))
+    @test_throws ArgumentError linknext!(target, child)
+    @test_throws ArgumentError linkprev!(target, child)
 end
 
 @testset "XPath" begin
