@@ -954,7 +954,21 @@ if "stress" in ARGS
         end
     end
 
+    function swap_xml()
+        @showprogress "swap_xml" for n in 1:N
+            doc1 = parsexml("<a><b><c/></b></a>")
+            doc2 = parsexml("<a><b><c/></b></a>")
+            b1 = firstelement(root(doc1))
+            b2 = firstelement(root(doc2))
+            unlink!(b1)
+            link!(root(doc2), b1)
+            unlink!(b2)
+            link!(root(doc1), b2)
+        end
+    end
+
     parse_xml()
     link_xml()
     unlink_xml()
+    swap_xml()
 end
