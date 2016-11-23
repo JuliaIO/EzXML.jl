@@ -296,6 +296,35 @@ shell> cat out.xml
 
 ```
 
+An alternative way is using the `addelement!(<parent>, <child>, [<content>])`
+function, which is a shorthand of a sequence operations: `ElementNode(<child name>)`,
+`link!(<parent>, <child>)`, and optional `setcontent!(<child>, <content>)`. This
+is often handier in typical use:
+```jlcon
+julia> doc = XMLDocument()
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>))
+
+julia> setroot!(doc, ElementNode("root"))
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>))
+
+julia> for i in 1:3
+           c = addelement!(root(doc), "child")
+           c["id"] = string(i)
+       end
+
+julia> print(doc)
+<?xml version="1.0" encoding="UTF-8"?>
+<root><child id="1"/><child id="2"/><child id="3"/></root>
+
+julia> addelement!(root(doc), "lastchild", "some content")
+EzXML.Node(<ELEMENT_NODE@0x00007fd0c6ad7500>)
+
+julia> print(doc)
+<?xml version="1.0" encoding="UTF-8"?>
+<root><child id="1"/><child id="2"/><child id="3"/><lastchild>some content</lastchild></root>
+
+```
+
 XPath queries
 -------------
 
