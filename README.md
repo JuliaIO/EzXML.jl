@@ -150,7 +150,8 @@ Modifiers:
 * `linknext!(target_node, node)`: add a node next to a target node.
 * `linkprev!(target_node, node)`: add a node previous to a target node.
 * `unlink!(node)`: Unlink a node from its context (parent and siblings).
-* `addelement!(parent_node, name, content="")`: add a child element with content to a parent node.
+* `addelement!(parent_node, name)`: add a child element with no content to a parent node.
+* `addelement!(parent_node, name, content)`: add a child element with content to a parent node.
 
 Queries:
 * `find(doc|node, xpath)`: find all nodes that match an XPath query.

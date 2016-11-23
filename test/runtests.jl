@@ -493,13 +493,13 @@ end
         @test countnodes(root(doc)) === 0
         @test countelements(root(doc)) === 0
         @test countattributes(root(doc)) === 0
-        @test addelement!(root(doc), "c1") == root(doc)
+        @test addelement!(root(doc), "c1") === lastelement(root(doc))
         root(doc)["attr1"] = "1"
         @test countnodes(root(doc)) === 1
         @test countelements(root(doc)) === 1
         @test countelements(root(doc)) === 1
         @test countattributes(root(doc)) === 1
-        @test addelement!(root(doc), "c2", "some content") == root(doc)
+        @test addelement!(root(doc), "c2", "some content") === lastelement(root(doc))
         @test countnodes(root(doc)) === 2
         @test countelements(root(doc)) === 2
         @test_throws ArgumentError countattributes(doc.node)

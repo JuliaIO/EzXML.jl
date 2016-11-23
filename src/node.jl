@@ -866,11 +866,30 @@ function unlink!(node::Node)
 end
 
 """
-    addelement!(parent::Node, name::AbstractString, content::AbstractString="")
+    addelement!(parent::Node, name::AbstractString)
 
-Add a new child element of `name` with `content` to `parent`.
+Add a new child element of `name` with no content to `parent` and return the new element.
 """
-function addelement!(parent::Node, name::AbstractString, content::AbstractString="")
+function addelement!(parent::Node, name::AbstractString)
+    ns_ptr = C_NULL
+    content_ptr = C_NULL
+    node_ptr = ccall(
+        (:xmlNewTextChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
+        parent.ptr, ns_ptr, name, content_ptr)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
+"""
+    addelement!(parent::Node, name::AbstractString, content::AbstractString)
+
+Add a new child element of `name` with `content` to `parent` and return the new element.
+"""
+function addelement!(parent::Node, name::AbstractString, content::AbstractString)
     ns_ptr = C_NULL
     node_ptr = ccall(
         (:xmlNewTextChild, libxml2),
@@ -880,7 +899,7 @@ function addelement!(parent::Node, name::AbstractString, content::AbstractString
     if node_ptr == C_NULL
         throw_xml_error()
     end
-    return parent
+    return Node(node_ptr)
 end
 
 # Update owners of the `root` tree.  NOTE: This function must not throw an
