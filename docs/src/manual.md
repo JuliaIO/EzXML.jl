@@ -412,8 +412,8 @@ EzXML.XMLReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
 ```
 
 Iteration is advanced by the `done(<reader>)` method, which updates the current
-reading position of the reader and returns `false` when there is al least one
-node to read from the stram:
+reading position of the reader and returns `false` when there is at least one
+node to read from the stream:
 ```jlcon
 julia> done(reader)  # Read the 1st node.
 false
@@ -461,7 +461,7 @@ are two kinds of values that will be returned when reading an element node:
 indicates the reader just read an opening tag of an element node while the
 latter does the reader just read an ending tag of an element node.
 
-In addition to these functions, there are several functions that are specifict
+In addition to these functions, there are several functions that are specific
 to the streaming reader. The `depth(<rreader>)` function returns the depth of
 the current node. The `expandtree(<reader>)` function expands the current node
 into a complete subtree rooted at the node. This function is useful when you
