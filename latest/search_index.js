@@ -677,7 +677,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.addelement!",
     "category": "Function",
-    "text": "addelement!(parent::Node, name::AbstractString, content::AbstractString=\"\")\n\nAdd a new child element of name with content to parent.\n\n\n\n"
+    "text": "addelement!(parent::Node, name::AbstractString)\n\nAdd a new child element of name with no content to parent and return the new element.\n\n\n\naddelement!(parent::Node, name::AbstractString, content::AbstractString)\n\nAdd a new child element of name with content to parent and return the new element.\n\n\n\n"
 },
 
 {
