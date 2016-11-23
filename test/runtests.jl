@@ -583,7 +583,7 @@ end
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
     r1 = ElementNode("r1")
-    @test setroot!(doc, r1) == doc
+    @test setroot!(doc, r1) === r1
     @test hasroot(doc)
     @test root(doc) === r1
     @test_throws ArgumentError setroot!(doc, TextNode("some text"))

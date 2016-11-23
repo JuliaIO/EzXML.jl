@@ -244,7 +244,7 @@ Setting a root element to a document can be done by the `setroot!(<document>,
 <root>)` function:
 ```jlcon
 julia> setroot!(doc, r)
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>))
+EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -305,7 +305,7 @@ julia> doc = XMLDocument()
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>))
 
 julia> setroot!(doc, ElementNode("root"))
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>))
+EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>)
 
 julia> for i in 1:3
            c = addelement!(root(doc), "child")

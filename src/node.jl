@@ -868,7 +868,7 @@ end
 """
     addelement!(parent::Node, name::AbstractString)
 
-Add a new child element of `name` with no content to `parent` and return the new element.
+Add a new child element of `name` with no content to `parent` and return the new child element.
 """
 function addelement!(parent::Node, name::AbstractString)
     ns_ptr = C_NULL
@@ -887,7 +887,7 @@ end
 """
     addelement!(parent::Node, name::AbstractString, content::AbstractString)
 
-Add a new child element of `name` with `content` to `parent` and return the new element.
+Add a new child element of `name` with `content` to `parent` and return the new child element.
 """
 function addelement!(parent::Node, name::AbstractString, content::AbstractString)
     ns_ptr = C_NULL

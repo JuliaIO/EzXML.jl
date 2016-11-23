@@ -227,7 +227,7 @@ end
 """
     setroot!(doc::Document, node::Node)
 
-Set the root element of `doc` to `node`.
+Set the root element of `doc` to `node` and return the root element.
 """
 function setroot!(doc::Document, root::Node)
     if nodetype(root) != ELEMENT_NODE
@@ -243,5 +243,5 @@ function setroot!(doc::Document, root::Node)
         old_root = Node(old_root_ptr)
         update_owners!(old_root, old_root)
     end
-    return doc
+    return root
 end
