@@ -146,6 +146,7 @@ Constructors:
     * `AttributeNode(name, value)`: create an attribute node.
 
 Modifiers:
+* `setroot!(doc, node)`: set the root element of a document to a node.
 * `link!(parent_node, child_node)`: add a child node to a parent node.
 * `linknext!(target_node, node)`: add a node next to a target node.
 * `linkprev!(target_node, node)`: add a node previous to a target node.
