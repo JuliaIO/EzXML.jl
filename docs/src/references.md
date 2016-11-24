@@ -35,6 +35,7 @@ TextNode
 CommentNode
 CDataNode
 AttributeNode
+DTDNode
 ```
 
 Node types
@@ -78,9 +79,12 @@ isattribute(::Node)
 EzXML.istext(::Node)
 iscdata(::Node)
 iscomment(::Node)
+isdtd(::Node)
 countnodes(::Node)
 countelements(::Node)
 countattributes(::Node)
+systemID(::Node)
+externalID(::Node)
 ```
 
 Node modifiers
@@ -97,6 +101,7 @@ DOM tree accessors
 ```@docs
 document
 root
+dtd
 parentnode
 parentelement
 firstnode
@@ -114,6 +119,7 @@ elements
 eachattribute
 attributes
 hasroot
+hasdtd
 hasnode
 hasnextnode
 hasprevnode
@@ -130,6 +136,7 @@ DOM tree modifiers
 
 ```@docs
 setroot!
+setdtd!
 link!
 linknext!
 linkprev!
