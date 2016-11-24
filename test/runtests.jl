@@ -667,6 +667,7 @@ end
     @test setdtd!(doc, d2) === d2
     @test countnodes(doc.node) === 2
     @test dtd(doc) === d2
+    @test_throws ArgumentError setdtd!(doc, ElementNode("foo"))
 
     # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
     doc = XMLDocument()
