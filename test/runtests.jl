@@ -138,6 +138,8 @@ end
         """)
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test hasdtd(doc)
+        @test name(dtd(doc)) == "html"
 
         doc = parse(Document, """
         <html>
@@ -151,6 +153,7 @@ end
         """)
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test hasdtd(doc)
 
         doc = parse(Document, """
         <!DOCTYPE html>
@@ -324,6 +327,7 @@ end
     @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
+    @test name(n) == "open-hatch"
     @test_throws ArgumentError systemID(n)
     @test_throws ArgumentError externalID(n)
 
