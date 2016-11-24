@@ -230,7 +230,7 @@ end
 Set the root element of `doc` to `node` and return the root element.
 """
 function setroot!(doc::Document, root::Node)
-    if nodetype(root) != ELEMENT_NODE
+    if !iselement(root)
         throw(ArgumentError("not an element node"))
     end
     old_root_ptr = ccall(

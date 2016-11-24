@@ -767,7 +767,7 @@ end
 Count the number of attributes of `elem`.
 """
 function countattributes(elem::Node)
-    if nodetype(elem) != ELEMENT_NODE
+    if !iselement(elem)
         throw(ArgumentError("not an element node"))
     end
     n = 0
