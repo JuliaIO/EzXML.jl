@@ -321,6 +321,7 @@ end
 
     n = DTDNode("open-hatch")
     @test isa(n, Node)
+    @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
     @test_throws ArgumentError systemID(n)
@@ -329,6 +330,7 @@ end
     n = DTDNode("open-hatch",
                 "http://www.textuality.com/boilerplate/OpenHatch.xml")
     @test isa(n, Node)
+    @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
     @test systemID(n) == "http://www.textuality.com/boilerplate/OpenHatch.xml"
@@ -338,6 +340,7 @@ end
                 "http://www.textuality.com/boilerplate/OpenHatch.xml",
                 "-//Textuality//TEXT Standard open-hatch boilerplate//EN")
     @test isa(n, Node)
+    @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
     @test systemID(n) == "http://www.textuality.com/boilerplate/OpenHatch.xml"
@@ -397,6 +400,7 @@ end
     @test hasroot(doc)
     @test hasdtd(doc)
     @test isa(dtd(doc), Node)
+    @test isdtd(dtd(doc))
     @test dtd(doc) === dtd(doc)
     @test name(dtd(doc)) == "html"
     @test systemID(dtd(doc)) == "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"

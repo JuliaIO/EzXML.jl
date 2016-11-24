@@ -62,6 +62,7 @@ export
     # istext,
     iscdata,
     iscomment,
+    isdtd,
     hasdocument,
     document,
     name,
