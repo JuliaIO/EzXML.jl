@@ -249,11 +249,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.DTDNode",
+    "page": "References",
+    "title": "EzXML.DTDNode",
+    "category": "Function",
+    "text": "DTDNode(name, [systemID, [externalID]])\n\nCreate a DTD node with name, systemID, and externalID.\n\n\n\n"
+},
+
+{
     "location": "references.html#Constructors-1",
     "page": "References",
     "title": "Constructors",
     "category": "section",
-    "text": "XMLDocument\nHTMLDocument\nXMLDocumentNode\nHTMLDocumentNode\nElementNode\nTextNode\nCommentNode\nCDataNode\nAttributeNode"
+    "text": "XMLDocument\nHTMLDocument\nXMLDocumentNode\nHTMLDocumentNode\nElementNode\nTextNode\nCommentNode\nCDataNode\nAttributeNode\nDTDNode"
 },
 
 {
@@ -345,6 +353,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.isdtd-Tuple{EzXML.Node}",
+    "page": "References",
+    "title": "EzXML.isdtd",
+    "category": "Method",
+    "text": "isdtd(node::Node)\n\nReturn if node is a DTD node.\n\n\n\n"
+},
+
+{
     "location": "references.html#EzXML.countnodes-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.countnodes",
@@ -369,11 +385,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.systemID-Tuple{EzXML.Node}",
+    "page": "References",
+    "title": "EzXML.systemID",
+    "category": "Method",
+    "text": "systemID(node::Node)\n\nReturn the system ID of node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.externalID-Tuple{EzXML.Node}",
+    "page": "References",
+    "title": "EzXML.externalID",
+    "category": "Method",
+    "text": "externalID(node::Node)\n\nReturn the external ID of node.\n\n\n\n"
+},
+
+{
     "location": "references.html#Node-accessors-1",
     "page": "References",
     "title": "Node accessors",
     "category": "section",
-    "text": "nodetype(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nEzXML.istext(::Node)\niscdata(::Node)\niscomment(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)"
+    "text": "nodetype(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nEzXML.istext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
 },
 
 {
@@ -414,6 +446,14 @@ var documenterSearchIndex = {"docs": [
     "title": "EzXML.root",
     "category": "Function",
     "text": "root(doc::Document)\n\nReturn the root element of doc.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.dtd",
+    "page": "References",
+    "title": "EzXML.dtd",
+    "category": "Function",
+    "text": "dtd(doc::Document)\n\nReturn the DTD node of doc.\n\n\n\n"
 },
 
 {
@@ -553,6 +593,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.hasdtd",
+    "page": "References",
+    "title": "EzXML.hasdtd",
+    "category": "Function",
+    "text": "hasdtd(doc::Document)\n\nReturn if doc has a DTD node.\n\n\n\n"
+},
+
+{
     "location": "references.html#EzXML.hasnode",
     "page": "References",
     "title": "EzXML.hasnode",
@@ -629,7 +677,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "DOM tree accessors",
     "category": "section",
-    "text": "document\nroot\nparentnode\nparentelement\nfirstnode\nlastnode\nfirstelement\nlastelement\nnextnode\nprevnode\nnextelement\nprevelement\neachnode\nnodes\neachelement\nelements\neachattribute\nattributes\nhasroot\nhasnode\nhasnextnode\nhasprevnode\nhaselement\nhasnextelement\nhasprevelement\nhasdocument\nhasparentnode\nhasparentelement"
+    "text": "document\nroot\ndtd\nparentnode\nparentelement\nfirstnode\nlastnode\nfirstelement\nlastelement\nnextnode\nprevnode\nnextelement\nprevelement\neachnode\nnodes\neachelement\nelements\neachattribute\nattributes\nhasroot\nhasdtd\nhasnode\nhasnextnode\nhasprevnode\nhaselement\nhasnextelement\nhasprevelement\nhasdocument\nhasparentnode\nhasparentelement"
 },
 
 {
@@ -638,6 +686,14 @@ var documenterSearchIndex = {"docs": [
     "title": "EzXML.setroot!",
     "category": "Function",
     "text": "setroot!(doc::Document, node::Node)\n\nSet the root element of doc to node and return the root element.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.setdtd!",
+    "page": "References",
+    "title": "EzXML.setdtd!",
+    "category": "Function",
+    "text": "setdtd!(doc::Document, node::Node)\n\nSet the DTD node of doc to node and return the DTD node.\n\n\n\n"
 },
 
 {
@@ -685,7 +741,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "DOM tree modifiers",
     "category": "section",
-    "text": "setroot!\nlink!\nlinknext!\nlinkprev!\nunlink!\naddelement!"
+    "text": "setroot!\nsetdtd!\nlink!\nlinknext!\nlinkprev!\nunlink!\naddelement!"
 },
 
 {
