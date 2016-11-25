@@ -533,6 +533,51 @@ end
         "" => "",
         "xdc" => "http://www.xml.com/books"]
 
+    doc = parsexml("""
+    <root xmlns="http://xxx.com" xmlns:y="http://yyy.com">
+        <child y:foo="Y"/>
+    </root>
+    """)
+    child = firstelement(root(doc))
+    @test haskey(child, "y:foo")
+    @test !haskey(child, "foo")
+    @test child["y:foo"] == "Y"
+    @test_throws KeyError child["foo"]
+    child["foo"] = "X"
+    @test haskey(child, "foo")
+    @test child["foo"] == "X"
+    @test child["y:foo"] == "Y"
+
+    doc = parsexml("""
+    <root xmlns="http://xxx.com" xmlns:y="http://yyy.com">
+        <child y:foo="Y" foo="X"/>
+    </root>
+    """)
+    child = firstelement(root(doc))
+    @test child["foo"] == "X"
+    @test child["y:foo"] == "Y"
+    delete!(child, "foo")
+    @test !haskey(child, "foo")
+    @test haskey(child, "y:foo")
+    delete!(child, "y:foo")
+    @test !haskey(child, "foo")
+    @test !haskey(child, "y:foo")
+
+    doc = parsexml("""
+    <root xmlns="http://xxx.com" xmlns:y="http://yyy.com">
+        <child foo="X" y:foo="Y"/>
+    </root>
+    """)
+    child = firstelement(root(doc))
+    @test child["foo"] == "X"
+    @test child["y:foo"] == "Y"
+    delete!(child, "foo")
+    @test !haskey(child, "foo")
+    @test haskey(child, "y:foo")
+    delete!(child, "y:foo")
+    @test !haskey(child, "foo")
+    @test !haskey(child, "y:foo")
+
     # no namespace
     doc = parsexml("""
     <root></root>
@@ -801,18 +846,19 @@ end
     </root>
     """)
     c = firstelement(root(doc))
-    @test haskey(c, "attr")
+    @test !haskey(c, "attr")
     @test haskey(c, "x:attr")
     @test haskey(c, "y:attr")
     @test !haskey(c, "z:attr")
-    @test c["attr"] == c["x:attr"] == "x-attr"
+    @test c["x:attr"] == "x-attr"
     @test c["y:attr"] == "y-attr"
+    @test_throws KeyError c["attr"]
     @test_throws ArgumentError c["z:attr"]
     c = nextelement(c)
-    @test haskey(c, "attr")
+    @test !haskey(c, "attr")
     @test haskey(c, "x:attr")
     @test haskey(c, "y:attr")
-    @test c["attr"] == c["y:attr"] == "y-attr"
+    @test c["y:attr"] == "y-attr"
     @test c["x:attr"] == "x-attr"
     c = nextelement(c)
     c["x:attr"] = "x-attr"

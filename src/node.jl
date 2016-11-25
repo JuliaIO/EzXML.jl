@@ -1160,7 +1160,7 @@ function Base.getindex(node::Node, attr::AbstractString)
     i = searchindex(attr, ':')
     if i == 0
         str_ptr = ccall(
-            (:xmlGetProp, libxml2),
+            (:xmlGetNoNsProp, libxml2),
             Cstring,
             (Ptr{Void}, Cstring),
             node.ptr, attr)
@@ -1170,11 +1170,12 @@ function Base.getindex(node::Node, attr::AbstractString)
         if ns_ptr == C_NULL
             throw(ArgumentError("unknown namespace prefix: '$(prefix)'"))
         end
+        ncname = attr[i+1:end]
         str_ptr = ccall(
             (:xmlGetNsProp, libxml2),
             Cstring,
             (Ptr{Void}, Cstring, Cstring),
-            node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
+            node.ptr, ncname, unsafe_load(ns_ptr).href)
     end
     if str_ptr == C_NULL
         throw(KeyError(attr))
@@ -1187,21 +1188,22 @@ function Base.haskey(node::Node, attr::AbstractString)
     i = searchindex(attr, ':')
     if i == 0
         prop_ptr = ccall(
-            (:xmlHasProp, libxml2),
+            (:xmlHasNsProp, libxml2),
             Ptr{_Node},
-            (Ptr{Void}, Cstring),
-            node.ptr, attr)
+            (Ptr{Void}, Cstring, Cstring),
+            node.ptr, attr, C_NULL)
     else
         prefix = attr[1:i-1]
         ns_ptr = search_ns_ptr(node, prefix)
         if ns_ptr == C_NULL
             return false
         end
+        ncname = attr[i+1:end]
         prop_ptr = ccall(
             (:xmlHasNsProp, libxml2),
             Ptr{_Node},
             (Ptr{Void}, Cstring, Cstring),
-            node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
+            node.ptr, ncname, unsafe_load(ns_ptr).href)
     end
     return prop_ptr != C_NULL
 end
@@ -1222,6 +1224,7 @@ end
 function Base.delete!(node::Node, attr::AbstractString)
     i = searchindex(attr, ':')
     if i == 0
+        # This function handles attributes in no namespace.
         ccall(
             (:xmlUnsetProp, libxml2),
             Cint,
@@ -1229,12 +1232,13 @@ function Base.delete!(node::Node, attr::AbstractString)
             node.ptr, attr)
     else
         prefix = attr[1:i-1]
+        ncname = attr[i+1:end]
         ns_ptr = search_ns_ptr(node, prefix)
         ccall(
             (:xmlUnsetNsProp, libxml2),
             Cint,
             (Ptr{Void}, Ptr{Void}, Cstring),
-            node.ptr, ns_ptr, attr[i+1:end])
+            node.ptr, ns_ptr, ncname)
     end
     # ignore the returned value
     return node
