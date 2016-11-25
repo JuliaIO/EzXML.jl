@@ -499,8 +499,8 @@ function make_dtd_node(name, systemID, externalID)
 end
 
 
-# DOM
-# ---
+# Tree traversal
+# --------------
 
 # Apply `f` to all nodes rooted at `root_ptr`.
 function traverse_tree(f, root_ptr)
@@ -543,7 +543,6 @@ end
 Return if `node` has a parent node.
 """
 function hasparentnode(node::Node)
-    @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).parent != C_NULL
 end
 
@@ -565,7 +564,6 @@ end
 Return if `node` has a parent node.
 """
 function hasparentelement(node::Node)
-    @assert node.ptr != C_NULL
     parent_ptr = unsafe_load(node.ptr).parent
     if parent_ptr == C_NULL
         return false
@@ -591,7 +589,6 @@ end
 Return if `node` has a child node.
 """
 function hasnode(node::Node)
-    @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).children != C_NULL
 end
 
@@ -625,7 +622,6 @@ end
 Return if `node` has a child element.
 """
 function haselement(node::Node)
-    @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlFirstElementChild, libxml2),
         Ptr{_Node},
@@ -674,7 +670,6 @@ end
 Return if `node` has a next node.
 """
 function hasnextnode(node::Node)
-    @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).next != C_NULL
 end
 
@@ -696,7 +691,6 @@ end
 Return if `node` has a previous node.
 """
 function hasprevnode(node::Node)
-    @assert node.ptr != C_NULL
     return unsafe_load(node.ptr).prev != C_NULL
 end
 
@@ -718,7 +712,6 @@ end
 Return if `node` has a next node.
 """
 function hasnextelement(node::Node)
-    @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlNextElementSibling, libxml2),
         Ptr{_Node},
@@ -750,7 +743,6 @@ end
 Return if `node` has a previous node.
 """
 function hasprevelement(node::Node)
-    @assert node.ptr != C_NULL
     ptr = ccall(
         (:xmlPreviousElementSibling, libxml2),
         Ptr{_Node},
@@ -786,7 +778,6 @@ end
 Count the number of child nodes of `parent`.
 """
 function countnodes(parent::Node)
-    @assert parent.ptr != C_NULL
     n = 0
     cur_ptr = unsafe_load(parent.ptr).children
     while cur_ptr != C_NULL
@@ -802,7 +793,6 @@ end
 Count the number of child elements of `parent`.
 """
 function countelements(parent::Node)
-    @assert parent.ptr != C_NULL
     n = ccall(
         (:xmlChildElementCount, libxml2),
         Culong,
