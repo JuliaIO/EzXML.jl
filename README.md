@@ -63,101 +63,51 @@ end
 Quick reference
 ---------------
 
+See the [reference page](https://bicycle1885.github.io/EzXML.jl/latest/references.html) or docstrings for more details.
+
 Types:
 * `Document`: an XML/HTML document
 * `Node`: an XML/HTML node including elements, attributes, texts, etc.
 * `XMLError`: an error happened in libxml2
+* `XMLReader`: a streaming XML reader
 
 IO:
-* `read(Document, filename)`: read an XML/HTML document from a file.
-* `readxml(filename)`: read an XML document from file.
-* `readhtml(filename)`: read an HTML document from file.
-* `write(filename, doc)`: write a document to a file.
-* `parse(Document, string)`: parse an XML/HTML string.
-* `parsexml(string)`: parse an XML string.
-* `parsehtml(string)`: parse an HTML string.
-* `print(io, doc)`: print a document.
+* From file: `read(Document, filename)`, `readxml(filename)`, `readhtml(filename)`
+* From string or byte array: `parse(Document, string)`, `parsexml(string)`, `parsehtml(string)`
+* To file: `write(filename, doc)`
+* To stream: `print(io, doc)`
 
 Accessors:
-* Node information:
-    * `nodetype(node)`: return the type of a node.
-    * `name(node)`: return the name of a node.
-    * `content(node)`: return the content of a node.
-    * `document(node)`: return the document of a node.
-* Attributes:
-    * `node[name]`: return an attribute value of a node by name.
-    * `node[name] = value`: set a value to an attribute of a node.
-    * `haskey(node, name)`: return if a node has an attribute name.
-    * `delete!(node, name)`: delete an attribute of a node.
-* Tree traversal:
-    * `root(doc)`: return the root element of a document.
-    * `firstnode(node)`: return the first child node of a node.
-    * `lastnode(node)`: return the last child node of a node.
-    * `firstelement(node)`: return the first child element of a node.
-    * `lastelement(node)`: return the last child element of a node.
-    * `nextnode(node)`: return the next node of a node.
-    * `prevnode(node)`: return the previous node of a node.
-    * `nextelement(node)`: return the next element of a node.
-    * `prevelement(node)`: return the previous element of a node.
-    * `parentnode(node)`: return the parent node of a node.
-    * `parentelement(node)`: return the parent element of a node.
+* Node information: `nodetype(node)`, `name(node)`, `content(node)`
+* Document: `root(doc)`, `dtd(doc)`, `hasroot(doc)`, `hasdtd(doc)`, `setroot!(doc, element_node)`, `setdtd!(doc, dtd_node)`
+* Attributes: `node[name]`, `node[name] = value`, `haskey(node, name)`, `delete!(node, name)`
 * Node predicate:
-    * `hasroot(doc)`: return if a document has a root element.
-    * `hasdocument(node)`: return if a node has an associated document.
-    * `hasnode(node)`: return if a node has a child node.
-    * `haselement(node)`: return if a node has a child element.
-    * `hasnextnode(node)`: return if a node has a next node.
-    * `hasprevnode(node)`: return if a node has a previous node.
-    * `hasnextelement(node)`: return if a node has a next element.
-    * `hasprevelement(node)`: return if a node has a previous element.
-    * `hasparentnode(node)`: return if a node has a parent node.
-    * `hasparentelement(node)`: return if a node has a parent element.
-    * `iselement(node)`: return if a node is an element node.
-    * `isattribute(node)`: return if a node is an attribute node.
-    * `istext(node)`: return if a node is a text node.
-    * `iscdata(node)`: return if a node is a CDATA node.
-    * `iscomment(node)`: return if a node is a comment node.
+    * Document: `hasdocument(node)`
+    * Parent: `hasparentnode(node)`, `hasparentelement(node)`
+    * Child: `hasnode(node)`, `haselement(node)`
+    * Sibling: `hasnextnode(node)`, `hasprevnode(node)`, `hasnextelement(node)`, `hasprevelement(node)`
+    * Node type: `iselement(node)`, `isattribute(node)`, `EzXML.istext(node)`, `iscdata(node)`, `iscomment(node)`, `isdtd(node)`
+* Tree traversal:
+    * Document: `document(node)`
+    * Parent: `parentnode(node)`, `parentelement(node)`
+    * Child: `firstnode(node)`, `lastnode(node)`, `firstelement(node)`, `lastelement(node)`
+    * Sibling: `nextnode(node)`, `prevnode(node)`, `nextelement(node)`, `prevelement(node)`
+* Tree modifiers:
+    * Link: `link!(parent_node, child_node)`, `linknext!(target_node, node)`, `linkprev!(target_node, node)`
+    * Unlink: `unlink!(node)`
+    * Create: `addelement!(parent_node, name, [content])`
 * Iterators:
-    * `eachnode(node)`: create an iterator over child nodes.
-    * `eachelement(node)`: create an iterator over child elements.
-    * `eachattribute(node)`: create an iterator over attribute nodes.
-    * `nodes(node)`: create a vector of child nodes.
-    * `elements(node)`: create a vector of child elements.
-    * `attributes(node)`: create a vector of attribute nodes.
-* Counters:
-    * `countnodes(node)`: count the number of child nodes.
-    * `countelements(node)`: count the number of child elements.
-    * `countattributes(node)`: count the number of attributes.
-* Namespaces:
-    * `namespace(node)`: return the namespace of a node.
-    * `namespaces(node)`: create a vector of namespaces applying to a node.
+    * Iterator: `eachnode(node)`, `eachelement(node)`, `eachattribute(node)`
+    * Vector: `nodes(node)`, `elements(node)`, `attributes(node)`
+* Counters: `countnodes(node)`, `countelements(node)`, `countattributes(node)`
+* Namespaces: `namespace(node)`, `namespaces(node)`
 
 Constructors:
-* `Document` type:
-    * `XMLDocument(version="1.0")`: create an XML document.
-    * `HTMLDocument(uri=nothing, externalID=nothing)`: create an HTML document.
-* `Node` type:
-    * `XMLDocumentNode(version="1.0")`: create an XML document node.
-    * `HTMLDocumentNode(uri, externalID)`: create an HTML document node.
-    * `ElementNode(name)`: create an element node.
-    * `TextNode(content)`: create a text node.
-    * `CommentNode(content)`: create a comment node.
-    * `CDataNode(content)`: create a CDATA node.
-    * `AttributeNode(name, value)`: create an attribute node.
-
-Modifiers:
-* `setroot!(doc, node)`: set the root element of a document to a node.
-* `link!(parent_node, child_node)`: add a child node to a parent node.
-* `linknext!(target_node, node)`: add a node next to a target node.
-* `linkprev!(target_node, node)`: add a node previous to a target node.
-* `unlink!(node)`: Unlink a node from its context (parent and siblings).
-* `addelement!(parent_node, name)`: add a child element with no content to a parent node.
-* `addelement!(parent_node, name, content)`: add a child element with content to a parent node.
+* `Document` type: `XMLDocument(version="1.0")`, `HTMLDocument(uri=nothing, externalID=nothing)`
+* `Node` type: `XMLDocumentNode(version="1.0")`, `HTMLDocumentNode(uri, externalID)`, `ElementNode(name)`, `TextNode(content)`, `CommentNode(content)`, `CDataNode(content)`, `AttributeNode(name, value)`, `DTDNode(name, [systemID, [externalID]])`
 
 Queries:
-* `find(doc|node, xpath)`: find all nodes that match an XPath query.
-* `findfirst(doc|node, xpath)`: find the first matching node.
-* `findlast(doc|node, xpath)`: find the last matching node.
+* XPath: `find(doc|node, xpath)`, `findfirst(doc|node, xpath)`, `findlast(doc|node, xpath)`
 
 Examples
 --------
