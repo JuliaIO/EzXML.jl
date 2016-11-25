@@ -622,12 +622,12 @@ end
 Return if `node` has a child element.
 """
 function haselement(node::Node)
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlFirstElementChild, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return ptr != C_NULL
+    return node_ptr != C_NULL
 end
 
 """
@@ -639,12 +639,12 @@ function firstelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlFirstElementChild, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return Node(ptr)
+    return Node(node_ptr)
 end
 
 """
@@ -656,12 +656,12 @@ function lastelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlLastElementChild, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return Node(ptr)
+    return Node(node_ptr)
 end
 
 """
@@ -712,12 +712,12 @@ end
 Return if `node` has a next node.
 """
 function hasnextelement(node::Node)
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlNextElementSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return ptr != C_NULL
+    return node_ptr != C_NULL
 end
 
 """
@@ -729,12 +729,12 @@ function nextelement(node::Node)
     if !hasnextelement(node)
         throw(ArgumentError("no next elements"))
     end
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlNextElementSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return Node(ptr)
+    return Node(node_ptr)
 end
 
 """
@@ -743,12 +743,12 @@ end
 Return if `node` has a previous node.
 """
 function hasprevelement(node::Node)
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlPreviousElementSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return ptr != C_NULL
+    return node_ptr != C_NULL
 end
 
 """
@@ -760,12 +760,12 @@ function prevelement(node::Node)
     if !hasprevelement(node)
         throw(ArgumentError("no previous elements"))
     end
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlPreviousElementSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
         node.ptr)
-    return Node(ptr)
+    return Node(node_ptr)
 end
 
 
@@ -830,12 +830,12 @@ Link `child` at the end of children of `parent`.
 """
 function link!(parent::Node, child::Node)
     check_topmost(child)
-    ptr = ccall(
+    node_ptr = ccall(
         (:xmlAddChild, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}),
         parent.ptr, child.ptr)
-    if ptr == C_NULL
+    if node_ptr == C_NULL
         throw_xml_error()
     end
     update_owners!(child, parent.owner)
@@ -1086,15 +1086,15 @@ end
 Return the node content of `node`.
 """
 function content(node::Node)
-    ptr = ccall(
+    str_ptr = ccall(
         (:xmlNodeGetContent, libxml2),
         Cstring,
         (Ptr{Void},),
         node.ptr)
-    if ptr == C_NULL
+    if str_ptr == C_NULL
         throw_xml_error()
     end
-    return unsafe_wrap(String, ptr, true)
+    return unsafe_wrap(String, str_ptr, true)
 end
 
 """
@@ -1142,7 +1142,7 @@ end
 function Base.getindex(node::Node, attr::AbstractString)
     i = searchindex(attr, ':')
     if i == 0
-        ptr = ccall(
+        str_ptr = ccall(
             (:xmlGetProp, libxml2),
             Cstring,
             (Ptr{Void}, Cstring),
@@ -1153,25 +1153,25 @@ function Base.getindex(node::Node, attr::AbstractString)
         if ns_ptr == C_NULL
             throw(ArgumentError("unknown namespace prefix: '$(prefix)'"))
         end
-        ptr = ccall(
+        str_ptr = ccall(
             (:xmlGetNsProp, libxml2),
             Cstring,
             (Ptr{Void}, Cstring, Cstring),
             node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
     end
-    if ptr == C_NULL
+    if str_ptr == C_NULL
         throw(KeyError(attr))
     end
     # take ownership
-    return unsafe_wrap(String, ptr, true)
+    return unsafe_wrap(String, str_ptr, true)
 end
 
 function Base.haskey(node::Node, attr::AbstractString)
     i = searchindex(attr, ':')
     if i == 0
-        ptr = ccall(
+        prop_ptr = ccall(
             (:xmlHasProp, libxml2),
-            Ptr{Void},
+            Ptr{_Node},
             (Ptr{Void}, Cstring),
             node.ptr, attr)
     else
@@ -1180,23 +1180,23 @@ function Base.haskey(node::Node, attr::AbstractString)
         if ns_ptr == C_NULL
             return false
         end
-        ptr = ccall(
+        prop_ptr = ccall(
             (:xmlHasNsProp, libxml2),
-            Ptr{Void},
+            Ptr{_Node},
             (Ptr{Void}, Cstring, Cstring),
             node.ptr, attr[i+1:end], unsafe_load(ns_ptr).href)
     end
-    return ptr != C_NULL
+    return prop_ptr != C_NULL
 end
 
 function Base.setindex!(node::Node, val, attr::AbstractString)
     # This function handles QName properly.
-    ptr = ccall(
+    prop_ptr = ccall(
         (:xmlSetProp, libxml2),
-        Ptr{Void},
+        Ptr{_Node},
         (Ptr{Void}, Cstring, Cstring),
         node.ptr, attr, string(val))
-    if ptr == C_NULL
+    if prop_ptr == C_NULL
         throw_xml_error()
     end
     return node
@@ -1244,9 +1244,7 @@ function namespace(node::Node)
     if ns_ptr == C_NULL
         throw(ArgumentError("no namespace"))
     end
-    ptr = unsafe_load(ns_ptr).href
-    @assert ptr != C_NULL
-    return unsafe_string(ptr)
+    return unsafe_string(unsafe_load(ns_ptr).href)
 end
 
 """
@@ -1284,6 +1282,7 @@ function namespaces(node::Node)
     return nslist
 end
 
+# Search a namespace pointer of `prefix` applied to `node`.
 function search_ns_ptr(node::Node, prefix::AbstractString)
     ns_ptr = ccall(
         (:xmlSearchNs, libxml2),
