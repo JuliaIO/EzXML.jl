@@ -70,6 +70,7 @@ Node accessors
 
 ```@docs
 nodetype(::Node)
+nodepath(::Node)
 name(::Node)
 content(::Node)
 namespace(::Node)

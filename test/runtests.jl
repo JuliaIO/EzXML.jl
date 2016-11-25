@@ -382,6 +382,7 @@ end
     @test root(doc) === root(doc)
     @test hash(root(doc)) === hash(root(doc))
     @test nodetype(root(doc)) === EzXML.ELEMENT_NODE
+    @test nodepath(root(doc)) == "/root"
     @test name(root(doc)) == "root"
     @test content(root(doc)) == ""
     @test document(root(doc)) == doc

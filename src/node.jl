@@ -978,6 +978,23 @@ function nodetype(node::Node)
 end
 
 """
+    nodepath(node::Node)
+
+Return the path of `node`.
+"""
+function nodepath(node::Node)
+    str_ptr = ccall(
+        (:xmlGetNodePath, libxml2),
+        Cstring,
+        (Ptr{Void},),
+        node.ptr)
+    if str_ptr == C_NULL
+        throw_xml_error()
+    end
+    return unsafe_wrap(String, str_ptr, true)
+end
+
+"""
     iselement(node::Node)
 
 Return if `node` is an element node.

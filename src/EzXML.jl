@@ -57,6 +57,7 @@ export
     dtd,
     setdtd!,
     nodetype,
+    nodepath,
     iselement,
     isattribute,
     # istext,
