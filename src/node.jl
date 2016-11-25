@@ -163,6 +163,26 @@ immutable _Attribute
     psvi::Ptr{Void}
 end
 
+# Fields of DTD node (_xmlDtd).
+immutable _Dtd
+    _private::Ptr{Void}
+    typ::Cint
+    name::Cstring
+    children::Ptr{_Node}
+    last::Ptr{_Node}
+    parent::Ptr{_Node}
+    next::Ptr{_Node}
+    prev::Ptr{_Node}
+    doc::Ptr{_Node}
+
+    notations::Ptr{Void}
+    elements::Ptr{Void}
+    attributes::Ptr{Void}
+    entities::Ptr{Void}
+    externalID::Cstring
+    systemID::Cstring
+    pentities::Ptr{Void}
+end
 
 # Node type
 # ---------
@@ -442,6 +462,36 @@ function AttributeNode(name::AbstractString, value::AbstractString)
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cstring),
         doc_ptr, name, value)
+    if node_ptr == C_NULL
+        throw_xml_error()
+    end
+    return Node(node_ptr)
+end
+
+"""
+    DTDNode(name, [systemID, [externalID]])
+
+Create a DTD node with `name`, `systemID`, and `externalID`.
+"""
+function DTDNode(name::AbstractString, systemID::AbstractString, externalID::AbstractString)
+    return make_dtd_node(name, systemID, externalID)
+end
+
+function DTDNode(name::AbstractString, systemID::AbstractString)
+    return make_dtd_node(name, systemID, C_NULL)
+end
+
+function DTDNode(name::AbstractString)
+    return make_dtd_node(name, C_NULL, C_NULL)
+end
+
+function make_dtd_node(name, systemID, externalID)
+    doc_ptr = C_NULL
+    node_ptr = ccall(
+        (:xmlCreateIntSubset, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Cstring, Cstring, Cstring),
+        doc_ptr, name, externalID, systemID)
     if node_ptr == C_NULL
         throw_xml_error()
     end
@@ -983,6 +1033,15 @@ function iscomment(node::Node)
 end
 
 """
+    isdtd(node::Node)
+
+Return if `node` is a DTD node.
+"""
+function isdtd(node::Node)
+    return nodetype(node) === DTD_NODE
+end
+
+"""
     hasdocument(node::Node)
 
 Return if `node` belongs to a document.
@@ -1060,6 +1119,30 @@ function setcontent!(node::Node, content::AbstractString)
         (Ptr{Void}, Cstring, Cint),
         node.ptr, content, sizeof(content))
     return node
+end
+
+"""
+    systemID(node::Node)
+
+Return the system ID of `node`.
+"""
+function systemID(node::Node)
+    if !isdtd(node)
+        throw(ArgumentError("not a DTD node"))
+    end
+    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, node.ptr)).systemID)
+end
+
+"""
+    externalID(node::Node)
+
+Return the external ID of `node`.
+"""
+function externalID(node::Node)
+    if !isdtd(node)
+        throw(ArgumentError("not a DTD node"))
+    end
+    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, node.ptr)).externalID)
 end
 
 

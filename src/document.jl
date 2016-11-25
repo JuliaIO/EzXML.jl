@@ -245,3 +245,54 @@ function setroot!(doc::Document, root::Node)
     end
     return root
 end
+
+"""
+    hasdtd(doc::Document)
+
+Return if `doc` has a DTD node.
+"""
+function hasdtd(doc::Document)
+    dtd_ptr = ccall(
+        (:xmlGetIntSubset, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        doc.node.ptr)
+    return dtd_ptr != C_NULL
+end
+
+"""
+    dtd(doc::Document)
+
+Return the DTD node of `doc`.
+"""
+function dtd(doc::Document)
+    if !hasdtd(doc)
+        throw(ArgumentError("no DTD"))
+    end
+    dtd_ptr = ccall(
+        (:xmlGetIntSubset, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        doc.node.ptr)
+    return Node(dtd_ptr)
+end
+
+"""
+    setdtd!(doc::Document, node::Node)
+
+Set the DTD node of `doc` to `node` and return the DTD node.
+"""
+function setdtd!(doc::Document, node::Node)
+    if !isdtd(node)
+        throw(ArgumentError("not a DTD node"))
+    elseif hasdtd(doc)
+        unlink!(dtd(doc))
+    end
+    # Insert `node` as the first child of `doc.node`.
+    if hasnode(doc.node)
+        linkprev!(firstnode(doc.node), node)
+    else
+        link!(doc.node, node)
+    end
+    return node
+end

@@ -138,6 +138,8 @@ end
         """)
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test hasdtd(doc)
+        @test name(dtd(doc)) == "html"
 
         doc = parse(Document, """
         <html>
@@ -151,6 +153,7 @@ end
         """)
         @test isa(doc, Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test hasdtd(doc)
 
         doc = parse(Document, """
         <!DOCTYPE html>
@@ -319,6 +322,34 @@ end
     @test isattribute(n)
     @test_throws ArgumentError document(n)
 
+    n = DTDNode("open-hatch")
+    @test isa(n, Node)
+    @test isdtd(n)
+    @test n.owner === n
+    @test nodetype(n) === EzXML.DTD_NODE
+    @test name(n) == "open-hatch"
+    @test_throws ArgumentError systemID(n)
+    @test_throws ArgumentError externalID(n)
+
+    n = DTDNode("open-hatch",
+                "http://www.textuality.com/boilerplate/OpenHatch.xml")
+    @test isa(n, Node)
+    @test isdtd(n)
+    @test n.owner === n
+    @test nodetype(n) === EzXML.DTD_NODE
+    @test systemID(n) == "http://www.textuality.com/boilerplate/OpenHatch.xml"
+    @test_throws ArgumentError externalID(n)
+
+    n = DTDNode("open-hatch",
+                "http://www.textuality.com/boilerplate/OpenHatch.xml",
+                "-//Textuality//TEXT Standard open-hatch boilerplate//EN")
+    @test isa(n, Node)
+    @test isdtd(n)
+    @test n.owner === n
+    @test nodetype(n) === EzXML.DTD_NODE
+    @test systemID(n) == "http://www.textuality.com/boilerplate/OpenHatch.xml"
+    @test externalID(n) == "-//Textuality//TEXT Standard open-hatch boilerplate//EN"
+
     doc = XMLDocument()
     @test isa(doc, Document)
     @test doc.node.owner === doc.node
@@ -345,6 +376,7 @@ end
 @testset "Traversal" begin
     doc = parsexml("<root/>") 
     @test hasroot(doc)
+    @test !hasdtd(doc)
     @test isa(root(doc), Node)
     @test root(doc) == root(doc)
     @test root(doc) === root(doc)
@@ -358,6 +390,26 @@ end
     @test_throws ArgumentError parentnode(doc.node)
     @test hasparentnode(root(doc))
     @test parentnode(root(doc)) === doc.node
+    @test_throws ArgumentError dtd(doc)
+
+    doc = parsexml("""
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head><title>hello</title></head>
+        <body>Content</body>
+    </html>
+    """)
+    @test hasroot(doc)
+    @test hasdtd(doc)
+    @test isa(dtd(doc), Node)
+    @test isdtd(dtd(doc))
+    @test dtd(doc) === dtd(doc)
+    @test name(dtd(doc)) == "html"
+    @test systemID(dtd(doc)) == "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
+    @test externalID(dtd(doc)) == "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    @test parentnode(dtd(doc)) === doc.node
 
     doc = parse(Document, """
     <?xml version="1.0"?>
@@ -601,6 +653,21 @@ end
     @test content(el) == ""
     setcontent!(el, "some content")
     @test content(el) == "some content"
+
+    doc = XMLDocument()
+    @test countnodes(doc.node) === 0
+    d1 = DTDNode("hello", "hello.dtd")
+    @test setdtd!(doc, d1) === d1
+    @test countnodes(doc.node) === 1
+    @test dtd(doc) === d1
+    setroot!(doc, ElementNode("root"))
+    @test countnodes(doc.node) === 2
+    @test nextnode(d1) === root(doc)
+    d2 = DTDNode("hello", "hello2.dtd")
+    @test setdtd!(doc, d2) === d2
+    @test countnodes(doc.node) === 2
+    @test dtd(doc) === d2
+    @test_throws ArgumentError setdtd!(doc, ElementNode("foo"))
 
     # <e1>t1<e2>t2<e3 a1="val"/></e2></e1>
     doc = XMLDocument()
