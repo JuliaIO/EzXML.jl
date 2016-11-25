@@ -281,6 +281,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.nodepath-Tuple{EzXML.Node}",
+    "page": "References",
+    "title": "EzXML.nodepath",
+    "category": "Method",
+    "text": "nodepath(node::Node)\n\nReturn the path of node.\n\n\n\n"
+},
+
+{
     "location": "references.html#EzXML.name-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.name",
@@ -405,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "Node accessors",
     "category": "section",
-    "text": "nodetype(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nEzXML.istext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
+    "text": "nodetype(::Node)\nnodepath(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nEzXML.istext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
 },
 
 {
