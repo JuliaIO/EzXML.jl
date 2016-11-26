@@ -1013,6 +1013,15 @@ if is_unix()
                 end
             end
 
+            @testset "listlinks.jl" begin
+                try
+                    run(pipeline(`./listlinks.jl http://julialang.org/`, stdout=stdout))
+                    @test true
+                catch
+                    @test false
+                end
+            end
+
             @testset "graphml.jl" begin
                 mktemp() do path, _
                     write(path, """
