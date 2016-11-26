@@ -994,6 +994,7 @@ if is_unix()
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do
             stdout = DevNull
+
             @testset "primates.jl" begin
                 try
                     run(pipeline(`./primates.jl`, stdout=stdout))
@@ -1002,12 +1003,39 @@ if is_unix()
                     @test false
                 end
             end
+
             @testset "julia2xml.jl" begin
                 try
                     run(pipeline(pipeline(`echo "1 + sum([2,3])"`, `./julia2xml.jl`), stdout=stdout))
                     @test true
                 catch
                     @test false
+                end
+            end
+
+            @testset "graphml.jl" begin
+                mktemp() do path, _
+                    write(path, """
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                             xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+                             http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+                        <graph id="G" edgedefault="undirected">
+                            <node id="n0"/>
+                            <node id="n1"/>
+                            <node id="n2"/>
+                            <edge source="n0" target="n2"/>
+                            <edge source="n1" target="n2"/>
+                        </graph>
+                    </graphml>
+                    """)
+                    try
+                        run(pipeline(`./graphml.jl $(path)`, stdout=stdout))
+                        @test true
+                    catch
+                        @test false
+                    end
                 end
             end
         end
