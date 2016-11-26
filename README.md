@@ -8,7 +8,7 @@ EzXML.jl - XML/HTML tools for primates
 [![Appveyor Status][appveyor-img]][appveyor-url]
 [![codecov.io][codecov-img]][codecov-url]
 
-**Still in alpha-quality package; the APIs may change in the future.**
+**Still in beta-quality package; the APIs may change in the future.**
 
 EzXML.jl is a package to handle XML/HTML documents for primates.
 
