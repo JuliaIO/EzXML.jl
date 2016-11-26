@@ -112,10 +112,10 @@ Queries:
 Examples
 --------
 
-* [primates.jl](/example/primates.jl): "primates" example shown above.
-* [julia2xml.jl](/example/julia2xml.jl): convert a Julia expression to XML.
-* [issues.jl](/example/issues.jl): list latest issues of the Julia repository.
-* [graphml.jl](/example/graphml.jl): read a GraphML file with streaming reader.
+* [primates.jl](/example/primates.jl): Run "primates" example shown above.
+* [julia2xml.jl](/example/julia2xml.jl): Convert a Julia expression to XML.
+* [listlinks.jl](/example/listlinks.jl): List all links in an HTML document.
+* [graphml.jl](/example/graphml.jl): Read a GraphML file with streaming reader.
 
 Other XML/HTML packages in Julia
 --------------------------------
