@@ -8,17 +8,17 @@ end
 """
 A streaming XML reader type.
 """
-type XMLReader
+type StreamReader
     ptr::Ptr{_TextReader}
 
-    function XMLReader(ptr::Ptr{_TextReader})
+    function StreamReader(ptr::Ptr{_TextReader})
         @assert ptr != C_NULL
         return new(ptr)
     end
 end
 
-function Base.show(io::IO, reader::XMLReader)
-    @printf(io, "EzXML.XMLReader(<%s@%p>)", repr(nodetype(reader)), reader.ptr)
+function Base.show(io::IO, reader::StreamReader)
+    @printf(io, "EzXML.StreamReader(<%s@%p>)", repr(nodetype(reader)), reader.ptr)
 end
 
 # Reader type (enum xmlReaderTypes).
@@ -113,7 +113,7 @@ function Base.print(io::IO, x::ReaderType)
     print(io, convert(Cint, x))
 end
 
-function Base.open(::Type{XMLReader}, filename::AbstractString)
+function Base.open(::Type{StreamReader}, filename::AbstractString)
     encoding = C_NULL
     options = 0
     reader_ptr = ccall(
@@ -124,10 +124,10 @@ function Base.open(::Type{XMLReader}, filename::AbstractString)
     if reader_ptr == C_NULL
         throw_xml_error()
     end
-    return XMLReader(reader_ptr)
+    return StreamReader(reader_ptr)
 end
 
-function Base.close(reader::XMLReader)
+function Base.close(reader::StreamReader)
     ccall(
         (:xmlFreeTextReader, libxml2),
         Void,
@@ -137,19 +137,19 @@ function Base.close(reader::XMLReader)
     return nothing
 end
 
-function Base.eltype(::Type{XMLReader})
+function Base.eltype(::Type{StreamReader})
     return ReaderType
 end
 
-function Base.iteratorsize(::Type{XMLReader})
+function Base.iteratorsize(::Type{StreamReader})
     return Base.SizeUnknown()
 end
 
-function Base.start(::XMLReader)
+function Base.start(::StreamReader)
     return nothing
 end
 
-function Base.done(reader::XMLReader, _=nothing)
+function Base.done(reader::StreamReader, _=nothing)
     ret = read_node(reader)
     if ret == 0
         return true
@@ -160,11 +160,11 @@ function Base.done(reader::XMLReader, _=nothing)
     end
 end
 
-function Base.next(reader::XMLReader, _)
+function Base.next(reader::StreamReader, _)
     return nodetype(reader), nothing
 end
 
-function Base.next(reader::XMLReader)
+function Base.next(reader::StreamReader)
     return nodetype(reader)
 end
 
@@ -178,11 +178,11 @@ function read_node(reader)
 end
 
 """
-    depth(reader::XMLReader)
+    depth(reader::StreamReader)
 
 Return the depth of the current node of `reader`.
 """
-function depth(reader::XMLReader)
+function depth(reader::StreamReader)
     ret = ccall(
         (:xmlTextReaderDepth, libxml2),
         Cint,
@@ -192,11 +192,11 @@ function depth(reader::XMLReader)
 end
 
 """
-    nodetype(reader::XMLReader)
+    nodetype(reader::StreamReader)
 
 Return the type of the current node of `reader`.
 """
-function nodetype(reader::XMLReader)
+function nodetype(reader::StreamReader)
     typ = ccall(
         (:xmlTextReaderNodeType, libxml2),
         Cint,
@@ -206,11 +206,11 @@ function nodetype(reader::XMLReader)
 end
 
 """
-    name(reader::XMLReader)
+    name(reader::StreamReader)
 
 Return the name of the current node of `reader`.
 """
-function name(reader::XMLReader)
+function name(reader::StreamReader)
     name_ptr = ccall(
         (:xmlTextReaderConstName, libxml2),
         Cstring,
@@ -223,11 +223,11 @@ function name(reader::XMLReader)
 end
 
 """
-    content(reader::XMLReader)
+    content(reader::StreamReader)
 
 Return the content of the current node of `reader`.
 """
-function content(reader::XMLReader)
+function content(reader::StreamReader)
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,
@@ -239,7 +239,7 @@ function content(reader::XMLReader)
     return unsafe_wrap(String, content_ptr, true)
 end
 
-function Base.getindex(reader::XMLReader, name::AbstractString)
+function Base.getindex(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
         Cstring,
@@ -249,11 +249,11 @@ function Base.getindex(reader::XMLReader, name::AbstractString)
 end
 
 """
-    namespace(reader::XMLReader)
+    namespace(reader::StreamReader)
 
 Return the namespace of the current node of `reader`.
 """
-function namespace(reader::XMLReader)
+function namespace(reader::StreamReader)
     ns_ptr = ccall(
         (:xmlTextReaderConstNamespaceUri, libxml2),
         Cstring,
@@ -266,12 +266,12 @@ function namespace(reader::XMLReader)
 end
 
 """
-    expandtree(reader::XMLReader)
+    expandtree(reader::StreamReader)
 
 Expand the current node of `reader` into a full subtree that will be available
 until the next read of node.
 """
-function expandtree(reader::XMLReader)
+function expandtree(reader::StreamReader)
     node_ptr = ccall(
         (:xmlTextReaderExpand, libxml2),
         Ptr{_Node},

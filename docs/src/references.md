@@ -7,7 +7,7 @@ Types
 ```@docs
 Document
 Node
-XMLReader
+StreamReader
 XMLError
 ```
 
@@ -185,10 +185,10 @@ Streaming reader
 ----------------
 
 ```@docs
-depth(::XMLReader)
-expandtree(::XMLReader)
-nodetype(::XMLReader)
-name(::XMLReader)
-content(::XMLReader)
-namespace(::XMLReader)
+depth(::StreamReader)
+expandtree(::StreamReader)
+nodetype(::StreamReader)
+name(::StreamReader)
+content(::StreamReader)
+namespace(::StreamReader)
 ```

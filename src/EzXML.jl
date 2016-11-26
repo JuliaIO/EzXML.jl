@@ -7,7 +7,7 @@ export
     Node,
     Document,
     XMLError,
-    XMLReader,
+    StreamReader,
 
     # node constructors
     XMLDocumentNode,

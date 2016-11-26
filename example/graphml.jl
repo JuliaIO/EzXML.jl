@@ -4,7 +4,7 @@ using LightGraphs
 using EzXML
 
 function load_graphml(filename)
-    open(XMLReader, filename) do reader
+    open(StreamReader, filename) do reader
         serial = 0
         nodes = Dict{String,Int}()
         edges = Pair{Int,Int}[]

@@ -186,7 +186,7 @@ end
     end
 end
 
-@testset "Streaming Reader" begin
+@testset "Stream Reader" begin
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
         @test t == i
@@ -198,8 +198,8 @@ end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
 
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
-    reader = open(XMLReader, sample2)
-    @test isa(reader, XMLReader)
+    reader = open(StreamReader, sample2)
+    @test isa(reader, StreamReader)
     typs = []
     names = []
     depths = []
@@ -226,11 +226,11 @@ end
     @test contents[2] == "some content 2"
     @test attributes[1] == "attr1 value 1"
     @test attributes[2] == "attr1 value 2"
-    @test open(collect, XMLReader, sample2) == typs
+    @test open(collect, StreamReader, sample2) == typs
 
     simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
-    reader = open(XMLReader, simple_graphml)
-    @test isa(reader, XMLReader)
+    reader = open(StreamReader, simple_graphml)
+    @test isa(reader, StreamReader)
     typs = []
     names = []
     namespaces = []
@@ -249,7 +249,7 @@ end
     @test first(namespaces) == "http://graphml.graphdrawing.org/xmlns"
     @test close(reader) === nothing
 
-    reader = open(XMLReader, simple_graphml)
+    reader = open(StreamReader, simple_graphml)
     typs = []
     names = []
     while !done(reader)
@@ -264,7 +264,7 @@ end
 
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")
-    #@test_throws XMLError open(XMLReader, "not-exist.xml")
+    #@test_throws XMLError open(StreamReader, "not-exist.xml")
 end
 
 @testset "Constructors" begin
@@ -948,8 +948,8 @@ end
         @test ismatch(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
-        reader = open(XMLReader, sample2)
-        @test ismatch(r"^EzXML.XMLReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
+        reader = open(StreamReader, sample2)
+        @test ismatch(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
         close(reader)
     end
 

@@ -69,7 +69,7 @@ Types:
 * `Document`: an XML/HTML document
 * `Node`: an XML/HTML node including elements, attributes, texts, etc.
 * `XMLError`: an error happened in libxml2
-* `XMLReader`: a streaming XML reader
+* `StreamReader`: a streaming XML reader
 
 IO:
 * From file: `read(Document, filename)`, `readxml(filename)`, `readhtml(filename)`

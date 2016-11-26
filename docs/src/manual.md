@@ -404,10 +404,10 @@ brevity):
 
 The interfaces of streaming reader are totally different from the DOM interfaces
 introduced above. The first thing the user needs to do is creating an
-`XMLReader` object using the `open` function:
+`StreamReader` object using the `open` function:
 ```jlcon
-julia> reader = open(XMLReader, "undirected.graphml")
-EzXML.XMLReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
+julia> reader = open(StreamReader, "undirected.graphml")
+EzXML.StreamReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
 
 ```
 
