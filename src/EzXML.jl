@@ -105,12 +105,12 @@ else
     const libxml2 = "libxml2"
 end
 
+include("error.jl")
 include("node.jl")
 include("document.jl")
 include("buffer.jl")
 include("xpath.jl")
 include("streamreader.jl")
-include("error.jl")
 
 function __init__()
     init_error_handler()

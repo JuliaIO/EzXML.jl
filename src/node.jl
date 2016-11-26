@@ -273,14 +273,11 @@ function dump_node(io, node, format)
     end
     buf = Buffer()
     level = 0
-    len = ccall(
+    len = @check ccall(
         (:xmlNodeDump, libxml2),
         Cint,
         (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
-        buf.ptr, doc_ptr, node.ptr, level, format)
-    if len == -1
-        throw_xml_error()
-    end
+        buf.ptr, doc_ptr, node.ptr, level, format) != -1
     print(io, unsafe_wrap(String, unsafe_load(buf.ptr).content, len))
 end
 
@@ -343,14 +340,11 @@ end
 Create an XML document node with `version`.
 """
 function XMLDocumentNode(version::AbstractString)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewDoc, libxml2),
         Ptr{_Node},
         (Cstring,),
-        version)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        version) != C_NULL
     return Node(node_ptr)
 end
 
@@ -369,14 +363,11 @@ function HTMLDocumentNode(uri::Union{AbstractString,Void},
     if externalID === nothing
         externalID = C_NULL
     end
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:htmlNewDoc, libxml2),
         Ptr{_Node},
         (Cstring, Cstring),
-        uri, externalID)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        uri, externalID) != C_NULL
     return Node(node_ptr)
 end
 
@@ -387,14 +378,11 @@ Create an element node with `name`.
 """
 function ElementNode(name::AbstractString)
     ns = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewNode, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring),
-        ns, name)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        ns, name) != C_NULL
     return Node(node_ptr)
 end
 
@@ -404,14 +392,11 @@ end
 Create a text node with `content`.
 """
 function TextNode(content::AbstractString)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewText, libxml2),
         Ptr{_Node},
         (Cstring,),
-        content)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        content) != C_NULL
     return Node(node_ptr)
 end
 
@@ -421,14 +406,11 @@ end
 Create a comment node with `content`.
 """
 function CommentNode(content::AbstractString)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewComment, libxml2),
         Ptr{_Node},
         (Cstring,),
-        content)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        content) != C_NULL
     return Node(node_ptr)
 end
 
@@ -439,14 +421,11 @@ Create a CDATA node with `content`.
 """
 function CDataNode(content::AbstractString)
     doc_ptr = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewCDataBlock, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cint),
-        doc_ptr, content, sizeof(content))
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        doc_ptr, content, sizeof(content)) != C_NULL
     return Node(node_ptr)
 end
 
@@ -457,14 +436,11 @@ Create an attribute node with `name` and `value`.
 """
 function AttributeNode(name::AbstractString, value::AbstractString)
     doc_ptr = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewDocProp, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cstring),
-        doc_ptr, name, value)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        doc_ptr, name, value) != C_NULL
     return Node(node_ptr)
 end
 
@@ -487,14 +463,11 @@ end
 
 function make_dtd_node(name, systemID, externalID)
     doc_ptr = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlCreateIntSubset, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cstring, Cstring),
-        doc_ptr, name, externalID, systemID)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        doc_ptr, name, externalID, systemID) != C_NULL
     return Node(node_ptr)
 end
 
@@ -830,14 +803,11 @@ Link `child` at the end of children of `parent`.
 """
 function link!(parent::Node, child::Node)
     check_topmost(child)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlAddChild, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}),
-        parent.ptr, child.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        parent.ptr, child.ptr) != C_NULL
     update_owners!(child, parent.owner)
     return child
 end
@@ -849,14 +819,11 @@ Link `node` as the next sibling of `target`.
 """
 function linknext!(target::Node, node::Node)
     check_topmost(node)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}),
-        target.ptr, node.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        target.ptr, node.ptr) != C_NULL
     update_owners!(node, target.owner)
     return node
 end
@@ -868,14 +835,11 @@ Link `node` as the prev sibling of `target`.
 """
 function linkprev!(target::Node, node::Node)
     check_topmost(node)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}),
-        target.ptr, node.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        target.ptr, node.ptr) != C_NULL
     update_owners!(node, target.owner)
     return node
 end
@@ -913,14 +877,11 @@ Add a new child element of `name` with no content to `parent` and return the new
 function addelement!(parent::Node, name::AbstractString)
     ns_ptr = C_NULL
     content_ptr = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
-        parent.ptr, ns_ptr, name, content_ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        parent.ptr, ns_ptr, name, content_ptr) != C_NULL
     return Node(node_ptr)
 end
 
@@ -931,14 +892,11 @@ Add a new child element of `name` with `content` to `parent` and return the new 
 """
 function addelement!(parent::Node, name::AbstractString, content::AbstractString)
     ns_ptr = C_NULL
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
-        parent.ptr, ns_ptr, name, content)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        parent.ptr, ns_ptr, name, content) != C_NULL
     return Node(node_ptr)
 end
 
@@ -983,14 +941,11 @@ end
 Return the path of `node`.
 """
 function nodepath(node::Node)
-    str_ptr = ccall(
+    str_ptr = @check ccall(
         (:xmlGetNodePath, libxml2),
         Cstring,
         (Ptr{Void},),
-        node.ptr)
-    if str_ptr == C_NULL
-        throw_xml_error()
-    end
+        node.ptr) != C_NULL
     return unsafe_wrap(String, str_ptr, true)
 end
 
@@ -1103,14 +1058,11 @@ end
 Return the node content of `node`.
 """
 function content(node::Node)
-    str_ptr = ccall(
+    str_ptr = @check ccall(
         (:xmlNodeGetContent, libxml2),
         Cstring,
         (Ptr{Void},),
-        node.ptr)
-    if str_ptr == C_NULL
-        throw_xml_error()
-    end
+        node.ptr) != C_NULL
     return unsafe_wrap(String, str_ptr, true)
 end
 
@@ -1210,14 +1162,11 @@ end
 
 function Base.setindex!(node::Node, val, attr::AbstractString)
     # This function handles QName properly.
-    prop_ptr = ccall(
+    prop_ptr = @check ccall(
         (:xmlSetProp, libxml2),
         Ptr{_Node},
         (Ptr{Void}, Cstring, Cstring),
-        node.ptr, attr, string(val))
-    if prop_ptr == C_NULL
-        throw_xml_error()
-    end
+        node.ptr, attr, string(val)) != C_NULL
     return node
 end
 

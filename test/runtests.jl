@@ -15,11 +15,11 @@ using Base.Test
     @test_throws AssertionError repr(convert(EzXML.NodeType, 0))
     @test_throws AssertionError repr(convert(EzXML.NodeType, 100))
 
-    err = EzXML.XMLError(1, "some parser error")
+    err = EzXML.XMLError(1, 77, "some parser error")
     @test isa(err, EzXML.XMLError)
     buf = IOBuffer()
     showerror(buf, err)
-    @test takebuf_string(buf) == "XMLError: some parser error (from XML parser)"
+    @test takebuf_string(buf) == "XMLError: some parser error from XML parser (code: 77)"
 end
 
 @testset "Reader" begin
@@ -890,7 +890,7 @@ end
 end
 
 @testset "XPath" begin
-    doc = parse(EzXML.Document, """
+    doc = parsexml("""
     <?xml version="1.0"?>
     <root>
         <foo>

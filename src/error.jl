@@ -24,21 +24,36 @@ An error detected by libxml2.
 """
 immutable XMLError
     domain::Int
+    code::Int
     message::String
 end
 
 function Base.showerror(io::IO, err::XMLError)
-    print(io, "XMLError: ", err.message, " (from ", errordomain2string(err.domain), ")")
+    print(io, "XMLError: $(err.message) from $(errordomain2string(err.domain)) (code: $(err.code))")
 end
 
-const XML_GLOBAL_ERROR_STACK = _Error[]
+const XML_GLOBAL_ERROR_STACK = XMLError[]
+
+# Check return value of ccall.
+macro check(ex)
+    ccallex = ex.args[2]
+    ex.args[2] = :ret
+    quote
+        @assert isempty(XML_GLOBAL_ERROR_STACK)
+        ret = $(ccallex)
+        if !$(ex)
+            throw_xml_error()
+        end
+        ret
+    end
+end
 
 # Initialize an error handler.
 function init_error_handler()
     error_handler = cfunction(Void, (Ptr{Void}, Ptr{Void})) do ctx, err_ptr
-        if ctx === C_NULL
+        if ctx == pointer_from_objref(_Error)
             err = unsafe_load(convert(Ptr{_Error}, err_ptr))
-            push!(XML_GLOBAL_ERROR_STACK, err)
+            push!(XML_GLOBAL_ERROR_STACK, XMLError(err.domain, err.code, chomp(unsafe_string(err.message))))
         end
         return
     end
@@ -46,18 +61,23 @@ function init_error_handler()
         (:xmlSetStructuredErrorFunc, libxml2),
         Void,
         (Ptr{Void}, Ptr{Void}),
-        C_NULL, error_handler)
+        pointer_from_objref(_Error), error_handler)
 end
 
 # Throw an XMLError exception.
 function throw_xml_error()
-    @assert !isempty(XML_GLOBAL_ERROR_STACK)
-    if length(XML_GLOBAL_ERROR_STACK) > 1
-        warn("caught some errors; show the last one")
+    if isempty(XML_GLOBAL_ERROR_STACK)
+        error("unknown error of libxml2")
+    elseif length(XML_GLOBAL_ERROR_STACK) > 1
+        warn("caught $(length(XML_GLOBAL_ERROR_STACK)) errors; show the first one")
     end
-    err_str = pop!(XML_GLOBAL_ERROR_STACK)
-    msg = chomp(unsafe_string(err_str.message))
-    throw(XMLError(err_str.domain, msg))
+    # DEBUG
+    # for err in XML_GLOBAL_ERROR_STACK
+    #     @show err
+    # end
+    err = XML_GLOBAL_ERROR_STACK[1]
+    empty!(XML_GLOBAL_ERROR_STACK)
+    throw(err)
 end
 
 # Convert an error domain number to a human-readable string.

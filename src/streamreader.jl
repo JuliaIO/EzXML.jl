@@ -116,14 +116,11 @@ end
 function Base.open(::Type{StreamReader}, filename::AbstractString)
     encoding = C_NULL
     options = 0
-    reader_ptr = ccall(
+    reader_ptr = @check ccall(
         (:xmlReaderForFile, libxml2),
         Ptr{_TextReader},
         (Cstring, Cstring, Cint),
-        filename, encoding, options)
-    if reader_ptr == C_NULL
-        throw_xml_error()
-    end
+        filename, encoding, options) != C_NULL
     return StreamReader(reader_ptr)
 end
 
@@ -272,14 +269,11 @@ Expand the current node of `reader` into a full subtree that will be available
 until the next read of node.
 """
 function expandtree(reader::StreamReader)
-    node_ptr = ccall(
+    node_ptr = @check ccall(
         (:xmlTextReaderExpand, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
-        reader.ptr)
-    if node_ptr == C_NULL
-        throw_xml_error()
-    end
+        reader.ptr) != C_NULL
     # do not automatically free memories
     return Node(node_ptr, false)
 end

@@ -88,15 +88,12 @@ function parsexml(xmlstring::AbstractString)
     if isempty(xmlstring)
         throw(ArgumentError("empty XML string"))
     end
-    ptr = ccall(
+    doc_ptr = @check ccall(
         (:xmlParseMemory, libxml2),
         Ptr{_Node},
         (Cstring, Cint),
-        xmlstring, sizeof(xmlstring))
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    return Document(ptr)
+        xmlstring, sizeof(xmlstring)) != C_NULL
+    return Document(doc_ptr)
 end
 
 function parsexml(xmldata::Vector{UInt8})
@@ -115,15 +112,12 @@ function parsehtml(htmlstring::AbstractString)
     url = C_NULL
     encoding = C_NULL
     options = 1
-    ptr = ccall(
+    doc_ptr = @check ccall(
         (:htmlReadMemory, libxml2),
         Ptr{_Node},
         (Cstring, Cint, Cstring, Cstring, Cint),
-        htmlstring, sizeof(htmlstring), url, encoding, options)
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    return Document(ptr)
+        htmlstring, sizeof(htmlstring), url, encoding, options) != C_NULL
+    return Document(doc_ptr)
 end
 
 function parsehtml(htmldata::Vector{UInt8})
@@ -146,15 +140,12 @@ Read `filename` and create an XML document.
 function readxml(filename::AbstractString)
     encoding = C_NULL
     options = 0
-    ptr = ccall(
+    doc_ptr = @check ccall(
         (:xmlReadFile, libxml2),
         Ptr{_Node},
         (Cstring, Ptr{UInt8}, Cint),
-        filename, encoding, options)
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    return Document(ptr)
+        filename, encoding, options) != C_NULL
+    return Document(doc_ptr)
 end
 
 """
@@ -165,28 +156,22 @@ Read `filename` and create an HTML document.
 function readhtml(filename::AbstractString)
     encoding = C_NULL
     options = 0
-    ptr = ccall(
+    doc_ptr = @check ccall(
         (:htmlReadFile, libxml2),
         Ptr{_Node},
         (Cstring, Cstring, Cint),
-        filename, encoding, options)
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    return Document(ptr)
+        filename, encoding, options) != C_NULL
+    return Document(doc_ptr)
 end
 
 function Base.write(filename::AbstractString, doc::Document)
     format = 0
     encoding = "UTF-8"
-    ret = ccall(
+    ret = @check ccall(
         (:xmlSaveFormatFileEnc, libxml2),
         Cint,
         (Cstring, Ptr{Void}, Cstring, Cint),
-        filename, doc.node.ptr, encoding, format)
-    if ret == -1
-        throw_xml_error()
-    end
+        filename, doc.node.ptr, encoding, format) != -1
     return Int(ret)
 end
 
@@ -213,15 +198,12 @@ function root(doc::Document)
     if !hasroot(doc)
         throw(ArgumentError("no root element"))
     end
-    ptr = ccall(
+    root_ptr = @check ccall(
         (:xmlDocGetRootElement, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
-        doc.node.ptr)
-    if ptr == C_NULL
-        throw_xml_error()
-    end
-    return Node(ptr)
+        doc.node.ptr) != C_NULL
+    return Node(root_ptr)
 end
 
 """
@@ -269,11 +251,11 @@ function dtd(doc::Document)
     if !hasdtd(doc)
         throw(ArgumentError("no DTD"))
     end
-    dtd_ptr = ccall(
+    dtd_ptr = @check ccall(
         (:xmlGetIntSubset, libxml2),
         Ptr{_Node},
         (Ptr{Void},),
-        doc.node.ptr)
+        doc.node.ptr) != C_NULL
     return Node(dtd_ptr)
 end
 
