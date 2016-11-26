@@ -109,7 +109,7 @@ include("node.jl")
 include("document.jl")
 include("buffer.jl")
 include("xpath.jl")
-include("reader.jl")
+include("streamreader.jl")
 include("error.jl")
 
 function __init__()
