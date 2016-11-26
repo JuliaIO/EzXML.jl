@@ -1,5 +1,5 @@
 # Streaming XML Reader
-# --------------------
+# ====================
 
 immutable _TextReader
     # type tag

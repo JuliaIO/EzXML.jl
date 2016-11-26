@@ -14,8 +14,8 @@ Here is an example of parsing and traversing an XML document:
 using EzXML
 
 # Parse an XML string
-# (use `read(Document, <filename>)` to read a document from a file).
-doc = parse(Document, """
+# (use `readxml(<filename>)` to read a document from a file).
+doc = parsexml("""
 <primates>
     <genus name="Homo">
         <species name="sapiens">Human</species>

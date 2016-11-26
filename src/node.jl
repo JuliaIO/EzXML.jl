@@ -1,5 +1,5 @@
 # XML Node
-# --------
+# ========
 
 # Shared fields of node-like structs.
 immutable _Node

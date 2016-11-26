@@ -1,5 +1,5 @@
 # XML Document
-# ------------
+# ============
 
 """
 An XML/HTML document type.

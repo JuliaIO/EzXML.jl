@@ -1,14 +1,18 @@
 References
 ==========
 
+```@meta
+CurrentModule = EzXML
+```
+
 Types
 -----
 
 ```@docs
-Document
-Node
-StreamReader
-XMLError
+EzXML.Document
+EzXML.Node
+EzXML.StreamReader
+EzXML.XMLError
 ```
 
 I/O

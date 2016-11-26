@@ -25,8 +25,8 @@ The main features are:
 using EzXML
 
 # Parse an XML string
-# (use `read(Document, <filename>)` to read a document from a file).
-doc = parse(Document, """
+# (use `readxml(<filename>)` to read a document from a file).
+doc = parsexml("""
 <primates>
     <genus name="Homo">
         <species name="sapiens">Human</species>
@@ -66,14 +66,14 @@ Quick reference
 See the [reference page](https://bicycle1885.github.io/EzXML.jl/latest/references.html) or docstrings for more details.
 
 Types:
-* `Document`: an XML/HTML document
-* `Node`: an XML/HTML node including elements, attributes, texts, etc.
-* `XMLError`: an error happened in libxml2
-* `StreamReader`: a streaming XML reader
+* `EzXML.Document`: an XML/HTML document
+* `EzXML.Node`: an XML/HTML node including elements, attributes, texts, etc.
+* `EzXML.XMLError`: an error happened in libxml2
+* `EzXML.StreamReader`: a streaming XML reader
 
 IO:
-* From file: `read(Document, filename)`, `readxml(filename)`, `readhtml(filename)`
-* From string or byte array: `parse(Document, string)`, `parsexml(string)`, `parsehtml(string)`
+* From file: `read(EzXML.Document, filename)`, `readxml(filename)`, `readhtml(filename)`
+* From string or byte array: `parse(EzXML.Document, string)`, `parsexml(string)`, `parsehtml(string)`
 * To file: `write(filename, doc)`
 * To stream: `print(io, doc)`
 
@@ -103,8 +103,8 @@ Accessors:
 * Namespaces: `namespace(node)`, `namespaces(node)`
 
 Constructors:
-* `Document` type: `XMLDocument(version="1.0")`, `HTMLDocument(uri=nothing, externalID=nothing)`
-* `Node` type: `XMLDocumentNode(version="1.0")`, `HTMLDocumentNode(uri, externalID)`, `ElementNode(name)`, `TextNode(content)`, `CommentNode(content)`, `CDataNode(content)`, `AttributeNode(name, value)`, `DTDNode(name, [systemID, [externalID]])`
+* `EzXML.Document` type: `XMLDocument(version="1.0")`, `HTMLDocument(uri=nothing, externalID=nothing)`
+* `EzXML.Node` type: `XMLDocumentNode(version="1.0")`, `HTMLDocumentNode(uri, externalID)`, `ElementNode(name)`, `TextNode(content)`, `CommentNode(content)`, `CDataNode(content)`, `AttributeNode(name, value)`, `DTDNode(name, [systemID, [externalID]])`
 
 Queries:
 * XPath: `find(doc|node, xpath)`, `findfirst(doc|node, xpath)`, `findlast(doc|node, xpath)`
@@ -122,7 +122,6 @@ Other XML/HTML packages in Julia
 
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
-
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest

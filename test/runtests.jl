@@ -15,8 +15,8 @@ using Base.Test
     @test_throws AssertionError repr(convert(EzXML.NodeType, 0))
     @test_throws AssertionError repr(convert(EzXML.NodeType, 100))
 
-    err = XMLError(1, "some parser error")
-    @test isa(err, XMLError)
+    err = EzXML.XMLError(1, "some parser error")
+    @test isa(err, EzXML.XMLError)
     buf = IOBuffer()
     showerror(buf, err)
     @test takebuf_string(buf) == "XMLError: some parser error (from XML parser)"
@@ -26,33 +26,33 @@ end
     @testset "XML" begin
         valid_file = joinpath(dirname(@__FILE__), "sample1.xml")
         invalid_file = joinpath(dirname(@__FILE__), "sample1.invalid.xml")
-        doc = read(Document, valid_file)
-        @test isa(doc, Document)
+        doc = read(EzXML.Document, valid_file)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
         @test nodetype(readxml(valid_file).node) === EzXML.DOCUMENT_NODE
-        @test_throws XMLError read(Document, invalid_file)
+        @test_throws EzXML.XMLError read(EzXML.Document, invalid_file)
         @assert !isfile("not-exist.xml")
-        @test_throws XMLError read(Document, "not-exist.xml")
-        @test_throws XMLError readxml("not-exist.xml")
+        @test_throws EzXML.XMLError read(EzXML.Document, "not-exist.xml")
+        @test_throws EzXML.XMLError readxml("not-exist.xml")
 
         compressed = joinpath(dirname(@__FILE__), "sample1.xml.gz")
-        @test isa(read(Document, compressed), Document)
-        @test isa(readxml(compressed), Document)
+        @test isa(read(EzXML.Document, compressed), EzXML.Document)
+        @test isa(readxml(compressed), EzXML.Document)
     end
 
     @testset "HTML" begin
         valid_file = joinpath(dirname(@__FILE__), "sample1.html")
-        doc = read(Document, valid_file)
-        @test isa(doc, Document)
+        doc = read(EzXML.Document, valid_file)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test nodetype(readhtml(valid_file).node) === EzXML.HTML_DOCUMENT_NODE
         @assert !isfile("not-exist.html")
-        @test_throws XMLError read(Document, "not-exist.html")
-        @test_throws XMLError readhtml("not-exist.html")
+        @test_throws EzXML.XMLError read(EzXML.Document, "not-exist.html")
+        @test_throws EzXML.XMLError readhtml("not-exist.html")
 
         compressed = joinpath(dirname(@__FILE__), "sample1.html.gz")
-        @test isa(read(Document, compressed), Document)
-        @test isa(readhtml(compressed), Document)
+        @test isa(read(EzXML.Document, compressed), EzXML.Document)
+        @test isa(readhtml(compressed), EzXML.Document)
     end
 end
 
@@ -63,12 +63,12 @@ end
         <foo>ok</foo>
     </root>
     """
-    doc = parse(Document, docstr)
+    doc = parse(EzXML.Document, docstr)
     tmp = tempname()
     try
         @test write(tmp, doc) == sizeof(docstr)
         @test readstring(tmp) == docstr
-        @test string(read(Document, tmp)) == docstr
+        @test string(read(EzXML.Document, tmp)) == docstr
     finally
         rm(tmp)
     end
@@ -76,24 +76,24 @@ end
 
 @testset "Parser" begin
     @testset "XML" begin
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <?xml version="1.0"?>
         <root>
             <child attr="value">content</child>
         </root>
         """)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <root>
             <child attr="value">content</child>
         </root>
         """)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <?xml version="1.0"?>
         <root>
             <child attr="value">content</child>
@@ -107,7 +107,7 @@ end
         @test nodetype(parsexml("<html/>".data).node) === EzXML.DOCUMENT_NODE
 
         # This includes multi-byte characters.
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <?xml version="1.0" encoding="UTF-8" ?>
         <Link>
             <Name>pubmed_pubmed</Name>
@@ -118,14 +118,14 @@ end
         """)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
-        @test_throws ArgumentError parse(Document, "")
-        @test_throws XMLError parse(Document, " ")
-        @test_throws XMLError parse(Document, "abracadabra")
-        @test_throws XMLError parse(Document, """<?xml version="1.0"?>""")
+        @test_throws ArgumentError parse(EzXML.Document, "")
+        @test_throws EzXML.XMLError parse(EzXML.Document, " ")
+        @test_throws EzXML.XMLError parse(EzXML.Document, "abracadabra")
+        @test_throws EzXML.XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
     end
 
     @testset "HTML" begin
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <!DOCTYPE html>
         <html>
             <head>
@@ -136,12 +136,12 @@ end
             </body>
         </html>
         """)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test hasdtd(doc)
         @test name(dtd(doc)) == "html"
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <html>
             <head>
                 <title>Title</title>
@@ -151,11 +151,11 @@ end
             </body>
         </html>
         """)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test hasdtd(doc)
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <!DOCTYPE html>
         <html>
             <head>
@@ -166,7 +166,7 @@ end
             </body>
         </html>
         """.data)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         doc = parsehtml("""
@@ -176,7 +176,7 @@ end
             <body>こんにちは、世界！</body>
         </html>
         """)
-        @test isa(doc, Document)
+        @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         @test nodetype(parsehtml("<html/>").node) === EzXML.HTML_DOCUMENT_NODE
@@ -198,8 +198,8 @@ end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
 
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
-    reader = open(StreamReader, sample2)
-    @test isa(reader, StreamReader)
+    reader = open(EzXML.StreamReader, sample2)
+    @test isa(reader, EzXML.StreamReader)
     typs = []
     names = []
     depths = []
@@ -213,7 +213,7 @@ end
             push!(contents, content(reader))
             push!(attributes, reader["attr1"])
         end
-        @test isa(expandtree(reader), Node)
+        @test isa(expandtree(reader), EzXML.Node)
     end
     @test typs[1] === EzXML.READER_ELEMENT
     @test typs[2] === EzXML.READER_SIGNIFICANT_WHITESPACE
@@ -226,11 +226,11 @@ end
     @test contents[2] == "some content 2"
     @test attributes[1] == "attr1 value 1"
     @test attributes[2] == "attr1 value 2"
-    @test open(collect, StreamReader, sample2) == typs
+    @test open(collect, EzXML.StreamReader, sample2) == typs
 
     simple_graphml = joinpath(dirname(@__FILE__), "simple.graphml")
-    reader = open(StreamReader, simple_graphml)
-    @test isa(reader, StreamReader)
+    reader = open(EzXML.StreamReader, simple_graphml)
+    @test isa(reader, EzXML.StreamReader)
     typs = []
     names = []
     namespaces = []
@@ -240,7 +240,7 @@ end
         if typ == EzXML.READER_ELEMENT
             push!(namespaces, namespace(reader))
         end
-        @test isa(expandtree(reader), Node)
+        @test isa(expandtree(reader), EzXML.Node)
     end
     @test first(typs) === EzXML.READER_COMMENT
     @test first(names) == "#comment"
@@ -249,7 +249,7 @@ end
     @test first(namespaces) == "http://graphml.graphdrawing.org/xmlns"
     @test close(reader) === nothing
 
-    reader = open(StreamReader, simple_graphml)
+    reader = open(EzXML.StreamReader, simple_graphml)
     typs = []
     names = []
     while !done(reader)
@@ -264,66 +264,66 @@ end
 
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")
-    #@test_throws XMLError open(StreamReader, "not-exist.xml")
+    #@test_throws EzXML.XMLError open(EzXML.StreamReader, "not-exist.xml")
 end
 
 @testset "Constructors" begin
     n = XMLDocumentNode("1.0")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.DOCUMENT_NODE
-    @test document(n) === Document(n.ptr)
+    @test document(n) === EzXML.Document(n.ptr)
 
     n = HTMLDocumentNode(nothing, nothing)
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.HTML_DOCUMENT_NODE
-    @test document(n) === Document(n.ptr)
+    @test document(n) === EzXML.Document(n.ptr)
 
     n = HTMLDocumentNode("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
                          "-//W3C//DTD XHTML 1.0 Strict//EN")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.HTML_DOCUMENT_NODE
-    @test document(n) === Document(n.ptr)
+    @test document(n) === EzXML.Document(n.ptr)
 
     n = ElementNode("node")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.ELEMENT_NODE
     @test iselement(n)
     @test_throws ArgumentError document(n)
 
     n = TextNode("some text")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.TEXT_NODE
     @test EzXML.istext(n)  # Base.istext is deprecated.
     @test_throws ArgumentError document(n)
 
     n = CommentNode("some comment")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.COMMENT_NODE
     @test iscomment(n)
     @test_throws ArgumentError document(n)
 
     n = CDataNode("some CDATA")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.CDATA_SECTION_NODE
     @test iscdata(n)
     @test_throws ArgumentError document(n)
 
     n = AttributeNode("attr", "value")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) == EzXML.ATTRIBUTE_NODE
     @test isattribute(n)
     @test_throws ArgumentError document(n)
 
     n = DTDNode("open-hatch")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
@@ -333,7 +333,7 @@ end
 
     n = DTDNode("open-hatch",
                 "http://www.textuality.com/boilerplate/OpenHatch.xml")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
@@ -343,7 +343,7 @@ end
     n = DTDNode("open-hatch",
                 "http://www.textuality.com/boilerplate/OpenHatch.xml",
                 "-//Textuality//TEXT Standard open-hatch boilerplate//EN")
-    @test isa(n, Node)
+    @test isa(n, EzXML.Node)
     @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
@@ -351,14 +351,14 @@ end
     @test externalID(n) == "-//Textuality//TEXT Standard open-hatch boilerplate//EN"
 
     doc = XMLDocument()
-    @test isa(doc, Document)
+    @test isa(doc, EzXML.Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
 
     doc = HTMLDocument()
-    @test isa(doc, Document)
+    @test isa(doc, EzXML.Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) == EzXML.HTML_DOCUMENT_NODE
     @test !hasroot(doc)
@@ -366,7 +366,7 @@ end
 
     doc = HTMLDocument("http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd",
                        "-//W3C//DTD XHTML 1.0 Strict//EN")
-    @test isa(doc, Document)
+    @test isa(doc, EzXML.Document)
     @test doc.node.owner === doc.node
     @test nodetype(doc.node) == EzXML.HTML_DOCUMENT_NODE
     @test !hasroot(doc)
@@ -377,7 +377,7 @@ end
     doc = parsexml("<root/>") 
     @test hasroot(doc)
     @test !hasdtd(doc)
-    @test isa(root(doc), Node)
+    @test isa(root(doc), EzXML.Node)
     @test root(doc) == root(doc)
     @test root(doc) === root(doc)
     @test hash(root(doc)) === hash(root(doc))
@@ -404,7 +404,7 @@ end
     """)
     @test hasroot(doc)
     @test hasdtd(doc)
-    @test isa(dtd(doc), Node)
+    @test isa(dtd(doc), EzXML.Node)
     @test isdtd(dtd(doc))
     @test dtd(doc) === dtd(doc)
     @test name(dtd(doc)) == "html"
@@ -412,7 +412,7 @@ end
     @test externalID(dtd(doc)) == "-//W3C//DTD XHTML 1.0 Transitional//EN"
     @test parentnode(dtd(doc)) === doc.node
 
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <?xml version="1.0"?>
     <r>
         <c1/>
@@ -447,7 +447,7 @@ end
     @test_throws ArgumentError prevelement(c1)
     @test_throws ArgumentError nextelement(c3)
 
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <?xml version="1.0"?>
     <root attr="some attribute value"><child>some content</child></root>
     """)
@@ -460,7 +460,7 @@ end
     @test !haskey(root(doc), "attr")
     @test_throws KeyError root(doc)["attr"]
 
-    doc = parse(Document, "<root/>")
+    doc = parse(EzXML.Document, "<root/>")
     x = root(doc)
     @test_throws ArgumentError firstnode(x)
     @test_throws ArgumentError lastnode(x)
@@ -586,7 +586,7 @@ end
     @test_throws ArgumentError namespace(root(doc))
 
     @testset "Counters" begin
-        doc = parse(Document, "<root/>")
+        doc = parse(EzXML.Document, "<root/>")
         @test !hasnode(root(doc))
         @test countnodes(root(doc)) === 0
         @test countelements(root(doc)) === 0
@@ -604,62 +604,62 @@ end
     end
 
     @testset "Iterators" begin
-        doc = parse(Document, "<root/>")
-        ns = Node[]
+        doc = parse(EzXML.Document, "<root/>")
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachnode(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 0
         @test nodes(root(doc)) == ns
-        ns = Node[]
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachelement(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 0
         @test elements(root(doc)) == ns
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <root><c1></c1><c2></c2></root>
         """)
-        ns = Node[]
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachnode(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 2
         @test nodes(root(doc)) == ns
-        ns = Node[]
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachelement(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 2
         @test elements(root(doc)) == ns
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <root>
             <c1></c1>
             <c2></c2>
         </root>
         """)
-        ns = Node[]
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachnode(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 5
         @test nodes(root(doc)) == ns
-        ns = Node[]
+        ns = EzXML.Node[]
         for (i, node) in enumerate(eachelement(root(doc)))
-            @test isa(node, Node)
+            @test isa(node, EzXML.Node)
             push!(ns, node)
         end
         @test length(ns) == 2
         @test elements(root(doc)) == ns
 
-        doc = parse(Document, """
+        doc = parse(EzXML.Document, """
         <?xml version="1.0"?>
         <root attr1="foo" attr2="bar"></root>
         """)
@@ -676,7 +676,7 @@ end
 
 @testset "Construction" begin
     doc = XMLDocument()
-    @test isa(doc, Document)
+    @test isa(doc, EzXML.Document)
     @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
@@ -759,7 +759,7 @@ end
     @test t2.owner === e2
     @test a1.owner === e2
 
-    doc = parse(Document, "<root/>")
+    doc = parse(EzXML.Document, "<root/>")
     @test isempty(nodes(root(doc)))
     c1 = ElementNode("c1")
     link!(root(doc), c1)
@@ -794,7 +794,7 @@ end
     @test root(doc) == el
     @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <root></root>
     """)
     @test string(doc.node) == """
@@ -820,7 +820,7 @@ end
     <root><child1>some text</child1><child2/><!--some comment--><![CDATA[<cdata>]]></root>
     """
 
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <?xml version="1.0" encoding="UTF-8"?>
     <root>
         <c1>
@@ -838,7 +838,7 @@ end
     @test c1.owner == c1
     @test c2.owner == c1
 
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <root xmlns:x="http://xxx.org/" xmlns:y="http://yyy.org/">
         <c x:attr="x-attr" y:attr="y-attr"/>
         <c y:attr="y-attr" x:attr="x-attr"/>
@@ -890,7 +890,7 @@ end
 end
 
 @testset "XPath" begin
-    doc = parse(Document, """
+    doc = parse(EzXML.Document, """
     <?xml version="1.0"?>
     <root>
         <foo>
@@ -918,7 +918,7 @@ end
     @test findfirst(doc, "//bar") === find(doc, "//bar")[1]
     @test findlast(doc, "//bar") === find(doc, "//bar")[3]
     @test length(find(doc, "/baz")) == 0
-    @test_throws XMLError find(doc, "//bar!")
+    @test_throws EzXML.XMLError find(doc, "//bar!")
     @test find(root(doc), "foo") == find(doc, "//foo")
     @test findfirst(root(doc), "foo") === findfirst(doc, "//foo")
     @test findlast(root(doc), "foo") === findlast(doc, "//foo")
@@ -948,7 +948,7 @@ end
         @test ismatch(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
-        reader = open(StreamReader, sample2)
+        reader = open(EzXML.StreamReader, sample2)
         @test ismatch(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
         close(reader)
     end

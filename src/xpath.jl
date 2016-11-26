@@ -1,5 +1,5 @@
 # XPath
-# -----
+# =====
 
 immutable _XPathContext
     # type tag

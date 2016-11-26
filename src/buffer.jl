@@ -1,5 +1,5 @@
 # Buffer
-# ------
+# ======
 
 immutable _Buffer
     content::Cstring

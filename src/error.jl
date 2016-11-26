@@ -1,5 +1,5 @@
 # Error Handling
-# --------------
+# ==============
 #
 # XML error handling utils.
 

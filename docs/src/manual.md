@@ -14,7 +14,10 @@ There are two types that constitute an XML document and components: `Document`
 and `Node`, respectively. The `Document` type represents a whole XML document
 and points to a document node of `Node` type. The `Node` type represents almost
 everything in an XML document, that is, elements, attributes, texts, CDATAs,
-comments, documents, etc. are all `Node` type objects.
+comments, documents, etc. are all `Node` type objects. These type names are not
+exported from EzXML.jl because their names are very general and may conflict
+with other names. However, the user can expect them as public APIs and use them
+with the `EzXML.` prefix.
 
 Several kinds of constructors are provided to create documents and various node
 types. For example, `XMLDocument` creates an XML document, `ElementNode` does an
@@ -76,16 +79,16 @@ For the demonstration purpose, save the next XML in "primates.xml" file.
         </genus>
     </primates>
 
-`read(Document, <filename>)` reads an XML file and builds a document object in
-memory.  On the other hand `parse(Document, <string or byte array>)` parses an
-XML string or a byte array and builds a document object like the `read` method:
+`readxml(<filename>)` reads an XML file and builds a document object in memory.
+On the other hand `parsexml(<string or byte array>)` parses an XML string or a
+byte array and builds a document object like the `readxml` method:
 ```jlcon
-julia> doc = read(Document, "primates.xml")
+julia> doc = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3cfe8a50>))
 
 julia> data = readstring("primates.xml");
 
-julia> doc = parse(Document, data)
+julia> doc = parsexml(data)
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3d161380>))
 
 ```
@@ -404,9 +407,9 @@ brevity):
 
 The interfaces of streaming reader are totally different from the DOM interfaces
 introduced above. The first thing the user needs to do is creating an
-`StreamReader` object using the `open` function:
+`EzXML.StreamReader` object using the `open` function:
 ```jlcon
-julia> reader = open(StreamReader, "undirected.graphml")
+julia> reader = open(EzXML.StreamReader, "undirected.graphml")
 EzXML.StreamReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
 
 ```
@@ -471,7 +474,7 @@ to (parts of) the expanded subtree.
 
 An idiomatic way of stream reading would look like this:
 ```julia
-reader = open(Document, "undirected.graphml")
+reader = open(EzXML.StreamReader, "undirected.graphml")
 while !done(reader)
     typ = nodetype(reader)
     # body
@@ -481,7 +484,7 @@ close(reader)
 
 Alternatively, EzXML.jl supports `for` loop, too:
 ```julia
-reader = open(Document, "undirected.graphml")
+reader = open(EzXML.StreamReader, "undirected.graphml")
 for typ in reader
     # body
 end

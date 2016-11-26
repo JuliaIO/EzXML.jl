@@ -3,13 +3,16 @@ __precompile__()
 module EzXML
 
 export
-    # types
-    Node,
-    Document,
-    XMLError,
-    StreamReader,
+    # Types
+    # -----
+    # NOTE: These are not exported but considered as public APIs.
+    # Node,
+    # Document,
+    # XMLError,
+    # StreamReader,
 
-    # node constructors
+    # Node constructors
+    # -----------------
     XMLDocumentNode,
     HTMLDocumentNode,
     ElementNode,
@@ -19,11 +22,13 @@ export
     AttributeNode,
     DTDNode,
 
-    # document constructors
+    # Document constructors
+    # ---------------------
     XMLDocument,
     HTMLDocument,
 
-    # functions
+    # Functions
+    # ---------
     hasparentnode,
     parentnode,
     hasparentelement,
