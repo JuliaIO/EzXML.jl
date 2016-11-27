@@ -809,6 +809,30 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.validate",
+    "page": "References",
+    "title": "EzXML.validate",
+    "category": "Function",
+    "text": "validate(doc::Document, [dtd::Node])\n\nValidate doc against dtd and return the validation log.\n\nThe validation log is empty if and only if doc is valid. The DTD node in doc will be used if dtd is not passed.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.readdtd",
+    "page": "References",
+    "title": "EzXML.readdtd",
+    "category": "Function",
+    "text": "readdtd(filename::AbstractString)\n\nRead filename and create a DTD node.\n\n\n\n"
+},
+
+{
+    "location": "references.html#Validation-1",
+    "page": "References",
+    "title": "Validation",
+    "category": "section",
+    "text": "validate\nreaddtd"
+},
+
+{
     "location": "references.html#Reader-node-types-1",
     "page": "References",
     "title": "Reader node types",
