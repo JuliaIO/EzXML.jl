@@ -891,10 +891,15 @@ end
 
 @testset "Validation" begin
     dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
+    system = relpath(dtdfile)
+    if is_windows()
+        system = replace(system, '\\', '/')
+    end
+    @show system
 
     doc = parsexml("""
     <?xml version="1.0"?>
-    <!DOCTYPE note SYSTEM "$(dtdfile)">
+    <!DOCTYPE note SYSTEM "$(system)">
     <note>
         <title>Note title</title>
         <body>Note body</body>
@@ -904,7 +909,7 @@ end
 
     doc = parsexml("""
     <?xml version="1.0"?>
-    <!DOCTYPE note SYSTEM "$(dtdfile)">
+    <!DOCTYPE note SYSTEM "$(system)">
     <note>
         <body>Note body</body>
     </note>
