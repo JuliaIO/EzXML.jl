@@ -660,6 +660,18 @@ end
         @test elements(root(doc)) == ns
 
         doc = parse(EzXML.Document, """
+        <root>
+            <c1/>
+            <c2/>
+            <c3/>
+        </root>
+        """)
+        @test collect(eachnode(root(doc), true)) == reverse(collect(eachnode(root(doc))))
+        @test collect(eachelement(root(doc), true)) == reverse(collect(eachelement(root(doc))))
+        @test nodes(root(doc), true) == reverse(nodes(root(doc)))
+        @test elements(root(doc), true) == reverse(elements(root(doc)))
+
+        doc = parse(EzXML.Document, """
         <?xml version="1.0"?>
         <root attr1="foo" attr2="bar"></root>
         """)

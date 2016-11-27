@@ -484,8 +484,7 @@ function traverse_tree(f, root_ptr)
         cur_str = unsafe_load(cur_ptr)
         if cur_str.typ == ELEMENT_NODE
             # Attributes of element nodes aren't attached as `children` nodes.
-            elm_str = unsafe_load(convert(Ptr{_Element}, cur_ptr))
-            prop_ptr = elm_str.properties
+            prop_ptr = property_ptr(cur_ptr)
             while prop_ptr != C_NULL
                 f(prop_ptr)
                 n_nodes += traverse_tree(f, prop_ptr)
@@ -515,7 +514,7 @@ end
 Return if `node` has a parent node.
 """
 function hasparentnode(node::Node)
-    return unsafe_load(node.ptr).parent != C_NULL
+    return parent_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -527,7 +526,7 @@ function parentnode(node::Node)
     if !hasparentnode(node)
         throw(ArgumentError("no parent node"))
     end
-    return Node(unsafe_load(node.ptr).parent)
+    return Node(parent_ptr(node.ptr))
 end
 
 """
@@ -536,11 +535,11 @@ end
 Return if `node` has a parent node.
 """
 function hasparentelement(node::Node)
-    parent_ptr = unsafe_load(node.ptr).parent
-    if parent_ptr == C_NULL
+    par_ptr = parent_ptr(node.ptr)
+    if par_ptr == C_NULL
         return false
     end
-    return unsafe_load(parent_ptr).typ == ELEMENT_NODE
+    return unsafe_load(par_ptr).typ == ELEMENT_NODE
 end
 
 """
@@ -552,7 +551,7 @@ function parentelement(node::Node)
     if !hasparentelement(node)
         throw(ArgumentError("no parent element"))
     end
-    return Node(unsafe_load(node.ptr).parent)
+    return Node(parent_ptr(node.ptr))
 end
 
 """
@@ -561,7 +560,7 @@ end
 Return if `node` has a child node.
 """
 function hasnode(node::Node)
-    return unsafe_load(node.ptr).children != C_NULL
+    return first_node_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -573,7 +572,7 @@ function firstnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(unsafe_load(node.ptr).children)
+    return Node(first_node_ptr(node.ptr))
 end
 
 """
@@ -585,7 +584,7 @@ function lastnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(unsafe_load(node.ptr).last)
+    return Node(last_node_ptr(node.ptr))
 end
 
 """
@@ -594,12 +593,7 @@ end
 Return if `node` has a child element.
 """
 function haselement(node::Node)
-    node_ptr = ccall(
-        (:xmlFirstElementChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return node_ptr != C_NULL
+    return first_element_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -611,12 +605,7 @@ function firstelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    node_ptr = ccall(
-        (:xmlFirstElementChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return Node(node_ptr)
+    return Node(first_element_ptr(node.ptr))
 end
 
 """
@@ -628,12 +617,7 @@ function lastelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    node_ptr = ccall(
-        (:xmlLastElementChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return Node(node_ptr)
+    return Node(last_element_ptr(node.ptr))
 end
 
 """
@@ -642,7 +626,7 @@ end
 Return if `node` has a next node.
 """
 function hasnextnode(node::Node)
-    return unsafe_load(node.ptr).next != C_NULL
+    return next_node_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -654,7 +638,7 @@ function nextnode(node::Node)
     if !hasnextnode(node)
         throw(ArgumentError("no next node"))
     end
-    return Node(unsafe_load(node.ptr).next)
+    return Node(next_node_ptr(node.ptr))
 end
 
 """
@@ -663,7 +647,7 @@ end
 Return if `node` has a previous node.
 """
 function hasprevnode(node::Node)
-    return unsafe_load(node.ptr).prev != C_NULL
+    return prev_node_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -675,7 +659,7 @@ function prevnode(node::Node)
     if !hasprevnode(node)
         throw(ArgumentError("no previous node"))
     end
-    return Node(unsafe_load(node.ptr).prev)
+    return Node(prev_node_ptr(node.ptr))
 end
 
 """
@@ -684,12 +668,7 @@ end
 Return if `node` has a next node.
 """
 function hasnextelement(node::Node)
-    node_ptr = ccall(
-        (:xmlNextElementSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return node_ptr != C_NULL
+    return next_element_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -701,12 +680,7 @@ function nextelement(node::Node)
     if !hasnextelement(node)
         throw(ArgumentError("no next elements"))
     end
-    node_ptr = ccall(
-        (:xmlNextElementSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return Node(node_ptr)
+    return Node(next_element_ptr(node.ptr))
 end
 
 """
@@ -715,12 +689,7 @@ end
 Return if `node` has a previous node.
 """
 function hasprevelement(node::Node)
-    node_ptr = ccall(
-        (:xmlPreviousElementSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return node_ptr != C_NULL
+    return prev_element_ptr(node.ptr) != C_NULL
 end
 
 """
@@ -732,12 +701,7 @@ function prevelement(node::Node)
     if !hasprevelement(node)
         throw(ArgumentError("no previous elements"))
     end
-    node_ptr = ccall(
-        (:xmlPreviousElementSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        node.ptr)
-    return Node(node_ptr)
+    return Node(prev_element_ptr(node.ptr))
 end
 
 
@@ -751,10 +715,10 @@ Count the number of child nodes of `parent`.
 """
 function countnodes(parent::Node)
     n = 0
-    cur_ptr = unsafe_load(parent.ptr).children
+    cur_ptr = first_node_ptr(parent.ptr)
     while cur_ptr != C_NULL
         n += 1
-        cur_ptr = unsafe_load(cur_ptr).next
+        cur_ptr = next_node_ptr(cur_ptr)
     end
     return n
 end
@@ -783,10 +747,10 @@ function countattributes(elem::Node)
         throw(ArgumentError("not an element node"))
     end
     n = 0
-    prop_ptr = unsafe_load(convert(Ptr{_Element}, elem.ptr)).properties
-    while prop_ptr != C_NULL
+    cur_ptr = property_ptr(elem.ptr)
+    while cur_ptr != C_NULL
         n += 1
-        prop_ptr = unsafe_load(prop_ptr).next
+        cur_ptr = next_node_ptr(cur_ptr)
     end
     return n
 end
@@ -1276,82 +1240,73 @@ function Base.iteratorsize{T<:AbstractNodeIterator}(::Type{T})
 end
 
 """
-    eachnode(node::Node)
+    eachnode(node::Node, [backward=false])
 
 Create an iterator of child nodes.
 """
-function eachnode(node::Node)
-    return ChildNodeIterator(node.ptr)
+function eachnode(node::Node, backward::Bool=false)
+    return ChildNodeIterator(node.ptr, backward)
 end
 
 """
-    nodes(node::Node)
+    nodes(node::Node, [backward=false])
 
 Create a vector of child nodes.
 """
-function nodes(node::Node)
-    return collect(eachnode(node))
+function nodes(node::Node, backward::Bool=false)
+    return collect(eachnode(node, backward))
 end
 
 immutable ChildNodeIterator <: AbstractNodeIterator
     node::Ptr{_Node}
+    backward::Bool
 end
 
 function Base.start(iter::ChildNodeIterator)
-    cur_ptr = unsafe_load(iter.node).children
-    return cur_ptr
+    return iter.backward ? last_node_ptr(iter.node) : first_node_ptr(iter.node)
 end
 
 function Base.done(::ChildNodeIterator, cur_ptr)
     return cur_ptr == C_NULL
 end
 
-function Base.next(::ChildNodeIterator, cur_ptr)
-    return Node(cur_ptr), unsafe_load(cur_ptr).next
+function Base.next(iter::ChildNodeIterator, cur_ptr)
+    return Node(cur_ptr), iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
 end
 
 """
-    eachelement(node::Node)
+    eachelement(node::Node, [backward=false])
 
 Create an iterator of child elements.
 """
-function eachelement(node::Node)
-    return ChildElementIterator(node.ptr)
+function eachelement(node::Node, backward::Bool=false)
+    return ChildElementIterator(node.ptr, backward)
 end
 
 """
-    elements(node::Node)
+    elements(node::Node, [backward=false])
 
 Create a vector of child elements.
 """
-function elements(node::Node)
-    return collect(eachelement(node))
+function elements(node::Node, backward::Bool=false)
+    return collect(eachelement(node, backward))
 end
 
 immutable ChildElementIterator <: AbstractNodeIterator
     ptr::Ptr{_Node}
+    backward::Bool
 end
 
 function Base.start(iter::ChildElementIterator)
-    cur_ptr = ccall(
-        (:xmlFirstElementChild, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        iter.ptr)
-    return cur_ptr
+    return iter.backward ? last_element_ptr(iter.ptr) : first_element_ptr(iter.ptr)
 end
 
 function Base.done(::ChildElementIterator, cur_ptr)
     return cur_ptr == C_NULL
 end
 
-function Base.next(::ChildElementIterator, cur_ptr)
-    next_ptr = ccall(
-        (:xmlNextElementSibling, libxml2),
-        Ptr{_Node},
-        (Ptr{Void},),
-        cur_ptr)
-    return Node(cur_ptr), next_ptr
+function Base.next(iter::ChildElementIterator, cur_ptr)
+    return Node(cur_ptr), iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
 end
 
 """
@@ -1382,8 +1337,7 @@ end
 function Base.start(iter::AttributeIterator)
     @assert iter.ptr != C_NULL
     @assert unsafe_load(iter.ptr).typ == ELEMENT_NODE
-    elm_str = unsafe_load(convert(Ptr{_Element}, iter.ptr))
-    return elm_str.properties
+    return property_ptr(iter.ptr)
 end
 
 function Base.done(::AttributeIterator, cur_ptr)
@@ -1391,5 +1345,62 @@ function Base.done(::AttributeIterator, cur_ptr)
 end
 
 function Base.next(::AttributeIterator, cur_ptr)
-    return Node(cur_ptr), unsafe_load(cur_ptr).next
+    return Node(cur_ptr), next_node_ptr(cur_ptr)
+end
+
+function parent_ptr(node_ptr)
+    return unsafe_load(node_ptr).parent
+end
+
+function property_ptr(node_ptr)
+    @assert unsafe_load(node_ptr).typ == ELEMENT_NODE
+    return unsafe_load(convert(Ptr{_Element}, node_ptr)).properties
+end
+
+function first_node_ptr(node_ptr)
+    return unsafe_load(node_ptr).children
+end
+
+function last_node_ptr(node_ptr)
+    return unsafe_load(node_ptr).last
+end
+
+function next_node_ptr(node_ptr)
+    return unsafe_load(node_ptr).next
+end
+
+function prev_node_ptr(node_ptr)
+    return unsafe_load(node_ptr).prev
+end
+
+function first_element_ptr(node_ptr)
+    return ccall(
+        (:xmlFirstElementChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node_ptr)
+end
+
+function last_element_ptr(node_ptr)
+    return ccall(
+        (:xmlLastElementChild, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node_ptr)
+end
+
+function next_element_ptr(node_ptr)
+    return ccall(
+        (:xmlNextElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node_ptr)
+end
+
+function prev_element_ptr(node_ptr)
+    return ccall(
+        (:xmlPreviousElementSibling, libxml2),
+        Ptr{_Node},
+        (Ptr{Void},),
+        node_ptr)
 end
