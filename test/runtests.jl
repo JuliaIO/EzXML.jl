@@ -895,7 +895,6 @@ end
     if is_windows()
         system = replace(system, '\\', '/')
     end
-    @show system
 
     doc = parsexml("""
     <?xml version="1.0"?>
