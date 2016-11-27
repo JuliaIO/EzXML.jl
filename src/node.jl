@@ -209,10 +209,9 @@ type Node
 
         # return a preallocated proxy object if any
         str = unsafe_load(ptr)
-        proxy = try_extract_proxy(str)
-        if !isnull(proxy)
+        if has_proxy(str)
             # found a valid proxy
-            return get(proxy)
+            return unsafe_extract_proxy(str)
         end
 
         if autofinalize
@@ -289,14 +288,14 @@ function Base.hash(node::Node, h::UInt)
     return hash(node.ptr, h)
 end
 
-# Try to extract the proxy object from the `_private` field if any.
-function try_extract_proxy(str)
-    proxy_ptr = str._private
-    if proxy_ptr == C_NULL
-        return Nullable{Node}()
-    else
-        return Nullable{Node}(unsafe_pointer_to_objref(proxy_ptr))
-    end
+# Check if `str` has a reference to `Node`.
+function has_proxy(str::_Node)
+    return str._private != C_NULL
+end
+
+# Extract a `Node` object from `str`.
+function unsafe_extract_proxy(str::_Node)
+    return unsafe_pointer_to_objref(str._private)::Node
 end
 
 # Store a pointer value to the `_private` field.
@@ -311,10 +310,10 @@ function finalize_node(node)
     if node === node.owner
         # detach pointers to C structs of descendant nodes
         traverse_tree(node_ptr) do ptr
-            proxy = try_extract_proxy(unsafe_load(ptr))
-            if !isnull(proxy)
+            str = unsafe_load(ptr)
+            if has_proxy(str)
                 # detach!
-                get(proxy).ptr = C_NULL
+                unsafe_extract_proxy(str).ptr = C_NULL
             end
         end
         # free the descendants
@@ -904,9 +903,9 @@ end
 # exception; otherwise it may lead to a devastating tree.
 function update_owners!(root, new_owner)
     traverse_tree(root.ptr) do node_ptr
-        proxy = try_extract_proxy(unsafe_load(node_ptr))
-        if !isnull(proxy)
-            get(proxy).owner = new_owner
+        str = unsafe_load(node_ptr)
+        if has_proxy(str)
+            unsafe_extract_proxy(str).owner = new_owner
         end
     end
 end
