@@ -161,6 +161,14 @@ findfirst(node::Node, xpath::AbstractString)
 findlast(node::Node, xpath::AbstractString)
 ```
 
+Validation
+----------
+
+```@docs
+validate
+readdtd
+```
+
 Reader node types
 -----------------
 

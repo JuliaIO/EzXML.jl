@@ -889,6 +889,48 @@ end
     @test_throws ArgumentError linkprev!(target, child)
 end
 
+@testset "Validation" begin
+    dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
+
+    doc = parsexml("""
+    <?xml version="1.0"?>
+    <!DOCTYPE note SYSTEM "$(dtdfile)">
+    <note>
+        <title>Note title</title>
+        <body>Note body</body>
+    </note>
+    """)
+    @test isempty(validate(doc))
+
+    doc = parsexml("""
+    <?xml version="1.0"?>
+    <!DOCTYPE note SYSTEM "$(dtdfile)">
+    <note>
+        <body>Note body</body>
+    </note>
+    """)
+    @test !isempty(validate(doc))
+
+    doc = parsexml("""
+    <?xml version="1.0"?>
+    <note>
+        <title>Note title</title>
+        <body>Note body</body>
+    </note>
+    """)
+    @test !isempty(validate(doc))
+
+    doc = parsexml("""
+    <?xml version="1.0"?>
+    <note>
+        <title>Note title</title>
+        <body>Note body</body>
+    </note>
+    """)
+    dtd = readdtd(dtdfile)
+    @test isempty(validate(doc, dtd))
+end
+
 @testset "XPath" begin
     doc = parsexml("""
     <?xml version="1.0"?>

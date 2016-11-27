@@ -19,6 +19,7 @@ The main features are:
 * Proper namespace handling.
 * Capturing error messages.
 * Automatic memory management.
+* Document validation.
 * Streaming parsing for large XML files.
 
 ```julia

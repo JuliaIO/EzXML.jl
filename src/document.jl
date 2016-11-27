@@ -228,6 +228,10 @@ function setroot!(doc::Document, root::Node)
     return root
 end
 
+
+# DTD and validation
+# ------------------
+
 """
     hasdtd(doc::Document)
 
@@ -277,4 +281,76 @@ function setdtd!(doc::Document, node::Node)
         link!(doc.node, node)
     end
     return node
+end
+
+immutable _ValidCtxt
+    # type tag
+end
+
+"""
+    readdtd(filename::AbstractString)
+
+Read `filename` and create a DTD node.
+"""
+function readdtd(filename::AbstractString)
+    dtd_ptr = @check ccall(
+        (:xmlParseDTD, libxml2),
+        Ptr{_Node},
+        (Cstring, Cstring),
+        C_NULL, filename) != C_NULL
+    return Node(dtd_ptr)
+end
+
+"""
+    validate(doc::Document, [dtd::Node])
+
+Validate `doc` against `dtd` and return the validation log.
+
+The validation log is empty if and only if `doc` is valid. The DTD node in `doc`
+will be used if `dtd` is not passed.
+"""
+function validate(doc::Document)
+    ctxt_ptr = new_valid_context()
+    @assert isempty(XML_GLOBAL_ERROR_STACK)
+    valid = ccall(
+        (:xmlValidateDocument, libxml2),
+        Cint,
+        (Ptr{Void}, Ptr{Void}),
+        ctxt_ptr, doc.node.ptr)
+    free(ctxt_ptr)
+    @assert (valid == 1) == isempty(XML_GLOBAL_ERROR_STACK)
+    log = copy(XML_GLOBAL_ERROR_STACK)
+    empty!(XML_GLOBAL_ERROR_STACK)
+    return log
+end
+
+function validate(doc::Document, dtd::Node)
+    ctxt_ptr = new_valid_context()
+    @assert isempty(XML_GLOBAL_ERROR_STACK)
+    valid = ccall(
+        (:xmlValidateDtd, libxml2),
+        Cint,
+        (Ptr{Void}, Ptr{Void}, Ptr{Void}),
+        ctxt_ptr, doc.node.ptr, dtd.ptr)
+    free(ctxt_ptr)
+    @assert (valid == 1) == isempty(XML_GLOBAL_ERROR_STACK)
+    log = copy(XML_GLOBAL_ERROR_STACK)
+    empty!(XML_GLOBAL_ERROR_STACK)
+    return log
+end
+
+function new_valid_context()
+    ctxt_ptr = @check ccall(
+        (:xmlNewValidCtxt, libxml2),
+        Ptr{_ValidCtxt},
+        ()) != C_NULL
+    return ctxt_ptr
+end
+
+function free(ptr::Ptr{_ValidCtxt})
+    ccall(
+        (:xmlFreeValidCtxt, libxml2),
+        Void,
+        (Ptr{Void},),
+        ptr)
 end

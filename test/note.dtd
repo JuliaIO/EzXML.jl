@@ -1,0 +1,3 @@
+<!ELEMENT note (title,body)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT body (#PCDATA)>

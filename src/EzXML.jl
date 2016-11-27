@@ -90,6 +90,8 @@ export
     readhtml,
     parsexml,
     parsehtml,
+    readdtd,
+    validate,
     depth,
     expandtree
 
