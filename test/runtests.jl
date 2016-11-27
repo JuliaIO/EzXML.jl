@@ -1015,7 +1015,8 @@ if is_unix()
 
             @testset "listlinks.jl" begin
                 try
-                    run(pipeline(`./listlinks.jl http://julialang.org/`, stdout=stdout))
+                    links = joinpath(dirname(@__FILE__), "links.html")
+                    run(pipeline(`./listlinks.jl $(links)`, stdout=stdout))
                     @test true
                 catch
                     @test false
