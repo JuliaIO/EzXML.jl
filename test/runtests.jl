@@ -996,6 +996,17 @@ end
     @test findlast(root(go), "/g:go", ["g" => go_uri]) === root(go)
     @test name.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
     @test find(root(go), "/go:go/rdf:RDF/go:term") == find(root(go), "//go:term")
+
+    # default namespace
+    doc = parsexml("""
+    <go xmlns="http://www.geneontology.org/dtds/go.dtd#">
+        <term><accession>GO:0000001</accession></term>
+    </go>
+    """)
+    @test isempty(find(root(doc), "term"))
+    @test isempty(find(root(doc), "./term"))
+    @test find(root(doc), "go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
+    @test find(root(doc), "./go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
 end
 
 @testset "Misc" begin

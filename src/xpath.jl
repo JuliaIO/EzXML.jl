@@ -76,8 +76,10 @@ function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))::Vect
         throw_xml_error()
     end
     for (prefix, uri) in ns
-        ret = register_namespace!(context_ptr, prefix, uri)
-        @assert ret == 0
+        if !isempty(prefix)
+            ret = register_namespace!(context_ptr, prefix, uri)
+            @assert ret == 0
+        end
     end
     result_ptr = eval_xpath(node, context_ptr, xpath)
     if result_ptr == C_NULL
