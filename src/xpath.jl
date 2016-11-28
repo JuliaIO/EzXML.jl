@@ -70,7 +70,7 @@ Find nodes matching `xpath` XPath query starting from `node`.
 
 The `ns` argument is an iterator of namespace prefix and URI pairs.
 """
-function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))::Vector{Node}
+function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
     context_ptr = new_xpath_context(document(node))
     if context_ptr == C_NULL
         throw_xml_error()
@@ -91,7 +91,11 @@ function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))::Vect
         @assert result.typ == XPATH_NODESET
         @assert result.nodesetval != C_NULL
         nodeset = unsafe_load(result.nodesetval)
-        return [Node(unsafe_load(nodeset.nodeTab, i)) for i in 1:nodeset.nodeNr]
+        nodes = Vector{Node}(nodeset.nodeNr)
+        for i in 1:nodeset.nodeNr
+            nodes[i] = Node(unsafe_load(nodeset.nodeTab, i))
+        end
+        return nodes
     catch
         rethrow()
     finally
