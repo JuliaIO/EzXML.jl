@@ -549,7 +549,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.eachnode",
     "category": "Function",
-    "text": "eachnode(node::Node)\n\nCreate an iterator of child nodes.\n\n\n\n"
+    "text": "eachnode(node::Node, [backward=false])\n\nCreate an iterator of child nodes.\n\n\n\n"
 },
 
 {
@@ -557,7 +557,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.nodes",
     "category": "Function",
-    "text": "nodes(node::Node)\n\nCreate a vector of child nodes.\n\n\n\n"
+    "text": "nodes(node::Node, [backward=false])\n\nCreate a vector of child nodes.\n\n\n\n"
 },
 
 {
@@ -565,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.eachelement",
     "category": "Function",
-    "text": "eachelement(node::Node)\n\nCreate an iterator of child elements.\n\n\n\n"
+    "text": "eachelement(node::Node, [backward=false])\n\nCreate an iterator of child elements.\n\n\n\n"
 },
 
 {
@@ -573,7 +573,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.elements",
     "category": "Function",
-    "text": "elements(node::Node)\n\nCreate a vector of child elements.\n\n\n\n"
+    "text": "elements(node::Node, [backward=false])\n\nCreate a vector of child elements.\n\n\n\n"
 },
 
 {
