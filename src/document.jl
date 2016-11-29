@@ -149,6 +149,26 @@ function readxml(filename::AbstractString)
 end
 
 """
+    readxml(input::IO)
+
+Read `input` and create an XML document.
+"""
+function readxml(input::IO)
+    readcb = make_read_callback()
+    closecb = C_NULL
+    context = pointer_from_objref(input)
+    uri = C_NULL
+    encoding = C_NULL
+    options = 0
+    doc_ptr = @check ccall(
+        (:xmlReadIO, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        readcb, closecb, context, uri, encoding, options) != C_NULL
+    return Document(doc_ptr)
+end
+
+"""
     readhtml(filename)
 
 Read `filename` and create an HTML document.
@@ -164,6 +184,26 @@ function readhtml(filename::AbstractString)
     return Document(doc_ptr)
 end
 
+"""
+    readhtml(input::IO)
+
+Read `input` and create an HTML document.
+"""
+function readhtml(input::IO)
+    readcb = make_read_callback()
+    closecb = C_NULL
+    context = pointer_from_objref(input)
+    uri = C_NULL
+    encoding = C_NULL
+    options = 0
+    doc_ptr = @check ccall(
+        (:htmlReadIO, libxml2),
+        Ptr{_Node},
+        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        readcb, closecb, context, uri, encoding, options) != C_NULL
+    return Document(doc_ptr)
+end
+
 function Base.write(filename::AbstractString, doc::Document)
     format = 0
     encoding = "UTF-8"
@@ -174,6 +214,33 @@ function Base.write(filename::AbstractString, doc::Document)
         filename, doc.node.ptr, encoding, format) != -1
     return Int(ret)
 end
+
+function make_read_callback()
+    # Passing an input stream as an argument is impossible to create a callback
+    # because Julia does not support C-callable closures yet.
+    return cfunction(Cint, (Ptr{Void}, Ptr{UInt8}, Cint)) do context, buffer, len
+        input = unsafe_pointer_to_objref(context)
+        avail = min(nb_available(input), len)
+        if avail > 0
+            unsafe_read(input, buffer, avail)
+            read = avail
+        elseif len > 0 && !eof(input)
+            # An input stream may return nb_available = 0 before reading data.
+            # So, read a byte to kick it ready.
+            unsafe_store!(buffer, Base.read(input, UInt8))
+            read = 1
+        else
+            read = 0
+        end
+        # debug
+        # @show unsafe_string(buffer, read)
+        return Cint(read)
+    end
+end
+
+
+# Root
+# ----
 
 """
     hasroot(doc::Document)

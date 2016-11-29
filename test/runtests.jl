@@ -35,9 +35,16 @@ end
         @test_throws EzXML.XMLError read(EzXML.Document, "not-exist.xml")
         @test_throws EzXML.XMLError readxml("not-exist.xml")
 
+        # from compressed file
         compressed = joinpath(dirname(@__FILE__), "sample1.xml.gz")
         @test isa(read(EzXML.Document, compressed), EzXML.Document)
         @test isa(readxml(compressed), EzXML.Document)
+
+        # from stream
+        doc = open(readxml, valid_file)
+        @test isa(doc, EzXML.Document)
+        @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
+        @test_throws EzXML.XMLError open(readxml, invalid_file)
     end
 
     @testset "HTML" begin
@@ -50,9 +57,24 @@ end
         @test_throws EzXML.XMLError read(EzXML.Document, "not-exist.html")
         @test_throws EzXML.XMLError readhtml("not-exist.html")
 
+        # from compressed file
         compressed = joinpath(dirname(@__FILE__), "sample1.html.gz")
         @test isa(read(EzXML.Document, compressed), EzXML.Document)
         @test isa(readhtml(compressed), EzXML.Document)
+
+        # from stream (FIXME: this causes "Misplaced DOCTYPE declaration")
+        #doc = open(readhtml, valid_file)
+        #@test isa(doc, EzXML.Document)
+        #@test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        buf = IOBuffer("""
+        <html>
+            <head><title>hey</title></head>
+            <body>Hey</body>
+        </html>
+        """)
+        doc = readhtml(buf)
+        @test isa(doc, EzXML.Document)
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
     end
 end
 
@@ -261,6 +283,22 @@ end
     @test last(typs) === EzXML.READER_END_ELEMENT
     @test last(names) == "graphml"
     @test close(reader) === nothing
+
+    input = open(simple_graphml)
+    reader = EzXML.StreamReader(input)
+    typs = []
+    names = []
+    while !done(reader)
+        push!(typs, next(reader))
+        push!(names, name(reader))
+    end
+    @test first(typs) === EzXML.READER_COMMENT
+    @test first(names) == "#comment"
+    @test last(typs) === EzXML.READER_END_ELEMENT
+    @test last(names) == "graphml"
+    @test isopen(input)
+    @test close(reader) === nothing
+    @test !isopen(input)
 
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")

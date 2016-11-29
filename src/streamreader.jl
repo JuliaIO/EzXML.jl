@@ -10,10 +10,11 @@ A streaming XML reader type.
 """
 type StreamReader
     ptr::Ptr{_TextReader}
+    input::Nullable{IO}
 
-    function StreamReader(ptr::Ptr{_TextReader})
+    function StreamReader(ptr::Ptr{_TextReader}, input=nothing)
         @assert ptr != C_NULL
-        return new(ptr)
+        return new(ptr, input)
     end
 end
 
@@ -113,6 +114,21 @@ function Base.print(io::IO, x::ReaderType)
     print(io, convert(Cint, x))
 end
 
+function StreamReader(input::IO)
+    readcb = make_read_callback()
+    closecb = C_NULL
+    context = pointer_from_objref(input)
+    uri = C_NULL
+    encoding = C_NULL
+    options = 0
+    reader_ptr = @check ccall(
+        (:xmlReaderForIO, libxml2),
+        Ptr{_TextReader},
+        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        readcb, closecb, context, uri, encoding, options) != C_NULL
+    return StreamReader(reader_ptr, input)
+end
+
 function Base.open(::Type{StreamReader}, filename::AbstractString)
     encoding = C_NULL
     options = 0
@@ -131,6 +147,9 @@ function Base.close(reader::StreamReader)
         (Ptr{Void},),
         reader.ptr)
     reader.ptr = C_NULL
+    if !isnull(reader.input)
+        close(get(reader.input))
+    end
     return nothing
 end
 
