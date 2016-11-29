@@ -166,14 +166,7 @@ function Base.start(::StreamReader)
 end
 
 function Base.done(reader::StreamReader, _=nothing)
-    ret = read_node(reader)
-    if ret == 0
-        return true
-    elseif ret == 1
-        return false
-    else
-        error("reader error")
-    end
+    return read_node(reader)
 end
 
 function Base.next(reader::StreamReader, _)
@@ -184,13 +177,14 @@ function Base.next(reader::StreamReader)
     return nodetype(reader)
 end
 
-# Read a next node.
+# Read a next node and return `true` iff finished.
 function read_node(reader)
-    ccall(
+    ret = @check ccall(
         (:xmlTextReaderRead, libxml2),
         Cint,
         (Ptr{Void},),
-        reader.ptr)
+        reader.ptr) ≥ 0
+    return ret == 0
 end
 
 """

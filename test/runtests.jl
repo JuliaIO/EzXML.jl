@@ -303,6 +303,8 @@ end
     @test close(reader) === nothing
     @test !isopen(input)
 
+    @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
+
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")
     #@test_throws EzXML.XMLError open(EzXML.StreamReader, "not-exist.xml")
