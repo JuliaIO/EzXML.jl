@@ -149,7 +149,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.readxml",
     "category": "Function",
-    "text": "readxml(filename)\n\nRead filename and create an XML document.\n\n\n\n"
+    "text": "readxml(filename)\n\nRead filename and create an XML document.\n\n\n\nreadxml(input::IO)\n\nRead input and create an XML document.\n\n\n\n"
 },
 
 {
@@ -157,7 +157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.readhtml",
     "category": "Function",
-    "text": "readhtml(filename)\n\nRead filename and create an HTML document.\n\n\n\n"
+    "text": "readhtml(filename)\n\nRead filename and create an HTML document.\n\n\n\nreadhtml(input::IO)\n\nRead input and create an HTML document.\n\n\n\n"
 },
 
 {
