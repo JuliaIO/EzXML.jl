@@ -144,6 +144,9 @@ end
         @test_throws EzXML.XMLError parse(EzXML.Document, " ")
         @test_throws EzXML.XMLError parse(EzXML.Document, "abracadabra")
         @test_throws EzXML.XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
+
+        info("the following warnings are expected:")
+        @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
     end
 
     @testset "HTML" begin
