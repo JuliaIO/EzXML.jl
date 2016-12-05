@@ -270,14 +270,21 @@ function dump_node(io, node, format)
     else
         doc_ptr = C_NULL
     end
-    buf = Buffer()
     level = 0
-    len = @check ccall(
-        (:xmlNodeDump, libxml2),
-        Cint,
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
-        buf.ptr, doc_ptr, node.ptr, level, format) != -1
-    print(io, unsafe_wrap(String, unsafe_load(buf.ptr).content, len))
+    make_buffer() do buf_ptr
+        len = @check ccall(
+            (:xmlBufNodeDump, libxml2),
+            Csize_t,
+            (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
+            buf_ptr, doc_ptr, node.ptr, level, format) != 0
+        str_ptr = @check ccall(
+            (:xmlBufContent, libxml2),
+            Cstring,
+            (Ptr{Void},),
+            buf_ptr) != C_NULL
+        unsafe_write(io, convert(Ptr{UInt8}, str_ptr), len)
+    end
+    return nothing
 end
 
 function Base.:(==)(n1::Node, n2::Node)
