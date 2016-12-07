@@ -303,6 +303,18 @@ end
     @test close(reader) === nothing
     @test !isopen(input)
 
+    input = IOBuffer("""
+    <root foo="FOO"/>
+    """)
+    reader = EzXML.StreamReader(input)
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT
+            @test haskey(reader, "foo")
+            @test !haskey(reader, "bar")
+            @test reader["foo"] == "FOO"
+        end
+    end
+
     @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
 
     # TODO: Activate this test.

@@ -249,6 +249,15 @@ function content(reader::StreamReader)
     return unsafe_wrap(String, content_ptr, true)
 end
 
+function Base.haskey(reader::StreamReader, name::AbstractString)
+    value_ptr = ccall(
+        (:xmlTextReaderGetAttribute, libxml2),
+        Cstring,
+        (Ptr{Void}, Cstring),
+        reader.ptr, name)
+    return value_ptr != C_NULL
+end
+
 function Base.getindex(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
