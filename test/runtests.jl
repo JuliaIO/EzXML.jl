@@ -312,6 +312,7 @@ end
             @test haskey(reader, "foo")
             @test !haskey(reader, "bar")
             @test reader["foo"] == "FOO"
+            @test_throws ArgumentError namespace(reader)
         end
     end
 
