@@ -89,7 +89,9 @@ function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
     try
         result = unsafe_load(result_ptr)
         @assert result.typ == XPATH_NODESET
-        @assert result.nodesetval != C_NULL
+        if result.nodesetval == C_NULL
+            return Vector{Node}()
+        end
         nodeset = unsafe_load(result.nodesetval)
         nodes = Vector{Node}(nodeset.nodeNr)
         for i in 1:nodeset.nodeNr
