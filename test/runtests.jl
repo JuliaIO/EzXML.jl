@@ -1063,6 +1063,10 @@ end
     @test isempty(find(root(doc), "./term"))
     @test find(root(doc), "go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
     @test find(root(doc), "./go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
+
+    # pull/8
+    doc = parsexml("""<root xmlns="urn:foo"/>""")
+    @test isempty(find(root(doc), "//foo:notexit/*", [("foo", "urn:foo")]))
 end
 
 @testset "Misc" begin
