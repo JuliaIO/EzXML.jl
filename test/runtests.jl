@@ -1,5 +1,6 @@
 using EzXML
 using Base.Test
+using Compat
 
 # Unit tests
 # ----------
@@ -19,7 +20,7 @@ using Base.Test
     @test isa(err, EzXML.XMLError)
     buf = IOBuffer()
     showerror(buf, err)
-    @test takebuf_string(buf) == "XMLError: some parser error from XML parser (code: 77)"
+    @test take!(buf) == b"XMLError: some parser error from XML parser (code: 77)"
 end
 
 @testset "Reader" begin
@@ -115,18 +116,18 @@ end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
-        doc = parse(EzXML.Document, """
+        doc = parse(EzXML.Document, b"""
         <?xml version="1.0"?>
         <root>
             <child attr="value">content</child>
         </root>
-        """.data)
+        """)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
 
         @test nodetype(parsexml("<xml/>").node) === EzXML.DOCUMENT_NODE
         @test nodetype(parsexml("<html/>").node) === EzXML.DOCUMENT_NODE
-        @test nodetype(parsexml("<xml/>".data).node) === EzXML.DOCUMENT_NODE
-        @test nodetype(parsexml("<html/>".data).node) === EzXML.DOCUMENT_NODE
+        @test nodetype(parsexml(b"<xml/>").node) === EzXML.DOCUMENT_NODE
+        @test nodetype(parsexml(b"<html/>").node) === EzXML.DOCUMENT_NODE
 
         # This includes multi-byte characters.
         doc = parse(EzXML.Document, """
@@ -180,7 +181,7 @@ end
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test hasdtd(doc)
 
-        doc = parse(EzXML.Document, """
+        doc = parse(EzXML.Document, b"""
         <!DOCTYPE html>
         <html>
             <head>
@@ -190,7 +191,7 @@ end
                 Hello, world!
             </body>
         </html>
-        """.data)
+        """)
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
@@ -205,7 +206,7 @@ end
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
         @test nodetype(parsehtml("<html/>").node) === EzXML.HTML_DOCUMENT_NODE
-        @test nodetype(parsehtml("<html/>".data).node) === EzXML.HTML_DOCUMENT_NODE
+        @test nodetype(parsehtml(b"<html/>").node) === EzXML.HTML_DOCUMENT_NODE
 
         @test_throws ArgumentError parsehtml("")
     end
@@ -1098,7 +1099,7 @@ end
         doc = parsexml("<e1><e2/></e1>")
         buf = IOBuffer()
         print(buf, doc)
-        @test takebuf_string(buf) == """
+        @test take!(buf) == b"""
         <?xml version="1.0" encoding="UTF-8"?>
         <e1><e2/></e1>
         """
@@ -1106,7 +1107,7 @@ end
         doc = parsexml("<e1><e2/></e1>")
         buf = IOBuffer()
         prettyprint(buf, doc)
-        @test takebuf_string(buf) == """
+        @test take!(buf) == b"""
         <?xml version="1.0" encoding="UTF-8"?>
         <e1>
           <e2/>
@@ -1152,6 +1153,9 @@ if is_unix()
                 end
             end
 
+            if VERSION > v"0.6-"
+                info("skip graphml.jl tests")
+            else
             @testset "graphml.jl" begin
                 mktemp() do path, _
                     write(path, """
@@ -1176,6 +1180,7 @@ if is_unix()
                         @test false
                     end
                 end
+            end
             end
         end
     end
