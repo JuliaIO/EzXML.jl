@@ -277,7 +277,7 @@ function dump_node(io, node, format)
         Cint,
         (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
         buf.ptr, doc_ptr, node.ptr, level, format) != -1
-    print(io, unsafe_wrap(String, unsafe_load(buf.ptr).content, len))
+    print(io, unsafe_string(unsafe_load(buf.ptr).content))
 end
 
 function Base.:(==)(n1::Node, n2::Node)
@@ -909,7 +909,9 @@ function nodepath(node::Node)
         Cstring,
         (Ptr{Void},),
         node.ptr) != C_NULL
-    return unsafe_wrap(String, str_ptr, true)
+    str = unsafe_string(str_ptr)
+    Libc.free(str_ptr)
+    return str
 end
 
 """
@@ -1026,7 +1028,9 @@ function content(node::Node)
         Cstring,
         (Ptr{Void},),
         node.ptr) != C_NULL
-    return unsafe_wrap(String, str_ptr, true)
+    str = unsafe_string(str_ptr)
+    Libc.free(str_ptr)
+    return str
 end
 
 """
@@ -1095,8 +1099,9 @@ function Base.getindex(node::Node, attr::AbstractString)
     if str_ptr == C_NULL
         throw(KeyError(attr))
     end
-    # take ownership
-    return unsafe_wrap(String, str_ptr, true)
+    str = unsafe_string(str_ptr)
+    Libc.free(str_ptr)
+    return str
 end
 
 function Base.haskey(node::Node, attr::AbstractString)

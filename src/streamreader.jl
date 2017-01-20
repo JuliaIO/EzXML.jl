@@ -246,7 +246,9 @@ function content(reader::StreamReader)
     if content_ptr == C_NULL
         throw(ArgumentError("no content"))
     end
-    return unsafe_wrap(String, content_ptr, true)
+    content = unsafe_string(content_ptr)
+    Libc.free(content_ptr)
+    return content
 end
 
 function Base.haskey(reader::StreamReader, name::AbstractString)
@@ -264,7 +266,9 @@ function Base.getindex(reader::StreamReader, name::AbstractString)
         Cstring,
         (Ptr{Void}, Cstring),
         reader.ptr, name)
-    return unsafe_wrap(String, value_ptr, true)
+    value = unsafe_string(value_ptr)
+    Libc.free(value_ptr)
+    return value
 end
 
 """

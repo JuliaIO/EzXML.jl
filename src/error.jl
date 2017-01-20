@@ -40,7 +40,7 @@ macro check(ex)
     ex.args[2] = :ret
     quote
         @assert isempty(XML_GLOBAL_ERROR_STACK)
-        ret = $(ccallex)
+        ret = $(esc(ccallex))
         if !$(ex)
             throw_xml_error()
         end
