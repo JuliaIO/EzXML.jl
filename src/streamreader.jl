@@ -24,11 +24,11 @@ end
 
 # Reader type (enum xmlReaderTypes).
 if sizeof(Cint) == 2
-    bitstype 16 ReaderType <: Integer
+    @compat primitive type ReaderType <: Integer 16 end
 elseif sizeof(Cint) == 4
-    bitstype 32 ReaderType <: Integer
+    @compat primitive type ReaderType <: Integer 32 end
 elseif sizeof(Cint) == 8
-    bitstype 64 ReaderType <: Integer
+    @compat primitive type ReaderType <: Integer 64 end
 else
     @assert false "invalid Cint size"
 end
