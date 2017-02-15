@@ -16,11 +16,11 @@ end
 
 # Node type (enum xmlElementType).
 if sizeof(Cint) == 2
-    bitstype 16 NodeType <: Integer
+    @compat primitive type NodeType <: Integer 16 end
 elseif sizeof(Cint) == 4
-    bitstype 32 NodeType <: Integer
+    @compat primitive type NodeType <: Integer 32 end
 elseif sizeof(Cint) == 8
-    bitstype 64 NodeType <: Integer
+    @compat primitive type NodeType <: Integer 64 end
 else
     @assert false "invalid Cint size"
 end
@@ -1234,7 +1234,7 @@ end
 # Iterators
 # ---------
 
-abstract AbstractNodeIterator
+@compat abstract type AbstractNodeIterator end
 
 function Base.eltype{T<:AbstractNodeIterator}(::Type{T})
     return Node
