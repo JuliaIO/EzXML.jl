@@ -26,13 +26,20 @@ immutable XMLError
     domain::Int
     code::Int
     message::String
+    level::Int
+    line::Int
 end
 
 function Base.showerror(io::IO, err::XMLError)
-    print(io, "XMLError: $(err.message) from $(errordomain2string(err.domain)) (code: $(err.code))")
+    print(io, "XMLError: $(err.message) from $(errordomain2string(err.domain)) (code: $(err.code), line: $(err.line))")
 end
 
 const XML_GLOBAL_ERROR_STACK = XMLError[]
+
+# Error levels.
+const XML_ERR_WARNING = Cint(1)  # A simple warning
+const XML_ERR_ERROR   = Cint(2)  # A recoverable error
+const XML_ERR_FATAL   = Cint(3)  # A fatal error
 
 # Check return value of ccall.
 macro check(ex)
@@ -53,7 +60,7 @@ function init_error_handler()
     error_handler = cfunction(Void, (Ptr{Void}, Ptr{Void})) do ctx, err_ptr
         if ctx == pointer_from_objref(_Error)
             err = unsafe_load(convert(Ptr{_Error}, err_ptr))
-            push!(XML_GLOBAL_ERROR_STACK, XMLError(err.domain, err.code, chomp(unsafe_string(err.message))))
+            push!(XML_GLOBAL_ERROR_STACK, XMLError(err.domain, err.code, chomp(unsafe_string(err.message)), err.level, err.line))
         end
         return
     end
@@ -78,6 +85,16 @@ function throw_xml_error()
     err = XML_GLOBAL_ERROR_STACK[1]
     empty!(XML_GLOBAL_ERROR_STACK)
     throw(err)
+end
+
+# Show warning massages if any.
+function show_warnings()
+    for err in XML_GLOBAL_ERROR_STACK
+        buf = IOBuffer()
+        showerror(buf, err)
+        warn(String(take!(buf)))
+    end
+    empty!(XML_GLOBAL_ERROR_STACK)
 end
 
 # Convert an error domain number to a human-readable string.

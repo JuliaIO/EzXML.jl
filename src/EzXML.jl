@@ -107,7 +107,7 @@ else
     const libxml2 = "libxml2"
 end
 
-import Compat: @compat
+import Compat: @compat, take!
 
 include("error.jl")
 include("node.jl")

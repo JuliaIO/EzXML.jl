@@ -16,11 +16,11 @@ using Compat
     @test_throws AssertionError repr(convert(EzXML.NodeType, 0))
     @test_throws AssertionError repr(convert(EzXML.NodeType, 100))
 
-    err = EzXML.XMLError(1, 77, "some parser error")
+    err = EzXML.XMLError(1, 77, "some parser error", EzXML.XML_ERR_ERROR, 123)
     @test isa(err, EzXML.XMLError)
     buf = IOBuffer()
     showerror(buf, err)
-    @test take!(buf) == b"XMLError: some parser error from XML parser (code: 77)"
+    @test take!(buf) == b"XMLError: some parser error from XML parser (code: 77, line: 123)"
 end
 
 @testset "Reader" begin
@@ -73,6 +73,18 @@ end
             <body>Hey</body>
         </html>
         """)
+        doc = readhtml(buf)
+        @test isa(doc, EzXML.Document)
+        @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+
+        buf = IOBuffer("""
+        <a href="http://mbgd.genome.ad.jp">MBGD</a>
+        &#124
+        <a href="https://github.com/qfo/OrthologyOntology">Ontology</a>
+        &#124
+        <a href="http://mbgd.genome.ad.jp/sparql/index_2015.php">To Previous Version (2015)</a>
+        """)
+        info("the following two warnings are expected:")
         doc = readhtml(buf)
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
@@ -146,7 +158,7 @@ end
         @test_throws EzXML.XMLError parse(EzXML.Document, "abracadabra")
         @test_throws EzXML.XMLError parse(EzXML.Document, """<?xml version="1.0"?>""")
 
-        info("the following warnings are expected:")
+        info("the following warning is expected:")
         @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
     end
 
