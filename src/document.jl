@@ -181,6 +181,7 @@ function readhtml(filename::AbstractString)
         Ptr{_Node},
         (Cstring, Cstring, Cint),
         filename, encoding, options) != C_NULL
+    show_warnings()
     return Document(doc_ptr)
 end
 
@@ -201,6 +202,7 @@ function readhtml(input::IO)
         Ptr{_Node},
         (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
         readcb, closecb, context, uri, encoding, options) != C_NULL
+    show_warnings()
     return Document(doc_ptr)
 end
 
