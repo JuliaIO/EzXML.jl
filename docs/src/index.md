@@ -49,7 +49,7 @@ for species_name in content.(find(primates, "//species/text()"))
 end
 ```
 
-If you are new to this package, read [the manual page](manual.html) first. It
-provides a general guide to the package. [The references page](references.html)
+If you are new to this package, read [the manual page](manual.md) first. It
+provides a general guide to the package. [The references page](references.md)
 offers a full documentation for each function and [the developer notes
-page](devnotes.html) explains about the internal design for developers.
+page](devnotes.md) explains about the internal design for developers.
