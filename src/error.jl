@@ -57,7 +57,7 @@ end
 
 # Initialize an error handler.
 function init_error_handler()
-    error_handler = cfunction(Void, (Ptr{Void}, Ptr{Void})) do ctx, err_ptr
+    error_handler = cfunction(Void, Tuple{Ptr{Void}, Ptr{Void}}) do ctx, err_ptr
         if ctx == pointer_from_objref(_Error)
             err = unsafe_load(convert(Ptr{_Error}, err_ptr))
             push!(XML_GLOBAL_ERROR_STACK, XMLError(err.domain, err.code, chomp(unsafe_string(err.message)), err.level, err.line))
