@@ -443,7 +443,7 @@ end
 end
 
 @testset "Traversal" begin
-    doc = parsexml("<root/>") 
+    doc = parsexml("<root/>")
     @test hasroot(doc)
     @test !hasdtd(doc)
     @test isa(root(doc), EzXML.Node)
@@ -460,6 +460,7 @@ end
     @test_throws ArgumentError parentnode(doc.node)
     @test hasparentnode(root(doc))
     @test parentnode(root(doc)) === doc.node
+    @test_throws ArgumentError name(parentnode(root(doc)))
     @test_throws ArgumentError dtd(doc)
 
     doc = parsexml("""
@@ -480,6 +481,8 @@ end
     @test systemID(dtd(doc)) == "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     @test externalID(dtd(doc)) == "-//W3C//DTD XHTML 1.0 Transitional//EN"
     @test parentnode(dtd(doc)) === doc.node
+    @test_throws ArgumentError systemID(root(doc))
+    @test_throws ArgumentError externalID(root(doc))
 
     doc = parse(EzXML.Document, """
     <?xml version="1.0"?>
@@ -549,6 +552,7 @@ end
     @test namespace(x) == "http://xxx.com"
     @test namespace(attributes(x)[1]) == "http://xxx.com"
     @test namespace(attributes(x)[2]) == "http://yyy.com"
+    @test_throws ArgumentError namespace(parentnode(root(doc)))
 
     # http://www.xml.com/pub/a/1999/01/namespaces.html
     doc = parsexml("""
