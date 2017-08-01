@@ -3,9 +3,9 @@ Manual
 
 This page is dedicated to those who are new to EzXML.jl. It is recommended to
 read this page before reading other pages to grasp the concepts of the package
-first. Once you have read it, [the references page](references.html) would be a
+first. Once you have read it, [the references page](references.md) would be a
 better place to find necessary functions. [The developer notes
-page](devnotes.html) is for developers and most users do not need to read it.
+page](devnotes.md) is for developers and most users do not need to read it.
 
 Data types
 ----------
