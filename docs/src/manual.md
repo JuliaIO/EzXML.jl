@@ -335,8 +335,8 @@ XPath queries
 user can retrieve target elements using a short string query. For example,
 `"//genus/species"` selects all "species" elements just under a "genus" element.
 
-The `find` (`findfirst` and `findlast`) function is overloaded for XPath query and returns a vector of
-selected nodes:
+The `find`, `findfirst` and `findlast` functions are overloaded for XPath query
+and return a vector of selected nodes:
 ```jlcon
 julia> primates = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
@@ -349,6 +349,12 @@ julia> find(primates, "//genus")
 2-element Array{EzXML.Node,1}:
  EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
  EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
+
+julia> findfirst(primates, "//genus")
+EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
+
+julia> findlast(primates, "//genus")
+EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
 
 julia> println(findfirst(primates, "//genus"))
 <genus name="Homo">
@@ -377,6 +383,36 @@ julia> println(findfirst(genus, "species"))
 which means prefixes are available in the XPath query. This is especially useful
 when an XML document is composed of elements originated from different
 namespaces.
+
+There is a caveat on the combination of XPath and namespaces: if a document
+contains elements with a default namespace, you need to specify its prefix to
+the `find` function. For example, in the following example, the root element and
+its descendants have a default namespace "http://www.foobar.org" but it does not
+have its own prefix.  In this case, you need to pass its prefix to find elements
+in the namespace:
+```jlcon
+julia> doc = parsexml("""
+       <parent xmlns="http://www.foobar.org">
+           <child/>
+       </parent>
+       """)
+EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))
+
+julia> find(root(doc), "/parent/child")
+0-element Array{EzXML.Node,1}
+
+julia> namespaces(root(doc))  # The default namespace has an empty prefix.
+1-element Array{Pair{String,String},1}:
+ ""=>"http://www.foobar.org"
+
+julia> ns = namespace(root(doc))  # Get the namespace.
+"http://www.foobar.org"
+
+julia> find(root(doc), "/x:parent/x:child", ["x"=>ns])  # Specify its prefix as "x".
+1-element Array{EzXML.Node,1}:
+ EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)
+
+```
 
 Streaming interfaces
 --------------------
