@@ -366,7 +366,7 @@ end
     @test isa(n, EzXML.Node)
     @test n.owner == n
     @test nodetype(n) === EzXML.TEXT_NODE
-    @test EzXML.istext(n)  # Base.istext is deprecated.
+    @test istext(n)
     @test_throws ArgumentError document(n)
 
     n = CommentNode("some comment")

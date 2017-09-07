@@ -65,7 +65,7 @@ export
     nodepath,
     iselement,
     isattribute,
-    # istext,
+    istext,
     iscdata,
     iscomment,
     isdtd,
@@ -94,12 +94,6 @@ export
     validate,
     depth,
     expandtree
-
-
-if !isdefined(Base, :istext)
-    # deprecated but not removed yet on Julia 0.5
-    export istext
-end
 
 if is_windows()
     const libxml2 = Pkg.dir("WinRPM","deps","usr","$(Sys.ARCH)-w64-mingw32","sys-root","mingw","bin","libxml2-2")
