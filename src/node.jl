@@ -2,7 +2,7 @@
 # ========
 
 # Shared fields of node-like structs.
-immutable _Node
+struct _Node
     _private::Ptr{Void}  # pointer to a Node object (NULL if not)
     typ::Cint
     name::Cstring
@@ -116,7 +116,7 @@ function Base.print(io::IO, x::NodeType)
 end
 
 # Fields of namespace (_xmlNs).
-immutable _Ns
+struct _Ns
     next::Ptr{_Ns}
     typ::Cint
     href::Cstring
@@ -126,7 +126,7 @@ immutable _Ns
 end
 
 # Fields of element node (_xmlNode).
-immutable _Element
+struct _Element
     _private::Ptr{Void}
     typ::Cint
     name::Cstring
@@ -147,7 +147,7 @@ immutable _Element
 end
 
 # Fields of attribute node (_xmlAttr).
-immutable _Attribute
+struct _Attribute
     _private::Ptr{Void}
     typ::Cint
     name::Cstring
@@ -164,7 +164,7 @@ immutable _Attribute
 end
 
 # Fields of DTD node (_xmlDtd).
-immutable _Dtd
+struct _Dtd
     _private::Ptr{Void}
     typ::Cint
     name::Cstring
@@ -200,7 +200,7 @@ end
 """
 A proxy type to libxml2's node struct.
 """
-type Node
+mutable struct Node
     ptr::Ptr{_Node}
     owner::Node
 
@@ -1262,7 +1262,7 @@ function nodes(node::Node, backward::Bool=false)
     return collect(eachnode(node, backward))
 end
 
-immutable ChildNodeIterator <: AbstractNodeIterator
+struct ChildNodeIterator <: AbstractNodeIterator
     node::Ptr{_Node}
     backward::Bool
 end
@@ -1297,7 +1297,7 @@ function elements(node::Node, backward::Bool=false)
     return collect(eachelement(node, backward))
 end
 
-immutable ChildElementIterator <: AbstractNodeIterator
+struct ChildElementIterator <: AbstractNodeIterator
     ptr::Ptr{_Node}
     backward::Bool
 end
@@ -1335,7 +1335,7 @@ function attributes(node::Node)
     return collect(eachattribute(node))
 end
 
-immutable AttributeIterator <: AbstractNodeIterator
+struct AttributeIterator <: AbstractNodeIterator
     ptr::Ptr{_Node}
 end
 

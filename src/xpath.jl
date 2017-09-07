@@ -1,11 +1,11 @@
 # XPath
 # =====
 
-immutable _XPathContext
+struct _XPathContext
     # type tag
 end
 
-immutable _NodeSet
+struct _NodeSet
     nodeNr::Cint
     nodeMax::Cint
     nodeTab::Ptr{Ptr{_Node}}
@@ -22,7 +22,7 @@ const XPATH_LOCATIONSET = Cint(7)
 const XPATH_USERS       = Cint(8)
 const XPATH_XSLT_TREE   = Cint(9)
 
-immutable _XPathObject
+struct _XPathObject
     typ::Cint
     nodesetval::Ptr{_NodeSet}
     boolval::Cint

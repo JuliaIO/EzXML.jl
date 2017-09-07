@@ -3,7 +3,7 @@
 #
 # XML error handling utils.
 
-immutable _Error
+struct _Error
     domain::Cint
     code::Cint
     message::Cstring
@@ -22,7 +22,7 @@ end
 """
 An error detected by libxml2.
 """
-immutable XMLError
+struct XMLError
     domain::Int
     code::Int
     message::String

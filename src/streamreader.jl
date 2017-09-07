@@ -1,14 +1,14 @@
 # Streaming XML Reader
 # ====================
 
-immutable _TextReader
+struct _TextReader
     # type tag
 end
 
 """
 A streaming XML reader type.
 """
-type StreamReader
+mutable struct StreamReader
     ptr::Ptr{_TextReader}
     input::Nullable{IO}
 

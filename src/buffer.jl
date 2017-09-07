@@ -1,7 +1,7 @@
 # Buffer
 # ======
 
-immutable _Buffer
+struct _Buffer
     content::Cstring
     use::Cuint
     size::Cuint
@@ -9,7 +9,7 @@ immutable _Buffer
     contentIO::Cstring
 end
 
-type Buffer
+mutable struct Buffer
     ptr::Ptr{_Buffer}
 
     function Buffer()
