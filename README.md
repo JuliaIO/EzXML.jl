@@ -87,7 +87,7 @@ Accessors:
     * Parent: `hasparentnode(node)`, `hasparentelement(node)`
     * Child: `hasnode(node)`, `haselement(node)`
     * Sibling: `hasnextnode(node)`, `hasprevnode(node)`, `hasnextelement(node)`, `hasprevelement(node)`
-    * Node type: `iselement(node)`, `isattribute(node)`, `EzXML.istext(node)`, `iscdata(node)`, `iscomment(node)`, `isdtd(node)`
+    * Node type: `iselement(node)`, `isattribute(node)`, `istext(node)`, `iscdata(node)`, `iscomment(node)`, `isdtd(node)`
 * Tree traversal:
     * Document: `document(node)`
     * Parent: `parentnode(node)`, `parentelement(node)`
