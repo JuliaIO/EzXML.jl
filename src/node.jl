@@ -991,11 +991,11 @@ function document(node::Node)
 end
 
 """
-    name(node::Node)
+    nodename(node::Node)
 
 Return the node name of `node`.
 """
-function name(node::Node)
+function nodename(node::Node)
     node_str = unsafe_load(node.ptr)
     if node_str.name == C_NULL
         throw(ArgumentError("no node name"))
@@ -1004,11 +1004,11 @@ function name(node::Node)
 end
 
 """
-    setname!(node::Node, name::AbstractString)
+    setnodename!(node::Node, name::AbstractString)
 
 Set the name of `node`.
 """
-function setname!(node::Node, name::AbstractString)
+function setnodename!(node::Node, name::AbstractString)
     ccall(
         (:xmlNodeSetName, libxml2),
         Void,

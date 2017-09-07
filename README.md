@@ -79,7 +79,7 @@ IO:
 * To stream: `print(io, doc)`
 
 Accessors:
-* Node information: `nodetype(node)`, `nodepath(node)`, `name(node)`, `content(node)`
+* Node information: `nodetype(node)`, `nodepath(node)`, `nodename(node)`, `content(node)`, `setnodename!(node, name)`
 * Document: `root(doc)`, `dtd(doc)`, `hasroot(doc)`, `hasdtd(doc)`, `setroot!(doc, element_node)`, `setdtd!(doc, dtd_node)`
 * Attributes: `node[name]`, `node[name] = value`, `haskey(node, name)`, `delete!(node, name)`
 * Node predicate:

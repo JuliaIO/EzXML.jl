@@ -176,7 +176,7 @@ end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
         @test hasdtd(doc)
-        @test name(dtd(doc)) == "html"
+        @test nodename(dtd(doc)) == "html"
 
         doc = parse(EzXML.Document, """
         <html>
@@ -244,9 +244,9 @@ end
     attributes = []
     for typ in reader
         push!(typs, typ)
-        push!(names, name(reader))
+        push!(names, nodename(reader))
         push!(depths, depth(reader))
-        if typ == EzXML.READER_ELEMENT && name(reader) == "elm"
+        if typ == EzXML.READER_ELEMENT && nodename(reader) == "elm"
             push!(contents, content(reader))
             push!(attributes, reader["attr1"])
         end
@@ -273,7 +273,7 @@ end
     namespaces = []
     for typ in reader
         push!(typs, typ)
-        push!(names, name(reader))
+        push!(names, nodename(reader))
         if typ == EzXML.READER_ELEMENT
             push!(namespaces, namespace(reader))
         end
@@ -291,7 +291,7 @@ end
     names = []
     while !done(reader)
         push!(typs, next(reader))
-        push!(names, name(reader))
+        push!(names, nodename(reader))
     end
     @test first(typs) === EzXML.READER_COMMENT
     @test first(names) == "#comment"
@@ -305,7 +305,7 @@ end
     names = []
     while !done(reader)
         push!(typs, next(reader))
-        push!(names, name(reader))
+        push!(names, nodename(reader))
     end
     @test first(typs) === EzXML.READER_COMMENT
     @test first(names) == "#comment"
@@ -395,7 +395,7 @@ end
     @test isdtd(n)
     @test n.owner === n
     @test nodetype(n) === EzXML.DTD_NODE
-    @test name(n) == "open-hatch"
+    @test nodename(n) == "open-hatch"
     @test_throws ArgumentError systemID(n)
     @test_throws ArgumentError externalID(n)
 
@@ -451,7 +451,7 @@ end
     @test hash(root(doc)) === hash(root(doc))
     @test nodetype(root(doc)) === EzXML.ELEMENT_NODE
     @test nodepath(root(doc)) == "/root"
-    @test name(root(doc)) == "root"
+    @test nodename(root(doc)) == "root"
     @test content(root(doc)) == ""
     @test document(root(doc)) == doc
     @test document(root(doc)) === doc
@@ -459,7 +459,7 @@ end
     @test_throws ArgumentError parentnode(doc.node)
     @test hasparentnode(root(doc))
     @test parentnode(root(doc)) === doc.node
-    @test_throws ArgumentError name(parentnode(root(doc)))
+    @test_throws ArgumentError nodename(parentnode(root(doc)))
     @test_throws ArgumentError dtd(doc)
 
     doc = parsexml("""
@@ -476,7 +476,7 @@ end
     @test isa(dtd(doc), EzXML.Node)
     @test isdtd(dtd(doc))
     @test dtd(doc) === dtd(doc)
-    @test name(dtd(doc)) == "html"
+    @test nodename(dtd(doc)) == "html"
     @test systemID(dtd(doc)) == "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     @test externalID(dtd(doc)) == "-//W3C//DTD XHTML 1.0 Transitional//EN"
     @test parentnode(dtd(doc)) === doc.node
@@ -495,9 +495,9 @@ end
     @test nodetype(firstnode(r)) === EzXML.TEXT_NODE
     @test nodetype(lastnode(r)) === EzXML.TEXT_NODE
     @test nodetype(firstelement(r)) === EzXML.ELEMENT_NODE
-    @test name(firstelement(r)) == "c1"
+    @test nodename(firstelement(r)) == "c1"
     @test nodetype(lastelement(r)) === EzXML.ELEMENT_NODE
-    @test name(lastelement(r)) == "c3"
+    @test nodename(lastelement(r)) == "c3"
     c1 = firstelement(r)
     @test hasnextnode(c1)
     @test hasprevnode(c1)
@@ -506,12 +506,12 @@ end
     @test hasnextelement(c1)
     @test !hasprevelement(c1)
     c2 = nextelement(c1)
-    @test name(c2) == "c2"
+    @test nodename(c2) == "c2"
     @test hasnextelement(c2)
     @test hasprevelement(c2)
     @test prevelement(c2) == c1
     c3 = nextelement(c2)
-    @test name(c3) == "c3"
+    @test nodename(c3) == "c3"
     @test !hasnextelement(c3)
     @test hasprevelement(c3)
     @test prevelement(c3) == c2
@@ -581,7 +581,7 @@ end
           namespaces(elements(root(doc))[2]) == [
         "xdc" => "http://www.xml.com/books",
         "h"   => "http://www.w3.org/HTML/1998/html4"]
-    @test name(root(doc)) == "html"
+    @test nodename(root(doc)) == "html"
     @test namespace(root(doc)) == "http://www.w3.org/HTML/1998/html4"
     @test namespace(elements(elements(root(doc))[2])[1]) == "http://www.xml.com/books"
 
@@ -748,11 +748,11 @@ end
         <root attr1="foo" attr2="bar"></root>
         """)
         for node in eachattribute(root(doc))
-            attr = name(node)
+            attr = nodename(node)
             val = content(node)
             @test val == (attr == "attr1" ? "foo" : "bar")
         end
-        @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
+        @test [(nodename(n), content(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
         @test_throws ArgumentError eachattribute(doc.node)
         @test_throws ArgumentError attributes(doc.node)
     end
@@ -777,9 +777,9 @@ end
     doc = XMLDocument()
     el = ElementNode("el")
     setroot!(doc, el)
-    @test name(el) == "el"
-    setname!(el, "EL")
-    @test name(el) == "EL"
+    @test nodename(el) == "el"
+    setnodename!(el, "EL")
+    @test nodename(el) == "EL"
     @test content(el) == ""
     setcontent!(el, "some content")
     @test content(el) == "some content"
@@ -876,7 +876,7 @@ end
     doc = XMLDocument()
     setroot!(doc, el)
     @test root(doc) == el
-    @test [(name(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
+    @test [(nodename(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
     doc = parse(EzXML.Document, """
     <root></root>
@@ -1038,11 +1038,11 @@ end
     @test find(doc, "/root/foo")[1] === elements(root(doc))[1]
     @test find(doc, "/root/foo")[2] === elements(root(doc))[2]
     for (i, node) in enumerate(find(doc, "//bar"))
-        @test name(node) == "bar"
+        @test nodename(node) == "bar"
         @test content(node) == string(i)
     end
     for (i, node) in enumerate(find(doc, "//bar/text()"))
-        @test name(node) == "text"
+        @test nodename(node) == "text"
         @test content(node) == string(i)
     end
     @test findfirst(doc, "//bar") === find(doc, "//bar")[1]
@@ -1066,7 +1066,7 @@ end
     @test find(root(go), "/g:go", ["g" => go_uri]) == [root(go)]
     @test findfirst(root(go), "/g:go", ["g" => go_uri]) === root(go)
     @test findlast(root(go), "/g:go", ["g" => go_uri]) === root(go)
-    @test name.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
+    @test nodename.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
     @test find(root(go), "/go:go/rdf:RDF/go:term") == find(root(go), "//go:term")
 
     # default namespace

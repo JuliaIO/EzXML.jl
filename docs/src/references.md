@@ -75,7 +75,7 @@ Node accessors
 ```@docs
 nodetype(::Node)
 nodepath(::Node)
-name(::Node)
+nodename(::Node)
 content(::Node)
 namespace(::Node)
 namespaces(::Node)
@@ -96,7 +96,7 @@ Node modifiers
 --------------
 
 ```@docs
-setname!(::Node, ::AbstractString)
+setnodename!(::Node, ::AbstractString)
 setcontent!(::Node, ::AbstractString)
 ```
 
@@ -200,7 +200,7 @@ Streaming reader
 depth(::StreamReader)
 expandtree(::StreamReader)
 nodetype(::StreamReader)
-name(::StreamReader)
+nodename(::StreamReader)
 content(::StreamReader)
 namespace(::StreamReader)
 ```
