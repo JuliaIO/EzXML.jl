@@ -1136,6 +1136,7 @@ end
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
 if is_unix()
+    julia = joinpath(JULIA_HOME, "julia")
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do
@@ -1143,7 +1144,7 @@ if is_unix()
 
             @testset "primates.jl" begin
                 try
-                    run(pipeline(`./primates.jl`, stdout=stdout))
+                    run(pipeline(`$(julia) primates.jl`, stdout=stdout))
                     @test true
                 catch
                     @test false
@@ -1152,7 +1153,7 @@ if is_unix()
 
             @testset "julia2xml.jl" begin
                 try
-                    run(pipeline(pipeline(`echo "1 + sum([2,3])"`, `./julia2xml.jl`), stdout=stdout))
+                    run(pipeline(pipeline(`echo "1 + sum([2,3])"`, `$(julia) julia2xml.jl`), stdout=stdout))
                     @test true
                 catch
                     @test false
@@ -1162,7 +1163,7 @@ if is_unix()
             @testset "listlinks.jl" begin
                 try
                     links = joinpath(dirname(@__FILE__), "links.html")
-                    run(pipeline(`./listlinks.jl $(links)`, stdout=stdout))
+                    run(pipeline(`$(julia) listlinks.jl $(links)`, stdout=stdout))
                     @test true
                 catch
                     @test false
@@ -1190,7 +1191,7 @@ if is_unix()
                     </graphml>
                     """)
                     try
-                        run(pipeline(`./graphml.jl $(path)`, stdout=stdout))
+                        run(pipeline(`$(julia) graphml.jl $(path)`, stdout=stdout))
                         @test true
                     catch
                         @test false
