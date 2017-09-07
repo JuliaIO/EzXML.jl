@@ -268,7 +268,7 @@ julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child/></root>
 
-julia> setcontent!(c, "some content")
+julia> setnodecontent!(c, "some content")
 EzXML.Node(<ELEMENT_NODE@0x00007fe4b57de820>)
 
 julia> print(doc)
@@ -301,7 +301,7 @@ shell> cat out.xml
 
 An alternative way is using the `addelement!(<parent>, <child>, [<content>])`
 function, which is a shorthand of a sequence operations: `ElementNode(<child name>)`,
-`link!(<parent>, <child>)`, and optional `setcontent!(<child>, <content>)`. This
+`link!(<parent>, <child>)`, and optional `setnodecontent!(<child>, <content>)`. This
 is often handier in typical use:
 ```jlcon
 julia> doc = XMLDocument()

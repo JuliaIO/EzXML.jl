@@ -74,7 +74,7 @@ export
     nodename,
     setnodename!,
     nodecontent,
-    setcontent!,
+    setnodecontent!,
     systemID,
     externalID,
     eachnode,

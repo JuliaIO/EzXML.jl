@@ -1034,11 +1034,11 @@ function nodecontent(node::Node)
 end
 
 """
-    setcontent!(node::Node, content::AbstractString)
+    setnodecontent!(node::Node, content::AbstractString)
 
 Replace the content of `node`.
 """
-function setcontent!(node::Node, content::AbstractString)
+function setnodecontent!(node::Node, content::AbstractString)
     ccall(
         (:xmlNodeSetContentLen, libxml2),
         Void,

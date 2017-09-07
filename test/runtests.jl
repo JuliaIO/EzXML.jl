@@ -781,7 +781,7 @@ end
     setnodename!(el, "EL")
     @test nodename(el) == "EL"
     @test nodecontent(el) == ""
-    setcontent!(el, "some content")
+    setnodecontent!(el, "some content")
     @test nodecontent(el) == "some content"
 
     doc = XMLDocument()

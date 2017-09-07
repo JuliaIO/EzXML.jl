@@ -97,7 +97,7 @@ Node modifiers
 
 ```@docs
 setnodename!(::Node, ::AbstractString)
-setcontent!(::Node, ::AbstractString)
+setnodecontent!(::Node, ::AbstractString)
 ```
 
 DOM tree accessors
