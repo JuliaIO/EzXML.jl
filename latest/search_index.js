@@ -413,7 +413,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "Node accessors",
     "category": "section",
-    "text": "nodetype(::Node)\nnodepath(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nEzXML.istext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
+    "text": "nodetype(::Node)\nnodepath(::Node)\nname(::Node)\ncontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\niselement(::Node)\nisattribute(::Node)\nistext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
 },
 
 {
