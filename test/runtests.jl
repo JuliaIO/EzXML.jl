@@ -1,6 +1,5 @@
 using EzXML
 using Base.Test
-using Compat
 
 # Unit tests
 # ----------

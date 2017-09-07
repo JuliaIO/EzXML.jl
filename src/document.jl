@@ -4,7 +4,7 @@
 """
 An XML/HTML document type.
 """
-immutable Document
+struct Document
     node::Node
 
     function Document(ptr::Ptr{_Node})
@@ -352,7 +352,7 @@ function setdtd!(doc::Document, node::Node)
     return node
 end
 
-immutable _ValidCtxt
+struct _ValidCtxt
     # type tag
 end
 

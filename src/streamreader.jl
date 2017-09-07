@@ -1,14 +1,14 @@
 # Streaming XML Reader
 # ====================
 
-immutable _TextReader
+struct _TextReader
     # type tag
 end
 
 """
 A streaming XML reader type.
 """
-type StreamReader
+mutable struct StreamReader
     ptr::Ptr{_TextReader}
     input::Nullable{IO}
 
@@ -24,11 +24,11 @@ end
 
 # Reader type (enum xmlReaderTypes).
 if sizeof(Cint) == 2
-    @compat primitive type ReaderType <: Integer 16 end
+    primitive type ReaderType <: Integer 16 end
 elseif sizeof(Cint) == 4
-    @compat primitive type ReaderType <: Integer 32 end
+    primitive type ReaderType <: Integer 32 end
 elseif sizeof(Cint) == 8
-    @compat primitive type ReaderType <: Integer 64 end
+    primitive type ReaderType <: Integer 64 end
 else
     @assert false "invalid Cint size"
 end
