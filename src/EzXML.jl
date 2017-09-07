@@ -108,6 +108,12 @@ include("buffer.jl")
 include("xpath.jl")
 include("streamreader.jl")
 
+# Deprecation
+@deprecate name nodename
+@deprecate setname! setnodename!
+@deprecate content nodecontent
+@deprecate setcontent! setnodecontent!
+
 function __init__()
     init_error_handler()
 end
