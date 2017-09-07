@@ -103,7 +103,7 @@ EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 julia> nodetype(primates)    # The node is an element node.
 ELEMENT_NODE
 
-julia> name(primates)        # `name` returns the tag name of an element.
+julia> nodename(primates)    # `nodename` returns the tag name of an element.
 "primates"
 
 julia> haselement(primates)  # Check if a node has one or more elements.
@@ -114,7 +114,7 @@ julia> genus = elements(primates)  # `elements` returns all child elements.
  EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
  EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
-julia> name.(genus)          # Broadcasting syntax (dot function) works.
+julia> nodename.(genus)      # Broadcasting syntax (dot function) works.
 2-element Array{String,1}:
  "genus"
  "genus"
@@ -460,7 +460,7 @@ false
 julia> nodetype(reader)
 READER_ELEMENT
 
-julia> name(reader)
+julia> nodename(reader)
 "graphml"
 
 julia> done(reader)  # Read the 2nd node.
@@ -469,7 +469,7 @@ false
 julia> nodetype(reader)
 READER_SIGNIFICANT_WHITESPACE
 
-julia> name(reader)
+julia> nodename(reader)
 "#text"
 
 julia> done(reader)  # Read the 3rd node.
@@ -478,7 +478,7 @@ false
 julia> nodetype(reader)
 READER_ELEMENT
 
-julia> name(reader)
+julia> ndoename(reader)
 "graph"
 
 julia> reader["edgedefault"]
@@ -489,8 +489,8 @@ julia> reader["edgedefault"]
 Unlike DOM interfaces, methods are applied to a reader object. This is because
 the streaming reader does not construct a DOM tree while reading and hence we
 have no access to actual nodes of an XML document. Methods like `nodetype`,
-`name`, `content`, `namespace` and `getindex` are overloaded for the reader
-type.
+`nodename`, `nodecontent`, `namespace` and `getindex` are overloaded for the
+reader type.
 
 An important thing to be noted is that while the value of `nodetype` for the XML
 reader returns the current node type, the domain is slightly different from that
