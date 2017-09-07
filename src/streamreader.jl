@@ -233,11 +233,11 @@ function nodename(reader::StreamReader)
 end
 
 """
-    content(reader::StreamReader)
+    nodecontent(reader::StreamReader)
 
 Return the content of the current node of `reader`.
 """
-function content(reader::StreamReader)
+function nodecontent(reader::StreamReader)
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,

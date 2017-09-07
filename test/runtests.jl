@@ -247,7 +247,7 @@ end
         push!(names, nodename(reader))
         push!(depths, depth(reader))
         if typ == EzXML.READER_ELEMENT && nodename(reader) == "elm"
-            push!(contents, content(reader))
+            push!(contents, nodecontent(reader))
             push!(attributes, reader["attr1"])
         end
         @test isa(expandtree(reader), EzXML.Node)
@@ -452,7 +452,7 @@ end
     @test nodetype(root(doc)) === EzXML.ELEMENT_NODE
     @test nodepath(root(doc)) == "/root"
     @test nodename(root(doc)) == "root"
-    @test content(root(doc)) == ""
+    @test nodecontent(root(doc)) == ""
     @test document(root(doc)) == doc
     @test document(root(doc)) === doc
     @test !hasparentnode(doc.node)
@@ -522,7 +522,7 @@ end
     <?xml version="1.0"?>
     <root attr="some attribute value"><child>some content</child></root>
     """)
-    @test content(root(doc)) == "some content"
+    @test nodecontent(root(doc)) == "some content"
     @test haskey(root(doc), "attr")
     @test !haskey(root(doc), "bah")
     @test root(doc)["attr"] == "some attribute value"
@@ -749,10 +749,10 @@ end
         """)
         for node in eachattribute(root(doc))
             attr = nodename(node)
-            val = content(node)
+            val = nodecontent(node)
             @test val == (attr == "attr1" ? "foo" : "bar")
         end
-        @test [(nodename(n), content(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
+        @test [(nodename(n), nodecontent(n)) for n in attributes(root(doc))] == [("attr1", "foo"), ("attr2", "bar")]
         @test_throws ArgumentError eachattribute(doc.node)
         @test_throws ArgumentError attributes(doc.node)
     end
@@ -780,9 +780,9 @@ end
     @test nodename(el) == "el"
     setnodename!(el, "EL")
     @test nodename(el) == "EL"
-    @test content(el) == ""
+    @test nodecontent(el) == ""
     setcontent!(el, "some content")
-    @test content(el) == "some content"
+    @test nodecontent(el) == "some content"
 
     doc = XMLDocument()
     @test countnodes(doc.node) === 0
@@ -876,7 +876,7 @@ end
     doc = XMLDocument()
     setroot!(doc, el)
     @test root(doc) == el
-    @test [(nodename(n), content(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
+    @test [(nodename(n), nodecontent(n)) for n in attributes(root(doc))] == [("attr1", "1"), ("attr2", "2")]
 
     doc = parse(EzXML.Document, """
     <root></root>
@@ -1039,11 +1039,11 @@ end
     @test find(doc, "/root/foo")[2] === elements(root(doc))[2]
     for (i, node) in enumerate(find(doc, "//bar"))
         @test nodename(node) == "bar"
-        @test content(node) == string(i)
+        @test nodecontent(node) == string(i)
     end
     for (i, node) in enumerate(find(doc, "//bar/text()"))
         @test nodename(node) == "text"
-        @test content(node) == string(i)
+        @test nodecontent(node) == string(i)
     end
     @test findfirst(doc, "//bar") === find(doc, "//bar")[1]
     @test findlast(doc, "//bar") === find(doc, "//bar")[3]

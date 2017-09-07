@@ -1018,11 +1018,11 @@ function setnodename!(node::Node, name::AbstractString)
 end
 
 """
-    content(node::Node)
+    nodecontent(node::Node)
 
 Return the node content of `node`.
 """
-function content(node::Node)
+function nodecontent(node::Node)
     str_ptr = @check ccall(
         (:xmlNodeGetContent, libxml2),
         Cstring,
