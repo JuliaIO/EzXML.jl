@@ -7,6 +7,12 @@ first. Once you have read it, [the references page](references.md) would be a
 better place to find necessary functions. [The developer notes
 page](devnotes.md) is for developers and most users do not need to read it.
 
+In this manual, we use `using EzXML` for the sake of brevity.  However, it is
+recommended to use `import EzXML` for long scripts or packages because EzXML.jl
+exports a number of names to your environment. These are useful in interactive
+sessions but easily conflict with other names. If you want to see the list of
+exported names, please go to the top of src/EzXML.jl.
+
 Data types
 ----------
 
