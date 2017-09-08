@@ -7,5 +7,5 @@ doc = readhtml(ARGS[1])
 links = find(doc, "//a[@href and normalize-space(text()) != '']")
 width = ndigits(length(links))
 for (i, link) in enumerate(links)
-    println(lpad(i, width), ": ", strip(content(link)), " -- ", link["href"])
+    println(lpad(i, width), ": ", strip(nodecontent(link)), " -- ", link["href"])
 end

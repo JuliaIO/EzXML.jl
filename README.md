@@ -49,14 +49,14 @@ for genus in eachelement(primates)
     println("- ", genus_name)
     for species in eachelement(genus)
         # Get the content within an element.
-        species_name = content(species)
+        species_name = nodecontent(species)
         println("  └ ", species["name"], " (", species_name, ")")
     end
 end
 println()
 
 # Find texts using XPath query.
-for species_name in content.(find(primates, "//species/text()"))
+for species_name in nodecontent.(find(primates, "//species/text()"))
     println("- ", species_name)
 end
 ```
@@ -79,7 +79,7 @@ IO:
 * To stream: `print(io, doc)`
 
 Accessors:
-* Node information: `nodetype(node)`, `nodepath(node)`, `name(node)`, `content(node)`
+* Node information: `nodetype(node)`, `nodepath(node)`, `nodename(node)`, `nodecontent(node)`, `setnodename!(node, name)`, `setnodecontent!(node, content)`
 * Document: `root(doc)`, `dtd(doc)`, `hasroot(doc)`, `hasdtd(doc)`, `setroot!(doc, element_node)`, `setdtd!(doc, dtd_node)`
 * Attributes: `node[name]`, `node[name] = value`, `haskey(node, name)`, `delete!(node, name)`
 * Node predicate:

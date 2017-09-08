@@ -75,8 +75,8 @@ Node accessors
 ```@docs
 nodetype(::Node)
 nodepath(::Node)
-name(::Node)
-content(::Node)
+nodename(::Node)
+nodecontent(::Node)
 namespace(::Node)
 namespaces(::Node)
 iselement(::Node)
@@ -96,8 +96,8 @@ Node modifiers
 --------------
 
 ```@docs
-setname!(::Node, ::AbstractString)
-setcontent!(::Node, ::AbstractString)
+setnodename!(::Node, ::AbstractString)
+setnodecontent!(::Node, ::AbstractString)
 ```
 
 DOM tree accessors
@@ -200,7 +200,7 @@ Streaming reader
 depth(::StreamReader)
 expandtree(::StreamReader)
 nodetype(::StreamReader)
-name(::StreamReader)
-content(::StreamReader)
+nodename(::StreamReader)
+nodecontent(::StreamReader)
 namespace(::StreamReader)
 ```

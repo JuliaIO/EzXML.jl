@@ -26,13 +26,13 @@ for genus in eachelement(primates)
     println("- ", genus_name)
     for species in eachelement(genus)
         # Get the content within an element.
-        species_name = content(species)
+        species_name = nodecontent(species)
         println("  └ ", species["name"], " (", species_name, ")")
     end
 end
 println()
 
 # Find texts using XPath query.
-for species_name in content.(find(primates, "//species/text()"))
+for species_name in nodecontent.(find(primates, "//species/text()"))
     println("- ", species_name)
 end

@@ -216,11 +216,11 @@ function nodetype(reader::StreamReader)
 end
 
 """
-    name(reader::StreamReader)
+    nodename(reader::StreamReader)
 
 Return the name of the current node of `reader`.
 """
-function name(reader::StreamReader)
+function nodename(reader::StreamReader)
     name_ptr = ccall(
         (:xmlTextReaderConstName, libxml2),
         Cstring,
@@ -233,11 +233,11 @@ function name(reader::StreamReader)
 end
 
 """
-    content(reader::StreamReader)
+    nodecontent(reader::StreamReader)
 
 Return the content of the current node of `reader`.
 """
-function content(reader::StreamReader)
+function nodecontent(reader::StreamReader)
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,
