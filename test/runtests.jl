@@ -245,7 +245,7 @@ end
     for typ in reader
         push!(typs, typ)
         push!(names, nodename(reader))
-        push!(depths, depth(reader))
+        push!(depths, nodedepth(reader))
         if typ == EzXML.READER_ELEMENT && nodename(reader) == "elm"
             push!(contents, nodecontent(reader))
             push!(attributes, reader["attr1"])
