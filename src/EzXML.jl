@@ -113,6 +113,7 @@ include("streamreader.jl")
 @deprecate setname! setnodename!
 @deprecate content nodecontent
 @deprecate setcontent! setnodecontent!
+@deprecate depth nodedepth
 
 function __init__()
     init_error_handler()
