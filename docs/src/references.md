@@ -197,10 +197,10 @@ Streaming reader
 ----------------
 
 ```@docs
-depth(::StreamReader)
 expandtree(::StreamReader)
 nodetype(::StreamReader)
 nodename(::StreamReader)
 nodecontent(::StreamReader)
+nodedepth(::StreamReader)
 namespace(::StreamReader)
 ```

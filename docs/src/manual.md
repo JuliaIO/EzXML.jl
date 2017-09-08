@@ -506,8 +506,8 @@ are two kinds of values that will be returned when reading an element node:
 indicates the reader just read an opening tag of an element node while the
 latter does the reader just read an ending tag of an element node.
 
-In addition to these functions, there are several functions that are specific
-to the streaming reader. The `depth(<rreader>)` function returns the depth of
+In addition to these functions, there are several functions that are specific to
+the streaming reader. The `nodedepth(<rreader>)` function returns the depth of
 the current node. The `expandtree(<reader>)` function expands the current node
 into a complete subtree rooted at the node. This function is useful when you
 want to use the DOM interfaces for the node. However, the expanded subtree is

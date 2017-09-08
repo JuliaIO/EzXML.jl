@@ -92,7 +92,7 @@ export
     parsehtml,
     readdtd,
     validate,
-    depth,
+    nodedepth,
     expandtree
 
 if is_windows()

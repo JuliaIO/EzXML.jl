@@ -188,11 +188,11 @@ function read_node(reader)
 end
 
 """
-    depth(reader::StreamReader)
+    nodedepth(reader::StreamReader)
 
 Return the depth of the current node of `reader`.
 """
-function depth(reader::StreamReader)
+function nodedepth(reader::StreamReader)
     ret = ccall(
         (:xmlTextReaderDepth, libxml2),
         Cint,
