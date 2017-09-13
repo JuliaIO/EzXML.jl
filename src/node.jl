@@ -825,10 +825,12 @@ function unlink!(node::Node)
         Void,
         (Ptr{Void},),
         node.ptr)
+    ccall(
+        (:xmlSetTreeDoc, libxml2),
+        Void,
+        (Ptr{Void}, Ptr{Void}),
+        node.ptr, C_NULL)
     update_owners!(node, node)
-    # Unlinking must remove documents as well because
-    # a node can free resources its document owns.
-    unset_documents!(node)
     return node
 end
 
@@ -871,16 +873,6 @@ function update_owners!(root, new_owner)
         if has_proxy(str)
             unsafe_extract_proxy(str).owner = new_owner
         end
-    end
-end
-
-# Unset the .doc field of the `root` tree.
-function unset_documents!(root)
-    offset = fieldoffset(_Node, 9)
-    traverse_tree(root.ptr) do node_ptr
-        unsafe_store!(
-            convert(Ptr{UInt}, node_ptr + offset),
-            convert(UInt, C_NULL))
     end
 end
 
