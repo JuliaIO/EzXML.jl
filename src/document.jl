@@ -139,7 +139,8 @@ Read `filename` and create an XML document.
 """
 function readxml(filename::AbstractString)
     encoding = C_NULL
-    options = 0
+    # Do not reuse the context dictionary.
+    options = 1 << 12
     doc_ptr = @check ccall(
         (:xmlReadFile, libxml2),
         Ptr{_Node},

@@ -971,6 +971,13 @@ end
     target = firstelement(root(doc2))
     @test_throws ArgumentError linknext!(target, child)
     @test_throws ArgumentError linkprev!(target, child)
+
+    # Issue #28
+    doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
+    unlink!(firstelement(root(doc)))
+    # No need to check the return value because this is a bug of memory
+    # management. Regression will be detected as a SIGABRT.
+    @test true
 end
 
 @testset "Validation" begin
