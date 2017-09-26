@@ -24,9 +24,9 @@ The main features are:
 
 Installation
 ------------------
-you have to install `libxml2-dev` first
+you have to install `libxml2` first
 ```
-apt-get install libxml2-dev
+apt-get install libxml2
 julia -e 'Pkg.add("EzXML")'
 ```
 
