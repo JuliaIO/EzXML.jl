@@ -22,6 +22,16 @@ The main features are:
 * Document validation.
 * Streaming parsing for large XML files.
 
+Installation
+------------------
+you have to install `libxml2-dev` first
+```
+apt-get install libxml2-dev
+julia -e 'Pkg.add("EzXML")'
+```
+
+Usage
+-------------------
 ```julia
 using EzXML
 
