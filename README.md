@@ -23,21 +23,28 @@ The main features are:
 * Streaming parsing for large XML files.
 
 Installation
-------------------
-you have to install `libxml2` first
+------------
+
+You have to install [libxml2](http://xmlsoft.org/) first.
 
 For debian/ubuntu users:
 ```
 apt-get install libxml2
 ```
 
-then
+For Homebrew users:
+```
+brew install libxml2
+```
+
+Then install EzXML.jl:
 ```
 julia -e 'Pkg.add("EzXML")'
 ```
 
 Usage
--------------------
+-----
+
 ```julia
 using EzXML
 
