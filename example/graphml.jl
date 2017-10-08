@@ -12,7 +12,7 @@ function load_graphml(filename)
         # scan nodes
         for typ in reader
             if typ == EzXML.READER_ELEMENT
-                elname = name(reader)
+                elname = nodename(reader)
                 if elname == "node"
                     serial += 1
                     nodes[reader["id"]] = serial
