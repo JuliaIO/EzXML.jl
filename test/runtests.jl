@@ -983,7 +983,7 @@ end
 @testset "Validation" begin
     dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
     system = relpath(dtdfile)
-    if is_windows()
+    if isdefined(Sys, :iswindows) ? Sys.iswindows() : is_windows()
         system = replace(system, '\\', '/')
     end
 
@@ -1141,7 +1141,7 @@ end
 # Check no uncaught errors.
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
-if is_unix()
+if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
     julia = joinpath(JULIA_HOME, "julia")
     @testset "Examples" begin
         # Check examples work without error.
