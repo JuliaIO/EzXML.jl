@@ -1,5 +1,9 @@
 using EzXML
-using Base.Test
+if VERSION < v"0.7-"
+    using Base.Test
+else
+    using Test
+end
 
 # Unit tests
 # ----------
