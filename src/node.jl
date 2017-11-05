@@ -29,7 +29,7 @@ function Base.convert(::Type{NodeType}, x::Integer)
     return reinterpret(NodeType, convert(Cint, x))
 end
 
-function Base.convert{T<:Integer}(::Type{T}, x::NodeType)
+function Base.convert(::Type{T}, x::NodeType) where {T<:Integer}
     return convert(T, reinterpret(Cint, x))
 end
 
@@ -37,7 +37,7 @@ function Base.convert(::Type{NodeType}, x::NodeType)
     return x
 end
 
-function Base.promote_rule{T<:Union{Cint,Int}}(::Type{NodeType}, ::Type{T})
+function Base.promote_rule(::Type{NodeType}, ::Type{T}) where {T<:Union{Cint,Int}}
     return T
 end
 
@@ -1228,11 +1228,11 @@ end
 
 abstract type AbstractNodeIterator end
 
-function Base.eltype{T<:AbstractNodeIterator}(::Type{T})
+function Base.eltype(::Type{T}) where {T<:AbstractNodeIterator}
     return Node
 end
 
-function Base.iteratorsize{T<:AbstractNodeIterator}(::Type{T})
+function Base.iteratorsize(::Type{T}) where {T<:AbstractNodeIterator}
     return Base.SizeUnknown()
 end
 

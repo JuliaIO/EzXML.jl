@@ -92,7 +92,7 @@ byte array and builds a document object like the `readxml` method:
 julia> doc = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3cfe8a50>))
 
-julia> data = readstring("primates.xml");
+julia> data = String(read("primates.xml"));
 
 julia> doc = parsexml(data)
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3d161380>))

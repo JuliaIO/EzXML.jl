@@ -1,5 +1,9 @@
 using EzXML
-using Base.Test
+if VERSION < v"0.7-"
+    using Base.Test
+else
+    using Test
+end
 
 # Unit tests
 # ----------
@@ -101,7 +105,7 @@ end
     tmp = tempname()
     try
         @test write(tmp, doc) == sizeof(docstr)
-        @test readstring(tmp) == docstr
+        @test String(read(tmp)) == docstr
         @test string(read(EzXML.Document, tmp)) == docstr
     finally
         rm(tmp)
@@ -983,7 +987,7 @@ end
 @testset "Validation" begin
     dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
     system = relpath(dtdfile)
-    if is_windows()
+    if isdefined(Sys, :iswindows) ? Sys.iswindows() : is_windows()
         system = replace(system, '\\', '/')
     end
 
@@ -1141,7 +1145,7 @@ end
 # Check no uncaught errors.
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
-if is_unix()
+if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
     julia = joinpath(JULIA_HOME, "julia")
     @testset "Examples" begin
         # Check examples work without error.
