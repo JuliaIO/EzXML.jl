@@ -101,7 +101,7 @@ end
     tmp = tempname()
     try
         @test write(tmp, doc) == sizeof(docstr)
-        @test readstring(tmp) == docstr
+        @test String(read(tmp)) == docstr
         @test string(read(EzXML.Document, tmp)) == docstr
     finally
         rm(tmp)

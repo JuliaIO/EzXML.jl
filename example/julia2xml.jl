@@ -33,4 +33,4 @@ function expr2elem(expr)
     end
 end
 
-prettyprint(expr2xml(parse(readstring(STDIN))))
+prettyprint(expr2xml(parse(String(read(STDIN)))))
