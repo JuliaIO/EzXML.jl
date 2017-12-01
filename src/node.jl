@@ -231,7 +231,11 @@ mutable struct Node
                 node = new(ptr, owner)
             end
 
-            finalizer(node, finalize_node)
+            if VERSION > v"0.7-"
+                finalizer(finalize_node, node)
+            else
+                finalizer(node, finalize_node)
+            end
         else
             node = new(ptr)
         end

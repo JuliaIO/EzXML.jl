@@ -18,7 +18,11 @@ mutable struct Buffer
             Ptr{_Buffer},
             ())
         buf = new(buf_ptr)
-        finalizer(buf, finalize_buffer)
+        if VERSION > v"0.7-"
+            finalizer(finalize_buffer, buf)
+        else
+            finalizer(buf, finalize_buffer)
+        end
         return buf
     end
 end
