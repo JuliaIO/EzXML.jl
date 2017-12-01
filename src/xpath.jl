@@ -93,11 +93,8 @@ function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
             return Vector{Node}()
         end
         nodeset = unsafe_load(result.nodesetval)
-        nodes = Vector{Node}(nodeset.nodeNr)
-        for i in 1:nodeset.nodeNr
-            nodes[i] = Node(unsafe_load(nodeset.nodeTab, i))
-        end
-        return nodes
+        # I don't know why, but this fails to infer the type of elements.
+        return Node[Node(unsafe_load(nodeset.nodeTab, i)) for i in 1:nodeset.nodeNr]
     catch
         rethrow()
     finally
