@@ -101,6 +101,10 @@ else
     const libxml2 = "libxml2"
 end
 
+if VERSION > v"0.7-"
+    import Printf: @printf
+end
+
 include("error.jl")
 include("node.jl")
 include("document.jl")

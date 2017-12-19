@@ -10,7 +10,7 @@ A streaming XML reader type.
 """
 mutable struct StreamReader
     ptr::Ptr{_TextReader}
-    input::Nullable{IO}
+    input::Union{IO,Void}
 
     function StreamReader(ptr::Ptr{_TextReader}, input=nothing)
         @assert ptr != C_NULL
@@ -147,8 +147,8 @@ function Base.close(reader::StreamReader)
         (Ptr{Void},),
         reader.ptr)
     reader.ptr = C_NULL
-    if !isnull(reader.input)
-        close(get(reader.input))
+    if reader.input isa IO
+        close(reader.input)
     end
     return nothing
 end
