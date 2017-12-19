@@ -475,6 +475,24 @@ function make_dtd_node(name, systemID, externalID)
 end
 
 
+# Properties
+# ----------
+
+if VERSION > v"0.7-"
+    struct Prop{name} end
+
+    Base.getproperty(node::Node, name::Symbol) = getprop(node, Prop{name})
+
+    getprop(node::Node, ::Type{Prop{:name}}) = nodename(node)
+    getprop(node::Node, ::Type{Prop{:content}}) = nodecontent(node)
+    getprop(node::Node, ::Type{Prop{:path}}) = nodepath(node)
+    getprop(node::Node, ::Type{Prop{:type}}) = nodetype(node)
+    getprop(node::Node, ::Type{Prop{:parentnode}}) = parentnode(node)
+    getprop(node::Node, ::Type{Prop{:parentelement}}) = parentelement(node)
+    getprop(node::Node, ::Type{Prop{name}}) where {name} = Core.getfield(node, name)
+end
+
+
 # Tree traversal
 # --------------
 
