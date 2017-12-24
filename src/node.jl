@@ -479,26 +479,6 @@ function make_dtd_node(name, systemID, externalID)
 end
 
 
-# Properties
-# ----------
-
-if isdefined(Base, :getproperty)
-    function Base.getproperty(node::Node, name::Symbol)
-        if name == :type
-            return nodetype(node)
-        elseif name == :name
-            return nodename(node)
-        elseif name == :content
-            return nodecontent(node)
-        elseif name == :path
-            return nodepath(node)
-        else
-            return Core.getfield(node, name)
-        end
-    end
-end
-
-
 # Tree traversal
 # --------------
 
