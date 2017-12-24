@@ -28,9 +28,9 @@ struct _XPathObject
     boolval::Cint
     floatval::Cdouble
     stringval::Ptr{UInt8}
-    user::Ptr{Void}
+    user::Ptr{Cvoid}
     index::Cint
-    user2::Ptr{Void}
+    user2::Ptr{Cvoid}
     index2::Cint
 end
 
@@ -136,7 +136,7 @@ function register_namespace!(context_ptr, prefix, uri)
     ret = ccall(
         (:xmlXPathRegisterNs, libxml2),
         Cint,
-        (Ptr{Void}, Cstring, Cstring),
+        (Ptr{Cvoid}, Cstring, Cstring),
         context_ptr, prefix, uri)
     return ret
 end
@@ -147,7 +147,7 @@ function eval_xpath(node, context_ptr, xpath)
     result_ptr = ccall(
         (:xmlXPathEval, libxml2),
         Ptr{_XPathObject},
-        (Cstring, Ptr{Void}),
+        (Cstring, Ptr{Cvoid}),
         xpath, context_ptr)
     return result_ptr
 end
@@ -155,15 +155,15 @@ end
 function free(ptr::Ptr{_XPathContext})
     ccall(
         (:xmlXPathFreeContext, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         ptr)
 end
 
 function free(ptr::Ptr{_XPathObject})
     ccall(
         (:xmlXPathFreeObject, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         ptr)
 end

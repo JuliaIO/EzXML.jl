@@ -164,7 +164,7 @@ function readxml(input::IO)
     doc_ptr = @check ccall(
         (:xmlReadIO, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
         readcb, closecb, context, uri, encoding, options) != C_NULL
     return Document(doc_ptr)
 end
@@ -201,7 +201,7 @@ function readhtml(input::IO)
     doc_ptr = @check ccall(
         (:htmlReadIO, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
         readcb, closecb, context, uri, encoding, options) != C_NULL
     show_warnings()
     return Document(doc_ptr)
@@ -213,7 +213,7 @@ function Base.write(filename::AbstractString, doc::Document)
     ret = @check ccall(
         (:xmlSaveFormatFileEnc, libxml2),
         Cint,
-        (Cstring, Ptr{Void}, Cstring, Cint),
+        (Cstring, Ptr{Cvoid}, Cstring, Cint),
         filename, doc.node.ptr, encoding, format) != -1
     return Int(ret)
 end
@@ -221,7 +221,7 @@ end
 function make_read_callback()
     # Passing an input stream as an argument is impossible to create a callback
     # because Julia does not support C-callable closures yet.
-    return cfunction(Cint, Tuple{Ptr{Void}, Ptr{UInt8}, Cint}) do context, buffer, len
+    return cfunction(Cint, Tuple{Ptr{Cvoid}, Ptr{UInt8}, Cint}) do context, buffer, len
         input = unsafe_pointer_to_objref(context)
         avail = min(nb_available(input), len)
         if avail > 0
@@ -253,8 +253,8 @@ Return if `doc` has a root element.
 function hasroot(doc::Document)
     ptr = ccall(
         (:xmlDocGetRootElement, libxml2),
-        Ptr{Void},
-        (Ptr{Void},),
+        Ptr{Cvoid},
+        (Ptr{Cvoid},),
         doc.node.ptr)
     return ptr != C_NULL
 end
@@ -271,7 +271,7 @@ function root(doc::Document)
     root_ptr = @check ccall(
         (:xmlDocGetRootElement, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         doc.node.ptr) != C_NULL
     return Node(root_ptr)
 end
@@ -288,7 +288,7 @@ function setroot!(doc::Document, root::Node)
     old_root_ptr = ccall(
         (:xmlDocSetRootElement, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         doc.node.ptr, root.ptr)
     update_owners!(root, doc.node)
     if old_root_ptr != C_NULL
@@ -311,7 +311,7 @@ function hasdtd(doc::Document)
     dtd_ptr = ccall(
         (:xmlGetIntSubset, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         doc.node.ptr)
     return dtd_ptr != C_NULL
 end
@@ -328,7 +328,7 @@ function dtd(doc::Document)
     dtd_ptr = @check ccall(
         (:xmlGetIntSubset, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         doc.node.ptr) != C_NULL
     return Node(dtd_ptr)
 end
@@ -385,7 +385,7 @@ function validate(doc::Document)
     valid = ccall(
         (:xmlValidateDocument, libxml2),
         Cint,
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         ctxt_ptr, doc.node.ptr)
     free(ctxt_ptr)
     @assert (valid == 1) == isempty(XML_GLOBAL_ERROR_STACK)
@@ -400,7 +400,7 @@ function validate(doc::Document, dtd::Node)
     valid = ccall(
         (:xmlValidateDtd, libxml2),
         Cint,
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}),
         ctxt_ptr, doc.node.ptr, dtd.ptr)
     free(ctxt_ptr)
     @assert (valid == 1) == isempty(XML_GLOBAL_ERROR_STACK)
@@ -420,7 +420,7 @@ end
 function free(ptr::Ptr{_ValidCtxt})
     ccall(
         (:xmlFreeValidCtxt, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         ptr)
 end

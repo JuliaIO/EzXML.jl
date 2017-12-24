@@ -1142,11 +1142,46 @@ end
     end
 end
 
+if isdefined(Base, :getproperty)
+    @testset "Property" begin
+        doc = parsexml("""
+        <?xml version="1.0"?>
+        <root>
+            <node>1</node>
+            <node>2</node>
+        </root>
+        """)
+
+        node = root(doc)
+        @test node.type == EzXML.ELEMENT_NODE
+        @test node.name == "root"
+        @test node.path == "/root"
+
+        node = firstelement(node)
+        @test node.type == EzXML.ELEMENT_NODE
+        @test node.name == "node"
+        @test node.content == "1"
+        @test node.path == "/root/node[1]"
+
+        node = nextelement(node)
+        @test node.type == EzXML.ELEMENT_NODE
+        @test node.name == "node"
+        @test node.content == "2"
+        @test node.path == "/root/node[2]"
+
+        node = firstnode(node)
+        @test node.type == EzXML.TEXT_NODE
+        @test node.name == "text"
+        @test node.content == "2"
+        @test node.path == "/root/node[2]/text()"
+    end
+end
+
 # Check no uncaught errors.
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
 if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
-    julia = joinpath(JULIA_HOME, "julia")
+    julia = joinpath(isdefined(Sys, :BINDIR) ? Sys.BINDIR : JULIA_HOME, "julia")
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do

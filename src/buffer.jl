@@ -5,7 +5,7 @@ struct _Buffer
     content::Cstring
     use::Cuint
     size::Cuint
-    alloc::Ptr{Void}
+    alloc::Ptr{Cvoid}
     contentIO::Cstring
 end
 
@@ -30,7 +30,7 @@ end
 function finalize_buffer(buf)
     ccall(
         (:xmlBufferFree, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         buf.ptr)
 end

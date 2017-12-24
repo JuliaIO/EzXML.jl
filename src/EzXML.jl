@@ -103,6 +103,8 @@ end
 
 if VERSION > v"0.7-"
     import Printf: @printf
+else
+    const Cvoid = Void
 end
 
 include("error.jl")
