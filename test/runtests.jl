@@ -1146,7 +1146,7 @@ end
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
 if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
-    julia = joinpath(JULIA_HOME, "julia")
+    julia = joinpath(isdefined(Sys, :BINDIR) ? Sys.BINDIR : JULIA_HOME, "julia")
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do

@@ -10,7 +10,7 @@ A streaming XML reader type.
 """
 mutable struct StreamReader
     ptr::Ptr{_TextReader}
-    input::Nullable{IO}
+    input::Union{IO,Cvoid}
 
     function StreamReader(ptr::Ptr{_TextReader}, input=nothing)
         @assert ptr != C_NULL
@@ -31,6 +31,10 @@ elseif sizeof(Cint) == 8
     primitive type ReaderType <: Integer 64 end
 else
     @assert false "invalid Cint size"
+end
+
+function ReaderType(x::Integer)
+    return convert(ReaderType, x)
 end
 
 function Base.convert(::Type{ReaderType}, x::Integer)
@@ -124,7 +128,7 @@ function StreamReader(input::IO)
     reader_ptr = @check ccall(
         (:xmlReaderForIO, libxml2),
         Ptr{_TextReader},
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cstring, Cstring, Cint),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
         readcb, closecb, context, uri, encoding, options) != C_NULL
     return StreamReader(reader_ptr, input)
 end
@@ -143,12 +147,12 @@ end
 function Base.close(reader::StreamReader)
     ccall(
         (:xmlFreeTextReader, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         reader.ptr)
     reader.ptr = C_NULL
-    if !isnull(reader.input)
-        close(get(reader.input))
+    if reader.input isa IO
+        close(reader.input)
     end
     return nothing
 end
@@ -182,7 +186,7 @@ function read_node(reader)
     ret = @check ccall(
         (:xmlTextReaderRead, libxml2),
         Cint,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr) ≥ 0
     return ret == 0
 end
@@ -196,7 +200,7 @@ function nodedepth(reader::StreamReader)
     ret = ccall(
         (:xmlTextReaderDepth, libxml2),
         Cint,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr)
     return Int(ret)
 end
@@ -210,7 +214,7 @@ function nodetype(reader::StreamReader)
     typ = ccall(
         (:xmlTextReaderNodeType, libxml2),
         Cint,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr)
     return convert(ReaderType, typ)
 end
@@ -224,7 +228,7 @@ function nodename(reader::StreamReader)
     name_ptr = ccall(
         (:xmlTextReaderConstName, libxml2),
         Cstring,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr)
     if name_ptr == C_NULL
         throw(ArgumentError("no node name"))
@@ -241,7 +245,7 @@ function nodecontent(reader::StreamReader)
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr)
     if content_ptr == C_NULL
         throw(ArgumentError("no content"))
@@ -255,7 +259,7 @@ function Base.haskey(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
         Cstring,
-        (Ptr{Void}, Cstring),
+        (Ptr{Cvoid}, Cstring),
         reader.ptr, name)
     return value_ptr != C_NULL
 end
@@ -264,7 +268,7 @@ function Base.getindex(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
         Cstring,
-        (Ptr{Void}, Cstring),
+        (Ptr{Cvoid}, Cstring),
         reader.ptr, name)
     value = unsafe_string(value_ptr)
     Libc.free(value_ptr)
@@ -280,7 +284,7 @@ function namespace(reader::StreamReader)
     ns_ptr = ccall(
         (:xmlTextReaderConstNamespaceUri, libxml2),
         Cstring,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr)
     if ns_ptr == C_NULL
         throw(ArgumentError("no namespace"))
@@ -298,7 +302,7 @@ function expandtree(reader::StreamReader)
     node_ptr = @check ccall(
         (:xmlTextReaderExpand, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         reader.ptr) != C_NULL
     # do not automatically free memories
     return Node(node_ptr, false)

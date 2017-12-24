@@ -3,7 +3,7 @@
 
 # Shared fields of node-like structs.
 struct _Node
-    _private::Ptr{Void}  # pointer to a Node object (NULL if not)
+    _private::Ptr{Cvoid}  # pointer to a Node object (NULL if not)
     typ::Cint
     name::Cstring
     children::Ptr{_Node}
@@ -23,6 +23,10 @@ elseif sizeof(Cint) == 8
     primitive type NodeType <: Integer 64 end
 else
     @assert false "invalid Cint size"
+end
+
+function NodeType(x::Integer)
+    return convert(NodeType, x)
 end
 
 function Base.convert(::Type{NodeType}, x::Integer)
@@ -121,13 +125,13 @@ struct _Ns
     typ::Cint
     href::Cstring
     prefix::Cstring
-    _private::Ptr{Void}
-    context::Ptr{Void}
+    _private::Ptr{Cvoid}
+    context::Ptr{Cvoid}
 end
 
 # Fields of element node (_xmlNode).
 struct _Element
-    _private::Ptr{Void}
+    _private::Ptr{Cvoid}
     typ::Cint
     name::Cstring
     children::Ptr{_Node}
@@ -138,17 +142,17 @@ struct _Element
     doc::Ptr{_Node}
 
     ns::Ptr{_Ns}
-    content::Ptr{Void}
+    content::Ptr{Cvoid}
     properties::Ptr{_Node}
-    nsDef::Ptr{Void}
-    psvi::Ptr{Void}
+    nsDef::Ptr{Cvoid}
+    psvi::Ptr{Cvoid}
     line::Cshort
     extra::Cshort
 end
 
 # Fields of attribute node (_xmlAttr).
 struct _Attribute
-    _private::Ptr{Void}
+    _private::Ptr{Cvoid}
     typ::Cint
     name::Cstring
     children::Ptr{_Node}
@@ -160,12 +164,12 @@ struct _Attribute
 
     ns::Ptr{_Ns}
     atype::Cint
-    psvi::Ptr{Void}
+    psvi::Ptr{Cvoid}
 end
 
 # Fields of DTD node (_xmlDtd).
 struct _Dtd
-    _private::Ptr{Void}
+    _private::Ptr{Cvoid}
     typ::Cint
     name::Cstring
     children::Ptr{_Node}
@@ -175,13 +179,13 @@ struct _Dtd
     prev::Ptr{_Node}
     doc::Ptr{_Node}
 
-    notations::Ptr{Void}
-    elements::Ptr{Void}
-    attributes::Ptr{Void}
-    entities::Ptr{Void}
+    notations::Ptr{Cvoid}
+    elements::Ptr{Cvoid}
+    attributes::Ptr{Cvoid}
+    entities::Ptr{Cvoid}
     externalID::Cstring
     systemID::Cstring
-    pentities::Ptr{Void}
+    pentities::Ptr{Cvoid}
 end
 
 # Node type
@@ -279,7 +283,7 @@ function dump_node(io, node, format)
     len = @check ccall(
         (:xmlNodeDump, libxml2),
         Cint,
-        (Ptr{Void}, Ptr{Void}, Ptr{Void}, Cint, Cint),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cint, Cint),
         buf.ptr, doc_ptr, node.ptr, level, format) != -1
     print(io, unsafe_string(unsafe_load(buf.ptr).content))
 end
@@ -322,9 +326,9 @@ function finalize_node(node)
         end
         # free the descendants
         if unsafe_load(node_ptr).typ == DOCUMENT_NODE
-            ccall((:xmlFreeDoc, libxml2), Void, (Ptr{Void},), node_ptr)
+            ccall((:xmlFreeDoc, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
         else
-            ccall((:xmlFreeNode, libxml2), Void, (Ptr{Void},), node_ptr)
+            ccall((:xmlFreeNode, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
         end
     elseif node_ptr != C_NULL
         # indicate the proxy does not exit anymore
@@ -358,8 +362,8 @@ Create an HTML document node.
 
 `uri` and `externalID` are either a string or `nothing`.
 """
-function HTMLDocumentNode(uri::Union{AbstractString,Void},
-                          externalID::Union{AbstractString,Void})
+function HTMLDocumentNode(uri::Union{AbstractString,Cvoid},
+                          externalID::Union{AbstractString,Cvoid})
     if uri === nothing
         uri = C_NULL
     end
@@ -384,7 +388,7 @@ function ElementNode(name::AbstractString)
     node_ptr = @check ccall(
         (:xmlNewNode, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Cstring),
+        (Ptr{Cvoid}, Cstring),
         ns, name) != C_NULL
     return Node(node_ptr)
 end
@@ -427,7 +431,7 @@ function CDataNode(content::AbstractString)
     node_ptr = @check ccall(
         (:xmlNewCDataBlock, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Cstring, Cint),
+        (Ptr{Cvoid}, Cstring, Cint),
         doc_ptr, content, sizeof(content)) != C_NULL
     return Node(node_ptr)
 end
@@ -442,7 +446,7 @@ function AttributeNode(name::AbstractString, value::AbstractString)
     node_ptr = @check ccall(
         (:xmlNewDocProp, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Cstring, Cstring),
+        (Ptr{Cvoid}, Cstring, Cstring),
         doc_ptr, name, value) != C_NULL
     return Node(node_ptr)
 end
@@ -469,7 +473,7 @@ function make_dtd_node(name, systemID, externalID)
     node_ptr = @check ccall(
         (:xmlCreateIntSubset, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Cstring, Cstring, Cstring),
+        (Ptr{Cvoid}, Cstring, Cstring, Cstring),
         doc_ptr, name, externalID, systemID) != C_NULL
     return Node(node_ptr)
 end
@@ -736,7 +740,7 @@ function countelements(parent::Node)
     n = ccall(
         (:xmlChildElementCount, libxml2),
         Culong,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         parent.ptr)
     return Int(n)
 end
@@ -773,7 +777,7 @@ function link!(parent::Node, child::Node)
     node_ptr = @check ccall(
         (:xmlAddChild, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         parent.ptr, child.ptr) != C_NULL
     update_owners!(child, parent.owner)
     return child
@@ -789,7 +793,7 @@ function linknext!(target::Node, node::Node)
     node_ptr = @check ccall(
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         target.ptr, node.ptr) != C_NULL
     update_owners!(node, target.owner)
     return node
@@ -805,7 +809,7 @@ function linkprev!(target::Node, node::Node)
     node_ptr = @check ccall(
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         target.ptr, node.ptr) != C_NULL
     update_owners!(node, target.owner)
     return node
@@ -826,13 +830,13 @@ Unlink `node` from its context.
 function unlink!(node::Node)
     ccall(
         (:xmlUnlinkNode, libxml2),
-        Void,
-        (Ptr{Void},),
+        Cvoid,
+        (Ptr{Cvoid},),
         node.ptr)
     ccall(
         (:xmlSetTreeDoc, libxml2),
-        Void,
-        (Ptr{Void}, Ptr{Void}),
+        Cvoid,
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         node.ptr, C_NULL)
     update_owners!(node, node)
     return node
@@ -849,7 +853,7 @@ function addelement!(parent::Node, name::AbstractString)
     node_ptr = @check ccall(
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring),
         parent.ptr, ns_ptr, name, content_ptr) != C_NULL
     return Node(node_ptr)
 end
@@ -864,7 +868,7 @@ function addelement!(parent::Node, name::AbstractString, content::AbstractString
     node_ptr = @check ccall(
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Ptr{Void}, Cstring, Cstring),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring),
         parent.ptr, ns_ptr, name, content) != C_NULL
     return Node(node_ptr)
 end
@@ -903,7 +907,7 @@ function nodepath(node::Node)
     str_ptr = @check ccall(
         (:xmlGetNodePath, libxml2),
         Cstring,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node.ptr) != C_NULL
     str = unsafe_string(str_ptr)
     Libc.free(str_ptr)
@@ -1007,8 +1011,8 @@ Set the name of `node`.
 function setnodename!(node::Node, name::AbstractString)
     ccall(
         (:xmlNodeSetName, libxml2),
-        Void,
-        (Ptr{Void}, Cstring),
+        Cvoid,
+        (Ptr{Cvoid}, Cstring),
         node.ptr, name)
     return node
 end
@@ -1022,7 +1026,7 @@ function nodecontent(node::Node)
     str_ptr = @check ccall(
         (:xmlNodeGetContent, libxml2),
         Cstring,
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node.ptr) != C_NULL
     str = unsafe_string(str_ptr)
     Libc.free(str_ptr)
@@ -1037,8 +1041,8 @@ Replace the content of `node`.
 function setnodecontent!(node::Node, content::AbstractString)
     ccall(
         (:xmlNodeSetContentLen, libxml2),
-        Void,
-        (Ptr{Void}, Cstring, Cint),
+        Cvoid,
+        (Ptr{Cvoid}, Cstring, Cint),
         node.ptr, content, sizeof(content))
     return node
 end
@@ -1077,7 +1081,7 @@ function Base.getindex(node::Node, attr::AbstractString)
         str_ptr = ccall(
             (:xmlGetNoNsProp, libxml2),
             Cstring,
-            (Ptr{Void}, Cstring),
+            (Ptr{Cvoid}, Cstring),
             node.ptr, attr)
     else
         prefix = attr[1:i-1]
@@ -1089,7 +1093,7 @@ function Base.getindex(node::Node, attr::AbstractString)
         str_ptr = ccall(
             (:xmlGetNsProp, libxml2),
             Cstring,
-            (Ptr{Void}, Cstring, Cstring),
+            (Ptr{Cvoid}, Cstring, Cstring),
             node.ptr, ncname, unsafe_load(ns_ptr).href)
     end
     if str_ptr == C_NULL
@@ -1106,7 +1110,7 @@ function Base.haskey(node::Node, attr::AbstractString)
         prop_ptr = ccall(
             (:xmlHasNsProp, libxml2),
             Ptr{_Node},
-            (Ptr{Void}, Cstring, Cstring),
+            (Ptr{Cvoid}, Cstring, Cstring),
             node.ptr, attr, C_NULL)
     else
         prefix = attr[1:i-1]
@@ -1118,7 +1122,7 @@ function Base.haskey(node::Node, attr::AbstractString)
         prop_ptr = ccall(
             (:xmlHasNsProp, libxml2),
             Ptr{_Node},
-            (Ptr{Void}, Cstring, Cstring),
+            (Ptr{Cvoid}, Cstring, Cstring),
             node.ptr, ncname, unsafe_load(ns_ptr).href)
     end
     return prop_ptr != C_NULL
@@ -1129,7 +1133,7 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
     prop_ptr = @check ccall(
         (:xmlSetProp, libxml2),
         Ptr{_Node},
-        (Ptr{Void}, Cstring, Cstring),
+        (Ptr{Cvoid}, Cstring, Cstring),
         node.ptr, attr, string(val)) != C_NULL
     return node
 end
@@ -1141,7 +1145,7 @@ function Base.delete!(node::Node, attr::AbstractString)
         ccall(
             (:xmlUnsetProp, libxml2),
             Cint,
-            (Ptr{Void}, Cstring),
+            (Ptr{Cvoid}, Cstring),
             node.ptr, attr)
     else
         prefix = attr[1:i-1]
@@ -1150,7 +1154,7 @@ function Base.delete!(node::Node, attr::AbstractString)
         ccall(
             (:xmlUnsetNsProp, libxml2),
             Cint,
-            (Ptr{Void}, Ptr{Void}, Cstring),
+            (Ptr{Cvoid}, Ptr{Cvoid}, Cstring),
             node.ptr, ns_ptr, ncname)
     end
     # ignore the returned value
@@ -1191,7 +1195,7 @@ function namespaces(node::Node)
     nslist_ptr = ccall(
         (:xmlGetNsList, libxml2),
         Ptr{Ptr{_Ns}},
-        (Ptr{Void}, Ptr{Void}),
+        (Ptr{Cvoid}, Ptr{Cvoid}),
         doc.node.ptr, node.ptr)
     if nslist_ptr == C_NULL
         # empty list
@@ -1221,7 +1225,7 @@ function search_ns_ptr(node::Node, prefix::AbstractString)
     ns_ptr = ccall(
         (:xmlSearchNs, libxml2),
         Ptr{_Ns},
-        (Ptr{Void}, Ptr{Void}, Cstring),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Cstring),
         unsafe_load(node.ptr).doc, node.ptr, prefix)
     return ns_ptr
 end
@@ -1378,7 +1382,7 @@ function first_element_ptr(node_ptr)
     return ccall(
         (:xmlFirstElementChild, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node_ptr)
 end
 
@@ -1386,7 +1390,7 @@ function last_element_ptr(node_ptr)
     return ccall(
         (:xmlLastElementChild, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node_ptr)
 end
 
@@ -1394,7 +1398,7 @@ function next_element_ptr(node_ptr)
     return ccall(
         (:xmlNextElementSibling, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node_ptr)
 end
 
@@ -1402,6 +1406,6 @@ function prev_element_ptr(node_ptr)
     return ccall(
         (:xmlPreviousElementSibling, libxml2),
         Ptr{_Node},
-        (Ptr{Void},),
+        (Ptr{Cvoid},),
         node_ptr)
 end

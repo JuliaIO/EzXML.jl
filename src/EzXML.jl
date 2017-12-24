@@ -101,6 +101,14 @@ else
     const libxml2 = "libxml2"
 end
 
+if VERSION > v"0.7.0-DEV.3052"
+    import Printf: @printf
+end
+
+if !isdefined(Base, :Cvoid)
+    const Cvoid = Void
+end
+
 include("error.jl")
 include("node.jl")
 include("document.jl")
