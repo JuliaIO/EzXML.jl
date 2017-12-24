@@ -25,6 +25,10 @@ else
     @assert false "invalid Cint size"
 end
 
+function NodeType(x::Integer)
+    return convert(NodeType, x)
+end
+
 function Base.convert(::Type{NodeType}, x::Integer)
     return reinterpret(NodeType, convert(Cint, x))
 end

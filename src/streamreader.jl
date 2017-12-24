@@ -33,6 +33,10 @@ else
     @assert false "invalid Cint size"
 end
 
+function ReaderType(x::Integer)
+    return convert(ReaderType, x)
+end
+
 function Base.convert(::Type{ReaderType}, x::Integer)
     return reinterpret(ReaderType, convert(Cint, x))
 end

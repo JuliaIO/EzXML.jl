@@ -101,9 +101,11 @@ else
     const libxml2 = "libxml2"
 end
 
-if VERSION > v"0.7-"
+if VERSION > v"0.7.0-DEV.3052"
     import Printf: @printf
-else
+end
+
+if !isdefined(Base, :Cvoid)
     const Cvoid = Void
 end
 
