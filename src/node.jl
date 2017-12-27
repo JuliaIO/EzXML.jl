@@ -203,6 +203,14 @@ end
 
 """
 A proxy type to libxml2's node struct.
+
+Properties
+----------
+- `type :: EzXML.NodeType`
+- `path :: String`
+- `content :: String`
+- `name :: Union{String,Nothing}`
+- `document :: Union{Document,Nothing}`
 """
 mutable struct Node
     ptr::Ptr{_Node}
@@ -335,6 +343,28 @@ function finalize_node(node)
         store_proxy_pointer!(node, C_NULL)
     end
     return nothing
+end
+
+
+# Properties
+# ----------
+
+if VERSION > v"0.7-"
+    function Base.getproperty(node::Node, name::Symbol)
+        if name == :type
+            return nodetype(node)
+        elseif name == :path
+            return nodepath(node)
+        elseif name == :content
+            return nodecontent(node)
+        elseif name == :name
+            return unsafe_load(node.ptr).name != C_NULL ? nodename(node) : nothing
+        elseif name == :document
+            return hasdocument(node) ? document(node) : nothing
+        else
+            return Core.getfield(node, name)
+        end
+    end
 end
 
 
