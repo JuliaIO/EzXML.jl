@@ -334,6 +334,19 @@ end
 
     @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
 
+    # memory management test
+    for _ in 1:10
+        reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+        for typ in reader
+            if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
+                a = EzXML.expandtree(reader)
+                b = EzXML.firstelement(a)
+            end
+        end
+        close(reader)
+    end
+    @test true
+
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")
     #@test_throws EzXML.XMLError open(EzXML.StreamReader, "not-exist.xml")
