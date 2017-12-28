@@ -349,7 +349,7 @@ end
 # Properties
 # ----------
 
-if VERSION > v"0.7-"
+if isdefined(Base, :getproperty)
     function Base.getproperty(node::Node, name::Symbol)
         if name == :type
             return nodetype(node)
@@ -372,7 +372,7 @@ if VERSION > v"0.7-"
         elseif name == :name
             setnodename!(node, val)
         else
-            Core.setfield!(node, name, convert(fieldtype(typeof(node), name), val))
+            Core.setfield!(node, name, convert(fieldtype(Node, name), val))
         end
         return node
     end

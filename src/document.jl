@@ -52,6 +52,30 @@ function prettyprint(io::IO, doc::Document)
     prettyprint(io, doc.node)
 end
 
+
+if isdefined(Base, :getproperty)
+    function Base.getproperty(doc::Document, name::Symbol)
+        if name == :root
+            return hasroot(doc) ? root(doc) : nothing
+        elseif name == :dtd
+            return hasdtd(doc) ? dtd(doc) : nothing
+        else
+            return Core.getfield(doc, name)
+        end
+    end
+
+    function Base.setproperty!(doc::Document, name::Symbol, val)
+        if name == :root
+            setroot!(doc, val)
+        elseif name == :dtd
+            setdtd!(doc, val)
+        else
+            Core.setfield!(doc, name, convert(fieldtype(Document, name), val))
+        end
+        return doc
+    end
+end
+
 function Base.parse(::Type{Document}, inputstring::AbstractString)
     if is_html_like(inputstring)
         return parsehtml(inputstring)
