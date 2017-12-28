@@ -3,6 +3,13 @@
 
 """
 An XML/HTML document type.
+
+Properties
+----------
+
+- `node :: Node`
+- `root :: Union{Node,Nothing}`
+- `dtd  :: Union{Node,Nothing}`
 """
 struct Document
     node::Node

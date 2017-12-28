@@ -106,10 +106,19 @@ traversal there:
 julia> primates = root(doc)  # Get the root element.
 EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 
+julia> doc.root              # Document's root property (Julia ≥ 0.7).
+EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
+
 julia> nodetype(primates)    # The node is an element node.
 ELEMENT_NODE
 
+julia> primates.type         # Node's type property (Julia ≥ 0.7).
+ELEMENT_NODE
+
 julia> nodename(primates)    # `nodename` returns the tag name of an element.
+"primates"
+
+julia> primates.name         # Node's name property (Julia ≥ 0.7).
 "primates"
 
 julia> haselement(primates)  # Check if a node has one or more elements.
