@@ -365,6 +365,20 @@ if VERSION > v"0.7-"
             return Core.getfield(node, name)
         end
     end
+
+    function Base.setproperty!(node::Node, name::Symbol, val)
+        return Core.setfield!(node, name, val)
+    end
+    #function Base.setproperty!(node::Node, name::Symbol, val)
+    #    if name == :content
+    #        setnodecontent!(node, val)
+    #    elseif name == :name
+    #        setnodename!(node, val)
+    #    else
+    #        Core.setfield!(node, name, val)
+    #    end
+    #    return node
+    #end
 end
 
 
