@@ -224,7 +224,6 @@ mutable struct Node
             while (p = unsafe_load(owner_ptr).parent) != C_NULL
                 owner_ptr = p
             end
-            #@show ptr owner_ptr
 
             if ptr == owner_ptr
                 # manage itself
