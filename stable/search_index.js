@@ -845,7 +845,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.expandtree",
     "category": "Method",
-    "text": "expandtree(reader::StreamReader)\n\nExpand the current node of reader into a full subtree that will be available until the next read of node.\n\n\n\n"
+    "text": "expandtree(reader::StreamReader)\n\nExpand the current node of reader into a full subtree that will be available until the next read of node.\n\nNote that the expanded subtree is a read-only and temporary object. You cannot modify it or keep references to any nodes of it after reading the next node.\n\nCurrently, namespace functions and XPath query will not work on the expanded subtree.\n\n\n\n"
 },
 
 {
