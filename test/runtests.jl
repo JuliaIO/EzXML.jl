@@ -1108,10 +1108,10 @@ end
         @test node.name == "author"
         @test node.document === doc
 
-        #node.content = "S. Ringo"
-        #@test node.content == "S. Ringo"
-        #node.name = "singer"
-        #@test node.name == "singer"
+        node.content = "S. Ringo"
+        @test node.content == "S. Ringo"
+        node.name = "singer"
+        @test node.name == "singer"
 
         node = ElementNode("foo")
         @test node.document === nothing
