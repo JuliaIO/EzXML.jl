@@ -297,6 +297,12 @@ end
 
 Expand the current node of `reader` into a full subtree that will be available
 until the next read of node.
+
+Note that the expanded subtree is a read-only and temporary object. You cannot
+modify it or keep references to any nodes of it after reading the next node.
+
+Currently, namespace functions and XPath query will not work on the expanded
+subtree.
 """
 function expandtree(reader::StreamReader)
     node_ptr = @check ccall(

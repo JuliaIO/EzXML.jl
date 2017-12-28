@@ -71,6 +71,9 @@ Find nodes matching `xpath` XPath query starting from `node`.
 The `ns` argument is an iterator of namespace prefix and URI pairs.
 """
 function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
+    if !ismanaged(node)
+        throw(ArgumentError("XPath query on the unmanaged node"))
+    end
     context_ptr = new_xpath_context(document(node))
     if context_ptr == C_NULL
         throw_xml_error()

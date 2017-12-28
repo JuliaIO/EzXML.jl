@@ -221,8 +221,8 @@ mutable struct Node
         if autofinalize
             # determine the owner of this node
             owner_ptr = ptr
-            while unsafe_load(owner_ptr).parent != C_NULL
-                owner_ptr = unsafe_load(owner_ptr).parent
+            while (p = unsafe_load(owner_ptr).parent) != C_NULL
+                owner_ptr = p
             end
 
             if ptr == owner_ptr
@@ -235,7 +235,7 @@ mutable struct Node
                 node = new(ptr, owner)
             end
 
-            if VERSION > v"0.7-"
+            @static if VERSION > v"0.7-"
                 finalizer(finalize_node, node)
             else
                 finalizer(node, finalize_node)
@@ -248,6 +248,10 @@ mutable struct Node
 
         return node
     end
+end
+
+function ismanaged(node::Node)
+    return isdefined(node, :owner)
 end
 
 function Base.show(io::IO, node::Node)
@@ -580,7 +584,7 @@ function firstnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(first_node_ptr(node.ptr))
+    return Node(first_node_ptr(node.ptr), ismanaged(node))
 end
 
 """
@@ -592,7 +596,7 @@ function lastnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(last_node_ptr(node.ptr))
+    return Node(last_node_ptr(node.ptr), ismanaged(node))
 end
 
 """
@@ -613,7 +617,7 @@ function firstelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    return Node(first_element_ptr(node.ptr))
+    return Node(first_element_ptr(node.ptr), ismanaged(node))
 end
 
 """
@@ -625,7 +629,7 @@ function lastelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    return Node(last_element_ptr(node.ptr))
+    return Node(last_element_ptr(node.ptr), ismanaged(node))
 end
 
 """
@@ -1250,7 +1254,7 @@ end
 Create an iterator of child nodes.
 """
 function eachnode(node::Node, backward::Bool=false)
-    return ChildNodeIterator(node.ptr, backward)
+    return ChildNodeIterator(node, backward)
 end
 
 """
@@ -1263,12 +1267,12 @@ function nodes(node::Node, backward::Bool=false)
 end
 
 struct ChildNodeIterator <: AbstractNodeIterator
-    node::Ptr{_Node}
+    node::Node
     backward::Bool
 end
 
 function Base.start(iter::ChildNodeIterator)
-    return iter.backward ? last_node_ptr(iter.node) : first_node_ptr(iter.node)
+    return iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
 end
 
 function Base.done(::ChildNodeIterator, cur_ptr)
@@ -1276,7 +1280,9 @@ function Base.done(::ChildNodeIterator, cur_ptr)
 end
 
 function Base.next(iter::ChildNodeIterator, cur_ptr)
-    return Node(cur_ptr), iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
+    return (
+        Node(cur_ptr, ismanaged(iter.node)),
+        iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr))
 end
 
 """
@@ -1285,7 +1291,7 @@ end
 Create an iterator of child elements.
 """
 function eachelement(node::Node, backward::Bool=false)
-    return ChildElementIterator(node.ptr, backward)
+    return ChildElementIterator(node, backward)
 end
 
 """
@@ -1298,12 +1304,12 @@ function elements(node::Node, backward::Bool=false)
 end
 
 struct ChildElementIterator <: AbstractNodeIterator
-    ptr::Ptr{_Node}
+    node::Node
     backward::Bool
 end
 
 function Base.start(iter::ChildElementIterator)
-    return iter.backward ? last_element_ptr(iter.ptr) : first_element_ptr(iter.ptr)
+    return iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
 end
 
 function Base.done(::ChildElementIterator, cur_ptr)
@@ -1311,7 +1317,9 @@ function Base.done(::ChildElementIterator, cur_ptr)
 end
 
 function Base.next(iter::ChildElementIterator, cur_ptr)
-    return Node(cur_ptr), iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
+    return (
+        Node(cur_ptr, ismanaged(iter.node)),
+        iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr))
 end
 
 """
@@ -1323,7 +1331,7 @@ function eachattribute(node::Node)
     if unsafe_load(node.ptr).typ != ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
-    return AttributeIterator(node.ptr)
+    return AttributeIterator(node)
 end
 
 """
@@ -1336,21 +1344,21 @@ function attributes(node::Node)
 end
 
 struct AttributeIterator <: AbstractNodeIterator
-    ptr::Ptr{_Node}
+    node::Node
 end
 
 function Base.start(iter::AttributeIterator)
-    @assert iter.ptr != C_NULL
-    @assert unsafe_load(iter.ptr).typ == ELEMENT_NODE
-    return property_ptr(iter.ptr)
+    @assert iter.node.ptr != C_NULL
+    @assert unsafe_load(iter.node.ptr).typ == ELEMENT_NODE
+    return property_ptr(iter.node.ptr)
 end
 
 function Base.done(::AttributeIterator, cur_ptr)
     return cur_ptr == C_NULL
 end
 
-function Base.next(::AttributeIterator, cur_ptr)
-    return Node(cur_ptr), next_node_ptr(cur_ptr)
+function Base.next(iter::AttributeIterator, cur_ptr)
+    return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
 end
 
 function parent_ptr(node_ptr)
