@@ -347,6 +347,29 @@ end
     end
     @test true
 
+    # memory management test (XPath)
+    # FIXME: support XPath
+    #for _ in 1:10
+    #    reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+    #    for typ in reader
+    #        if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
+    #            a = EzXML.expandtree(reader)
+    #            b = find(a, "//b[1]")
+    #        end
+    #    end
+    #    close(reader)
+    #end
+    #@test true
+    reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
+            a = EzXML.expandtree(reader)
+            @test_throws ArgumentError find(a, "//b[1]", String[])
+        end
+    end
+    close(reader)
+    @test true
+
     # TODO: Activate this test.
     #@assert !isfile("not-exist.xml")
     #@test_throws EzXML.XMLError open(EzXML.StreamReader, "not-exist.xml")
