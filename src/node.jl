@@ -1080,7 +1080,7 @@ end
 # ----------
 
 function Base.getindex(node::Node, attr::AbstractString)
-    i = searchindex(attr, ':')
+    i = findfirstchar(':', attr)
     if i == 0
         str_ptr = ccall(
             (:xmlGetNoNsProp, libxml2),
@@ -1109,7 +1109,7 @@ function Base.getindex(node::Node, attr::AbstractString)
 end
 
 function Base.haskey(node::Node, attr::AbstractString)
-    i = searchindex(attr, ':')
+    i = findfirstchar(':', attr)
     if i == 0
         prop_ptr = ccall(
             (:xmlHasNsProp, libxml2),
@@ -1143,7 +1143,7 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
 end
 
 function Base.delete!(node::Node, attr::AbstractString)
-    i = searchindex(attr, ':')
+    i = findfirstchar(':', attr)
     if i == 0
         # This function handles attributes in no namespace.
         ccall(
@@ -1163,6 +1163,14 @@ function Base.delete!(node::Node, attr::AbstractString)
     end
     # ignore the returned value
     return node
+end
+
+function findfirstchar(char::Char, str::AbstractString)
+    @static if VERSION > v"0.7-"
+        return first(findfirst(equalto(char), str))
+    else
+        return searchindex(str, char)
+    end
 end
 
 
