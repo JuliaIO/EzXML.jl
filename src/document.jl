@@ -52,33 +52,6 @@ function prettyprint(io::IO, doc::Document)
     prettyprint(io, doc.node)
 end
 
-function Base.parse(::Type{Document}, inputstring::AbstractString)
-    if is_html_like(inputstring)
-        return parsehtml(inputstring)
-    else
-        return parsexml(inputstring)
-    end
-end
-
-function Base.parse(::Type{Document}, inputdata::Vector{UInt8})
-    return parse(Document, String(inputdata))
-end
-
-# Try to infer whether an input is formatted in HTML.
-function is_html_like(inputstring)
-    if ismatch(r"^\s*<!DOCTYPE html", inputstring)
-        return true
-    elseif ismatch(r"^\s*<\?xml", inputstring)
-        return false
-    end
-    i = searchindex(inputstring, "<html")
-    if 0 < i < 100
-        return true
-    else
-        return false
-    end
-end
-
 """
     parsexml(xmlstring)
 
@@ -122,14 +95,6 @@ end
 
 function parsehtml(htmldata::Vector{UInt8})
     return parsehtml(String(htmldata))
-end
-
-function Base.read(::Type{Document}, filename::AbstractString)
-    if endswith(filename, ".html") || endswith(filename, ".htm")
-        return readhtml(filename)
-    else
-        return readxml(filename)
-    end
 end
 
 """

@@ -96,8 +96,8 @@ Types:
 * `EzXML.StreamReader`: a streaming XML reader
 
 IO:
-* From file: `read(EzXML.Document, filename)`, `readxml(filename|stream)`, `readhtml(filename|stream)`
-* From string or byte array: `parse(EzXML.Document, string)`, `parsexml(string)`, `parsehtml(string)`
+* From file: `readxml(filename|stream)`, `readhtml(filename|stream)`
+* From string or byte array: `parsexml(string)`, `parsehtml(string)`
 * To file: `write(filename, doc)`
 * To stream: `print(io, doc)`
 
