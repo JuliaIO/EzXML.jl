@@ -122,6 +122,13 @@ include("streamreader.jl")
 @deprecate content nodecontent
 @deprecate setcontent! setnodecontent!
 @deprecate depth nodedepth
+import Base: find, findfirst, findlast
+@deprecate find(doc::Document, xpath::AbstractString) find(xpath, doc)
+@deprecate findfirst(doc::Document, xpath::AbstractString) findfirst(xpath, doc)
+@deprecate findlast(doc::Document, xpath::AbstractString) findlast(xpath, doc)
+@deprecate find(node::Node, xpath::AbstractString, ns=namespaces(node)) find(xpath, node, ns)
+@deprecate findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) findfirst(xpath, node, ns)
+@deprecate findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) findlast(xpath, node, ns)
 
 function __init__()
     init_error_handler()
