@@ -1132,6 +1132,40 @@ end
     @test isempty(find(root(doc), "//foo:notexit/*", [("foo", "urn:foo")]))
 end
 
+@testset "Properties" begin
+    if isdefined(Base, :getproperty)
+        doc = parsexml("""
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+        <html xmlns="http://www.w3.org/1999/xhtml">
+            <head><title>hello</title></head>
+            <body>Content</body>
+        </html>
+        """)
+        @test doc.root === root(doc)
+        @test doc.dtd  === dtd(doc)
+
+        doc = parsexml("""<author>K. Sato</author>""")
+        @test doc.node.name === nothing
+
+        node = root(doc)
+        @test node.type === EzXML.ELEMENT_NODE
+        @test node.path == "/author"
+        @test node.content == "K. Sato"
+        @test node.name == "author"
+        @test node.document === doc
+
+        node.content = "S. Ringo"
+        @test node.content == "S. Ringo"
+        node.name = "singer"
+        @test node.name == "singer"
+
+        node = ElementNode("foo")
+        @test node.document === nothing
+    end
+end
+
 @testset "Misc" begin
     @testset "show" begin
         doc = parsexml("<root/>")
