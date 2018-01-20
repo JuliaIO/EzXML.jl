@@ -116,15 +116,63 @@ include("buffer.jl")
 include("xpath.jl")
 include("streamreader.jl")
 
+function __init__()
+    init_error_handler()
+end
+
+
 # Deprecation
+# -----------
+
 @deprecate name nodename
 @deprecate setname! setnodename!
 @deprecate content nodecontent
 @deprecate setcontent! setnodecontent!
 @deprecate depth nodedepth
 
-function __init__()
-    init_error_handler()
+function Base.read(::Type{Document}, filename::AbstractString)
+    @static if VERSION > v"0.7-"
+        @warn "read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead"
+    else
+        warn("read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead")
+    end
+    if endswith(filename, ".html") || endswith(filename, ".htm")
+        return readhtml(filename)
+    else
+        return readxml(filename)
+    end
+end
+
+function Base.parse(::Type{Document}, inputstring::AbstractString)
+    @static if VERSION > v"0.7-"
+        @warn "parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead"
+    else
+        warn("parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead")
+    end
+    if is_html_like(inputstring)
+        return parsehtml(inputstring)
+    else
+        return parsexml(inputstring)
+    end
+end
+
+function Base.parse(::Type{Document}, inputdata::Vector{UInt8})
+    return parse(Document, String(inputdata))
+end
+
+# Try to infer whether an input is formatted in HTML.
+function is_html_like(inputstring)
+    if ismatch(r"^\s*<!DOCTYPE html", inputstring)
+        return true
+    elseif ismatch(r"^\s*<\?xml", inputstring)
+        return false
+    end
+    i = searchindex(inputstring, "<html")
+    if 0 < i < 100
+        return true
+    else
+        return false
+    end
 end
 
 end # module
