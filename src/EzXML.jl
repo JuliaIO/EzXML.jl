@@ -95,11 +95,13 @@ export
     nodedepth,
     expandtree
 
-if isdefined(Sys, :iswindows) ? Sys.iswindows() : is_windows()
-    const libxml2 = Pkg.dir("WinRPM","deps","usr","$(Sys.ARCH)-w64-mingw32","sys-root","mingw","bin","libxml2-2")
-else
-    const libxml2 = "libxml2"
+# Load libxml2.
+const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
+if !isfile(libxml2path)
+    error("EzXML.jl is not installed properly, run Pkg.build(\"EzXML\") and restart Julia.")
 end
+include(libxml2path)
+check_deps()
 
 if VERSION > v"0.7.0-DEV.3052"
     import Printf: @printf
