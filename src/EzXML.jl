@@ -108,7 +108,6 @@ using XML2_jll: libxml2
 include("error.jl")
 include("node.jl")
 include("document.jl")
-include("buffer.jl")
 include("xpath.jl")
 include("streamreader.jl")
 
