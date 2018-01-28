@@ -35,42 +35,42 @@ struct _XPathObject
 end
 
 """
-    find(doc::Document, xpath::AbstractString)
+    find(xpath::AbstractString, doc::Document)
 
 Find nodes matching `xpath` XPath query from `doc`.
 """
-function Base.find(doc::Document, xpath::AbstractString)
-    return find(doc.node, xpath)
+function Base.find(xpath::AbstractString, doc::Document)
+    return find(xpath, doc.node)
 end
 
 """
-    findfirst(doc::Document, xpath::AbstractString)
+    findfirst(xpath::AbstractString, doc::Document)
 
 Find the first node matching `xpath` XPath query from `doc`.
 """
-function Base.findfirst(doc::Document, xpath::AbstractString)
+function Base.findfirst(xpath::AbstractString, doc::Document)
     # string("(", xpath, ")[position()=1]") may be faster
-    return first(find(doc, xpath))
+    return first(find(xpath, doc))
 end
 
 """
-    findlast(doc::Document, xpath::AbstractString)
+    findlast(xpath::AbstractString, doc::Document)
 
 Find the last node matching `xpath` XPath query from `doc`.
 """
-function Base.findlast(doc::Document, xpath::AbstractString)
+function Base.findlast(xpath::AbstractString, doc::Document)
     # string("(", xpath, ")[position()=last()]") may be faster
-    return last(find(doc, xpath))
+    return last(find(xpath, doc))
 end
 
 """
-    find(node::Node, xpath::AbstractString, [ns=namespaces(node)])
+    find(xpath::AbstractString, node::Node, [ns=namespaces(node)])
 
 Find nodes matching `xpath` XPath query starting from `node`.
 
 The `ns` argument is an iterator of namespace prefix and URI pairs.
 """
-function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
+function Base.find(xpath::AbstractString, node::Node, ns=namespaces(node))
     if !ismanaged(node)
         throw(ArgumentError("XPath query on the unmanaged node"))
     end
@@ -107,23 +107,23 @@ function Base.find(node::Node, xpath::AbstractString, ns=namespaces(node))
 end
 
 """
-    findfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])
+    findfirst(xpath::AbstractString, node::Node, [ns=namespaces(node)])
 
 Find the first node matching `xpath` XPath query starting from `node`.
 """
-function Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node))
+function Base.findfirst(xpath::AbstractString, node::Node, ns=namespaces(node))
     # string("(", xpath, ")[position()=1]") may be faster
-    return first(find(node, xpath, ns))
+    return first(find(xpath, node, ns))
 end
 
 """
-    findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])
+    findlast(xpath::AbstractString, node::Node, [ns=namespaces(node)])
 
 Find the last node matching `xpath` XPath query starting from `node`.
 """
-function Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node))
+function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
     # string("(", xpath, ")[position()=last()]") may be faster
-    return last(find(node, xpath, ns))
+    return last(find(xpath, node, ns))
 end
 
 function new_xpath_context(doc)
