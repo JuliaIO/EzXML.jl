@@ -126,12 +126,6 @@ end
 # Deprecation
 # -----------
 
-@deprecate name nodename
-@deprecate setname! setnodename!
-@deprecate content nodecontent
-@deprecate setcontent! setnodecontent!
-@deprecate depth nodedepth
-
 function Base.read(::Type{Document}, filename::AbstractString)
     @static if VERSION > v"0.7-"
         @warn "read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead"
