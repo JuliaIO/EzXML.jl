@@ -25,22 +25,15 @@ The main features are:
 Installation
 ------------
 
-You have to install [libxml2](http://xmlsoft.org/) first.
-
-For debian/ubuntu users:
-```
-apt-get install libxml2
-```
-
-For Homebrew users:
-```
-brew install libxml2
-```
-
-Then install EzXML.jl:
+Install EzXML.jl as follows:
 ```
 julia -e 'Pkg.add("EzXML")'
 ```
+
+This package depends on [libxml2](http://xmlsoft.org/), which will be installed
+automatically from <https://github.com/bicycle1885/XML2Builder> via
+[BinaryProvider.jl](https://github.com/JuliaPackaging/BinaryProvider.jl).  Most
+of common platforms (Windows, Linux, and macOS) are now supported.
 
 Usage
 -----
