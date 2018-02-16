@@ -161,8 +161,14 @@ function Base.eltype(::Type{StreamReader})
     return ReaderType
 end
 
-function Base.iteratorsize(::Type{StreamReader})
-    return Base.SizeUnknown()
+if isdefined(Base, :IteratorSize)
+    function Base.IteratorSize(::Type{StreamReader})
+        return Base.SizeUnknown()
+    end
+else
+    function Base.iteratorsize(::Type{StreamReader})
+        return Base.SizeUnknown()
+    end
 end
 
 function Base.start(::StreamReader)
