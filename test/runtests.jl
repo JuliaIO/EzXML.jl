@@ -5,6 +5,11 @@ else
     using Test
 end
 
+import Compat:
+    Compat,
+    contains,
+    devnull
+
 # Unit tests
 # ----------
 
@@ -12,7 +17,7 @@ end
     for i in 1:21
         t = convert(EzXML.NodeType, i)
         @test t == i
-        @test ismatch(r"^[A-Z_]+_(NODE|DECL|START|END)$", repr(t))
+        @test contains(repr(t), r"^[A-Z_]+_(NODE|DECL|START|END)$")
         @test string(t) == string(i)
         @test convert(EzXML.NodeType, t) === t
     end
@@ -85,7 +90,7 @@ end
         &#124
         <a href="http://mbgd.genome.ad.jp/sparql/index_2015.php">To Previous Version (2015)</a>
         """)
-        info("the following two warnings are expected:")
+        Compat.@info("the following two warnings are expected:")
         doc = readhtml(buf)
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
@@ -159,7 +164,7 @@ end
         @test_throws EzXML.XMLError parsexml("abracadabra")
         @test_throws EzXML.XMLError parsexml("""<?xml version="1.0"?>""")
 
-        info("the following warning is expected:")
+        Compat.@info("the following warning is expected:")
         @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
     end
 
@@ -229,7 +234,7 @@ end
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
         @test t == i
-        @test ismatch(r"READER_[A-Z_]+$", repr(t))
+        @test contains(repr(t), r"READER_[A-Z_]+$")
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
     end
@@ -1133,13 +1138,13 @@ end
 @testset "Misc" begin
     @testset "show" begin
         doc = parsexml("<root/>")
-        @test ismatch(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(root(doc)))
-        @test ismatch(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(doc.node))
-        @test ismatch(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
+        @test contains(repr(root(doc)), r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$")
+        @test contains(repr(doc.node), r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$")
+        @test contains(repr(doc), r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$")
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
         reader = open(EzXML.StreamReader, sample2)
-        @test ismatch(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
+        @test contains(repr(reader), r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$")
         close(reader)
     end
 
@@ -1184,7 +1189,7 @@ if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do
-            stdout = DevNull
+            stdout = devnull
 
             @testset "primates.jl" begin
                 try
@@ -1212,36 +1217,6 @@ if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
                 catch
                     @test false
                 end
-            end
-
-            if VERSION > v"0.6-"
-                info("skip graphml.jl tests")
-            else
-            @testset "graphml.jl" begin
-                mktemp() do path, _
-                    write(path, """
-                    <?xml version="1.0" encoding="UTF-8"?>
-                    <graphml xmlns="http://graphml.graphdrawing.org/xmlns"
-                             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                             xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
-                             http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
-                        <graph id="G" edgedefault="undirected">
-                            <node id="n0"/>
-                            <node id="n1"/>
-                            <node id="n2"/>
-                            <edge source="n0" target="n2"/>
-                            <edge source="n1" target="n2"/>
-                        </graph>
-                    </graphml>
-                    """)
-                    try
-                        run(pipeline(`$(julia) graphml.jl $(path)`, stdout=stdout))
-                        @test true
-                    catch
-                        @test false
-                    end
-                end
-            end
             end
         end
     end

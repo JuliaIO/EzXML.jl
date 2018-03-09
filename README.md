@@ -132,7 +132,6 @@ Examples
 * [primates.jl](/example/primates.jl): Run "primates" example shown above.
 * [julia2xml.jl](/example/julia2xml.jl): Convert a Julia expression to XML.
 * [listlinks.jl](/example/listlinks.jl): List all links in an HTML document.
-* [graphml.jl](/example/graphml.jl): Read a GraphML file with streaming reader.
 
 Other XML/HTML packages in Julia
 --------------------------------

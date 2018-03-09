@@ -76,7 +76,7 @@ function throw_xml_error()
     if isempty(XML_GLOBAL_ERROR_STACK)
         error("unknown error of libxml2")
     elseif length(XML_GLOBAL_ERROR_STACK) > 1
-        warn("caught $(length(XML_GLOBAL_ERROR_STACK)) errors; show the first one")
+        Compat.@warn("caught $(length(XML_GLOBAL_ERROR_STACK)) errors; show the first one")
     end
     # DEBUG
     # for err in XML_GLOBAL_ERROR_STACK
@@ -92,7 +92,7 @@ function show_warnings()
     for err in XML_GLOBAL_ERROR_STACK
         buf = IOBuffer()
         showerror(buf, err)
-        warn(String(take!(buf)))
+        Compat.@warn(String(take!(buf)))
     end
     empty!(XML_GLOBAL_ERROR_STACK)
 end

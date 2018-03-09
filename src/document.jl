@@ -45,7 +45,7 @@ end
 Print `doc` with formatting.
 """
 function prettyprint(doc::Document)
-    prettyprint(STDOUT, doc)
+    prettyprint(stdout, doc)
 end
 
 function prettyprint(io::IO, doc::Document)
@@ -200,12 +200,12 @@ function make_read_callback()
     # because Julia does not support C-callable closures yet.
     return cfunction(Cint, Tuple{Ptr{Cvoid}, Ptr{UInt8}, Cint}) do context, buffer, len
         input = unsafe_pointer_to_objref(context)
-        avail = min(nb_available(input), len)
+        avail = min(bytesavailable(input), len)
         if avail > 0
             unsafe_read(input, buffer, avail)
             read = avail
         elseif len > 0 && !eof(input)
-            # An input stream may return nb_available = 0 before reading data.
+            # An input stream may return bytesavailable = 0 before reading data.
             # So, read a byte to kick it ready.
             unsafe_store!(buffer, Base.read(input, UInt8))
             read = 1
