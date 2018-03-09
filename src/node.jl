@@ -119,6 +119,10 @@ function Base.print(io::IO, x::NodeType)
     print(io, convert(Cint, x))
 end
 
+function Base.string(x::NodeType)
+    return sprint(print, x)
+end
+
 # Fields of namespace (_xmlNs).
 struct _Ns
     next::Ptr{_Ns}
@@ -1167,7 +1171,8 @@ end
 
 function findfirstchar(char::Char, str::AbstractString)
     @static if VERSION > v"0.7-"
-        return first(findfirst(equalto(char), str))
+        i = findfirst(equalto(char), str)
+        return i == nothing ? 0 : i
     else
         return searchindex(str, char)
     end

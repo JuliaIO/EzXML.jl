@@ -118,6 +118,10 @@ function Base.print(io::IO, x::ReaderType)
     print(io, convert(Cint, x))
 end
 
+function Base.string(x::ReaderType)
+    return sprint(print, x)
+end
+
 function StreamReader(input::IO)
     readcb = make_read_callback()
     closecb = C_NULL

@@ -73,6 +73,12 @@ function parsexml(xmldata::Vector{UInt8})
     return parsexml(String(xmldata))
 end
 
+if VERSION > v"0.7-"
+    function parsexml(xmldata::Base.CodeUnits{UInt8,String})
+        return parsexml(String(xmldata))
+    end
+end
+
 """
     parsehtml(htmlstring)
 
@@ -95,6 +101,12 @@ end
 
 function parsehtml(htmldata::Vector{UInt8})
     return parsehtml(String(htmldata))
+end
+
+if VERSION > v"0.7-"
+    function parsehtml(htmldata::Base.CodeUnits{UInt8,String})
+        return parsehtml(String(htmldata))
+    end
 end
 
 """
