@@ -92,7 +92,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.Document",
     "page": "References",
     "title": "EzXML.Document",
-    "category": "Type",
+    "category": "type",
     "text": "An XML/HTML document type.\n\n\n\n"
 },
 
@@ -100,7 +100,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.Node",
     "page": "References",
     "title": "EzXML.Node",
-    "category": "Type",
+    "category": "type",
     "text": "A proxy type to libxml2\'s node struct.\n\n\n\n"
 },
 
@@ -108,7 +108,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.StreamReader",
     "page": "References",
     "title": "EzXML.StreamReader",
-    "category": "Type",
+    "category": "type",
     "text": "A streaming XML reader type.\n\n\n\n"
 },
 
@@ -116,7 +116,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.XMLError",
     "page": "References",
     "title": "EzXML.XMLError",
-    "category": "Type",
+    "category": "type",
     "text": "An error detected by libxml2.\n\n\n\n"
 },
 
@@ -132,7 +132,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.parsexml",
     "page": "References",
     "title": "EzXML.parsexml",
-    "category": "Function",
+    "category": "function",
     "text": "parsexml(xmlstring)\n\nParse xmlstring and create an XML document.\n\n\n\n"
 },
 
@@ -140,7 +140,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.parsehtml",
     "page": "References",
     "title": "EzXML.parsehtml",
-    "category": "Function",
+    "category": "function",
     "text": "parsehtml(htmlstring)\n\nParse htmlstring and create an HTML document.\n\n\n\n"
 },
 
@@ -148,7 +148,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.readxml",
     "page": "References",
     "title": "EzXML.readxml",
-    "category": "Function",
+    "category": "function",
     "text": "readxml(filename)\n\nRead filename and create an XML document.\n\n\n\nreadxml(input::IO)\n\nRead input and create an XML document.\n\n\n\n"
 },
 
@@ -156,7 +156,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.readhtml",
     "page": "References",
     "title": "EzXML.readhtml",
-    "category": "Function",
+    "category": "function",
     "text": "readhtml(filename)\n\nRead filename and create an HTML document.\n\n\n\nreadhtml(input::IO)\n\nRead input and create an HTML document.\n\n\n\n"
 },
 
@@ -164,7 +164,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.prettyprint",
     "page": "References",
     "title": "EzXML.prettyprint",
-    "category": "Function",
+    "category": "function",
     "text": "prettyprint([io], node::Node)\n\nPrint node with formatting.\n\n\n\nprettyprint([io], doc::Document)\n\nPrint doc with formatting.\n\n\n\n"
 },
 
@@ -180,7 +180,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.XMLDocument",
     "page": "References",
     "title": "EzXML.XMLDocument",
-    "category": "Function",
+    "category": "function",
     "text": "XMLDocument(version=\"1.0\")\n\nCreate an XML document.\n\n\n\n"
 },
 
@@ -188,7 +188,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.HTMLDocument",
     "page": "References",
     "title": "EzXML.HTMLDocument",
-    "category": "Function",
+    "category": "function",
     "text": "HTMLDocument(uri=nothing, externalID=nothing)\n\nCreate an HTML document.\n\n\n\n"
 },
 
@@ -196,7 +196,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.XMLDocumentNode",
     "page": "References",
     "title": "EzXML.XMLDocumentNode",
-    "category": "Function",
+    "category": "function",
     "text": "XMLDocumentNode(version)\n\nCreate an XML document node with version.\n\n\n\n"
 },
 
@@ -204,7 +204,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.HTMLDocumentNode",
     "page": "References",
     "title": "EzXML.HTMLDocumentNode",
-    "category": "Function",
+    "category": "function",
     "text": "HTMLDocumentNode(uri, externalID)\n\nCreate an HTML document node.\n\nuri and externalID are either a string or nothing.\n\n\n\n"
 },
 
@@ -212,7 +212,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.ElementNode",
     "page": "References",
     "title": "EzXML.ElementNode",
-    "category": "Function",
+    "category": "function",
     "text": "ElementNode(name)\n\nCreate an element node with name.\n\n\n\n"
 },
 
@@ -220,7 +220,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.TextNode",
     "page": "References",
     "title": "EzXML.TextNode",
-    "category": "Function",
+    "category": "function",
     "text": "TextNode(content)\n\nCreate a text node with content.\n\n\n\n"
 },
 
@@ -228,7 +228,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.CommentNode",
     "page": "References",
     "title": "EzXML.CommentNode",
-    "category": "Function",
+    "category": "function",
     "text": "CommentNode(content)\n\nCreate a comment node with content.\n\n\n\n"
 },
 
@@ -236,7 +236,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.CDataNode",
     "page": "References",
     "title": "EzXML.CDataNode",
-    "category": "Function",
+    "category": "function",
     "text": "CDataNode(content)\n\nCreate a CDATA node with content.\n\n\n\n"
 },
 
@@ -244,7 +244,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.AttributeNode",
     "page": "References",
     "title": "EzXML.AttributeNode",
-    "category": "Function",
+    "category": "function",
     "text": "AttributeNode(name, value)\n\nCreate an attribute node with name and value.\n\n\n\n"
 },
 
@@ -252,7 +252,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.DTDNode",
     "page": "References",
     "title": "EzXML.DTDNode",
-    "category": "Function",
+    "category": "function",
     "text": "DTDNode(name, [systemID, [externalID]])\n\nCreate a DTD node with name, systemID, and externalID.\n\n\n\n"
 },
 
@@ -276,7 +276,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodetype-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.nodetype",
-    "category": "Method",
+    "category": "method",
     "text": "nodetype(node::Node)\n\nReturn the type of node as an integer.\n\n\n\n"
 },
 
@@ -284,7 +284,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodepath-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.nodepath",
-    "category": "Method",
+    "category": "method",
     "text": "nodepath(node::Node)\n\nReturn the path of node.\n\n\n\n"
 },
 
@@ -292,7 +292,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodename-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.nodename",
-    "category": "Method",
+    "category": "method",
     "text": "nodename(node::Node)\n\nReturn the node name of node.\n\n\n\n"
 },
 
@@ -300,7 +300,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodecontent-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.nodecontent",
-    "category": "Method",
+    "category": "method",
     "text": "nodecontent(node::Node)\n\nReturn the node content of node.\n\n\n\n"
 },
 
@@ -308,7 +308,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.namespace-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.namespace",
-    "category": "Method",
+    "category": "method",
     "text": "namespace(node::Node)\n\nReturn the namespace associated with node.\n\n\n\n"
 },
 
@@ -316,7 +316,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.namespaces-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.namespaces",
-    "category": "Method",
+    "category": "method",
     "text": "namespaces(node::Node)\n\nCreate a vector of namespaces applying to node.\n\n\n\n"
 },
 
@@ -324,7 +324,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.iselement-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.iselement",
-    "category": "Method",
+    "category": "method",
     "text": "iselement(node::Node)\n\nReturn if node is an element node.\n\n\n\n"
 },
 
@@ -332,7 +332,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.isattribute-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.isattribute",
-    "category": "Method",
+    "category": "method",
     "text": "isattribute(node::Node)\n\nReturn if node is an attribute node.\n\n\n\n"
 },
 
@@ -340,7 +340,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.istext-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.istext",
-    "category": "Method",
+    "category": "method",
     "text": "istext(node::Node)\n\nReturn if node is a text node.\n\n\n\n"
 },
 
@@ -348,7 +348,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.iscdata-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.iscdata",
-    "category": "Method",
+    "category": "method",
     "text": "iscdata(node::Node)\n\nReturn if node is a CDATA node.\n\n\n\n"
 },
 
@@ -356,7 +356,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.iscomment-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.iscomment",
-    "category": "Method",
+    "category": "method",
     "text": "iscomment(node::Node)\n\nReturn if node is a comment node.\n\n\n\n"
 },
 
@@ -364,7 +364,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.isdtd-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.isdtd",
-    "category": "Method",
+    "category": "method",
     "text": "isdtd(node::Node)\n\nReturn if node is a DTD node.\n\n\n\n"
 },
 
@@ -372,7 +372,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.countnodes-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.countnodes",
-    "category": "Method",
+    "category": "method",
     "text": "countnodes(parent::Node)\n\nCount the number of child nodes of parent.\n\n\n\n"
 },
 
@@ -380,7 +380,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.countelements-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.countelements",
-    "category": "Method",
+    "category": "method",
     "text": "countelements(parent::Node)\n\nCount the number of child elements of parent.\n\n\n\n"
 },
 
@@ -388,7 +388,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.countattributes-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.countattributes",
-    "category": "Method",
+    "category": "method",
     "text": "countattributes(elem::Node)\n\nCount the number of attributes of elem.\n\n\n\n"
 },
 
@@ -396,7 +396,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.systemID-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.systemID",
-    "category": "Method",
+    "category": "method",
     "text": "systemID(node::Node)\n\nReturn the system ID of node.\n\n\n\n"
 },
 
@@ -404,7 +404,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.externalID-Tuple{EzXML.Node}",
     "page": "References",
     "title": "EzXML.externalID",
-    "category": "Method",
+    "category": "method",
     "text": "externalID(node::Node)\n\nReturn the external ID of node.\n\n\n\n"
 },
 
@@ -420,7 +420,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.setnodename!-Tuple{EzXML.Node,AbstractString}",
     "page": "References",
     "title": "EzXML.setnodename!",
-    "category": "Method",
+    "category": "method",
     "text": "setnodename!(node::Node, name::AbstractString)\n\nSet the name of node.\n\n\n\n"
 },
 
@@ -428,7 +428,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.setnodecontent!-Tuple{EzXML.Node,AbstractString}",
     "page": "References",
     "title": "EzXML.setnodecontent!",
-    "category": "Method",
+    "category": "method",
     "text": "setnodecontent!(node::Node, content::AbstractString)\n\nReplace the content of node.\n\n\n\n"
 },
 
@@ -444,7 +444,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.document",
     "page": "References",
     "title": "EzXML.document",
-    "category": "Function",
+    "category": "function",
     "text": "document(node::Node)\n\nReturn the document of node.\n\n\n\n"
 },
 
@@ -452,7 +452,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.root",
     "page": "References",
     "title": "EzXML.root",
-    "category": "Function",
+    "category": "function",
     "text": "root(doc::Document)\n\nReturn the root element of doc.\n\n\n\n"
 },
 
@@ -460,7 +460,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.dtd",
     "page": "References",
     "title": "EzXML.dtd",
-    "category": "Function",
+    "category": "function",
     "text": "dtd(doc::Document)\n\nReturn the DTD node of doc.\n\n\n\n"
 },
 
@@ -468,7 +468,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.parentnode",
     "page": "References",
     "title": "EzXML.parentnode",
-    "category": "Function",
+    "category": "function",
     "text": "parentnode(node::Node)\n\nReturn the parent of node.\n\n\n\n"
 },
 
@@ -476,7 +476,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.parentelement",
     "page": "References",
     "title": "EzXML.parentelement",
-    "category": "Function",
+    "category": "function",
     "text": "parentelement(node::Node)\n\nReturn the parent element of node.\n\n\n\n"
 },
 
@@ -484,7 +484,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.firstnode",
     "page": "References",
     "title": "EzXML.firstnode",
-    "category": "Function",
+    "category": "function",
     "text": "firstnode(node::Node)\n\nReturn the first child node of node.\n\n\n\n"
 },
 
@@ -492,7 +492,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.lastnode",
     "page": "References",
     "title": "EzXML.lastnode",
-    "category": "Function",
+    "category": "function",
     "text": "lastnode(node::Node)\n\nReturn the last child node of node.\n\n\n\n"
 },
 
@@ -500,7 +500,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.firstelement",
     "page": "References",
     "title": "EzXML.firstelement",
-    "category": "Function",
+    "category": "function",
     "text": "firstelement(node::Node)\n\nReturn the first child element of node.\n\n\n\n"
 },
 
@@ -508,7 +508,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.lastelement",
     "page": "References",
     "title": "EzXML.lastelement",
-    "category": "Function",
+    "category": "function",
     "text": "lastelement(node::Node)\n\nReturn the last child element of node.\n\n\n\n"
 },
 
@@ -516,7 +516,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nextnode",
     "page": "References",
     "title": "EzXML.nextnode",
-    "category": "Function",
+    "category": "function",
     "text": "nextnode(node::Node)\n\nReturn the next node of node.\n\n\n\n"
 },
 
@@ -524,7 +524,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.prevnode",
     "page": "References",
     "title": "EzXML.prevnode",
-    "category": "Function",
+    "category": "function",
     "text": "prevnode(node::Node)\n\nReturn the previous node of node.\n\n\n\n"
 },
 
@@ -532,7 +532,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nextelement",
     "page": "References",
     "title": "EzXML.nextelement",
-    "category": "Function",
+    "category": "function",
     "text": "nextelement(node::Node)\n\nReturn the next element of node.\n\n\n\n"
 },
 
@@ -540,7 +540,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.prevelement",
     "page": "References",
     "title": "EzXML.prevelement",
-    "category": "Function",
+    "category": "function",
     "text": "prevelement(node::Node)\n\nReturn the previous element of node.\n\n\n\n"
 },
 
@@ -548,7 +548,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.eachnode",
     "page": "References",
     "title": "EzXML.eachnode",
-    "category": "Function",
+    "category": "function",
     "text": "eachnode(node::Node, [backward=false])\n\nCreate an iterator of child nodes.\n\n\n\n"
 },
 
@@ -556,7 +556,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodes",
     "page": "References",
     "title": "EzXML.nodes",
-    "category": "Function",
+    "category": "function",
     "text": "nodes(node::Node, [backward=false])\n\nCreate a vector of child nodes.\n\n\n\n"
 },
 
@@ -564,7 +564,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.eachelement",
     "page": "References",
     "title": "EzXML.eachelement",
-    "category": "Function",
+    "category": "function",
     "text": "eachelement(node::Node, [backward=false])\n\nCreate an iterator of child elements.\n\n\n\n"
 },
 
@@ -572,7 +572,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.elements",
     "page": "References",
     "title": "EzXML.elements",
-    "category": "Function",
+    "category": "function",
     "text": "elements(node::Node, [backward=false])\n\nCreate a vector of child elements.\n\n\n\n"
 },
 
@@ -580,7 +580,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.eachattribute",
     "page": "References",
     "title": "EzXML.eachattribute",
-    "category": "Function",
+    "category": "function",
     "text": "eachattribute(node::Node)\n\nCreate an iterator of attributes.\n\n\n\n"
 },
 
@@ -588,7 +588,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.attributes",
     "page": "References",
     "title": "EzXML.attributes",
-    "category": "Function",
+    "category": "function",
     "text": "attributes(node::Node)\n\nCreate a vector of attributes.\n\n\n\n"
 },
 
@@ -596,7 +596,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasroot",
     "page": "References",
     "title": "EzXML.hasroot",
-    "category": "Function",
+    "category": "function",
     "text": "hasroot(doc::Document)\n\nReturn if doc has a root element.\n\n\n\n"
 },
 
@@ -604,7 +604,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasdtd",
     "page": "References",
     "title": "EzXML.hasdtd",
-    "category": "Function",
+    "category": "function",
     "text": "hasdtd(doc::Document)\n\nReturn if doc has a DTD node.\n\n\n\n"
 },
 
@@ -612,7 +612,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasnode",
     "page": "References",
     "title": "EzXML.hasnode",
-    "category": "Function",
+    "category": "function",
     "text": "hasnode(node::Node)\n\nReturn if node has a child node.\n\n\n\n"
 },
 
@@ -620,7 +620,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasnextnode",
     "page": "References",
     "title": "EzXML.hasnextnode",
-    "category": "Function",
+    "category": "function",
     "text": "hasnextnode(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
 },
 
@@ -628,7 +628,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasprevnode",
     "page": "References",
     "title": "EzXML.hasprevnode",
-    "category": "Function",
+    "category": "function",
     "text": "hasprevnode(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
 },
 
@@ -636,7 +636,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.haselement",
     "page": "References",
     "title": "EzXML.haselement",
-    "category": "Function",
+    "category": "function",
     "text": "haselement(node::Node)\n\nReturn if node has a child element.\n\n\n\n"
 },
 
@@ -644,7 +644,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasnextelement",
     "page": "References",
     "title": "EzXML.hasnextelement",
-    "category": "Function",
+    "category": "function",
     "text": "hasnextelement(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
 },
 
@@ -652,7 +652,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasprevelement",
     "page": "References",
     "title": "EzXML.hasprevelement",
-    "category": "Function",
+    "category": "function",
     "text": "hasprevelement(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
 },
 
@@ -660,7 +660,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasdocument",
     "page": "References",
     "title": "EzXML.hasdocument",
-    "category": "Function",
+    "category": "function",
     "text": "hasdocument(node::Node)\n\nReturn if node belongs to a document.\n\n\n\n"
 },
 
@@ -668,7 +668,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasparentnode",
     "page": "References",
     "title": "EzXML.hasparentnode",
-    "category": "Function",
+    "category": "function",
     "text": "hasparentnode(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
 },
 
@@ -676,7 +676,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.hasparentelement",
     "page": "References",
     "title": "EzXML.hasparentelement",
-    "category": "Function",
+    "category": "function",
     "text": "hasparentelement(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
 },
 
@@ -692,7 +692,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.setroot!",
     "page": "References",
     "title": "EzXML.setroot!",
-    "category": "Function",
+    "category": "function",
     "text": "setroot!(doc::Document, node::Node)\n\nSet the root element of doc to node and return the root element.\n\n\n\n"
 },
 
@@ -700,7 +700,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.setdtd!",
     "page": "References",
     "title": "EzXML.setdtd!",
-    "category": "Function",
+    "category": "function",
     "text": "setdtd!(doc::Document, node::Node)\n\nSet the DTD node of doc to node and return the DTD node.\n\n\n\n"
 },
 
@@ -708,7 +708,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.link!",
     "page": "References",
     "title": "EzXML.link!",
-    "category": "Function",
+    "category": "function",
     "text": "link!(parent::Node, child::Node)\n\nLink child at the end of children of parent.\n\n\n\n"
 },
 
@@ -716,7 +716,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.linknext!",
     "page": "References",
     "title": "EzXML.linknext!",
-    "category": "Function",
+    "category": "function",
     "text": "linknext!(target::Node, node::Node)\n\nLink node as the next sibling of target.\n\n\n\n"
 },
 
@@ -724,7 +724,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.linkprev!",
     "page": "References",
     "title": "EzXML.linkprev!",
-    "category": "Function",
+    "category": "function",
     "text": "linkprev!(target::Node, node::Node)\n\nLink node as the prev sibling of target.\n\n\n\n"
 },
 
@@ -732,7 +732,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.unlink!",
     "page": "References",
     "title": "EzXML.unlink!",
-    "category": "Function",
+    "category": "function",
     "text": "unlink!(node::Ndoe)\n\nUnlink node from its context.\n\n\n\n"
 },
 
@@ -740,7 +740,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.addelement!",
     "page": "References",
     "title": "EzXML.addelement!",
-    "category": "Function",
+    "category": "function",
     "text": "addelement!(parent::Node, name::AbstractString)\n\nAdd a new child element of name with no content to parent and return the new child element.\n\n\n\naddelement!(parent::Node, name::AbstractString, content::AbstractString)\n\nAdd a new child element of name with content to parent and return the new child element.\n\n\n\n"
 },
 
@@ -756,7 +756,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.find-Tuple{EzXML.Document,AbstractString}",
     "page": "References",
     "title": "Base.find",
-    "category": "Method",
+    "category": "method",
     "text": "find(doc::Document, xpath::AbstractString)\n\nFind nodes matching xpath XPath query from doc.\n\n\n\n"
 },
 
@@ -764,7 +764,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.findfirst-Tuple{EzXML.Document,AbstractString}",
     "page": "References",
     "title": "Base.findfirst",
-    "category": "Method",
+    "category": "method",
     "text": "findfirst(doc::Document, xpath::AbstractString)\n\nFind the first node matching xpath XPath query from doc.\n\n\n\n"
 },
 
@@ -772,7 +772,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.findlast-Tuple{EzXML.Document,AbstractString}",
     "page": "References",
     "title": "Base.findlast",
-    "category": "Method",
+    "category": "method",
     "text": "findlast(doc::Document, xpath::AbstractString)\n\nFind the last node matching xpath XPath query from doc.\n\n\n\n"
 },
 
@@ -780,7 +780,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.find-Tuple{EzXML.Node,AbstractString}",
     "page": "References",
     "title": "Base.find",
-    "category": "Method",
+    "category": "method",
     "text": "find(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind nodes matching xpath XPath query starting from node.\n\nThe ns argument is an iterator of namespace prefix and URI pairs.\n\n\n\n"
 },
 
@@ -788,7 +788,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.findfirst-Tuple{EzXML.Node,AbstractString}",
     "page": "References",
     "title": "Base.findfirst",
-    "category": "Method",
+    "category": "method",
     "text": "findfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
 },
 
@@ -796,7 +796,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#Base.findlast-Tuple{EzXML.Node,AbstractString}",
     "page": "References",
     "title": "Base.findlast",
-    "category": "Method",
+    "category": "method",
     "text": "findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the last node matching xpath XPath query starting from node.\n\n\n\n"
 },
 
@@ -812,7 +812,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.validate",
     "page": "References",
     "title": "EzXML.validate",
-    "category": "Function",
+    "category": "function",
     "text": "validate(doc::Document, [dtd::Node])\n\nValidate doc against dtd and return the validation log.\n\nThe validation log is empty if and only if doc is valid. The DTD node in doc will be used if dtd is not passed.\n\n\n\n"
 },
 
@@ -820,7 +820,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.readdtd",
     "page": "References",
     "title": "EzXML.readdtd",
-    "category": "Function",
+    "category": "function",
     "text": "readdtd(filename::AbstractString)\n\nRead filename and create a DTD node.\n\n\n\n"
 },
 
@@ -844,7 +844,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.expandtree-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.expandtree",
-    "category": "Method",
+    "category": "method",
     "text": "expandtree(reader::StreamReader)\n\nExpand the current node of reader into a full subtree that will be available until the next read of node.\n\nNote that the expanded subtree is a read-only and temporary object. You cannot modify it or keep references to any nodes of it after reading the next node.\n\nCurrently, namespace functions and XPath query will not work on the expanded subtree.\n\n\n\n"
 },
 
@@ -852,7 +852,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodetype-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.nodetype",
-    "category": "Method",
+    "category": "method",
     "text": "nodetype(reader::StreamReader)\n\nReturn the type of the current node of reader.\n\n\n\n"
 },
 
@@ -860,7 +860,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodename-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.nodename",
-    "category": "Method",
+    "category": "method",
     "text": "nodename(reader::StreamReader)\n\nReturn the name of the current node of reader.\n\n\n\n"
 },
 
@@ -868,7 +868,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodecontent-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.nodecontent",
-    "category": "Method",
+    "category": "method",
     "text": "nodecontent(reader::StreamReader)\n\nReturn the content of the current node of reader.\n\n\n\n"
 },
 
@@ -876,7 +876,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.nodedepth-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.nodedepth",
-    "category": "Method",
+    "category": "method",
     "text": "nodedepth(reader::StreamReader)\n\nReturn the depth of the current node of reader.\n\n\n\n"
 },
 
@@ -884,7 +884,7 @@ var documenterSearchIndex = {"docs": [
     "location": "references.html#EzXML.namespace-Tuple{EzXML.StreamReader}",
     "page": "References",
     "title": "EzXML.namespace",
-    "category": "Method",
+    "category": "method",
     "text": "namespace(reader::StreamReader)\n\nReturn the namespace of the current node of reader.\n\n\n\n"
 },
 
