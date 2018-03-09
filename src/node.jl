@@ -272,7 +272,7 @@ end
 Print `node` with formatting.
 """
 function prettyprint(node::Node)
-    prettyprint(STDOUT, node)
+    prettyprint(stdout, node)
 end
 
 function prettyprint(io::IO, node::Node)
@@ -1257,7 +1257,7 @@ function Base.eltype(::Type{T}) where {T<:AbstractNodeIterator}
     return Node
 end
 
-function Base.iteratorsize(::Type{T}) where {T<:AbstractNodeIterator}
+function Compat.IteratorSize(::Type{T}) where {T<:AbstractNodeIterator}
     return Base.SizeUnknown()
 end
 

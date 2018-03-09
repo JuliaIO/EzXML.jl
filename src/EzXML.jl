@@ -100,6 +100,9 @@ const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
 if !isfile(libxml2path)
     error("EzXML.jl is not installed properly, run Pkg.build(\"EzXML\") and restart Julia.")
 end
+if VERSION > v"0.7-"
+    import Libdl
+end
 include(libxml2path)
 check_deps()
 
@@ -107,9 +110,12 @@ if VERSION > v"0.7.0-DEV.3052"
     import Printf: @printf
 end
 
-if !isdefined(Base, :Cvoid)
-    const Cvoid = Void
-end
+import Compat:
+    Compat,
+    Cvoid,
+    stdin,
+    stdout,
+    bytesavailable
 
 include("error.jl")
 include("node.jl")
@@ -127,11 +133,7 @@ end
 # -----------
 
 function Base.read(::Type{Document}, filename::AbstractString)
-    @static if VERSION > v"0.7-"
-        @warn "read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead"
-    else
-        warn("read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead")
-    end
+    Compat.@warn "read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead"
     if endswith(filename, ".html") || endswith(filename, ".htm")
         return readhtml(filename)
     else
@@ -140,11 +142,7 @@ function Base.read(::Type{Document}, filename::AbstractString)
 end
 
 function Base.parse(::Type{Document}, inputstring::AbstractString)
-    @static if VERSION > v"0.7-"
-        @warn "parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead"
-    else
-        warn("parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead")
-    end
+    Compat.@warn "parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead"
     if is_html_like(inputstring)
         return parsehtml(inputstring)
     else
