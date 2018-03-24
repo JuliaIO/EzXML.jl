@@ -1171,8 +1171,7 @@ end
 
 function findfirstchar(char::Char, str::AbstractString)
     @static if VERSION > v"0.7-"
-        i = findfirst(equalto(char), str)
-        return i == nothing ? 0 : i
+        return coalesce(findfirst(isequal(char), str), 0)
     else
         return searchindex(str, char)
     end
