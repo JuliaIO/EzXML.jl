@@ -15,6 +15,26 @@ struct Document
     end
 end
 
+
+# Document properties
+# -------------------
+
+if Base.isdefined(Base, :getproperty)
+    @inline function Base.getproperty(doc::Document, name::Symbol)
+        if name == :root
+            return hasroot(doc) ? root(doc) : nothing
+        elseif name == :dtd
+            return hasdtd(doc) ? dtd(doc) : nothing
+        else
+            return Core.getfield(doc, name)
+        end
+    end
+end
+
+
+# Document constructors
+# ---------------------
+
 """
     XMLDocument(version="1.0")
 
