@@ -207,6 +207,18 @@ end
 
 """
 A proxy type to libxml2's node struct.
+
+Properties (Julia ≥ 0.7)
+------------------------
+
+| Name | Type | Description |
+|:---- |:---- |:------------|
+| `type` | `EzXML.NodeType` | the type of a node |
+| `name` | `String?`| the name of a node|
+| `path` | `String`| the absolute path to a node |
+| `content` | `String`| the content of a node |
+| `namespace` | `String?`| the namespace associated with a node |
+
 """
 mutable struct Node
     ptr::Ptr{_Node}
