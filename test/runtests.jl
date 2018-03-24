@@ -357,7 +357,7 @@ end
     #    for typ in reader
     #        if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
     #            a = EzXML.expandtree(reader)
-    #            b = find(a, "//b[1]")
+    #            b = findall("//b[1]", a)
     #        end
     #    end
     #    close(reader)
@@ -367,7 +367,7 @@ end
     for typ in reader
         if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
             a = EzXML.expandtree(reader)
-            @test_throws ArgumentError findall(a, "//b[1]", String[])
+            @test_throws ArgumentError findall("//b[1]", a, String[])
         end
     end
     close(reader)

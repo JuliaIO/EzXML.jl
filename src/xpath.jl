@@ -126,6 +126,7 @@ function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
     return last(findall(xpath, node, ns))
 end
 
+# Deprecated
 Base.find(doc::Document, xpath::AbstractString) = findall(xpath, doc)
 Base.findfirst(doc::Document, xpath::AbstractString) = findfirst(xpath, doc)
 Base.findlast(doc::Document, xpath::AbstractString) = findlast(xpath, doc)

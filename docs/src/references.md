@@ -153,12 +153,12 @@ XPath query
 -----------
 
 ```@docs
-find(doc::Document, xpath::AbstractString)
-findfirst(doc::Document, xpath::AbstractString)
-findlast(doc::Document, xpath::AbstractString)
-find(node::Node, xpath::AbstractString)
-findfirst(node::Node, xpath::AbstractString)
-findlast(node::Node, xpath::AbstractString)
+findall(xpath::AbstractString, doc::Document)
+findfirst(xpath::AbstractString, doc::Document)
+findlast(xpath::AbstractString, doc::Document)
+findall(xpath::AbstractString, node::Node)
+findfirst(xpath::AbstractString, node::Node)
+findlast(xpath::AbstractString, node::Node)
 ```
 
 Validation
