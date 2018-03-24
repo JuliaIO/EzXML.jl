@@ -837,6 +837,25 @@ if isdefined(Base, :getproperty)
         head = firstelement(doc.root)
         body = lastelement(doc.root)
         @test head.namespace == body.namespace == "http://www.w3.org/1999/xhtml"
+
+        # node traversal
+        doc = parsexml("""
+        <root>
+            <c1/>
+            <c2/>
+            <c3/>
+        </root>
+        """)
+        @test doc.root.document === doc
+        @test doc.root.parentnode === doc.node
+        @test doc.root.parentelement === nothing
+        @test doc.root.firstnode.type === EzXML.TEXT_NODE
+        @test doc.root.lastnode.type === EzXML.TEXT_NODE
+        @test doc.root.firstelement.name == "c1"
+        @test doc.root.lastelement.name  == "c3"
+        @test doc.root.firstnode.nextnode === doc.root.firstelement
+        @test doc.root.firstnode.prevnode === nothing
+        @test doc.root.firstelement.nextelement === doc.root.lastelement.prevelement
     end
 end
 
