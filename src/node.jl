@@ -346,6 +346,28 @@ function finalize_node(node)
 end
 
 
+# Node properties
+# ---------------
+
+if isdefined(Base, :getproperty)
+    @inline function Base.getproperty(node::Node, name::Symbol)
+        if name == :type
+            return nodetype(node)
+        elseif name == :name
+            return hasnodename(node) ? nodename(node) : nothing
+        elseif name == :path
+            return nodepath(node)
+        elseif name == :content
+            return nodecontent(node)
+        elseif name == :namespace
+            return hasnamespace(node) ? namespace(node) : nothing
+        else
+            return Core.getfield(node, name)
+        end
+    end
+end
+
+
 # Node constructors
 # -----------------
 
@@ -999,6 +1021,15 @@ function document(node::Node)
 end
 
 """
+    hasnodename(node::Node)
+
+Return if `node` has a node name.
+"""
+function hasnodename(node::Node)
+    return unsafe_load(node.ptr).name != C_NULL
+end
+
+"""
     nodename(node::Node)
 
 Return the node name of `node`.
@@ -1180,6 +1211,22 @@ end
 
 # Namespaces
 # ----------
+
+"""
+    hasnamespace(node::Node)
+
+Return if `node` is associated with a namespace.
+"""
+function hasnamespace(node::Node)
+    t = nodetype(node)
+    if t == ELEMENT_NODE
+        return unsafe_load(convert(Ptr{_Element}, node.ptr)).ns != C_NULL
+    elseif t == ATTRIBUTE_NODE
+        return unsafe_load(convert(Ptr{_Attribute}, node.ptr)).ns != C_NULL
+    else
+        return false
+    end
+end
 
 """
     namespace(node::Node)
