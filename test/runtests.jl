@@ -801,41 +801,43 @@ end
     end
 end
 
-@testset "Properties" begin
-    doc = parsexml("<root/>")
-    @test doc.node isa EzXML.Node
-    @test doc.node.type === EzXML.DOCUMENT_NODE
-    @test doc.node.name === nothing
-    @test doc.node.path == "/"
-    @test doc.node.content == ""
-    @test doc.node.namespace === nothing
-    @test doc.root isa EzXML.Node
-    @test doc.root.type === EzXML.ELEMENT_NODE
-    @test doc.root.name == "root"
-    @test doc.root.path == "/root"
-    @test doc.root.content == ""
-    @test doc.root.namespace === nothing
-    @test doc.dtd === nothing
+if isdefined(Base, :getproperty)
+    @testset "Properties" begin
+        doc = parsexml("<root/>")
+        @test doc.node isa EzXML.Node
+        @test doc.node.type === EzXML.DOCUMENT_NODE
+        @test doc.node.name === nothing
+        @test doc.node.path == "/"
+        @test doc.node.content == ""
+        @test doc.node.namespace === nothing
+        @test doc.root isa EzXML.Node
+        @test doc.root.type === EzXML.ELEMENT_NODE
+        @test doc.root.name == "root"
+        @test doc.root.path == "/root"
+        @test doc.root.content == ""
+        @test doc.root.namespace === nothing
+        @test doc.dtd === nothing
 
-    doc = parsexml("""<root attr="100">some content</root>""")
-    @test doc.root.content == "some content"
-    attr = attributes(doc.root)[1]
-    @test attr.type === EzXML.ATTRIBUTE_NODE
-    @test attr.name == "attr"
-    @test attr.path == "/root/@attr"
-    @test attr.content == "100"
-    @test attr.namespace === nothing
+        doc = parsexml("""<root attr="100">some content</root>""")
+        @test doc.root.content == "some content"
+        attr = attributes(doc.root)[1]
+        @test attr.type === EzXML.ATTRIBUTE_NODE
+        @test attr.name == "attr"
+        @test attr.path == "/root/@attr"
+        @test attr.content == "100"
+        @test attr.namespace === nothing
 
-    doc = parsexml("""
-    <html xmlns="http://www.w3.org/1999/xhtml">
-        <head><title>Title</title></head>
-        <body>Body</body>
-    </html>
-    """)
-    @test doc.root.namespace == "http://www.w3.org/1999/xhtml"
-    head = firstelement(doc.root)
-    body = lastelement(doc.root)
-    @test head.namespace == body.namespace == "http://www.w3.org/1999/xhtml"
+        doc = parsexml("""
+        <html xmlns="http://www.w3.org/1999/xhtml">
+            <head><title>Title</title></head>
+            <body>Body</body>
+        </html>
+        """)
+        @test doc.root.namespace == "http://www.w3.org/1999/xhtml"
+        head = firstelement(doc.root)
+        body = lastelement(doc.root)
+        @test head.namespace == body.namespace == "http://www.w3.org/1999/xhtml"
+    end
 end
 
 @testset "Construction" begin
