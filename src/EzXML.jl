@@ -95,27 +95,22 @@ export
     nodedepth,
     expandtree
 
-# Load libxml2.
-const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
-if !isfile(libxml2path)
-    error("EzXML.jl is not installed properly, run Pkg.build(\"EzXML\") and restart Julia.")
-end
-if VERSION > v"0.7-"
-    import Libdl
-end
-include(libxml2path)
-check_deps()
-
-if VERSION > v"0.7.0-DEV.3052"
-    import Printf: @printf
-end
-
 import Compat:
     Compat,
     Cvoid,
     stdin,
     stdout,
     bytesavailable
+using Compat.Libdl
+using Compat.Printf: @printf
+
+# Load libxml2.
+const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
+if !isfile(libxml2path)
+    error("EzXML.jl is not installed properly, run Pkg.build(\"EzXML\") and restart Julia.")
+end
+include(libxml2path)
+check_deps()
 
 include("error.jl")
 include("node.jl")

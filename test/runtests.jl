@@ -7,7 +7,7 @@ end
 
 import Compat:
     Compat,
-    contains,
+    occursin,
     devnull
 
 # Unit tests
@@ -17,7 +17,7 @@ import Compat:
     for i in 1:21
         t = convert(EzXML.NodeType, i)
         @test t == i
-        @test contains(repr(t), r"^[A-Z_]+_(NODE|DECL|START|END)$")
+        @test occursin(r"^[A-Z_]+_(NODE|DECL|START|END)$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.NodeType, t) === t
     end
@@ -234,7 +234,7 @@ end
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
         @test t == i
-        @test contains(repr(t), r"READER_[A-Z_]+$")
+        @test occursin(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
     end
@@ -1138,13 +1138,13 @@ end
 @testset "Misc" begin
     @testset "show" begin
         doc = parsexml("<root/>")
-        @test contains(repr(root(doc)), r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$")
-        @test contains(repr(doc.node), r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$")
-        @test contains(repr(doc), r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$")
+        @test occursin(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(root(doc)))
+        @test occursin(r"^EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(doc.node))
+        @test occursin(r"^EzXML.Document\(EzXML.Node\(<[A-Z_]+@0x[a-f0-9]+>\)\)$", repr(doc))
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
         reader = open(EzXML.StreamReader, sample2)
-        @test contains(repr(reader), r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$")
+        @test occursin(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
         close(reader)
     end
 
