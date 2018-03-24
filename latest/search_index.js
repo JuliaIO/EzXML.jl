@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Home",
     "category": "section",
-    "text": "EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and consistent, and provide a range of functionalities including:Traversing XML/HTML documents with DOM-like interfaces.\nProperly handling XML namespaces.\nSearching elements using XPath.\nParsing large files with streaming APIs.\nAutomatic memory management.Here is an example of parsing and traversing an XML document:using EzXML\n\n# Parse an XML string\n# (use `readxml(<filename>)` to read a document from a file).\ndoc = parsexml(\"\"\"\n<primates>\n    <genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n    <genus name=\"Pan\">\n        <species name=\"paniscus\">Bonobo</species>\n        <species name=\"troglodytes\">Chimpanzee</species>\n    </genus>\n</primates>\n\"\"\")\n\n# Get the root element from `doc`.\nprimates = root(doc)\n\n# Iterate over child elements.\nfor genus in eachelement(primates)\n    # Get an attribute value by name.\n    genus_name = genus[\"name\"]\n    println(\"- \", genus_name)\n    for species in eachelement(genus)\n        # Get the content within an element.\n        species_name = nodecontent(species)\n        println(\"  └ \", species[\"name\"], \" (\", species_name, \")\")\n    end\nend\nprintln()\n\n# Find texts using XPath query.\nfor species_name in nodecontent.(find(primates, \"//species/text()\"))\n    println(\"- \", species_name)\nendIf you are new to this package, read the manual page first. It provides a general guide to the package. The references page offers a full documentation for each function and the developer notes page explains about the internal design for developers."
+    "text": "EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and consistent, and provide a range of functionalities including:Traversing XML/HTML documents with DOM-like interfaces.\nProperly handling XML namespaces.\nSearching elements using XPath.\nParsing large files with streaming APIs.\nAutomatic memory management.Here is an example of parsing and traversing an XML document:using EzXML\n\n# Parse an XML string\n# (use `readxml(<filename>)` to read a document from a file).\ndoc = parsexml(\"\"\"\n<primates>\n    <genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n    <genus name=\"Pan\">\n        <species name=\"paniscus\">Bonobo</species>\n        <species name=\"troglodytes\">Chimpanzee</species>\n    </genus>\n</primates>\n\"\"\")\n\n# Get the root element from `doc`.\nprimates = root(doc)\n\n# Iterate over child elements.\nfor genus in eachelement(primates)\n    # Get an attribute value by name.\n    genus_name = genus[\"name\"]\n    println(\"- \", genus_name)\n    for species in eachelement(genus)\n        # Get the content within an element.\n        species_name = nodecontent(species)\n        println(\"  └ \", species[\"name\"], \" (\", species_name, \")\")\n    end\nend\nprintln()\n\n# Find texts using XPath query.\nfor species_name in nodecontent.(findall(\"//species/text()\", primates))\n    println(\"- \", species_name)\nendIf you are new to this package, read the manual page first. It provides a general guide to the package. The references page offers a full documentation for each function and the developer notes page explains about the internal design for developers."
 },
 
 {
@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Manual",
     "title": "XPath queries",
     "category": "section",
-    "text": "XPath is a query language for XML. The user can retrieve target elements using a short string query. For example, \"//genus/species\" selects all \"species\" elements just under a \"genus\" element.The find, findfirst and findlast functions are overloaded for XPath query and return a vector of selected nodes:julia> primates = readxml(\"primates.xml\")\nEzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))\n\njulia> find(primates, \"/primates\")  # Find the \"primates\" element just under the document\n1-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)\n\njulia> find(primates, \"//genus\")\n2-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)\n\njulia> findfirst(primates, \"//genus\")\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n\njulia> findlast(primates, \"//genus\")\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)\n\njulia> println(findfirst(primates, \"//genus\"))\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\nIf you would like to change the starting node of a query, you can pass the node as the first argument of find:julia> genus = findfirst(primates, \"//genus\")\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n\njulia> println(genus)\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n\njulia> println(findfirst(genus, \"species\"))\n<species name=\"sapiens\">Human</species>\nfind(<node>, <xpath>) automatically registers namespaces applied to <node>, which means prefixes are available in the XPath query. This is especially useful when an XML document is composed of elements originated from different namespaces.There is a caveat on the combination of XPath and namespaces: if a document contains elements with a default namespace, you need to specify its prefix to the find function. For example, in the following example, the root element and its descendants have a default namespace \"http://www.foobar.org\" but it does not have its own prefix.  In this case, you need to pass its prefix to find elements in the namespace:julia> doc = parsexml(\"\"\"\n       <parent xmlns=\"http://www.foobar.org\">\n           <child/>\n       </parent>\n       \"\"\")\nEzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))\n\njulia> find(root(doc), \"/parent/child\")\n0-element Array{EzXML.Node,1}\n\njulia> namespaces(root(doc))  # The default namespace has an empty prefix.\n1-element Array{Pair{String,String},1}:\n \"\"=>\"http://www.foobar.org\"\n\njulia> ns = namespace(root(doc))  # Get the namespace.\n\"http://www.foobar.org\"\n\njulia> find(root(doc), \"/x:parent/x:child\", [\"x\"=>ns])  # Specify its prefix as \"x\".\n1-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)\n"
+    "text": "XPath is a query language for XML. The user can retrieve target elements using a short string query. For example, \"//genus/species\" selects all \"species\" elements just under a \"genus\" element.The findall, findfirst and findlast functions are overloaded for XPath query and return a vector of selected nodes:julia> primates = readxml(\"primates.xml\")\nEzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))\n\njulia> findall(\"/primates\", primates)  # Find the \"primates\" element just under the document\n1-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)\n\njulia> findall(\"//genus\", primates)\n2-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)\n\njulia> findfirst(\"//genus\", primates)\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n\njulia> findlast(\"//genus\", primates)\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)\n\njulia> println(findfirst(\"//genus\", primates))\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\nIf you would like to change the starting node of a query, you can pass the node as the second argument of find*:julia> genus = findfirst(\"//genus\", primates)\nEzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)\n\njulia> println(genus)\n<genus name=\"Homo\">\n        <species name=\"sapiens\">Human</species>\n    </genus>\n\njulia> println(findfirst(\"species\", genus))\n<species name=\"sapiens\">Human</species>\nfind*(<xpath>, <node>) automatically registers namespaces applied to <node>, which means prefixes are available in the XPath query. This is especially useful when an XML document is composed of elements originated from different namespaces.There is a caveat on the combination of XPath and namespaces: if a document contains elements with a default namespace, you need to specify its prefix to the find* function. For example, in the following example, the root element and its descendants have a default namespace \"http://www.foobar.org\" but it does not have its own prefix.  In this case, you need to pass its prefix to find elements in the namespace:julia> doc = parsexml(\"\"\"\n       <parent xmlns=\"http://www.foobar.org\">\n           <child/>\n       </parent>\n       \"\"\")\nEzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))\n\njulia> findall(\"/parent/child\", root(doc))\n0-element Array{EzXML.Node,1}\n\njulia> namespaces(root(doc))  # The default namespace has an empty prefix.\n1-element Array{Pair{String,String},1}:\n \"\"=>\"http://www.foobar.org\"\n\njulia> ns = namespace(root(doc))  # Get the namespace.\n\"http://www.foobar.org\"\n\njulia> findall(\"/x:parent/x:child\", root(doc), [\"x\"=>ns])  # Specify its prefix as \"x\".\n1-element Array{EzXML.Node,1}:\n EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)\n"
 },
 
 {
@@ -101,7 +101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.Node",
     "category": "type",
-    "text": "A proxy type to libxml2\'s node struct.\n\n\n\n"
+    "text": "A proxy type to libxml2\'s node struct.\n\nProperties (Julia ≥ 0.7)\n\nName Type Description\ntype EzXML.NodeType the type of a node\nname String? the name of a node\npath String the absolute path to a node\ncontent String the content of a node\nnamespace String? the namespace associated with a node\n\n\n\n"
 },
 
 {
@@ -753,23 +753,23 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "references.html#Base.find-Tuple{EzXML.Document,AbstractString}",
+    "location": "references.html#Compat.findall-Tuple{AbstractString,EzXML.Document}",
     "page": "References",
-    "title": "Base.find",
+    "title": "Compat.findall",
     "category": "method",
-    "text": "find(doc::Document, xpath::AbstractString)\n\nFind nodes matching xpath XPath query from doc.\n\n\n\n"
+    "text": "findall(xpath::AbstractString, doc::Document)\n\nFind nodes matching xpath XPath query from doc.\n\n\n\n"
 },
 
 {
-    "location": "references.html#Base.findfirst-Tuple{EzXML.Document,AbstractString}",
+    "location": "references.html#Base.findfirst-Tuple{AbstractString,EzXML.Document}",
     "page": "References",
     "title": "Base.findfirst",
     "category": "method",
-    "text": "findfirst(doc::Document, xpath::AbstractString)\n\nFind the first node matching xpath XPath query from doc.\n\n\n\n"
+    "text": "findfirst(xpath::AbstractString, doc::Document)\n\nFind the first node matching xpath XPath query from doc.\n\n\n\n"
 },
 
 {
-    "location": "references.html#Base.findlast-Tuple{EzXML.Document,AbstractString}",
+    "location": "references.html#Base.findlast-Tuple{AbstractString,EzXML.Document}",
     "page": "References",
     "title": "Base.findlast",
     "category": "method",
@@ -777,23 +777,23 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "references.html#Base.find-Tuple{EzXML.Node,AbstractString}",
+    "location": "references.html#Compat.findall-Tuple{AbstractString,EzXML.Node}",
     "page": "References",
-    "title": "Base.find",
+    "title": "Compat.findall",
     "category": "method",
-    "text": "find(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind nodes matching xpath XPath query starting from node.\n\nThe ns argument is an iterator of namespace prefix and URI pairs.\n\n\n\n"
+    "text": "findall(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind nodes matching xpath XPath query starting from node.\n\nThe ns argument is an iterator of namespace prefix and URI pairs.\n\n\n\n"
 },
 
 {
-    "location": "references.html#Base.findfirst-Tuple{EzXML.Node,AbstractString}",
+    "location": "references.html#Base.findfirst-Tuple{AbstractString,EzXML.Node}",
     "page": "References",
     "title": "Base.findfirst",
     "category": "method",
-    "text": "findfirst(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
+    "text": "findfirst(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
 },
 
 {
-    "location": "references.html#Base.findlast-Tuple{EzXML.Node,AbstractString}",
+    "location": "references.html#Base.findlast-Tuple{AbstractString,EzXML.Node}",
     "page": "References",
     "title": "Base.findlast",
     "category": "method",
@@ -805,7 +805,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "XPath query",
     "category": "section",
-    "text": "find(doc::Document, xpath::AbstractString)\nfindfirst(doc::Document, xpath::AbstractString)\nfindlast(doc::Document, xpath::AbstractString)\nfind(node::Node, xpath::AbstractString)\nfindfirst(node::Node, xpath::AbstractString)\nfindlast(node::Node, xpath::AbstractString)"
+    "text": "findall(xpath::AbstractString, doc::Document)\nfindfirst(xpath::AbstractString, doc::Document)\nfindlast(xpath::AbstractString, doc::Document)\nfindall(xpath::AbstractString, node::Node)\nfindfirst(xpath::AbstractString, node::Node)\nfindlast(xpath::AbstractString, node::Node)"
 },
 
 {

@@ -32,6 +32,6 @@ end
 println()
 
 # Find texts using XPath query.
-for species_name in nodecontent.(find(primates, &quot;//species/text()&quot;))
+for species_name in nodecontent.(findall(&quot;//species/text()&quot;, primates))
     println(&quot;- &quot;, species_name)
 end</code></pre><p>If you are new to this package, read <a href="manual.html">the manual page</a> first. It provides a general guide to the package. <a href="references.html">The references page</a> offers a full documentation for each function and <a href="devnotes.html">the developer notes page</a> explains about the internal design for developers.</p><footer><hr/><a class="next" href="manual.html"><span class="direction">Next</span><span class="title">Manual</span></a></footer></article></body></html>

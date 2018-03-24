@@ -192,29 +192,29 @@ EzXML.Node(&lt;ELEMENT_NODE@0x00007fd0c6ad7500&gt;)
 julia&gt; print(doc)
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;root&gt;&lt;child id=&quot;1&quot;/&gt;&lt;child id=&quot;2&quot;/&gt;&lt;child id=&quot;3&quot;/&gt;&lt;lastchild&gt;some content&lt;/lastchild&gt;&lt;/root&gt;
-</code></pre><h2><a class="nav-anchor" id="XPath-queries-1" href="#XPath-queries-1">XPath queries</a></h2><p><a href="https://en.wikipedia.org/wiki/XPath">XPath</a> is a query language for XML. The user can retrieve target elements using a short string query. For example, <code>&quot;//genus/species&quot;</code> selects all &quot;species&quot; elements just under a &quot;genus&quot; element.</p><p>The <code>find</code>, <code>findfirst</code> and <code>findlast</code> functions are overloaded for XPath query and return a vector of selected nodes:</p><pre><code class="language-jlcon">julia&gt; primates = readxml(&quot;primates.xml&quot;)
+</code></pre><h2><a class="nav-anchor" id="XPath-queries-1" href="#XPath-queries-1">XPath queries</a></h2><p><a href="https://en.wikipedia.org/wiki/XPath">XPath</a> is a query language for XML. The user can retrieve target elements using a short string query. For example, <code>&quot;//genus/species&quot;</code> selects all &quot;species&quot; elements just under a &quot;genus&quot; element.</p><p>The <code>findall</code>, <code>findfirst</code> and <code>findlast</code> functions are overloaded for XPath query and return a vector of selected nodes:</p><pre><code class="language-jlcon">julia&gt; primates = readxml(&quot;primates.xml&quot;)
 EzXML.Document(EzXML.Node(&lt;DOCUMENT_NODE@0x00007fbeddc2a1d0&gt;))
 
-julia&gt; find(primates, &quot;/primates&quot;)  # Find the &quot;primates&quot; element just under the document
+julia&gt; findall(&quot;/primates&quot;, primates)  # Find the &quot;primates&quot; element just under the document
 1-element Array{EzXML.Node,1}:
  EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc1e190&gt;)
 
-julia&gt; find(primates, &quot;//genus&quot;)
+julia&gt; findall(&quot;//genus&quot;, primates)
 2-element Array{EzXML.Node,1}:
  EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
  EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc16ea0&gt;)
 
-julia&gt; findfirst(primates, &quot;//genus&quot;)
+julia&gt; findfirst(&quot;//genus&quot;, primates)
 EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
 
-julia&gt; findlast(primates, &quot;//genus&quot;)
+julia&gt; findlast(&quot;//genus&quot;, primates)
 EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc16ea0&gt;)
 
-julia&gt; println(findfirst(primates, &quot;//genus&quot;))
+julia&gt; println(findfirst(&quot;//genus&quot;, primates))
 &lt;genus name=&quot;Homo&quot;&gt;
         &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
     &lt;/genus&gt;
-</code></pre><p>If you would like to change the starting node of a query, you can pass the node as the first argument of <code>find</code>:</p><pre><code class="language-jlcon">julia&gt; genus = findfirst(primates, &quot;//genus&quot;)
+</code></pre><p>If you would like to change the starting node of a query, you can pass the node as the second argument of <code>find*</code>:</p><pre><code class="language-jlcon">julia&gt; genus = findfirst(&quot;//genus&quot;, primates)
 EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
 
 julia&gt; println(genus)
@@ -222,16 +222,16 @@ julia&gt; println(genus)
         &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
     &lt;/genus&gt;
 
-julia&gt; println(findfirst(genus, &quot;species&quot;))
+julia&gt; println(findfirst(&quot;species&quot;, genus))
 &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
-</code></pre><p><code>find(&lt;node&gt;, &lt;xpath&gt;)</code> automatically registers namespaces applied to <code>&lt;node&gt;</code>, which means prefixes are available in the XPath query. This is especially useful when an XML document is composed of elements originated from different namespaces.</p><p>There is a caveat on the combination of XPath and namespaces: if a document contains elements with a default namespace, you need to specify its prefix to the <code>find</code> function. For example, in the following example, the root element and its descendants have a default namespace &quot;http://www.foobar.org&quot; but it does not have its own prefix.  In this case, you need to pass its prefix to find elements in the namespace:</p><pre><code class="language-jlcon">julia&gt; doc = parsexml(&quot;&quot;&quot;
+</code></pre><p><code>find*(&lt;xpath&gt;, &lt;node&gt;)</code> automatically registers namespaces applied to <code>&lt;node&gt;</code>, which means prefixes are available in the XPath query. This is especially useful when an XML document is composed of elements originated from different namespaces.</p><p>There is a caveat on the combination of XPath and namespaces: if a document contains elements with a default namespace, you need to specify its prefix to the <code>find*</code> function. For example, in the following example, the root element and its descendants have a default namespace &quot;http://www.foobar.org&quot; but it does not have its own prefix.  In this case, you need to pass its prefix to find elements in the namespace:</p><pre><code class="language-jlcon">julia&gt; doc = parsexml(&quot;&quot;&quot;
        &lt;parent xmlns=&quot;http://www.foobar.org&quot;&gt;
            &lt;child/&gt;
        &lt;/parent&gt;
        &quot;&quot;&quot;)
 EzXML.Document(EzXML.Node(&lt;DOCUMENT_NODE@0x00007fdc67710030&gt;))
 
-julia&gt; find(root(doc), &quot;/parent/child&quot;)
+julia&gt; findall(&quot;/parent/child&quot;, root(doc))
 0-element Array{EzXML.Node,1}
 
 julia&gt; namespaces(root(doc))  # The default namespace has an empty prefix.
@@ -241,7 +241,7 @@ julia&gt; namespaces(root(doc))  # The default namespace has an empty prefix.
 julia&gt; ns = namespace(root(doc))  # Get the namespace.
 &quot;http://www.foobar.org&quot;
 
-julia&gt; find(root(doc), &quot;/x:parent/x:child&quot;, [&quot;x&quot;=&gt;ns])  # Specify its prefix as &quot;x&quot;.
+julia&gt; findall(&quot;/x:parent/x:child&quot;, root(doc), [&quot;x&quot;=&gt;ns])  # Specify its prefix as &quot;x&quot;.
 1-element Array{EzXML.Node,1}:
  EzXML.Node(&lt;ELEMENT_NODE@0x00007fdc6774c990&gt;)
 </code></pre><h2><a class="nav-anchor" id="Streaming-interfaces-1" href="#Streaming-interfaces-1">Streaming interfaces</a></h2><p>In addition to DOM interfaces, EzXML.jl provides a streaming reader of XML files. The streaming reader processes, as the name suggests, a stream of an XML data read from a file instead of reading a whole XML tree into the memory. This enables reading extremely large files that do not fit in RAM.</p><p>Let&#39;s use the following XML file (undirected.graphml) that represents an undirected graph formatted in <a href="http://graphml.graphdrawing.org/">GraphML</a> (slightly simplified for brevity):</p><pre><code class="language-none">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
