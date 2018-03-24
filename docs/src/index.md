@@ -44,7 +44,7 @@ end
 println()
 
 # Find texts using XPath query.
-for species_name in nodecontent.(find(primates, "//species/text()"))
+for species_name in nodecontent.(findall("//species/text()", primates))
     println("- ", species_name)
 end
 ```

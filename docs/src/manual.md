@@ -341,28 +341,28 @@ XPath queries
 user can retrieve target elements using a short string query. For example,
 `"//genus/species"` selects all "species" elements just under a "genus" element.
 
-The `find`, `findfirst` and `findlast` functions are overloaded for XPath query
-and return a vector of selected nodes:
+The `findall`, `findfirst` and `findlast` functions are overloaded for XPath
+query and return a vector of selected nodes:
 ```jlcon
 julia> primates = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
 
-julia> find(primates, "/primates")  # Find the "primates" element just under the document
+julia> findall("/primates", primates)  # Find the "primates" element just under the document
 1-element Array{EzXML.Node,1}:
  EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)
 
-julia> find(primates, "//genus")
+julia> findall("//genus", primates)
 2-element Array{EzXML.Node,1}:
  EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
  EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
 
-julia> findfirst(primates, "//genus")
+julia> findfirst("//genus", primates)
 EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
 
-julia> findlast(primates, "//genus")
+julia> findlast("//genus", primates)
 EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
 
-julia> println(findfirst(primates, "//genus"))
+julia> println(findfirst("//genus", primates))
 <genus name="Homo">
         <species name="sapiens">Human</species>
     </genus>
@@ -370,9 +370,9 @@ julia> println(findfirst(primates, "//genus"))
 ```
 
 If you would like to change the starting node of a query, you can pass the node
-as the first argument of `find`:
+as the second argument of `find*`:
 ```jlcon
-julia> genus = findfirst(primates, "//genus")
+julia> genus = findfirst("//genus", primates)
 EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
 
 julia> println(genus)
@@ -380,19 +380,19 @@ julia> println(genus)
         <species name="sapiens">Human</species>
     </genus>
 
-julia> println(findfirst(genus, "species"))
+julia> println(findfirst("species", genus))
 <species name="sapiens">Human</species>
 
 ```
 
-`find(<node>, <xpath>)` automatically registers namespaces applied to `<node>`,
+`find*(<xpath>, <node>)` automatically registers namespaces applied to `<node>`,
 which means prefixes are available in the XPath query. This is especially useful
 when an XML document is composed of elements originated from different
 namespaces.
 
 There is a caveat on the combination of XPath and namespaces: if a document
 contains elements with a default namespace, you need to specify its prefix to
-the `find` function. For example, in the following example, the root element and
+the `find*` function. For example, in the following example, the root element and
 its descendants have a default namespace "http://www.foobar.org" but it does not
 have its own prefix.  In this case, you need to pass its prefix to find elements
 in the namespace:
@@ -404,7 +404,7 @@ julia> doc = parsexml("""
        """)
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))
 
-julia> find(root(doc), "/parent/child")
+julia> findall("/parent/child", root(doc))
 0-element Array{EzXML.Node,1}
 
 julia> namespaces(root(doc))  # The default namespace has an empty prefix.
@@ -414,7 +414,7 @@ julia> namespaces(root(doc))  # The default namespace has an empty prefix.
 julia> ns = namespace(root(doc))  # Get the namespace.
 "http://www.foobar.org"
 
-julia> find(root(doc), "/x:parent/x:child", ["x"=>ns])  # Specify its prefix as "x".
+julia> findall("/x:parent/x:child", root(doc), ["x"=>ns])  # Specify its prefix as "x".
 1-element Array{EzXML.Node,1}:
  EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)
 

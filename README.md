@@ -72,7 +72,7 @@ end
 println()
 
 # Find texts using XPath query.
-for species_name in nodecontent.(find(primates, "//species/text()"))
+for species_name in nodecontent.(findall("//species/text()", primates))
     println("- ", species_name)
 end
 ```
@@ -126,7 +126,7 @@ Constructors:
 * `EzXML.Node` type: `XMLDocumentNode(version="1.0")`, `HTMLDocumentNode(uri, externalID)`, `ElementNode(name)`, `TextNode(content)`, `CommentNode(content)`, `CDataNode(content)`, `AttributeNode(name, value)`, `DTDNode(name, [systemID, [externalID]])`
 
 Queries:
-* XPath: `find(doc|node, xpath)`, `findfirst(doc|node, xpath)`, `findlast(doc|node, xpath)`
+* XPath: `findall(xpath, doc|node)`, `findfirst(xpath, doc|node)`, `findlast(xpath, doc|node)`
 
 Examples
 --------

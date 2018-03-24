@@ -357,7 +357,7 @@ end
     #    for typ in reader
     #        if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
     #            a = EzXML.expandtree(reader)
-    #            b = find(a, "//b[1]")
+    #            b = findall("//b[1]", a)
     #        end
     #    end
     #    close(reader)
@@ -367,7 +367,7 @@ end
     for typ in reader
         if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
             a = EzXML.expandtree(reader)
-            @test_throws ArgumentError find(a, "//b[1]", String[])
+            @test_throws ArgumentError findall("//b[1]", a, String[])
         end
     end
     close(reader)
@@ -1121,42 +1121,42 @@ end
         </foo>
     </root>
     """)
-    @test length(find(doc, "/root")) == 1
-    @test find(doc, "/root")[1] === root(doc)
-    @test length(find(doc, "/root/foo")) == 2
-    @test find(doc, "/root/foo")[1] === elements(root(doc))[1]
-    @test find(doc, "/root/foo")[2] === elements(root(doc))[2]
-    for (i, node) in enumerate(find(doc, "//bar"))
+    @test length(findall("/root", doc)) == 1
+    @test findall("/root", doc)[1] === root(doc)
+    @test length(findall("/root/foo", doc)) == 2
+    @test findall("/root/foo", doc)[1] === elements(root(doc))[1]
+    @test findall("/root/foo", doc)[2] === elements(root(doc))[2]
+    for (i, node) in enumerate(findall("//bar", doc))
         @test nodename(node) == "bar"
         @test nodecontent(node) == string(i)
     end
-    for (i, node) in enumerate(find(doc, "//bar/text()"))
+    for (i, node) in enumerate(findall("//bar/text()", doc))
         @test nodename(node) == "text"
         @test nodecontent(node) == string(i)
     end
-    @test findfirst(doc, "//bar") === find(doc, "//bar")[1]
-    @test findlast(doc, "//bar") === find(doc, "//bar")[3]
-    @test length(find(doc, "/baz")) == 0
-    @test_throws EzXML.XMLError find(doc, "//bar!")
-    @test find(root(doc), "foo") == find(doc, "//foo")
-    @test findfirst(root(doc), "foo") === findfirst(doc, "//foo")
-    @test findlast(root(doc), "foo") === findlast(doc, "//foo")
-    @test find(doc, "root") == find(root(doc), "/root")
-    @test find(root(doc), "foo") == find(doc, "//foo")
-    @inferred find(doc, "root")
-    @inferred findfirst(doc, "root")
-    @inferred findlast(doc, "root")
+    @test findfirst("//bar", doc) === findall("//bar", doc)[1]
+    @test findlast("//bar", doc) === findall("//bar", doc)[3]
+    @test length(findall("/baz", doc)) == 0
+    @test_throws EzXML.XMLError findall("//bar!", doc)
+    @test findall("foo", root(doc)) == findall("//foo", doc)
+    @test findfirst("foo", root(doc)) === findfirst("//foo", doc)
+    @test findlast("foo", root(doc)) === findlast("//foo", doc)
+    @test findall("root", doc) == findall("/root", root(doc))
+    @test findall("foo", root(doc)) == findall("//foo", doc)
+    @inferred findall("root", doc)
+    @inferred findfirst("root", doc)
+    @inferred findlast("root", doc)
 
     go = readxml(joinpath(dirname(@__FILE__), "go.sample.xml"))
     go_uri =  "http://www.geneontology.org/dtds/go.dtd#"
-    @test find(root(go), "/go:go") == [root(go)]
-    @test findfirst(root(go), "/go:go") === root(go)
-    @test findlast(root(go), "/go:go") === root(go)
-    @test find(root(go), "/g:go", ["g" => go_uri]) == [root(go)]
-    @test findfirst(root(go), "/g:go", ["g" => go_uri]) === root(go)
-    @test findlast(root(go), "/g:go", ["g" => go_uri]) === root(go)
-    @test nodename.(find(root(go), "/go:go/rdf:RDF/go:term")) == ["term", "term"]
-    @test find(root(go), "/go:go/rdf:RDF/go:term") == find(root(go), "//go:term")
+    @test findall("/go:go", root(go)) == [root(go)]
+    @test findfirst("/go:go", root(go)) === root(go)
+    @test findlast("/go:go", root(go)) === root(go)
+    @test findall("/g:go", root(go), ["g" => go_uri]) == [root(go)]
+    @test findfirst("/g:go", root(go), ["g" => go_uri]) === root(go)
+    @test findlast("/g:go", root(go), ["g" => go_uri]) === root(go)
+    @test nodename.(findall("/go:go/rdf:RDF/go:term", root(go))) == ["term", "term"]
+    @test findall("/go:go/rdf:RDF/go:term", root(go)) == findall("//go:term", root(go))
 
     # default namespace
     doc = parsexml("""
@@ -1164,14 +1164,14 @@ end
         <term><accession>GO:0000001</accession></term>
     </go>
     """)
-    @test isempty(find(root(doc), "term"))
-    @test isempty(find(root(doc), "./term"))
-    @test find(root(doc), "go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
-    @test find(root(doc), "./go:term", ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
+    @test isempty(findall("term", root(doc)))
+    @test isempty(findall("./term", root(doc)))
+    @test findall("go:term", root(doc), ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
+    @test findall("./go:term", root(doc), ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
 
     # pull/8
     doc = parsexml("""<root xmlns="urn:foo"/>""")
-    @test isempty(find(root(doc), "//foo:notexit/*", [("foo", "urn:foo")]))
+    @test isempty(findall("//foo:notexit/*", root(doc), [("foo", "urn:foo")]))
 end
 
 @testset "Misc" begin

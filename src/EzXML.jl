@@ -93,14 +93,18 @@ export
     readdtd,
     validate,
     nodedepth,
-    expandtree
+    expandtree,
+
+    # exported from Compat (Julia 0.6) or Base (Julia 0.7)
+    findall
 
 import Compat:
     Compat,
     Cvoid,
     stdin,
     stdout,
-    bytesavailable
+    bytesavailable,
+    findall
 using Compat.Libdl
 using Compat.Printf: @printf
 
