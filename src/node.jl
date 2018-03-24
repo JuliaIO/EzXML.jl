@@ -363,19 +363,26 @@ end
 
 if isdefined(Base, :getproperty)
     @inline function Base.getproperty(node::Node, name::Symbol)
-        if name == :type
-            return nodetype(node)
-        elseif name == :name
-            return hasnodename(node) ? nodename(node) : nothing
-        elseif name == :path
-            return nodepath(node)
-        elseif name == :content
-            return nodecontent(node)
-        elseif name == :namespace
-            return hasnamespace(node) ? namespace(node) : nothing
-        else
-            return Core.getfield(node, name)
-        end
+        # node properties
+        name == :type      ? nodetype(node)                                   :
+        name == :name      ? (hasnodename(node)  ? nodename(node)  : nothing) :
+        name == :path      ? nodepath(node)                                   :
+        name == :content   ? nodecontent(node)                                :
+        name == :namespace ? (hasnamespace(node) ? namespace(node) : nothing) :
+        # tree traversal
+        name == :document      ? (hasdocument(node)      ? document(node)      : nothing) :
+        name == :parentnode    ? (hasparentnode(node)    ? parentnode(node)    : nothing) :
+        name == :parentelement ? (hasparentelement(node) ? parentelement(node) : nothing) :
+        name == :firstnode     ? (hasnode(node)          ? firstnode(node)     : nothing) :
+        name == :lastnode      ? (hasnode(node)          ? lastnode(node)      : nothing) :
+        name == :firstelement  ? (haselement(node)       ? firstelement(node)  : nothing) :
+        name == :lastelement   ? (haselement(node)       ? lastelement(node)   : nothing) :
+        name == :nextnode      ? (hasnextnode(node)      ? nextnode(node)      : nothing) :
+        name == :prevnode      ? (hasprevnode(node)      ? prevnode(node)      : nothing) :
+        name == :nextelement   ? (hasnextelement(node)   ? nextelement(node)   : nothing) :
+        name == :prevelement   ? (hasprevelement(node)   ? prevelement(node)   : nothing) :
+        # data fields
+        Core.getfield(node, name)
     end
 end
 
