@@ -50,7 +50,8 @@ Find the first node matching `xpath` XPath query from `doc`.
 """
 function Base.findfirst(xpath::AbstractString, doc::Document)
     # string("(", xpath, ")[position()=1]") may be faster
-    return first(findall(xpath, doc))
+    nodes = findall(xpath, doc)
+    return isempty(nodes) ? nothing : first(nodes)
 end
 
 """
@@ -60,7 +61,8 @@ Find the last node matching `xpath` XPath query from `doc`.
 """
 function Base.findlast(xpath::AbstractString, doc::Document)
     # string("(", xpath, ")[position()=last()]") may be faster
-    return last(findall(xpath, doc))
+    nodes = findall(xpath, doc)
+    return isempty(nodes) ? nothing : last(nodes)
 end
 
 """
@@ -113,7 +115,8 @@ Find the first node matching `xpath` XPath query starting from `node`.
 """
 function Base.findfirst(xpath::AbstractString, node::Node, ns=namespaces(node))
     # string("(", xpath, ")[position()=1]") may be faster
-    return first(findall(xpath, node, ns))
+    nodes = findall(xpath, node, ns)
+    return isempty(nodes) ? nothing : first(nodes)
 end
 
 """
@@ -123,16 +126,17 @@ Find the last node matching `xpath` XPath query starting from `node`.
 """
 function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
     # string("(", xpath, ")[position()=last()]") may be faster
-    return last(findall(xpath, node, ns))
+    nodes = findall(xpath, node, ns)
+    return isempty(nodes) ? nothing : last(nodes)
 end
 
 # Deprecated
 Base.find(doc::Document, xpath::AbstractString) = findall(xpath, doc)
-Base.findfirst(doc::Document, xpath::AbstractString) = findfirst(xpath, doc)
-Base.findlast(doc::Document, xpath::AbstractString) = findlast(xpath, doc)
+Base.findfirst(doc::Document, xpath::AbstractString) = first(findall(xpath, doc))
+Base.findlast(doc::Document, xpath::AbstractString) = last(findall(xpath, doc))
 Base.find(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
-Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) = findfirst(xpath, node, ns)
-Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) = findlast(xpath, node, ns)
+Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) = first(findall(xpath, node, ns))
+Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) = last(findall(xpath, node, ns))
 
 function new_xpath_context(doc)
     context_ptr = ccall(
