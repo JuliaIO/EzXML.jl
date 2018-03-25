@@ -73,6 +73,7 @@ export
     document,
     nodename,
     setnodename!,
+    hasnodecontent,
     nodecontent,
     setnodecontent!,
     systemID,

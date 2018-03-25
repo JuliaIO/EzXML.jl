@@ -335,6 +335,34 @@ end
         end
     end
 
+    if isdefined(Base, :getproperty)
+        input = IOBuffer("""
+        <html xmlns="http://www.w3.org/1999/xhtml">
+            <head><title>Hey</title></head>
+            <body/>
+        </html>
+        """)
+        names = String[]
+        reader = EzXML.StreamReader(input)
+        for typ in reader
+            @test reader.:type === typ
+            push!(names, reader.name)
+            if reader.name == "head" && reader.:type == EzXML.READER_ELEMENT
+                @test reader.depth == 1
+                @test reader.namespace == "http://www.w3.org/1999/xhtml"
+            elseif reader.name == "title" && reader.:type == EzXML.READER_ELEMENT
+                @test reader.depth == 2
+                @test reader.content == "Hey"
+                @test reader.namespace == "http://www.w3.org/1999/xhtml"
+            elseif reader.:type == EzXML.READER_END_ELEMENT
+                @test !hasnodecontent(reader)
+                @test reader.content === nothing
+            end
+        end
+        @test "head" ∈ names
+        @test "title" ∈ names
+    end
+
     @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
 
     # memory management test
