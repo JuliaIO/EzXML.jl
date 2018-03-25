@@ -18,6 +18,17 @@ mutable struct StreamReader
     end
 end
 
+if isdefined(Base, :getproperty)
+    @inline function Base.getproperty(reader::StreamReader, name::Symbol)
+        name == :type      ? nodetype(reader)                                         :
+        name == :depth     ? nodedepth(reader)                                        :
+        name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
+        name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
+        name == :namespace ? namespace(reader)                                        :
+        Core.getfield(reader, name)
+    end
+end
+
 function Base.show(io::IO, reader::StreamReader)
     @printf(io, "EzXML.StreamReader(<%s@%p>)", repr(nodetype(reader)), reader.ptr)
 end
@@ -224,6 +235,19 @@ function nodetype(reader::StreamReader)
 end
 
 """
+    hasnodename(reader::StreamReader)
+
+Return if the current node of `reader` has a node name.
+"""
+function hasnodename(reader::StreamReader)
+    return ccall(
+        (:xmlTextReaderConstName, libxml2),
+        Cstring,
+        (Ptr{Cvoid},),
+        reader.ptr) != C_NULL
+end
+
+"""
     nodename(reader::StreamReader)
 
 Return the name of the current node of `reader`.
@@ -238,6 +262,19 @@ function nodename(reader::StreamReader)
         throw(ArgumentError("no node name"))
     end
     return unsafe_string(name_ptr)
+end
+
+"""
+    hasnodecontent(reader::StreamReader)
+
+Return if the current node of `reader` has content.
+"""
+function hasnodecontent(reader::StreamReader)
+    return ccall(
+        (:xmlTextReaderReadString, libxml2),
+        Cstring,
+        (Ptr{Cvoid},),
+        reader.ptr) != C_NULL
 end
 
 """
