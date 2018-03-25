@@ -3,6 +3,7 @@
 EzXML.jl - XML/HTML tools for primates
 ======================================
 
+[![Docs Stable][docs-stable-img]][docs-stable-url]
 [![Docs Latest][docs-latest-img]][docs-latest-url]
 [![TravisCI Status][travisci-img]][travisci-url]
 [![Appveyor Status][appveyor-img]][appveyor-url]
@@ -141,6 +142,8 @@ Other XML/HTML packages in Julia
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
 
+[docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
+[docs-stable-url]: https://bicycle1885.github.io/EzXML.jl/stable
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest
 [travisci-img]: https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master
