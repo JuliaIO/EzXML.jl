@@ -8,26 +8,46 @@ better place to find necessary functions. [The developer notes
 page](devnotes.md) is for developers and most users do not need to read it.
 
 In this manual, we use `using EzXML` for the sake of brevity.  However, it is
-recommended to use `import EzXML` for long scripts or packages because EzXML.jl
-exports a number of names to your environment. These are useful in interactive
-sessions but easily conflict with other names. If you want to see the list of
-exported names, please go to the top of src/EzXML.jl.
+recommended to use `import EzXML` or something similar for long scripts or
+packages because EzXML.jl exports a number of names to your environment. These
+are useful in interactive sessions but easily conflict with other names. If you
+want to see the list of exported names, please go to the top of src/EzXML.jl.
 
 Data types
 ----------
 
-There are two types that constitute an XML document and components: `Document`
-and `Node`, respectively. The `Document` type represents a whole XML document
-and points to a document node of `Node` type. The `Node` type represents almost
-everything in an XML document, that is, elements, attributes, texts, CDATAs,
-comments, documents, etc. are all `Node` type objects. These type names are not
-exported from EzXML.jl because their names are very general and may conflict
-with other names. However, the user can expect them as public APIs and use them
-with the `EzXML.` prefix.
+There are two types that constitute an XML document and its components:
+`Document` and `Node`, respectively. The `Document` type represents a whole XML
+document. A `Document` object points to the topmost node of the XML document,
+but note that it is different from the root node you see in an XML file.  The
+`Node` type represents almost everything in an XML document, that is, elements,
+attributes, texts, CDATAs, comments, documents, etc. are all `Node` type
+objects. These two type names are not exported from EzXML.jl because their names
+are very general and easily conflict with names exported from other packages.
+However, the user can expect them as public APIs and use them with the `EzXML.`
+prefix.
 
-Several kinds of constructors are provided to create documents and various node
-types. For example, `XMLDocument` creates an XML document, `ElementNode` does an
-element node, and `TextNode` does a text node:
+A `Node` object can be separated into multiple types. As an example, let's see
+the next XML document:
+
+    <element attribute="attribute value">  Text  </element>
+    ^        ^                             ^
+    |        attribute node                text node
+    element node
+
+As you see, `<element>...</element>` is an element node, which may hold
+attribute nodes and/or text nodes as children. These nodes are components of an
+XML document.
+
+Several constructors are provided to create documents and various kinds of
+nodes.  For example, the `XMLDocument` constructor creates an XML document, the
+`ElementNode` constructor does an element node, and the `TextNode` constructor
+does a text node.  Calling the `show` method of `Node` shows a node type and a
+pointer address to a node struct of libxml2 within the angle brackets, so that
+you can quickly check the type of a node and its identity. The `print` method of
+`Node` shows an XML tree rooted at the node. `prettyprint` is also provided to
+print a formatted XML.  The `link!` function links two nodes:
+
 ```jlcon
 julia> using EzXML
 
@@ -37,33 +57,89 @@ EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fa2ec190b70>))
 julia> typeof(doc)
 EzXML.Document
 
-julia> print(doc)
-<?xml version="1.0" encoding="UTF-8"?>
+julia> typeof(doc.node)  # The document object has a document node.
+EzXML.Node
 
-julia> elm = ElementNode("elm")
+julia> elm = ElementNode("element")
 EzXML.Node(<ELEMENT_NODE@0x00007fcd5bd42920>)
 
-julia> typeof(elm)
-EzXML.Node
+julia> println(elm)  # The element node is still empty.
+<element/>
 
-julia> println(elm)
-<elm/>
+julia> attr = AttributeNode("attribute", "attribute value")
+EzXML.Node(<ATTRIBUTE_NODE@0x00007f91ca324570>)
 
-julia> txt = TextNode("some text")
+julia> txt = TextNode("  Text  ")
 EzXML.Node(<TEXT_NODE@0x00007fcd5be9aaf0>)
 
-julia> typeof(txt)
-EzXML.Node
+julia> typeof(elm), typeof(attr), typeof(txt)  # All nodes are the Node type.
+(EzXML.Node, EzXML.Node, EzXML.Node)
 
-julia> println(txt)
-some text
+julia> elm.type, attr.type, txt.type  # But their XML node types are different.
+(ELEMENT_NODE, ATTRIBUTE_NODE, TEXT_NODE)
+
+julia> link!(elm, attr)  # Link the element node with the attribute node.
+EzXML.Node(<ATTRIBUTE_NODE@0x00007f91ca324570>)
+
+julia> println(elm)  # The element node now has the attribute node.
+<element attribute="attribute value"/>
+
+julia> link!(elm, txt)  # Link the element node with the text node.
+EzXML.Node(<TEXT_NODE@0x00007f91c7ebd430>)
+
+julia> println(elm)  # The element node now has the text node.
+<element attribute="attribute value">  Text  </element>
+
+julia> link!(doc.node, elm)  # Link the document node with the element node.
+EzXML.Node(<ELEMENT_NODE@0x00007fcd5bd42920>)
+
+julia> print(doc)  # This is a complete XML document.
+<?xml version="1.0" encoding="UTF-8"?>
+<element attribute="attribute value">  Text  </element>
 
 ```
 
-Calling the `show` method of `Node` shows a node type and a pointer address to a
-node struct of libxml2 within the angle brackets so that you can quickly check
-the type of a node and its identity. The `print` method of `Node` shows an XML
-tree rooted at the node. `prettyprint` is also provided to print formatted XML.
+A `Node` object has some properties. The most important one would be the `type`
+property, which we already saw in the example above. Other properties (`name`,
+`path`, `content` and `namespace`) are demonstrated in the following example.
+The value of a property will be `nothing` when there is no corresponding value.
+
+```jlcon
+julia> elm = ElementNode("element")
+EzXML.Node(<ELEMENT_NODE@0x00007f8cf18923b0>)
+
+julia> elm.type
+ELEMENT_NODE
+
+julia> elm.name
+"element"
+
+julia> elm.path
+"/element"
+
+julia> elm.content
+""
+
+julia> elm.namespace === nothing
+true
+
+julia> txt = TextNode("  Text  ")
+EzXML.Node(<TEXT_NODE@0x00007f8cf18c0940>)
+
+julia> txt.type
+TEXT_NODE
+
+julia> txt.name
+"text"
+
+julia> txt.path
+"/text()"
+
+julia> txt.content
+"  Text  "
+
+```
+
 
 DOM interfaces
 --------------
@@ -99,11 +175,14 @@ EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3d161380>))
 
 ```
 
-Before traversing the document we need to retrieve the root of the document tree. 
+Before traversing the document we need to retrieve the root of the document tree.
 `root(<document>)` returns the root element of a document and we can start
 traversal there:
 ```jlcon
 julia> primates = root(doc)  # Get the root element.
+EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
+
+julia> primates = doc.root   # The root property is also available.
 EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 
 julia> nodetype(primates)    # The node is an element node.
@@ -191,6 +270,24 @@ EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
 
 julia> lastelement(primates)   # Get the last child element, which is apparently an element node, too.
 EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
+
+```
+
+There are tree traversal properties, which return `nothing` when there is no
+correspoding node:
+
+```jlcon
+julia> primates = doc.root
+EzXML.Node(<ELEMENT_NODE@0x00007f8cf18bdb20>)
+
+julia> primates.firstelement
+EzXML.Node(<ELEMENT_NODE@0x00007f8cf18bff70>)
+
+julia> primates.firstelement.nextelement === primates.lastelement
+true
+
+julia> primates.firstelement.prevelement === nothing
+true
 
 ```
 
