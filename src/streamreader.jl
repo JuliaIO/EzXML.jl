@@ -270,11 +270,18 @@ end
 Return if the current node of `reader` has content.
 """
 function hasnodecontent(reader::StreamReader)
-    return ccall(
+    # TODO: this allocates memory; any way to avoid it?
+    ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,
         (Ptr{Cvoid},),
-        reader.ptr) != C_NULL
+        reader.ptr)
+    if ptr == C_NULL
+        return false
+    else
+        Libc.free(ptr)
+        return true
+    end
 end
 
 """
