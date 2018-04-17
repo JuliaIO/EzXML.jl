@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<primates>
+    <genus name="Homo">
+        <species name="sapiens">Human</species>
+    </genus>
+    <genus name="Pan">
+        <species name="paniscus">Bonobo</species>
+        <species name="troglodytes">Chimpanzee</species>
+    </genus>
+</primates>

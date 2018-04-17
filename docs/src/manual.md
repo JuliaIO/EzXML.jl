@@ -13,6 +13,13 @@ packages because EzXML.jl exports a number of names to your environment. These
 are useful in interactive sessions but easily conflict with other names. If you
 want to see the list of exported names, please go to the top of src/EzXML.jl.
 
+```@meta
+# Ignore pointers.
+DocTestFilters = r"@0x[0-9a-f]{16}"
+# Load EzXML.jl
+DocTestSetup = :(using EzXML)
+```
+
 Data types
 ----------
 
@@ -48,7 +55,7 @@ you can quickly check the type of a node and its identity. The `print` method of
 `Node` shows an XML tree rooted at the node. `prettyprint` is also provided to
 print a formatted XML.  The `link!` function links two nodes:
 
-```jlcon
+```jldoctest
 julia> using EzXML
 
 julia> doc = XMLDocument()
@@ -104,7 +111,7 @@ property, which we already saw in the example above. Other properties (`name`,
 `path`, `content` and `namespace`) are demonstrated in the following example.
 The value of a property will be `nothing` when there is no corresponding value.
 
-```jlcon
+```jldoctest
 julia> elm = ElementNode("element")
 EzXML.Node(<ELEMENT_NODE@0x00007f8cf18923b0>)
 
@@ -162,27 +169,27 @@ For the demonstration purpose, save the next XML in "primates.xml" file.
     </primates>
 
 `readxml(<filename>)` reads an XML file and builds a document object in memory.
-On the other hand `parsexml(<string or byte array>)` parses an XML string or a
-byte array and builds a document object like the `readxml` method:
-```jlcon
-julia> doc = readxml("primates.xml")
+On the other hand, `parsexml(<string or byte array>)` parses an XML string or a
+byte array in memory and builds a document object like the `readxml` method:
+```jldoctest dom
+julia> doc = readxml("primates.xml")  # Read from a file.
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3cfe8a50>))
 
 julia> data = String(read("primates.xml"));
 
-julia> doc = parsexml(data)
+julia> doc = parsexml(data)           # Parse a string.
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fff3d161380>))
 
 ```
 
-Before traversing the document we need to retrieve the root of the document tree.
+Before traversing a document we need to retrieve the root of the document tree.
 `root(<document>)` returns the root element of a document and we can start
 traversal there:
-```jlcon
+```jldoctest dom
 julia> primates = root(doc)  # Get the root element.
 EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 
-julia> primates = doc.root   # The root property is also available.
+julia> primates = doc.root   # The `root` property is also available.
 EzXML.Node(<ELEMENT_NODE@0x00007fff3d109ef0>)
 
 julia> nodetype(primates)    # The node is an element node.
@@ -210,7 +217,7 @@ Attribute values can be accessed by its name like a dictionary; `haskey`,
 `getindex`, `setindex!` and `delete!` are overloaded for element nodes.
 Qualified name, which may or may not have the prefix of a namespace, can be used
 as a key name:
-```jlcon
+```jldoctest dom
 julia> haskey(genus[1], "name")  # Check whether an attribute exists.
 true
 
@@ -252,7 +259,7 @@ type the function is interested in. For example, `hasnode(<parent node>)` checks
 if a (parent) node has one or more child *nodes* while `haselement(<parent
 node>)` checks if a (parent) node has one or more child *elements*. All
 functions are also named in this way:
-```jlcon
+```jldoctest dom
 julia> hasnode(primates)       # `primates` contains child nodes?
 true
 
@@ -276,7 +283,7 @@ EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 There are tree traversal properties, which return `nothing` when there is no
 correspoding node:
 
-```jlcon
+```jldoctest dom
 julia> primates = doc.root
 EzXML.Node(<ELEMENT_NODE@0x00007f8cf18bdb20>)
 
@@ -294,24 +301,24 @@ true
 If you'd like to iterate over child nodes or elements, you can use the
 `eachnode(<parent node>)` or `eachelement(<parent node>)` function.  The
 `eachnode` function generates all nodes including texts, elements, comments, and
-so on while `eachelement` selects element nodes only. `nodes(<parent node>)` and
-`elements(<parent node>)` are handy functions that return a vector of nodes and
-elements, respectively:
-```jlcon
-julia> for genus in eachnode(primates)
-           @show genus
+so on, while `eachelement` selects element nodes only. `nodes(<parent node>)`
+and `elements(<parent node>)` are handy functions that return a vector of nodes
+and elements, respectively:
+```jldoctest dom
+julia> for node in eachnode(primates)
+           @show node
        end
-genus = EzXML.Node(<TEXT_NODE@0x00007fff3cfe92f0>)
-genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
-genus = EzXML.Node(<TEXT_NODE@0x00007fff3d10a090>)
-genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
-genus = EzXML.Node(<TEXT_NODE@0x00007fff3cfe4b60>)
+node = EzXML.Node(<TEXT_NODE@0x00007fff3cfe92f0>)
+node = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+node = EzXML.Node(<TEXT_NODE@0x00007fff3d10a090>)
+node = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
+node = EzXML.Node(<TEXT_NODE@0x00007fff3cfe4b60>)
 
-julia> for genus in eachelement(primates)
-           @show genus
+julia> for elem in eachelement(primates)
+           @show elem
        end
-genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
-genus = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
+elem = EzXML.Node(<ELEMENT_NODE@0x00007fff3cff0000>)
+elem = EzXML.Node(<ELEMENT_NODE@0x00007fff3cfbdf00>)
 
 julia> nodes(primates)
 5-element Array{EzXML.Node,1}:
@@ -328,8 +335,8 @@ julia> elements(primates)
 
 ```
 
-There are so many functions to traverse XML document trees. The complete list of
-these functions is available at the reference page.
+There are many functions to traverse XML document trees. The complete list of
+these functions is available at [the reference page](reference.md).
 
 Constructing documents
 ----------------------
@@ -338,7 +345,7 @@ ExXML.jl also supports constructing XML/HTML documents.
 
 The components of an XML document can be created using document/node
 constructors introduced above:
-```jlcon
+```jldoctest constr
 julia> doc = XMLDocument()
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>))
 
@@ -348,9 +355,9 @@ EzXML.Node(<ELEMENT_NODE@0x00007fe4b581c5a0>)
 
 Setting a root element to a document can be done by the `setroot!(<document>,
 <root>)` function:
-```jlcon
+```jldoctest constr
 julia> setroot!(doc, r)
-EzXML.Node(<DOCUMENT_NODE@0x00007fe4b57bfbc0>)
+EzXML.Node(<ELEMENT_NODE@0x00007fe4b581c5a0>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -360,7 +367,7 @@ julia> print(doc)
 
 Other child elements or subtrees can be linked to an existing element using
 `link!(<parent node>, <child node>)`:
-```jlcon
+```jldoctest constr
 julia> c = ElementNode("child")
 EzXML.Node(<ELEMENT_NODE@0x00007fe4b57de820>)
 
@@ -392,26 +399,25 @@ julia> print(doc)
 
 After finished building an XML document, the user can serialize it into a file
 as follows:
-```jlcon
-julia> write("out.xml", doc)  # Write a document into a file.
-88
+```jldoctest constr
+julia> write("out.xml", doc);  # Write a document into a file.
 
-shell> cat out.xml
+julia> print(String(read("out.xml")))
 <?xml version="1.0" encoding="UTF-8"?>
 <root><child>some content</child><child/></root>
 
 ```
 
 An alternative way is using the `addelement!(<parent>, <child>, [<content>])`
-function, which is a shorthand of a sequence operations: `ElementNode(<child name>)`,
-`link!(<parent>, <child>)`, and optional `setnodecontent!(<child>, <content>)`. This
-is often handier in typical use:
-```jlcon
+function, which is a shorthand of a sequence of operations: `ElementNode(<child
+name>)`, `link!(<parent>, <child>)`, and optional `setnodecontent!(<child>,
+<content>)`. This is often handier in typical use:
+```jldoctest
 julia> doc = XMLDocument()
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>))
 
 julia> setroot!(doc, ElementNode("root"))
-EzXML.Node(<DOCUMENT_NODE@0x00007fd0c682f460>)
+EzXML.Node(<ELEMENT_NODE@0x00007f9fe71c5d60>)
 
 julia> for i in 1:3
            c = addelement!(root(doc), "child")
@@ -440,7 +446,7 @@ user can retrieve target elements using a short string query. For example,
 
 The `findall`, `findfirst` and `findlast` functions are overloaded for XPath
 query and return a vector of selected nodes:
-```jlcon
+```jldoctest xpath
 julia> primates = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
 
@@ -468,7 +474,7 @@ julia> println(findfirst("//genus", primates))
 
 If you would like to change the starting node of a query, you can pass the node
 as the second argument of `find*`:
-```jlcon
+```jldoctest xpath
 julia> genus = findfirst("//genus", primates)
 EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
 
@@ -493,7 +499,7 @@ the `find*` function. For example, in the following example, the root element an
 its descendants have a default namespace "http://www.foobar.org" but it does not
 have its own prefix.  In this case, you need to pass its prefix to find elements
 in the namespace:
-```jlcon
+```jldoctest
 julia> doc = parsexml("""
        <parent xmlns="http://www.foobar.org">
            <child/>
@@ -506,7 +512,7 @@ julia> findall("/parent/child", root(doc))
 
 julia> namespaces(root(doc))  # The default namespace has an empty prefix.
 1-element Array{Pair{String,String},1}:
- ""=>"http://www.foobar.org"
+ "" => "http://www.foobar.org"
 
 julia> ns = namespace(root(doc))  # Get the namespace.
 "http://www.foobar.org"
@@ -547,16 +553,16 @@ brevity):
 The interfaces of streaming reader are totally different from the DOM interfaces
 introduced above. The first thing the user needs to do is creating an
 `EzXML.StreamReader` object using the `open` function:
-```jlcon
+```jldoctest stream
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
-EzXML.StreamReader(Ptr{EzXML._TextReader} @0x00007f95fb6c0b00)
+EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
 
 ```
 
 Iteration is advanced by the `done(<reader>)` method, which updates the current
 reading position of the reader and returns `false` when there is at least one
 node to read from the stream:
-```jlcon
+```jldoctest stream
 julia> done(reader)  # Read the 1st node.
 false
 
