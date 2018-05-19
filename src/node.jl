@@ -872,7 +872,7 @@ function check_topmost(node::Node)
 end
 
 """
-    unlink!(node::Ndoe)
+    unlink!(node::Node)
 
 Unlink `node` from its context.
 """
