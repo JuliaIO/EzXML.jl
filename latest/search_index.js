@@ -733,7 +733,7 @@ var documenterSearchIndex = {"docs": [
     "page": "References",
     "title": "EzXML.unlink!",
     "category": "function",
-    "text": "unlink!(node::Ndoe)\n\nUnlink node from its context.\n\n\n\n"
+    "text": "unlink!(node::Node)\n\nUnlink node from its context.\n\n\n\n"
 },
 
 {
