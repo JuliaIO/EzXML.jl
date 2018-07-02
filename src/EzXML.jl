@@ -105,7 +105,8 @@ import Compat:
     stdin,
     stdout,
     bytesavailable,
-    findall
+    findall,
+    @cfunction
 using Compat.Libdl
 using Compat.Printf: @printf
 
