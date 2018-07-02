@@ -198,7 +198,7 @@ end
 function make_read_callback()
     # Passing an input stream as an argument is impossible to create a callback
     # because Julia does not support C-callable closures yet.
-    return cfunction(Cint, Tuple{Ptr{Cvoid}, Ptr{UInt8}, Cint}) do context, buffer, len
+    return @cfunction(Cint, (Ptr{Cvoid}, Ptr{UInt8}, Cint)) do context, buffer, len
         input = unsafe_pointer_to_objref(context)
         avail = min(bytesavailable(input), len)
         if avail > 0

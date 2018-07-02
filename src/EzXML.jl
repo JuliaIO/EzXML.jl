@@ -100,7 +100,9 @@ import Compat:
     Cvoid,
     stdin,
     stdout,
-    bytesavailable
+    bytesavailable,
+    findall,
+    @cfunction
 using Compat.Libdl
 using Compat.Printf: @printf
 
