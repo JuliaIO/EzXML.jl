@@ -52,6 +52,18 @@ end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
         @test_throws EzXML.XMLError open(readxml, invalid_file)
+
+        # properties
+        doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
+        @test hasversion(doc)
+        @test version(doc) == "1.0"
+        @test !hasencoding(doc)
+        @test_throws ArgumentError encoding(doc)
+        doc = readxml(joinpath(dirname(@__FILE__), "sample2.xml"))
+        @test hasversion(doc)
+        @test version(doc) == "1.0"
+        @test hasencoding(doc)
+        @test encoding(doc) == "UTF-8"
     end
 
     @testset "HTML" begin

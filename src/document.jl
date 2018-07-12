@@ -238,6 +238,59 @@ function make_read_callback()
     end
 end
 
+# Properties
+# ----------
+
+"""
+    hasversion(doc::Document)
+
+Return if `doc` has a version string.
+"""
+function hasversion(doc::Document)
+    doc_ptr = Ptr{_Document}(doc.node.ptr)
+    @assert doc_ptr != C_NULL
+    return unsafe_load(doc_ptr).version != C_NULL
+end
+
+"""
+    version(doc::Document)
+
+Return the version string of `doc`.
+"""
+function version(doc::Document)
+    if !hasversion(doc)
+        throw(ArgumentError("no version string"))
+    end
+    doc_ptr = Ptr{_Document}(doc.node.ptr)
+    @assert doc_ptr != C_NULL
+    return unsafe_string(unsafe_load(doc_ptr).version)
+end
+
+"""
+    hasencoding(doc::Document)
+
+Return if `doc` has an encoding string.
+"""
+function hasencoding(doc::Document)
+    doc_ptr = Ptr{_Document}(doc.node.ptr)
+    @assert doc_ptr != C_NULL
+    return unsafe_load(doc_ptr).encoding != C_NULL
+end
+
+"""
+    encoding(doc::Document)
+
+Return the encoding string of `doc`.
+"""
+function encoding(doc::Document)
+    if !hasencoding(doc)
+        throw(ArgumentError("no encoding string"))
+    end
+    doc_ptr = Ptr{_Document}(doc.node.ptr)
+    @assert doc_ptr != C_NULL
+    return unsafe_string(unsafe_load(doc_ptr).encoding)
+end
+
 
 # Root
 # ----

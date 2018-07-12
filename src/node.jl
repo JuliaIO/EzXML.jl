@@ -133,6 +133,35 @@ struct _Ns
     context::Ptr{Cvoid}
 end
 
+# Fields of document node (_xmlDoc)
+struct _Document
+    _private::Ptr{Cvoid}
+    typ::Cint
+    name::Cstring
+    children::Ptr{_Node}
+    last::Ptr{_Node}
+    parent::Ptr{_Node}
+    next::Ptr{_Node}
+    prev::Ptr{_Node}
+    doc::Ptr{_Node}
+
+    compression::Cint
+    standalone::Cint
+    intsubset::Ptr{_Node}
+    extsubset::Ptr{_Node}
+    oldns::Ptr{_Node}
+    version::Cstring
+    encoding::Cstring
+    ids::Ptr{Void}
+    refs::Ptr{Void}
+    url::Cstring
+    charset::Cint
+    dict::Ptr{Void}
+    psvi::Ptr{Void}
+    parseflags::Cint
+    properties::Cint
+end
+
 # Fields of element node (_xmlNode).
 struct _Element
     _private::Ptr{Cvoid}
