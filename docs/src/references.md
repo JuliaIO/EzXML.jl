@@ -100,6 +100,16 @@ setnodename!(::Node, ::AbstractString)
 setnodecontent!(::Node, ::AbstractString)
 ```
 
+Document properties
+-------------------
+
+```@docs
+version
+encoding
+hasversion
+hasencoding
+```
+
 DOM tree accessors
 ------------------
 
