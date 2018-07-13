@@ -131,6 +131,18 @@ julia> elm.content
 julia> elm.namespace === nothing
 true
 
+julia> elm.name = "ELEMENT"  # set element name
+"ELEMENT"
+
+julia> println(elm)
+<ELEMENT/>
+
+julia> elm.content = "some text"  # set content
+"some text"
+
+julia> println(elm)
+<ELEMENT>some text</ELEMENT>
+
 julia> txt = TextNode("  text  ")
 EzXML.Node(<TEXT_NODE@0x00007fd9f441f3f0>)
 
