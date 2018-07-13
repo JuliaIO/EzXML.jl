@@ -441,6 +441,46 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "references.html#EzXML.version",
+    "page": "References",
+    "title": "EzXML.version",
+    "category": "function",
+    "text": "version(doc::Document)\n\nReturn the version string of doc.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.encoding",
+    "page": "References",
+    "title": "EzXML.encoding",
+    "category": "function",
+    "text": "encoding(doc::Document)\n\nReturn the encoding string of doc.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasversion",
+    "page": "References",
+    "title": "EzXML.hasversion",
+    "category": "function",
+    "text": "hasversion(doc::Document)\n\nReturn if doc has a version string.\n\n\n\n"
+},
+
+{
+    "location": "references.html#EzXML.hasencoding",
+    "page": "References",
+    "title": "EzXML.hasencoding",
+    "category": "function",
+    "text": "hasencoding(doc::Document)\n\nReturn if doc has an encoding string.\n\n\n\n"
+},
+
+{
+    "location": "references.html#Document-properties-1",
+    "page": "References",
+    "title": "Document properties",
+    "category": "section",
+    "text": "version\nencoding\nhasversion\nhasencoding"
+},
+
+{
     "location": "references.html#EzXML.document",
     "page": "References",
     "title": "EzXML.document",
