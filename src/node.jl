@@ -152,12 +152,12 @@ struct _Document
     oldns::Ptr{_Node}
     version::Cstring
     encoding::Cstring
-    ids::Ptr{Void}
-    refs::Ptr{Void}
+    ids::Ptr{Cvoid}
+    refs::Ptr{Cvoid}
     url::Cstring
     charset::Cint
-    dict::Ptr{Void}
-    psvi::Ptr{Void}
+    dict::Ptr{Cvoid}
+    psvi::Ptr{Cvoid}
     parseflags::Cint
     properties::Cint
 end
