@@ -415,6 +415,20 @@ if isdefined(Base, :getproperty)
     end
 end
 
+if isdefined(Base, :setproperty!)
+    @inline function Base.setproperty!(node::Node, name::Symbol, x)
+        # node properties
+        if name == :name
+            setnodename!(node, string(x))
+        elseif name == :content
+            setnodecontent!(node, string(x))
+        else
+            Core.setfield!(node, name, convert(fieldtype(Node, name), x))
+        end
+        return node
+    end
+end
+
 
 # Node constructors
 # -----------------

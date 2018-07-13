@@ -842,6 +842,7 @@ end
 end
 
 if isdefined(Base, :getproperty)
+    @assert isdefined(Base, :setproperty!)
     @testset "Properties" begin
         doc = parsexml("<root/>")
         @test doc.node isa EzXML.Node
@@ -896,6 +897,21 @@ if isdefined(Base, :getproperty)
         @test doc.root.firstnode.nextnode === doc.root.firstelement
         @test doc.root.firstnode.prevnode === nothing
         @test doc.root.firstelement.nextelement === doc.root.lastelement.prevelement
+
+        # setproperty!
+        elm = ElementNode("foo")
+        # name
+        @test elm.name == "foo"
+        elm.name = "bar"
+        @test elm.name == "bar"
+        elm.name = 100
+        @test elm.name == "100"
+        # content
+        @test elm.content == ""
+        elm.content = "hi there"
+        @test elm.content == "hi there"
+        elm.content = 3.14
+        @test elm.content == "3.14"
     end
 end
 
