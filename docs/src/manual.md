@@ -220,10 +220,10 @@ julia> println(elm)
 ```
 
 
-DOM interfaces
---------------
+DOM
+---
 
-DOM (Document Object Model) interfaces regard an XML document as a tree of
+The DOM (Document Object Model) API regards an XML document as a tree of
 nodes. There is a root node at the top of a document tree and each node has zero
 or more child nodes. Some nodes (e.g. texts, attributes, etc.) cannot have child
 nodes.
@@ -408,11 +408,11 @@ julia> elements(primates)
 
 ```
 
-XPath queries
--------------
+XPath
+-----
 
 [XPath](https://en.wikipedia.org/wiki/XPath) is a query language for XML. You
-can retrieve target elements using a short string query. For example,
+can retrieve target elements using a short query string. For example,
 `"//genus/species"` selects all "species" elements just under a "genus" element.
 
 The `findall`, `findfirst` and `findlast` functions are overloaded for XPath
@@ -466,10 +466,10 @@ namespaces.
 
 There is a caveat on the combination of XPath and namespaces: if a document
 contains elements with a default namespace, you need to specify its prefix to
-the `find*` function. For example, in the following example, the root element and
-its descendants have a default namespace "http://www.foobar.org" but it does not
-have its own prefix.  In this case, you need to pass its prefix to find elements
-in the namespace:
+the `find*` function. For example, in the following example, the root element
+and its descendants have a default namespace "http://www.foobar.org", but it
+does not have its own prefix.  In this case, you need to assign a prefix to the
+namespance when finding elements in the namespace:
 ```jldoctest
 julia> doc = parsexml("""
        <parent xmlns="http://www.foobar.org">
@@ -478,29 +478,30 @@ julia> doc = parsexml("""
        """)
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))
 
-julia> findall("/parent/child", root(doc))
+julia> findall("/parent/child", doc.root)  # nothing will be found
 0-element Array{EzXML.Node,1}
 
-julia> namespaces(root(doc))  # The default namespace has an empty prefix.
+julia> namespaces(doc.root)  # the default namespace has an empty prefix
 1-element Array{Pair{String,String},1}:
  "" => "http://www.foobar.org"
 
-julia> ns = namespace(root(doc))  # Get the namespace.
+julia> ns = namespace(doc.root)  # get the namespace
 "http://www.foobar.org"
 
-julia> findall("/x:parent/x:child", root(doc), ["x"=>ns])  # Specify its prefix as "x".
+julia> findall("/x:parent/x:child", doc.root, ["x"=>ns])  # specify its prefix as "x"
 1-element Array{EzXML.Node,1}:
  EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)
 
 ```
 
-Streaming interfaces
---------------------
+Streaming API
+-------------
 
-In addition to DOM interfaces, EzXML.jl provides a streaming reader of XML
-files. The streaming reader processes, as the name suggests, a stream of an XML
-data read from a file instead of reading a whole XML tree into the memory. This
-enables reading extremely large files that do not fit in RAM.
+In addition to the DOM API, EzXML.jl provides a streaming reader of XML files.
+The streaming reader processes, as the name suggests, a stream of XML data
+incrementally read from a file instead of reading a whole XML tree into the
+memory. This enables processing extremely large files that do not fit in the
+memory at once.
 
 Let's use the following XML file (undirected.graphml) that represents an undirected graph formatted
 in [GraphML](http://graphml.graphdrawing.org/) (slightly simplified for
@@ -521,8 +522,8 @@ brevity):
         </graph>
     </graphml>
 
-The interfaces of streaming reader are totally different from the DOM interfaces
-introduced above. The first thing the user needs to do is creating an
+The API of a streaming reader is totally different from the DOM API we have
+seen above. The first thing you needs to do is to create an
 `EzXML.StreamReader` object using the `open` function:
 ```jldoctest stream
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
@@ -566,9 +567,9 @@ julia> reader["edgedefault"]
 
 ```
 
-Unlike DOM interfaces, methods are applied to a reader object. This is because
-the streaming reader does not construct a DOM tree while reading and hence we
-have no access to actual nodes of an XML document. Methods like `nodetype`,
+Unlike the DOM API, methods are applied to a reader object. This is because the
+streaming reader does not construct a DOM tree while reading and hence we have
+no access to actual nodes of an XML document. Methods like `nodetype`,
 `nodename`, `nodecontent`, `namespace` and `getindex` are overloaded for the
 reader type.
 
@@ -580,11 +581,11 @@ are two kinds of values that will be returned when reading an element node:
 indicates the reader just read an opening tag of an element node while the
 latter does the reader just read an ending tag of an element node.
 
-In addition to these functions, there are several functions that are specific to
-the streaming reader. The `nodedepth(<reader>)` function returns the depth of
-the current node. The `expandtree(<reader>)` function expands the current node
-into a complete subtree rooted at the node. This function is useful when you
-want to use the DOM interfaces for the node. However, the expanded subtree is
+In addition to these functions, there are several functions that are specific
+to the streaming reader. The `nodedepth(<reader>)` function returns the depth
+of the current node. The `expandtree(<reader>)` function expands the current
+node into a complete subtree rooted at the node. This function is useful when
+you want to use the DOM API for the node. However, the expanded subtree is
 alive until the next read of a new node. That means you cannot keep references
 to (parts of) the expanded subtree.
 
