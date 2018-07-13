@@ -40,6 +40,7 @@ Usage
 -----
 
 ```julia
+# Load the package.
 using EzXML
 
 # Parse an XML string
