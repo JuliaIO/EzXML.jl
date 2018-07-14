@@ -3,14 +3,18 @@ Home
 
 EzXML.jl is a package for handling XML and HTML documents. The APIs are simple
 and consistent, and provide a range of functionalities including:
-* Traversing XML/HTML documents with DOM-like interfaces.
-* Properly handling XML namespaces.
+* Reading and writing XML/HTML documents.
+* Traversing XML/HTML trees with DOM interfaces.
 * Searching elements using XPath.
-* Parsing large files with streaming APIs.
+* Proper namespace handling.
+* Capturing error messages.
 * Automatic memory management.
+* Document validation.
+* Streaming parsing for large XML files.
 
 Here is an example of parsing and traversing an XML document:
 ```julia
+# Load the package.
 using EzXML
 
 # Parse an XML string
@@ -50,6 +54,6 @@ end
 ```
 
 If you are new to this package, read [the manual page](manual.md) first. It
-provides a general guide to the package. [The references page](references.md)
-offers a full documentation for each function and [the developer notes
+provides a general guide to the package. [The reference page](reference.md)
+offers a full documentation for each function, and [the developer notes
 page](devnotes.md) explains about the internal design for developers.
