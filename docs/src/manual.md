@@ -498,14 +498,13 @@ Streaming API
 -------------
 
 In addition to the DOM API, EzXML.jl provides a streaming reader of XML files.
-The streaming reader processes, as the name suggests, a stream of XML data
-incrementally read from a file instead of reading a whole XML tree into the
-memory. This enables processing extremely large files that do not fit in the
-memory at once.
+The streaming reader processes, as the name suggests, a stream of XML data by
+incrementally reading data from a file instead of reading a whole XML tree into
+the memory. This enables processing extremely large files with limited memory.
 
-Let's use the following XML file (undirected.graphml) that represents an undirected graph formatted
-in [GraphML](http://graphml.graphdrawing.org/) (slightly simplified for
-brevity):
+Let's use the following XML file (undirected.graphml) that represents an
+undirected graph in the [GraphML](http://graphml.graphdrawing.org/) format
+(slightly simplified for brevity):
 
     <?xml version="1.0" encoding="UTF-8"?>
     <graphml>
@@ -522,19 +521,161 @@ brevity):
         </graph>
     </graphml>
 
-The API of a streaming reader is totally different from the DOM API we have
-seen above. The first thing you needs to do is to create an
-`EzXML.StreamReader` object using the `open` function:
+The API of a streaming reader is quite different from the DOM API.  The first
+thing you needs to do is to create an `EzXML.StreamReader` object using the
+`open` function:
 ```jldoctest stream
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
 EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
 
 ```
 
-Iteration is advanced by the `done(<reader>)` method, which updates the current
-reading position of the reader and returns `false` when there is at least one
-node to read from the stream:
+The stream reader is stateful and parses components by pulling them from the
+stream. For example, when it reads an element from the stream, it changes the
+state to `READER_ELEMENT` and some information becomes accessible.  Its reading
+state is advanced by the `iterate(reader)` method:
 ```jldoctest stream
+julia> reader.type  # the initial state is READER_NONE
+READER_NONE
+
+julia> iterate(reader);  # advance the reader's state
+
+julia> reader.type  # now the state is READER_ELEMENT
+READER_ELEMENT
+
+julia> reader.name  # the reader has just read a "<graphml>" element
+"graphml"
+
+julia> iterate(reader);
+
+julia> reader.type  # now the state is READER_SIGNIFICANT_WHITESPACE
+READER_SIGNIFICANT_WHITESPACE
+
+julia> reader.name
+"#text"
+
+julia> iterate(reader);
+
+julia> reader.type
+READER_ELEMENT
+
+julia> reader.name  # the reader has just read a "<graph>" element
+"graph"
+
+julia> reader["edgedefault"]  # attributes are accessible
+"undirected"
+
+```
+
+While reading data, a stream reader provides the following properties:
+- `.type`:  node type it has read
+- `.depth`: depth of the current node
+- `.name`: name of the current node
+- `.content`: content of the current node
+- `.namespace`: namespace of the current node
+
+`iterate(reader)` returns `nothing` to indicate that there are no more data
+available from the file. When you finished reading data, you need to call
+`close(reader)` to release allocated resources:
+```jldoctest
+julia> reader = open(EzXML.StreamReader, "undirected.graphml")
+EzXML.StreamReader(<READER_NONE@0x00007fd642e80d90>)
+
+julia> while (item = iterate(reader)) != nothing
+           @show reader.type, reader.name
+       end
+(reader.type, reader.name) = (READER_ELEMENT, "graphml")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "graph")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "node")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "node")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "node")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "node")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "node")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "edge")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "edge")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "edge")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_ELEMENT, "edge")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_END_ELEMENT, "graph")
+(reader.type, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(reader.type, reader.name) = (READER_END_ELEMENT, "graphml")
+
+julia> reader.type, reader.name
+(READER_NONE, nothing)
+
+julia> close(reader)  # close the reader
+
+```
+
+The `open(...) do ... end` pattern can be written as:
+```jldoctest
+julia> open(EzXML.StreamReader, "undirected.graphml") do reader
+           # do something
+       end
+
+```
+
+EzXML.jl overloads the `Base.iterate` function to make a streaming reader
+iterable via the `for` loop. Therefore, you can iterate over all components
+without explicitly calling `iterate` as follows:
+```jldoctest
+julia> reader = open(EzXML.StreamReader, "undirected.graphml")
+EzXML.StreamReader(<READER_NONE@0x00007fd642e9a6b0>)
+
+julia> for typ in reader
+           @show typ, reader.name
+       end
+(typ, reader.name) = (READER_ELEMENT, "graphml")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "graph")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "node")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "node")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "node")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "node")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "node")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "edge")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "edge")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "edge")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_ELEMENT, "edge")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_END_ELEMENT, "graph")
+(typ, reader.name) = (READER_SIGNIFICANT_WHITESPACE, "#text")
+(typ, reader.name) = (READER_END_ELEMENT, "graphml")
+
+julia> close(reader)
+
+```
+
+---
+
+**(NOTE: This paragraph is for the backward compatibility of Julia 0.6. If you
+don't need to support Julia 0.6, you should use the `iterate` method
+instead.)** Iteration is advanced by the `done(<reader>)` method, which updates
+the current reading position of the reader and returns `false` when there is at
+least one node to read from the stream:
+```jldoctest
+julia> reader = open(EzXML.StreamReader, "undirected.graphml")
+EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
+
 julia> done(reader)  # Read the 1st node.
 false
 
@@ -565,45 +706,4 @@ julia> nodename(reader)
 julia> reader["edgedefault"]
 "undirected"
 
-```
-
-Unlike the DOM API, methods are applied to a reader object. This is because the
-streaming reader does not construct a DOM tree while reading and hence we have
-no access to actual nodes of an XML document. Methods like `nodetype`,
-`nodename`, `nodecontent`, `namespace` and `getindex` are overloaded for the
-reader type.
-
-An important thing to be noted is that while the value of `nodetype` for the XML
-reader returns the current node type, the domain is slightly different from that
-of `nodetype` for `Node`, but slightly different meanings. For example, there
-are two kinds of values that will be returned when reading an element node:
-`READER_ELEMENT` and `READER_END_ELEMENT`. The former
-indicates the reader just read an opening tag of an element node while the
-latter does the reader just read an ending tag of an element node.
-
-In addition to these functions, there are several functions that are specific
-to the streaming reader. The `nodedepth(<reader>)` function returns the depth
-of the current node. The `expandtree(<reader>)` function expands the current
-node into a complete subtree rooted at the node. This function is useful when
-you want to use the DOM API for the node. However, the expanded subtree is
-alive until the next read of a new node. That means you cannot keep references
-to (parts of) the expanded subtree.
-
-An idiomatic way of stream reading would look like this:
-```julia
-reader = open(EzXML.StreamReader, "undirected.graphml")
-while !done(reader)
-    typ = nodetype(reader)
-    # body
-end
-close(reader)
-```
-
-Alternatively, EzXML.jl supports `for` loop, too:
-```julia
-reader = open(EzXML.StreamReader, "undirected.graphml")
-for typ in reader
-    # body
-end
-close(reader)
 ```
