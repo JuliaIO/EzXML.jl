@@ -1392,18 +1392,26 @@ struct ChildNodeIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-function Base.start(iter::ChildNodeIterator)
-    return iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
-end
-
-function Base.done(::ChildNodeIterator, cur_ptr)
-    return cur_ptr == C_NULL
-end
-
-function Base.next(iter::ChildNodeIterator, cur_ptr)
-    return (
-        Node(cur_ptr, ismanaged(iter.node)),
-        iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr))
+if VERSION > v"0.7-"
+    function Base.iterate(iter::ChildNodeIterator,
+                          cur_ptr::Ptr{_Node}=iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr))
+        if cur_ptr == C_NULL
+            return nothing
+        end
+        return Node(cur_ptr, ismanaged(iter.node)), iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
+    end
+else
+    function Base.start(iter::ChildNodeIterator)
+        return iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
+    end
+    function Base.done(::ChildNodeIterator, cur_ptr)
+        return cur_ptr == C_NULL
+    end
+    function Base.next(iter::ChildNodeIterator, cur_ptr)
+        return (
+            Node(cur_ptr, ismanaged(iter.node)),
+            iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr))
+    end
 end
 
 """
@@ -1429,18 +1437,26 @@ struct ChildElementIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-function Base.start(iter::ChildElementIterator)
-    return iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
-end
-
-function Base.done(::ChildElementIterator, cur_ptr)
-    return cur_ptr == C_NULL
-end
-
-function Base.next(iter::ChildElementIterator, cur_ptr)
-    return (
-        Node(cur_ptr, ismanaged(iter.node)),
-        iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr))
+if VERSION > v"0.7-"
+    function Base.iterate(iter::ChildElementIterator,
+                          cur_ptr::Ptr{_Node}=iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr))
+        if cur_ptr == C_NULL
+            return nothing
+        end
+        return Node(cur_ptr, ismanaged(iter.node)), iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
+    end
+else
+    function Base.start(iter::ChildElementIterator)
+        return iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
+    end
+    function Base.done(::ChildElementIterator, cur_ptr)
+        return cur_ptr == C_NULL
+    end
+    function Base.next(iter::ChildElementIterator, cur_ptr)
+        return (
+            Node(cur_ptr, ismanaged(iter.node)),
+            iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr))
+    end
 end
 
 """
@@ -1468,18 +1484,25 @@ struct AttributeIterator <: AbstractNodeIterator
     node::Node
 end
 
-function Base.start(iter::AttributeIterator)
-    @assert iter.node.ptr != C_NULL
-    @assert unsafe_load(iter.node.ptr).typ == ELEMENT_NODE
-    return property_ptr(iter.node.ptr)
-end
-
-function Base.done(::AttributeIterator, cur_ptr)
-    return cur_ptr == C_NULL
-end
-
-function Base.next(iter::AttributeIterator, cur_ptr)
-    return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
+if VERSION > v"0.7-"
+    function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.node.ptr))
+        if cur_ptr == C_NULL
+            return nothing
+        end
+        return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
+    end
+else
+    function Base.start(iter::AttributeIterator)
+        @assert iter.node.ptr != C_NULL
+        @assert unsafe_load(iter.node.ptr).typ == ELEMENT_NODE
+        return property_ptr(iter.node.ptr)
+    end
+    function Base.done(::AttributeIterator, cur_ptr)
+        return cur_ptr == C_NULL
+    end
+    function Base.next(iter::AttributeIterator, cur_ptr)
+        return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
+    end
 end
 
 function parent_ptr(node_ptr)
@@ -1487,6 +1510,7 @@ function parent_ptr(node_ptr)
 end
 
 function property_ptr(node_ptr)
+    @assert node_ptr != C_NULL
     @assert unsafe_load(node_ptr).typ == ELEMENT_NODE
     return unsafe_load(convert(Ptr{_Element}, node_ptr)).properties
 end
