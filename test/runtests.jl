@@ -57,17 +57,13 @@ end
         doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
         @test hasversion(doc)
         @test version(doc) == "1.0"
-        @test doc.version == "1.0"
         @test !hasencoding(doc)
-        @test doc.encoding === nothing
         @test_throws ArgumentError encoding(doc)
         doc = readxml(joinpath(dirname(@__FILE__), "sample2.xml"))
         @test hasversion(doc)
         @test version(doc) == "1.0"
-        @test doc.version == "1.0"
         @test hasencoding(doc)
         @test encoding(doc) == "UTF-8"
-        @test doc.encoding == "UTF-8"
     end
 
     @testset "HTML" begin
@@ -848,6 +844,13 @@ end
 if isdefined(Base, :getproperty)
     @assert isdefined(Base, :setproperty!)
     @testset "Properties" begin
+        doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
+        @test doc.version == "1.0"
+        @test doc.encoding === nothing
+        doc = readxml(joinpath(dirname(@__FILE__), "sample2.xml"))
+        @test doc.version == "1.0"
+        @test doc.encoding == "UTF-8"
+
         doc = parsexml("<root/>")
         @test doc.node isa EzXML.Node
         @test doc.node.type === EzXML.DOCUMENT_NODE
