@@ -98,11 +98,11 @@ IO:
 
 Accessors:
 * Node information: `nodetype(node)`, `nodepath(node)`, `nodename(node)`, `nodecontent(node)`, `setnodename!(node, name)`, `setnodecontent!(node, content)`
-* Node properties (Julia ≥ 0.7): `node.type`, `node.name`, `node.path`, `node.content`, `node.namespace`
+* Node property (Julia ≥ 0.7): `node.type`, `node.name`, `node.path`, `node.content`, `node.namespace`
 * Document:
     - Property: `version(doc)`, `encoding(doc)`, `hasversion(doc)`, `hasencoding(doc)`
     - Node: `root(doc)`, `dtd(doc)`, `hasroot(doc)`, `hasdtd(doc)`, `setroot!(doc, element_node)`, `setdtd!(doc, dtd_node)`
-* Document properties (Julia ≥ 0.7): `doc.node`, `doc.root`, `doc.dtd`
+* Document property (Julia ≥ 0.7): `doc.version`, `doc.encoding`, `doc.node`, `doc.root`, `doc.dtd`
 * Attributes: `node[name]`, `node[name] = value`, `haskey(node, name)`, `delete!(node, name)`
 * Node predicate:
     * Document: `hasdocument(node)`

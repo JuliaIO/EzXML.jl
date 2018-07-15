@@ -21,13 +21,11 @@ end
 
 if Base.isdefined(Base, :getproperty)
     @inline function Base.getproperty(doc::Document, name::Symbol)
-        if name == :root
-            return hasroot(doc) ? root(doc) : nothing
-        elseif name == :dtd
-            return hasdtd(doc) ? dtd(doc) : nothing
-        else
-            return Core.getfield(doc, name)
-        end
+        name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
+        name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :
+        name == :root     ? (hasroot(doc)     ? root(doc)     : nothing) :
+        name == :dtd      ? (hasdtd(doc)      ? dtd(doc)      : nothing) :
+        Core.getfield(doc, name)
     end
 end
 
