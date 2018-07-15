@@ -18,7 +18,7 @@ mutable struct Buffer
             Ptr{_Buffer},
             ())
         buf = new(buf_ptr)
-        if VERSION > v"0.7-"
+        @static if VERSION > v"0.7-"
             finalizer(finalize_buffer, buf)
         else
             finalizer(buf, finalize_buffer)
