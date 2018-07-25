@@ -300,7 +300,8 @@ function ismanaged(node::Node)
 end
 
 function Base.show(io::IO, node::Node)
-    @printf(io, "EzXML.Node(<%s@%p>)", repr(nodetype(node)), node.ptr)
+    prefix = isdefined(Main, :Node) ? "Node" : "EzXML.Node"
+    @printf(io, "%s(<%s@%p>)", prefix, repr(nodetype(node)), node.ptr)
 end
 
 function Base.print(io::IO, node::Node)

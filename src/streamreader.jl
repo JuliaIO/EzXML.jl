@@ -30,7 +30,8 @@ if isdefined(Base, :getproperty)
 end
 
 function Base.show(io::IO, reader::StreamReader)
-    @printf(io, "EzXML.StreamReader(<%s@%p>)", repr(nodetype(reader)), reader.ptr)
+    prefix = isdefined(Main, :StreamReader) ? "StreamReader" : "EzXML.StreamReader"
+    @printf(io, "%s(<%s@%p>)", prefix, repr(nodetype(reader)), reader.ptr)
 end
 
 # Reader type (enum xmlReaderTypes).
