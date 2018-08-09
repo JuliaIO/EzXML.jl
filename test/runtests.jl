@@ -308,8 +308,8 @@ end
     reader = open(EzXML.StreamReader, simple_graphml)
     typs = []
     names = []
-    while !done(reader)
-        push!(typs, next(reader))
+    for typ in reader
+        push!(typs, typ)
         push!(names, nodename(reader))
     end
     @test first(typs) === EzXML.READER_COMMENT
@@ -322,8 +322,8 @@ end
     reader = EzXML.StreamReader(input)
     typs = []
     names = []
-    while !done(reader)
-        push!(typs, next(reader))
+    for typ in reader
+        push!(typs, typ)
         push!(names, nodename(reader))
     end
     @test first(typs) === EzXML.READER_COMMENT
@@ -375,7 +375,11 @@ end
         @test "title" ∈ names
     end
 
-    @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
+    if VERSION > v"0.7.0-DEV.5126"
+        @test_throws EzXML.XMLError iterate(EzXML.StreamReader(IOBuffer("not xml")))
+    else
+        @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
+    end
 
     # memory management test
     for _ in 1:10

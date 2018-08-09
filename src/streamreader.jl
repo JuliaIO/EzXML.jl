@@ -181,27 +181,28 @@ function Compat.IteratorSize(::Type{StreamReader})
     return Base.SizeUnknown()
 end
 
-if VERSION > v"0.7-"
-    function Base.iterate(reader::StreamReader, _=nothing)
-        done = read_node(reader)
-        return done ? nothing : (nodetype(reader), nothing)
+if VERSION > v"0.7.0-DEV.5126"
+    function Base.iterate(reader::StreamReader, state=nothing)
+        if read_node(reader)
+            nothing
+        else
+            nodetype(reader), nothing
+        end
+    end
+else
+    function Base.start(::StreamReader)
+        return nothing
+    end
+    function Base.done(reader::StreamReader, _=nothing)
+        return read_node(reader)
+    end
+    function Base.next(reader::StreamReader, _)
+        return nodetype(reader), nothing
+    end
+    function Base.next(reader::StreamReader)
+        return nodetype(reader)
     end
 end
-
-# TODO: Remove these methods when dropping Julia 0.6.
-function Base.start(::StreamReader)
-    return nothing
-end
-function Base.done(reader::StreamReader, _=nothing)
-    return read_node(reader)
-end
-function Base.next(reader::StreamReader, _)
-    return nodetype(reader), nothing
-end
-function Base.next(reader::StreamReader)
-    return nodetype(reader)
-end
-# END TODO
 
 # Read a next node and return `true` iff finished.
 function read_node(reader)
