@@ -131,10 +131,10 @@ function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
 end
 
 # Deprecated
-Base.find(doc::Document, xpath::AbstractString) = findall(xpath, doc)
+Compat.findall(doc::Document, xpath::AbstractString) = findall(xpath, doc)
 Base.findfirst(doc::Document, xpath::AbstractString) = first(findall(xpath, doc))
 Base.findlast(doc::Document, xpath::AbstractString) = last(findall(xpath, doc))
-Base.find(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
+Compat.findall(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
 Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) = first(findall(xpath, node, ns))
 Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) = last(findall(xpath, node, ns))
 

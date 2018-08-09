@@ -1239,7 +1239,7 @@ end
     @test_throws BoundsError findlast(doc, "bambam")
     @test_throws BoundsError findfirst(root(doc), "bambam")
     @test_throws BoundsError findlast(root(doc), "bambam")
-    @inferred find(doc, "root")
+    @inferred findall(doc, "root")
     @inferred findfirst(doc, "root")
     @inferred findlast(doc, "root")
 
