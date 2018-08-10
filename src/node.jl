@@ -280,11 +280,7 @@ mutable struct Node
                 node = new(ptr, owner)
             end
 
-            @static if VERSION > v"0.7-"
-                finalizer(finalize_node, node)
-            else
-                finalizer(node, finalize_node)
-            end
+            finalizer(finalize_node, node)
         else
             node = new(ptr)
         end
@@ -391,43 +387,39 @@ end
 # Node properties
 # ---------------
 
-if isdefined(Base, :getproperty)
-    @inline function Base.getproperty(node::Node, name::Symbol)
-        # node properties
-        name == :type      ? nodetype(node)                                   :
-        name == :name      ? (hasnodename(node)  ? nodename(node)  : nothing) :
-        name == :path      ? nodepath(node)                                   :
-        name == :content   ? nodecontent(node)                                :
-        name == :namespace ? (hasnamespace(node) ? namespace(node) : nothing) :
-        # tree traversal
-        name == :document      ? (hasdocument(node)      ? document(node)      : nothing) :
-        name == :parentnode    ? (hasparentnode(node)    ? parentnode(node)    : nothing) :
-        name == :parentelement ? (hasparentelement(node) ? parentelement(node) : nothing) :
-        name == :firstnode     ? (hasnode(node)          ? firstnode(node)     : nothing) :
-        name == :lastnode      ? (hasnode(node)          ? lastnode(node)      : nothing) :
-        name == :firstelement  ? (haselement(node)       ? firstelement(node)  : nothing) :
-        name == :lastelement   ? (haselement(node)       ? lastelement(node)   : nothing) :
-        name == :nextnode      ? (hasnextnode(node)      ? nextnode(node)      : nothing) :
-        name == :prevnode      ? (hasprevnode(node)      ? prevnode(node)      : nothing) :
-        name == :nextelement   ? (hasnextelement(node)   ? nextelement(node)   : nothing) :
-        name == :prevelement   ? (hasprevelement(node)   ? prevelement(node)   : nothing) :
-        # data fields
-        Core.getfield(node, name)
-    end
+@inline function Base.getproperty(node::Node, name::Symbol)
+    # node properties
+    name == :type      ? nodetype(node)                                   :
+    name == :name      ? (hasnodename(node)  ? nodename(node)  : nothing) :
+    name == :path      ? nodepath(node)                                   :
+    name == :content   ? nodecontent(node)                                :
+    name == :namespace ? (hasnamespace(node) ? namespace(node) : nothing) :
+    # tree traversal
+    name == :document      ? (hasdocument(node)      ? document(node)      : nothing) :
+    name == :parentnode    ? (hasparentnode(node)    ? parentnode(node)    : nothing) :
+    name == :parentelement ? (hasparentelement(node) ? parentelement(node) : nothing) :
+    name == :firstnode     ? (hasnode(node)          ? firstnode(node)     : nothing) :
+    name == :lastnode      ? (hasnode(node)          ? lastnode(node)      : nothing) :
+    name == :firstelement  ? (haselement(node)       ? firstelement(node)  : nothing) :
+    name == :lastelement   ? (haselement(node)       ? lastelement(node)   : nothing) :
+    name == :nextnode      ? (hasnextnode(node)      ? nextnode(node)      : nothing) :
+    name == :prevnode      ? (hasprevnode(node)      ? prevnode(node)      : nothing) :
+    name == :nextelement   ? (hasnextelement(node)   ? nextelement(node)   : nothing) :
+    name == :prevelement   ? (hasprevelement(node)   ? prevelement(node)   : nothing) :
+    # data fields
+    Core.getfield(node, name)
 end
 
-if isdefined(Base, :setproperty!)
-    @inline function Base.setproperty!(node::Node, name::Symbol, x)
-        # node properties
-        if name == :name
-            setnodename!(node, string(x))
-        elseif name == :content
-            setnodecontent!(node, string(x))
-        else
-            Core.setfield!(node, name, convert(fieldtype(Node, name), x))
-        end
-        return node
+@inline function Base.setproperty!(node::Node, name::Symbol, x)
+    # node properties
+    if name == :name
+        setnodename!(node, string(x))
+    elseif name == :content
+        setnodecontent!(node, string(x))
+    else
+        Core.setfield!(node, name, convert(fieldtype(Node, name), x))
     end
+    return node
 end
 
 
@@ -1264,11 +1256,7 @@ function Base.delete!(node::Node, attr::AbstractString)
 end
 
 function findfirstchar(char::Char, str::AbstractString)
-    @static if VERSION > v"0.7-"
-        return something(findfirst(isequal(char), str), 0)
-    else
-        return searchindex(str, char)
-    end
+    return something(findfirst(isequal(char), str), 0)
 end
 
 
@@ -1366,7 +1354,7 @@ function Base.eltype(::Type{T}) where {T<:AbstractNodeIterator}
     return Node
 end
 
-function Compat.IteratorSize(::Type{T}) where {T<:AbstractNodeIterator}
+function Base.IteratorSize(::Type{T}) where {T<:AbstractNodeIterator}
     return Base.SizeUnknown()
 end
 
@@ -1393,30 +1381,16 @@ struct ChildNodeIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-if VERSION > v"0.7.0-DEV.5126"
-    function Base.iterate(iter::ChildNodeIterator)
-        cur_ptr = iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
-        cur_ptr == C_NULL && return nothing
-        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
-    end
+function Base.iterate(iter::ChildNodeIterator)
+    cur_ptr = iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
+    cur_ptr == C_NULL && return nothing
+    return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
+end
 
-    function Base.iterate(iter::ChildNodeIterator, cur_ptr)
-        cur_ptr = iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
-        cur_ptr == C_NULL && return nothing
-        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
-    end
-else
-    function Base.start(iter::ChildNodeIterator)
-        return iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
-    end
-    function Base.done(::ChildNodeIterator, cur_ptr)
-        return cur_ptr == C_NULL
-    end
-    function Base.next(iter::ChildNodeIterator, cur_ptr)
-        return (
-            Node(cur_ptr, ismanaged(iter.node)),
-            iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr))
-    end
+function Base.iterate(iter::ChildNodeIterator, cur_ptr)
+    cur_ptr = iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
+    cur_ptr == C_NULL && return nothing
+    return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
 end
 
 """
@@ -1442,30 +1416,16 @@ struct ChildElementIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-if VERSION > v"0.7.0-DEV.5126"
-    function Base.iterate(iter::ChildElementIterator)
-        cur_ptr = iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
-        cur_ptr == C_NULL && return nothing
-        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
-    end
+function Base.iterate(iter::ChildElementIterator)
+    cur_ptr = iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
+    cur_ptr == C_NULL && return nothing
+    return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
+end
 
-    function Base.iterate(iter::ChildElementIterator, cur_ptr)
-        cur_ptr = iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
-        cur_ptr == C_NULL && return nothing
-        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
-    end
-else
-    function Base.start(iter::ChildElementIterator)
-        return iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
-    end
-    function Base.done(::ChildElementIterator, cur_ptr)
-        return cur_ptr == C_NULL
-    end
-    function Base.next(iter::ChildElementIterator, cur_ptr)
-        return (
-            Node(cur_ptr, ismanaged(iter.node)),
-            iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr))
-    end
+function Base.iterate(iter::ChildElementIterator, cur_ptr)
+    cur_ptr = iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
+    cur_ptr == C_NULL && return nothing
+    return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
 end
 
 """
@@ -1493,23 +1453,9 @@ struct AttributeIterator <: AbstractNodeIterator
     node::Node
 end
 
-if VERSION > v"0.7.0-DEV.5126"
-    function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.node.ptr))
-        cur_ptr == C_NULL && return nothing
-        return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
-    end
-else
-    function Base.start(iter::AttributeIterator)
-        @assert iter.node.ptr != C_NULL
-        @assert unsafe_load(iter.node.ptr).typ == ELEMENT_NODE
-        return property_ptr(iter.node.ptr)
-    end
-    function Base.done(::AttributeIterator, cur_ptr)
-        return cur_ptr == C_NULL
-    end
-    function Base.next(iter::AttributeIterator, cur_ptr)
-        return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
-    end
+function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.node.ptr))
+    cur_ptr == C_NULL && return nothing
+    return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
 end
 
 function parent_ptr(node_ptr)

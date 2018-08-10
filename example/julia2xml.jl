@@ -33,8 +33,4 @@ function expr2elem(expr)
     end
 end
 
-if VERSION > v"0.7-"
-    prettyprint(expr2xml(Meta.parse(String(read(stdin)))))
-else
-    prettyprint(expr2xml(parse(String(read(STDIN)))))
-end
+prettyprint(expr2xml(Meta.parse(String(read(stdin)))))

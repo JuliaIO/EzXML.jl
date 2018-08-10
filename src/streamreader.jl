@@ -18,15 +18,13 @@ mutable struct StreamReader
     end
 end
 
-if isdefined(Base, :getproperty)
-    @inline function Base.getproperty(reader::StreamReader, name::Symbol)
-        name == :type      ? nodetype(reader)                                         :
-        name == :depth     ? nodedepth(reader)                                        :
-        name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
-        name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
-        name == :namespace ? namespace(reader)                                        :
-        Core.getfield(reader, name)
-    end
+@inline function Base.getproperty(reader::StreamReader, name::Symbol)
+    name == :type      ? nodetype(reader)                                         :
+    name == :depth     ? nodedepth(reader)                                        :
+    name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
+    name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
+    name == :namespace ? namespace(reader)                                        :
+    Core.getfield(reader, name)
 end
 
 function Base.show(io::IO, reader::StreamReader)
@@ -177,30 +175,15 @@ function Base.eltype(::Type{StreamReader})
     return ReaderType
 end
 
-function Compat.IteratorSize(::Type{StreamReader})
+function Base.IteratorSize(::Type{StreamReader})
     return Base.SizeUnknown()
 end
 
-if VERSION > v"0.7.0-DEV.5126"
-    function Base.iterate(reader::StreamReader, state=nothing)
-        if read_node(reader)
-            nothing
-        else
-            nodetype(reader), nothing
-        end
-    end
-else
-    function Base.start(::StreamReader)
-        return nothing
-    end
-    function Base.done(reader::StreamReader, _=nothing)
-        return read_node(reader)
-    end
-    function Base.next(reader::StreamReader, _)
-        return nodetype(reader), nothing
-    end
-    function Base.next(reader::StreamReader)
-        return nodetype(reader)
+function Base.iterate(reader::StreamReader, state=nothing)
+    if read_node(reader)
+        nothing
+    else
+        nodetype(reader), nothing
     end
 end
 

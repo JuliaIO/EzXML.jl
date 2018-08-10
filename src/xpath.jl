@@ -39,7 +39,7 @@ end
 
 Find nodes matching `xpath` XPath query from `doc`.
 """
-function Compat.findall(xpath::AbstractString, doc::Document)
+function Base.findall(xpath::AbstractString, doc::Document)
     return findall(xpath, doc.node)
 end
 
@@ -72,7 +72,7 @@ Find nodes matching `xpath` XPath query starting from `node`.
 
 The `ns` argument is an iterator of namespace prefix and URI pairs.
 """
-function Compat.findall(xpath::AbstractString, node::Node, ns=namespaces(node))
+function Base.findall(xpath::AbstractString, node::Node, ns=namespaces(node))
     if !ismanaged(node)
         throw(ArgumentError("XPath query on the unmanaged node"))
     end
@@ -131,10 +131,10 @@ function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
 end
 
 # Deprecated
-Compat.findall(doc::Document, xpath::AbstractString) = findall(xpath, doc)
+Base.findall(doc::Document, xpath::AbstractString) = findall(xpath, doc)
 Base.findfirst(doc::Document, xpath::AbstractString) = first(findall(xpath, doc))
 Base.findlast(doc::Document, xpath::AbstractString) = last(findall(xpath, doc))
-Compat.findall(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
+Base.findall(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
 Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) = first(findall(xpath, node, ns))
 Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) = last(findall(xpath, node, ns))
 

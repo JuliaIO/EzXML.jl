@@ -19,14 +19,12 @@ end
 # Document properties
 # -------------------
 
-if Base.isdefined(Base, :getproperty)
-    @inline function Base.getproperty(doc::Document, name::Symbol)
-        name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
-        name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :
-        name == :root     ? (hasroot(doc)     ? root(doc)     : nothing) :
-        name == :dtd      ? (hasdtd(doc)      ? dtd(doc)      : nothing) :
-        Core.getfield(doc, name)
-    end
+@inline function Base.getproperty(doc::Document, name::Symbol)
+    name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
+    name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :
+    name == :root     ? (hasroot(doc)     ? root(doc)     : nothing) :
+    name == :dtd      ? (hasdtd(doc)      ? dtd(doc)      : nothing) :
+    Core.getfield(doc, name)
 end
 
 
@@ -91,10 +89,8 @@ function parsexml(xmldata::Vector{UInt8})
     return parsexml(String(xmldata))
 end
 
-if VERSION > v"0.7-"
-    function parsexml(xmldata::Base.CodeUnits{UInt8,String})
-        return parsexml(String(xmldata))
-    end
+function parsexml(xmldata::Base.CodeUnits{UInt8,String})
+    return parsexml(String(xmldata))
 end
 
 """
@@ -121,10 +117,8 @@ function parsehtml(htmldata::Vector{UInt8})
     return parsehtml(String(htmldata))
 end
 
-if VERSION > v"0.7-"
-    function parsehtml(htmldata::Base.CodeUnits{UInt8,String})
-        return parsehtml(String(htmldata))
-    end
+function parsehtml(htmldata::Base.CodeUnits{UInt8,String})
+    return parsehtml(String(htmldata))
 end
 
 """
