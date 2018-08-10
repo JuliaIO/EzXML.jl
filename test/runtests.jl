@@ -1148,7 +1148,7 @@ end
     dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
     system = relpath(dtdfile)
     if isdefined(Sys, :iswindows) ? Sys.iswindows() : is_windows()
-        system = replace(system, '\\', '/')
+        system = replace(system, '\\' => '/')
     end
 
     doc = parsexml("""
