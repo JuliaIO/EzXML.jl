@@ -672,7 +672,7 @@ don't need to support Julia 0.6, you should use the `iterate` method
 instead.)** Iteration is advanced by the `done(<reader>)` method, which updates
 the current reading position of the reader and returns `false` when there is at
 least one node to read from the stream:
-```jldoctest
+```
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
 EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
 

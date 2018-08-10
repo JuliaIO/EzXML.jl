@@ -1,5 +1,5 @@
-References
-==========
+Reference
+=========
 
 ```@meta
 CurrentModule = EzXML
