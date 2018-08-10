@@ -133,45 +133,4 @@ function __init__()
     init_error_handler()
 end
 
-
-# Deprecation
-# -----------
-
-function Base.read(::Type{Document}, filename::AbstractString)
-    Compat.@warn "read(Document, filename) is deprecated, use readxml(filename) or readhtml(filename) instead"
-    if endswith(filename, ".html") || endswith(filename, ".htm")
-        return readhtml(filename)
-    else
-        return readxml(filename)
-    end
-end
-
-function Base.parse(::Type{Document}, inputstring::AbstractString)
-    Compat.@warn "parse(Document, string) is deprecated, use parsexml(string) or parsehtml(string) instead"
-    if is_html_like(inputstring)
-        return parsehtml(inputstring)
-    else
-        return parsexml(inputstring)
-    end
-end
-
-function Base.parse(::Type{Document}, inputdata::Vector{UInt8})
-    return parse(Document, String(inputdata))
-end
-
-# Try to infer whether an input is formatted in HTML.
-function is_html_like(inputstring)
-    if ismatch(r"^\s*<!DOCTYPE html", inputstring)
-        return true
-    elseif ismatch(r"^\s*<\?xml", inputstring)
-        return false
-    end
-    i = searchindex(inputstring, "<html")
-    if 0 < i < 100
-        return true
-    else
-        return false
-    end
-end
-
 end # module
