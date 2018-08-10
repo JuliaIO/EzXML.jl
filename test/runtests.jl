@@ -1,9 +1,5 @@
 using EzXML
-if VERSION < v"0.7-"
-    using Base.Test
-else
-    using Test
-end
+using Test
 
 # Unit tests
 # ----------
@@ -370,11 +366,7 @@ end
         @test "title" ∈ names
     end
 
-    if VERSION > v"0.7.0-DEV.5126"
-        @test_throws EzXML.XMLError iterate(EzXML.StreamReader(IOBuffer("not xml")))
-    else
-        @test_throws EzXML.XMLError done(EzXML.StreamReader(IOBuffer("not xml")))
-    end
+    @test_throws EzXML.XMLError iterate(EzXML.StreamReader(IOBuffer("not xml")))
 
     # memory management test
     for _ in 1:10
