@@ -1393,13 +1393,17 @@ struct ChildNodeIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-if VERSION > v"0.7-"
-    function Base.iterate(iter::ChildNodeIterator,
-                          cur_ptr::Ptr{_Node}=iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr))
-        if cur_ptr == C_NULL
-            return nothing
-        end
-        return Node(cur_ptr, ismanaged(iter.node)), iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
+if VERSION > v"0.7.0-DEV.5126"
+    function Base.iterate(iter::ChildNodeIterator)
+        cur_ptr = iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
+        cur_ptr == C_NULL && return nothing
+        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
+    end
+
+    function Base.iterate(iter::ChildNodeIterator, cur_ptr)
+        cur_ptr = iter.backward ? prev_node_ptr(cur_ptr) : next_node_ptr(cur_ptr)
+        cur_ptr == C_NULL && return nothing
+        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
     end
 else
     function Base.start(iter::ChildNodeIterator)
@@ -1438,13 +1442,17 @@ struct ChildElementIterator <: AbstractNodeIterator
     backward::Bool
 end
 
-if VERSION > v"0.7-"
-    function Base.iterate(iter::ChildElementIterator,
-                          cur_ptr::Ptr{_Node}=iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr))
-        if cur_ptr == C_NULL
-            return nothing
-        end
-        return Node(cur_ptr, ismanaged(iter.node)), iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
+if VERSION > v"0.7.0-DEV.5126"
+    function Base.iterate(iter::ChildElementIterator)
+        cur_ptr = iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
+        cur_ptr == C_NULL && return nothing
+        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
+    end
+
+    function Base.iterate(iter::ChildElementIterator, cur_ptr)
+        cur_ptr = iter.backward ? prev_element_ptr(cur_ptr) : next_element_ptr(cur_ptr)
+        cur_ptr == C_NULL && return nothing
+        return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
     end
 else
     function Base.start(iter::ChildElementIterator)
@@ -1485,11 +1493,9 @@ struct AttributeIterator <: AbstractNodeIterator
     node::Node
 end
 
-if VERSION > v"0.7-"
+if VERSION > v"0.7.0-DEV.5126"
     function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.node.ptr))
-        if cur_ptr == C_NULL
-            return nothing
-        end
+        cur_ptr == C_NULL && return nothing
         return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
     end
 else
