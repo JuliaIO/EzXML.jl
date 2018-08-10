@@ -66,55 +66,55 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#",
-    "page": "References",
-    "title": "References",
+    "page": "Reference",
+    "title": "Reference",
     "category": "page",
     "text": ""
 },
 
 {
-    "location": "reference.html#References-1",
-    "page": "References",
-    "title": "References",
+    "location": "reference.html#Reference-1",
+    "page": "Reference",
+    "title": "Reference",
     "category": "section",
     "text": "CurrentModule = EzXML"
 },
 
 {
     "location": "reference.html#EzXML.Document",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.Document",
     "category": "type",
-    "text": "An XML/HTML document type.\n\n\n\n"
+    "text": "An XML/HTML document type.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.Node",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.Node",
     "category": "type",
-    "text": "A proxy type to libxml2\'s node struct.\n\nProperties (Julia ≥ 0.7)\n\nName Type Description\ntype EzXML.NodeType the type of a node\nname String? the name of a node\npath String the absolute path to a node\ncontent String the content of a node\nnamespace String? the namespace associated with a node\n\n\n\n"
+    "text": "A proxy type to libxml2\'s node struct.\n\nProperties (Julia ≥ 0.7)\n\nName Type Description\ntype EzXML.NodeType the type of a node\nname String? the name of a node\npath String the absolute path to a node\ncontent String the content of a node\nnamespace String? the namespace associated with a node\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.StreamReader",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.StreamReader",
     "category": "type",
-    "text": "A streaming XML reader type.\n\n\n\n"
+    "text": "A streaming XML reader type.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.XMLError",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.XMLError",
     "category": "type",
-    "text": "An error detected by libxml2.\n\n\n\n"
+    "text": "An error detected by libxml2.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Types-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Types",
     "category": "section",
     "text": "EzXML.Document\nEzXML.Node\nEzXML.StreamReader\nEzXML.XMLError"
@@ -122,47 +122,47 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.parsexml",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.parsexml",
     "category": "function",
-    "text": "parsexml(xmlstring)\n\nParse xmlstring and create an XML document.\n\n\n\n"
+    "text": "parsexml(xmlstring)\n\nParse xmlstring and create an XML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.parsehtml",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.parsehtml",
     "category": "function",
-    "text": "parsehtml(htmlstring)\n\nParse htmlstring and create an HTML document.\n\n\n\n"
+    "text": "parsehtml(htmlstring)\n\nParse htmlstring and create an HTML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.readxml",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.readxml",
     "category": "function",
-    "text": "readxml(filename)\n\nRead filename and create an XML document.\n\n\n\nreadxml(input::IO)\n\nRead input and create an XML document.\n\n\n\n"
+    "text": "readxml(filename)\n\nRead filename and create an XML document.\n\n\n\n\n\nreadxml(input::IO)\n\nRead input and create an XML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.readhtml",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.readhtml",
     "category": "function",
-    "text": "readhtml(filename)\n\nRead filename and create an HTML document.\n\n\n\nreadhtml(input::IO)\n\nRead input and create an HTML document.\n\n\n\n"
+    "text": "readhtml(filename)\n\nRead filename and create an HTML document.\n\n\n\n\n\nreadhtml(input::IO)\n\nRead input and create an HTML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.prettyprint",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.prettyprint",
     "category": "function",
-    "text": "prettyprint([io], node::Node)\n\nPrint node with formatting.\n\n\n\nprettyprint([io], doc::Document)\n\nPrint doc with formatting.\n\n\n\n"
+    "text": "prettyprint([io], node::Node)\n\nPrint node with formatting.\n\n\n\n\n\nprettyprint([io], doc::Document)\n\nPrint doc with formatting.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#I/O-1",
-    "page": "References",
+    "page": "Reference",
     "title": "I/O",
     "category": "section",
     "text": "parsexml\nparsehtml\nreadxml\nreadhtml\nprettyprint"
@@ -170,87 +170,87 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.XMLDocument",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.XMLDocument",
     "category": "function",
-    "text": "XMLDocument(version=\"1.0\")\n\nCreate an XML document.\n\n\n\n"
+    "text": "XMLDocument(version=\"1.0\")\n\nCreate an XML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.HTMLDocument",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.HTMLDocument",
     "category": "function",
-    "text": "HTMLDocument(uri=nothing, externalID=nothing)\n\nCreate an HTML document.\n\n\n\n"
+    "text": "HTMLDocument(uri=nothing, externalID=nothing)\n\nCreate an HTML document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.XMLDocumentNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.XMLDocumentNode",
     "category": "function",
-    "text": "XMLDocumentNode(version)\n\nCreate an XML document node with version.\n\n\n\n"
+    "text": "XMLDocumentNode(version)\n\nCreate an XML document node with version.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.HTMLDocumentNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.HTMLDocumentNode",
     "category": "function",
-    "text": "HTMLDocumentNode(uri, externalID)\n\nCreate an HTML document node.\n\nuri and externalID are either a string or nothing.\n\n\n\n"
+    "text": "HTMLDocumentNode(uri, externalID)\n\nCreate an HTML document node.\n\nuri and externalID are either a string or nothing.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.ElementNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.ElementNode",
     "category": "function",
-    "text": "ElementNode(name)\n\nCreate an element node with name.\n\n\n\n"
+    "text": "ElementNode(name)\n\nCreate an element node with name.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.TextNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.TextNode",
     "category": "function",
-    "text": "TextNode(content)\n\nCreate a text node with content.\n\n\n\n"
+    "text": "TextNode(content)\n\nCreate a text node with content.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.CommentNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.CommentNode",
     "category": "function",
-    "text": "CommentNode(content)\n\nCreate a comment node with content.\n\n\n\n"
+    "text": "CommentNode(content)\n\nCreate a comment node with content.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.CDataNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.CDataNode",
     "category": "function",
-    "text": "CDataNode(content)\n\nCreate a CDATA node with content.\n\n\n\n"
+    "text": "CDataNode(content)\n\nCreate a CDATA node with content.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.AttributeNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.AttributeNode",
     "category": "function",
-    "text": "AttributeNode(name, value)\n\nCreate an attribute node with name and value.\n\n\n\n"
+    "text": "AttributeNode(name, value)\n\nCreate an attribute node with name and value.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.DTDNode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.DTDNode",
     "category": "function",
-    "text": "DTDNode(name, [systemID, [externalID]])\n\nCreate a DTD node with name, systemID, and externalID.\n\n\n\n"
+    "text": "DTDNode(name, [systemID, [externalID]])\n\nCreate a DTD node with name, systemID, and externalID.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Constructors-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Constructors",
     "category": "section",
     "text": "XMLDocument\nHTMLDocument\nXMLDocumentNode\nHTMLDocumentNode\nElementNode\nTextNode\nCommentNode\nCDataNode\nAttributeNode\nDTDNode"
@@ -258,7 +258,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#Node-types-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Node types",
     "category": "section",
     "text": "Node type Integer\nEzXML.ELEMENT_NODE 1\nEzXML.ATTRIBUTE_NODE 2\nEzXML.TEXT_NODE 3\nEzXML.CDATA_SECTION_NODE 4\nEzXML.ENTITY_REF_NODE 5\nEzXML.ENTITY_NODE 6\nEzXML.PI_NODE 7\nEzXML.COMMENT_NODE 8\nEzXML.DOCUMENT_NODE 9\nEzXML.DOCUMENT_TYPE_NODE 10\nEzXML.DOCUMENT_FRAG_NODE 11\nEzXML.NOTATION_NODE 12\nEzXML.HTML_DOCUMENT_NODE 13\nEzXML.DTD_NODE 14\nEzXML.ELEMENT_DECL 15\nEzXML.ATTRIBUTE_DECL 16\nEzXML.ENTITY_DECL 17\nEzXML.NAMESPACE_DECL 18\nEzXML.XINCLUDE_START 19\nEzXML.XINCLUDE_END 20\nEzXML.DOCB_DOCUMENT_NODE 21"
@@ -266,159 +266,159 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.nodetype-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodetype",
     "category": "method",
-    "text": "nodetype(node::Node)\n\nReturn the type of node as an integer.\n\n\n\n"
+    "text": "nodetype(node::Node)\n\nReturn the type of node as an integer.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodepath-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodepath",
     "category": "method",
-    "text": "nodepath(node::Node)\n\nReturn the path of node.\n\n\n\n"
+    "text": "nodepath(node::Node)\n\nReturn the path of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodename-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodename",
     "category": "method",
-    "text": "nodename(node::Node)\n\nReturn the node name of node.\n\n\n\n"
+    "text": "nodename(node::Node)\n\nReturn the node name of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodecontent-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodecontent",
     "category": "method",
-    "text": "nodecontent(node::Node)\n\nReturn the node content of node.\n\n\n\n"
+    "text": "nodecontent(node::Node)\n\nReturn the node content of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.namespace-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.namespace",
     "category": "method",
-    "text": "namespace(node::Node)\n\nReturn the namespace associated with node.\n\n\n\n"
+    "text": "namespace(node::Node)\n\nReturn the namespace associated with node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.namespaces-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.namespaces",
     "category": "method",
-    "text": "namespaces(node::Node)\n\nCreate a vector of namespaces applying to node.\n\n\n\n"
+    "text": "namespaces(node::Node)\n\nCreate a vector of namespaces applying to node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnodename-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnodename",
     "category": "method",
-    "text": "hasnodename(node::Node)\n\nReturn if node has a node name.\n\n\n\n"
+    "text": "hasnodename(node::Node)\n\nReturn if node has a node name.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnamespace-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnamespace",
     "category": "method",
-    "text": "hasnamespace(node::Node)\n\nReturn if node is associated with a namespace.\n\n\n\n"
+    "text": "hasnamespace(node::Node)\n\nReturn if node is associated with a namespace.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.iselement-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.iselement",
     "category": "method",
-    "text": "iselement(node::Node)\n\nReturn if node is an element node.\n\n\n\n"
+    "text": "iselement(node::Node)\n\nReturn if node is an element node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.isattribute-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.isattribute",
     "category": "method",
-    "text": "isattribute(node::Node)\n\nReturn if node is an attribute node.\n\n\n\n"
+    "text": "isattribute(node::Node)\n\nReturn if node is an attribute node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.istext-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.istext",
     "category": "method",
-    "text": "istext(node::Node)\n\nReturn if node is a text node.\n\n\n\n"
+    "text": "istext(node::Node)\n\nReturn if node is a text node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.iscdata-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.iscdata",
     "category": "method",
-    "text": "iscdata(node::Node)\n\nReturn if node is a CDATA node.\n\n\n\n"
+    "text": "iscdata(node::Node)\n\nReturn if node is a CDATA node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.iscomment-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.iscomment",
     "category": "method",
-    "text": "iscomment(node::Node)\n\nReturn if node is a comment node.\n\n\n\n"
+    "text": "iscomment(node::Node)\n\nReturn if node is a comment node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.isdtd-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.isdtd",
     "category": "method",
-    "text": "isdtd(node::Node)\n\nReturn if node is a DTD node.\n\n\n\n"
+    "text": "isdtd(node::Node)\n\nReturn if node is a DTD node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.countnodes-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.countnodes",
     "category": "method",
-    "text": "countnodes(parent::Node)\n\nCount the number of child nodes of parent.\n\n\n\n"
+    "text": "countnodes(parent::Node)\n\nCount the number of child nodes of parent.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.countelements-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.countelements",
     "category": "method",
-    "text": "countelements(parent::Node)\n\nCount the number of child elements of parent.\n\n\n\n"
+    "text": "countelements(parent::Node)\n\nCount the number of child elements of parent.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.countattributes-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.countattributes",
     "category": "method",
-    "text": "countattributes(elem::Node)\n\nCount the number of attributes of elem.\n\n\n\n"
+    "text": "countattributes(elem::Node)\n\nCount the number of attributes of elem.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.systemID-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.systemID",
     "category": "method",
-    "text": "systemID(node::Node)\n\nReturn the system ID of node.\n\n\n\n"
+    "text": "systemID(node::Node)\n\nReturn the system ID of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.externalID-Tuple{EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.externalID",
     "category": "method",
-    "text": "externalID(node::Node)\n\nReturn the external ID of node.\n\n\n\n"
+    "text": "externalID(node::Node)\n\nReturn the external ID of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Node-accessors-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Node accessors",
     "category": "section",
     "text": "nodetype(::Node)\nnodepath(::Node)\nnodename(::Node)\nnodecontent(::Node)\nnamespace(::Node)\nnamespaces(::Node)\nhasnodename(::Node)\nhasnamespace(::Node)\niselement(::Node)\nisattribute(::Node)\nistext(::Node)\niscdata(::Node)\niscomment(::Node)\nisdtd(::Node)\ncountnodes(::Node)\ncountelements(::Node)\ncountattributes(::Node)\nsystemID(::Node)\nexternalID(::Node)"
@@ -426,23 +426,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.setnodename!-Tuple{EzXML.Node,AbstractString}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.setnodename!",
     "category": "method",
-    "text": "setnodename!(node::Node, name::AbstractString)\n\nSet the name of node.\n\n\n\n"
+    "text": "setnodename!(node::Node, name::AbstractString)\n\nSet the name of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.setnodecontent!-Tuple{EzXML.Node,AbstractString}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.setnodecontent!",
     "category": "method",
-    "text": "setnodecontent!(node::Node, content::AbstractString)\n\nReplace the content of node.\n\n\n\n"
+    "text": "setnodecontent!(node::Node, content::AbstractString)\n\nReplace the content of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Node-modifiers-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Node modifiers",
     "category": "section",
     "text": "setnodename!(::Node, ::AbstractString)\nsetnodecontent!(::Node, ::AbstractString)"
@@ -450,39 +450,39 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.version",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.version",
     "category": "function",
-    "text": "version(doc::Document)\n\nReturn the version string of doc.\n\n\n\n"
+    "text": "version(doc::Document)\n\nReturn the version string of doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.encoding",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.encoding",
     "category": "function",
-    "text": "encoding(doc::Document)\n\nReturn the encoding string of doc.\n\n\n\n"
+    "text": "encoding(doc::Document)\n\nReturn the encoding string of doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasversion",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasversion",
     "category": "function",
-    "text": "hasversion(doc::Document)\n\nReturn if doc has a version string.\n\n\n\n"
+    "text": "hasversion(doc::Document)\n\nReturn if doc has a version string.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasencoding",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasencoding",
     "category": "function",
-    "text": "hasencoding(doc::Document)\n\nReturn if doc has an encoding string.\n\n\n\n"
+    "text": "hasencoding(doc::Document)\n\nReturn if doc has an encoding string.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Document-properties-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Document properties",
     "category": "section",
     "text": "version\nencoding\nhasversion\nhasencoding"
@@ -490,247 +490,247 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.document",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.document",
     "category": "function",
-    "text": "document(node::Node)\n\nReturn the document of node.\n\n\n\n"
+    "text": "document(node::Node)\n\nReturn the document of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.root",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.root",
     "category": "function",
-    "text": "root(doc::Document)\n\nReturn the root element of doc.\n\n\n\n"
+    "text": "root(doc::Document)\n\nReturn the root element of doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.dtd",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.dtd",
     "category": "function",
-    "text": "dtd(doc::Document)\n\nReturn the DTD node of doc.\n\n\n\n"
+    "text": "dtd(doc::Document)\n\nReturn the DTD node of doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.parentnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.parentnode",
     "category": "function",
-    "text": "parentnode(node::Node)\n\nReturn the parent of node.\n\n\n\n"
+    "text": "parentnode(node::Node)\n\nReturn the parent of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.parentelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.parentelement",
     "category": "function",
-    "text": "parentelement(node::Node)\n\nReturn the parent element of node.\n\n\n\n"
+    "text": "parentelement(node::Node)\n\nReturn the parent element of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.firstnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.firstnode",
     "category": "function",
-    "text": "firstnode(node::Node)\n\nReturn the first child node of node.\n\n\n\n"
+    "text": "firstnode(node::Node)\n\nReturn the first child node of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.lastnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.lastnode",
     "category": "function",
-    "text": "lastnode(node::Node)\n\nReturn the last child node of node.\n\n\n\n"
+    "text": "lastnode(node::Node)\n\nReturn the last child node of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.firstelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.firstelement",
     "category": "function",
-    "text": "firstelement(node::Node)\n\nReturn the first child element of node.\n\n\n\n"
+    "text": "firstelement(node::Node)\n\nReturn the first child element of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.lastelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.lastelement",
     "category": "function",
-    "text": "lastelement(node::Node)\n\nReturn the last child element of node.\n\n\n\n"
+    "text": "lastelement(node::Node)\n\nReturn the last child element of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nextnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nextnode",
     "category": "function",
-    "text": "nextnode(node::Node)\n\nReturn the next node of node.\n\n\n\n"
+    "text": "nextnode(node::Node)\n\nReturn the next node of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.prevnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.prevnode",
     "category": "function",
-    "text": "prevnode(node::Node)\n\nReturn the previous node of node.\n\n\n\n"
+    "text": "prevnode(node::Node)\n\nReturn the previous node of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nextelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nextelement",
     "category": "function",
-    "text": "nextelement(node::Node)\n\nReturn the next element of node.\n\n\n\n"
+    "text": "nextelement(node::Node)\n\nReturn the next element of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.prevelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.prevelement",
     "category": "function",
-    "text": "prevelement(node::Node)\n\nReturn the previous element of node.\n\n\n\n"
+    "text": "prevelement(node::Node)\n\nReturn the previous element of node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.eachnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.eachnode",
     "category": "function",
-    "text": "eachnode(node::Node, [backward=false])\n\nCreate an iterator of child nodes.\n\n\n\n"
+    "text": "eachnode(node::Node, [backward=false])\n\nCreate an iterator of child nodes.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodes",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodes",
     "category": "function",
-    "text": "nodes(node::Node, [backward=false])\n\nCreate a vector of child nodes.\n\n\n\n"
+    "text": "nodes(node::Node, [backward=false])\n\nCreate a vector of child nodes.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.eachelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.eachelement",
     "category": "function",
-    "text": "eachelement(node::Node, [backward=false])\n\nCreate an iterator of child elements.\n\n\n\n"
+    "text": "eachelement(node::Node, [backward=false])\n\nCreate an iterator of child elements.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.elements",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.elements",
     "category": "function",
-    "text": "elements(node::Node, [backward=false])\n\nCreate a vector of child elements.\n\n\n\n"
+    "text": "elements(node::Node, [backward=false])\n\nCreate a vector of child elements.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.eachattribute",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.eachattribute",
     "category": "function",
-    "text": "eachattribute(node::Node)\n\nCreate an iterator of attributes.\n\n\n\n"
+    "text": "eachattribute(node::Node)\n\nCreate an iterator of attributes.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.attributes",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.attributes",
     "category": "function",
-    "text": "attributes(node::Node)\n\nCreate a vector of attributes.\n\n\n\n"
+    "text": "attributes(node::Node)\n\nCreate a vector of attributes.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasroot",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasroot",
     "category": "function",
-    "text": "hasroot(doc::Document)\n\nReturn if doc has a root element.\n\n\n\n"
+    "text": "hasroot(doc::Document)\n\nReturn if doc has a root element.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasdtd",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasdtd",
     "category": "function",
-    "text": "hasdtd(doc::Document)\n\nReturn if doc has a DTD node.\n\n\n\n"
+    "text": "hasdtd(doc::Document)\n\nReturn if doc has a DTD node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnode",
     "category": "function",
-    "text": "hasnode(node::Node)\n\nReturn if node has a child node.\n\n\n\n"
+    "text": "hasnode(node::Node)\n\nReturn if node has a child node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnextnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnextnode",
     "category": "function",
-    "text": "hasnextnode(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
+    "text": "hasnextnode(node::Node)\n\nReturn if node has a next node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasprevnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasprevnode",
     "category": "function",
-    "text": "hasprevnode(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
+    "text": "hasprevnode(node::Node)\n\nReturn if node has a previous node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.haselement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.haselement",
     "category": "function",
-    "text": "haselement(node::Node)\n\nReturn if node has a child element.\n\n\n\n"
+    "text": "haselement(node::Node)\n\nReturn if node has a child element.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnextelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnextelement",
     "category": "function",
-    "text": "hasnextelement(node::Node)\n\nReturn if node has a next node.\n\n\n\n"
+    "text": "hasnextelement(node::Node)\n\nReturn if node has a next node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasprevelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasprevelement",
     "category": "function",
-    "text": "hasprevelement(node::Node)\n\nReturn if node has a previous node.\n\n\n\n"
+    "text": "hasprevelement(node::Node)\n\nReturn if node has a previous node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasdocument",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasdocument",
     "category": "function",
-    "text": "hasdocument(node::Node)\n\nReturn if node belongs to a document.\n\n\n\n"
+    "text": "hasdocument(node::Node)\n\nReturn if node belongs to a document.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasparentnode",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasparentnode",
     "category": "function",
-    "text": "hasparentnode(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
+    "text": "hasparentnode(node::Node)\n\nReturn if node has a parent node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasparentelement",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasparentelement",
     "category": "function",
-    "text": "hasparentelement(node::Node)\n\nReturn if node has a parent node.\n\n\n\n"
+    "text": "hasparentelement(node::Node)\n\nReturn if node has a parent node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#DOM-tree-accessors-1",
-    "page": "References",
+    "page": "Reference",
     "title": "DOM tree accessors",
     "category": "section",
     "text": "document\nroot\ndtd\nparentnode\nparentelement\nfirstnode\nlastnode\nfirstelement\nlastelement\nnextnode\nprevnode\nnextelement\nprevelement\neachnode\nnodes\neachelement\nelements\neachattribute\nattributes\nhasroot\nhasdtd\nhasnode\nhasnextnode\nhasprevnode\nhaselement\nhasnextelement\nhasprevelement\nhasdocument\nhasparentnode\nhasparentelement"
@@ -738,119 +738,119 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.setroot!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.setroot!",
     "category": "function",
-    "text": "setroot!(doc::Document, node::Node)\n\nSet the root element of doc to node and return the root element.\n\n\n\n"
+    "text": "setroot!(doc::Document, node::Node)\n\nSet the root element of doc to node and return the root element.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.setdtd!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.setdtd!",
     "category": "function",
-    "text": "setdtd!(doc::Document, node::Node)\n\nSet the DTD node of doc to node and return the DTD node.\n\n\n\n"
+    "text": "setdtd!(doc::Document, node::Node)\n\nSet the DTD node of doc to node and return the DTD node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.link!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.link!",
     "category": "function",
-    "text": "link!(parent::Node, child::Node)\n\nLink child at the end of children of parent.\n\n\n\n"
+    "text": "link!(parent::Node, child::Node)\n\nLink child at the end of children of parent.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.linknext!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.linknext!",
     "category": "function",
-    "text": "linknext!(target::Node, node::Node)\n\nLink node as the next sibling of target.\n\n\n\n"
+    "text": "linknext!(target::Node, node::Node)\n\nLink node as the next sibling of target.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.linkprev!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.linkprev!",
     "category": "function",
-    "text": "linkprev!(target::Node, node::Node)\n\nLink node as the prev sibling of target.\n\n\n\n"
+    "text": "linkprev!(target::Node, node::Node)\n\nLink node as the prev sibling of target.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.unlink!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.unlink!",
     "category": "function",
-    "text": "unlink!(node::Node)\n\nUnlink node from its context.\n\n\n\n"
+    "text": "unlink!(node::Node)\n\nUnlink node from its context.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.addelement!",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.addelement!",
     "category": "function",
-    "text": "addelement!(parent::Node, name::AbstractString)\n\nAdd a new child element of name with no content to parent and return the new child element.\n\n\n\naddelement!(parent::Node, name::AbstractString, content::AbstractString)\n\nAdd a new child element of name with content to parent and return the new child element.\n\n\n\n"
+    "text": "addelement!(parent::Node, name::AbstractString)\n\nAdd a new child element of name with no content to parent and return the new child element.\n\n\n\n\n\naddelement!(parent::Node, name::AbstractString, content::AbstractString)\n\nAdd a new child element of name with content to parent and return the new child element.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#DOM-tree-modifiers-1",
-    "page": "References",
+    "page": "Reference",
     "title": "DOM tree modifiers",
     "category": "section",
     "text": "setroot!\nsetdtd!\nlink!\nlinknext!\nlinkprev!\nunlink!\naddelement!"
 },
 
 {
-    "location": "reference.html#Compat.findall-Tuple{AbstractString,EzXML.Document}",
-    "page": "References",
-    "title": "Compat.findall",
+    "location": "reference.html#Base.findall-Tuple{AbstractString,EzXML.Document}",
+    "page": "Reference",
+    "title": "Base.findall",
     "category": "method",
-    "text": "findall(xpath::AbstractString, doc::Document)\n\nFind nodes matching xpath XPath query from doc.\n\n\n\n"
+    "text": "findall(xpath::AbstractString, doc::Document)\n\nFind nodes matching xpath XPath query from doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Base.findfirst-Tuple{AbstractString,EzXML.Document}",
-    "page": "References",
+    "page": "Reference",
     "title": "Base.findfirst",
     "category": "method",
-    "text": "findfirst(xpath::AbstractString, doc::Document)\n\nFind the first node matching xpath XPath query from doc.\n\n\n\n"
+    "text": "findfirst(xpath::AbstractString, doc::Document)\n\nFind the first node matching xpath XPath query from doc.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Base.findlast-Tuple{AbstractString,EzXML.Document}",
-    "page": "References",
+    "page": "Reference",
     "title": "Base.findlast",
     "category": "method",
-    "text": "findlast(doc::Document, xpath::AbstractString)\n\nFind the last node matching xpath XPath query from doc.\n\n\n\n"
+    "text": "findlast(doc::Document, xpath::AbstractString)\n\nFind the last node matching xpath XPath query from doc.\n\n\n\n\n\n"
 },
 
 {
-    "location": "reference.html#Compat.findall-Tuple{AbstractString,EzXML.Node}",
-    "page": "References",
-    "title": "Compat.findall",
+    "location": "reference.html#Base.findall-Tuple{AbstractString,EzXML.Node}",
+    "page": "Reference",
+    "title": "Base.findall",
     "category": "method",
-    "text": "findall(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind nodes matching xpath XPath query starting from node.\n\nThe ns argument is an iterator of namespace prefix and URI pairs.\n\n\n\n"
+    "text": "findall(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind nodes matching xpath XPath query starting from node.\n\nThe ns argument is an iterator of namespace prefix and URI pairs.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Base.findfirst-Tuple{AbstractString,EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "Base.findfirst",
     "category": "method",
-    "text": "findfirst(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n"
+    "text": "findfirst(xpath::AbstractString, node::Node, [ns=namespaces(node)])\n\nFind the first node matching xpath XPath query starting from node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Base.findlast-Tuple{AbstractString,EzXML.Node}",
-    "page": "References",
+    "page": "Reference",
     "title": "Base.findlast",
     "category": "method",
-    "text": "findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the last node matching xpath XPath query starting from node.\n\n\n\n"
+    "text": "findlast(node::Node, xpath::AbstractString, [ns=namespaces(node)])\n\nFind the last node matching xpath XPath query starting from node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#XPath-query-1",
-    "page": "References",
+    "page": "Reference",
     "title": "XPath query",
     "category": "section",
     "text": "findall(xpath::AbstractString, doc::Document)\nfindfirst(xpath::AbstractString, doc::Document)\nfindlast(xpath::AbstractString, doc::Document)\nfindall(xpath::AbstractString, node::Node)\nfindfirst(xpath::AbstractString, node::Node)\nfindlast(xpath::AbstractString, node::Node)"
@@ -858,23 +858,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.validate",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.validate",
     "category": "function",
-    "text": "validate(doc::Document, [dtd::Node])\n\nValidate doc against dtd and return the validation log.\n\nThe validation log is empty if and only if doc is valid. The DTD node in doc will be used if dtd is not passed.\n\n\n\n"
+    "text": "validate(doc::Document, [dtd::Node])\n\nValidate doc against dtd and return the validation log.\n\nThe validation log is empty if and only if doc is valid. The DTD node in doc will be used if dtd is not passed.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.readdtd",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.readdtd",
     "category": "function",
-    "text": "readdtd(filename::AbstractString)\n\nRead filename and create a DTD node.\n\n\n\n"
+    "text": "readdtd(filename::AbstractString)\n\nRead filename and create a DTD node.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Validation-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Validation",
     "category": "section",
     "text": "validate\nreaddtd"
@@ -882,7 +882,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#Reader-node-types-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Reader node types",
     "category": "section",
     "text": "Node type Integer\nEzXML.READER_NONE 0\nEzXML.READER_ELEMENT 1\nEzXML.READER_ATTRIBUTE 2\nEzXML.READER_TEXT 3\nEzXML.READER_CDATA 4\nEzXML.READER_ENTITY_REFERENCE 5\nEzXML.READER_ENTITY 6\nEzXML.READER_PROCESSING_INSTRUCTION 7\nEzXML.READER_COMMENT 8\nEzXML.READER_DOCUMENT 9\nEzXML.READER_DOCUMENT_TYPE 10\nEzXML.READER_DOCUMENT_FRAGMENT 11\nEzXML.READER_NOTATION 12\nEzXML.READER_WHITESPACE 13\nEzXML.READER_SIGNIFICANT_WHITESPACE 14\nEzXML.READER_END_ELEMENT 15\nEzXML.READER_END_ENTITY 16\nEzXML.READER_XML_DECLARATION 17"
@@ -890,71 +890,71 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "reference.html#EzXML.expandtree-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.expandtree",
     "category": "method",
-    "text": "expandtree(reader::StreamReader)\n\nExpand the current node of reader into a full subtree that will be available until the next read of node.\n\nNote that the expanded subtree is a read-only and temporary object. You cannot modify it or keep references to any nodes of it after reading the next node.\n\nCurrently, namespace functions and XPath query will not work on the expanded subtree.\n\n\n\n"
+    "text": "expandtree(reader::StreamReader)\n\nExpand the current node of reader into a full subtree that will be available until the next read of node.\n\nNote that the expanded subtree is a read-only and temporary object. You cannot modify it or keep references to any nodes of it after reading the next node.\n\nCurrently, namespace functions and XPath query will not work on the expanded subtree.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodetype-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodetype",
     "category": "method",
-    "text": "nodetype(reader::StreamReader)\n\nReturn the type of the current node of reader.\n\n\n\n"
+    "text": "nodetype(reader::StreamReader)\n\nReturn the type of the current node of reader.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodename-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodename",
     "category": "method",
-    "text": "nodename(reader::StreamReader)\n\nReturn the name of the current node of reader.\n\n\n\n"
+    "text": "nodename(reader::StreamReader)\n\nReturn the name of the current node of reader.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodecontent-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodecontent",
     "category": "method",
-    "text": "nodecontent(reader::StreamReader)\n\nReturn the content of the current node of reader.\n\n\n\n"
+    "text": "nodecontent(reader::StreamReader)\n\nReturn the content of the current node of reader.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.nodedepth-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.nodedepth",
     "category": "method",
-    "text": "nodedepth(reader::StreamReader)\n\nReturn the depth of the current node of reader.\n\n\n\n"
+    "text": "nodedepth(reader::StreamReader)\n\nReturn the depth of the current node of reader.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.namespace-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.namespace",
     "category": "method",
-    "text": "namespace(reader::StreamReader)\n\nReturn the namespace of the current node of reader.\n\n\n\n"
+    "text": "namespace(reader::StreamReader)\n\nReturn the namespace of the current node of reader.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnodecontent-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnodecontent",
     "category": "method",
-    "text": "hasnodecontent(reader::StreamReader)\n\nReturn if the current node of reader has content.\n\n\n\n"
+    "text": "hasnodecontent(reader::StreamReader)\n\nReturn if the current node of reader has content.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#EzXML.hasnodename-Tuple{EzXML.StreamReader}",
-    "page": "References",
+    "page": "Reference",
     "title": "EzXML.hasnodename",
     "category": "method",
-    "text": "hasnodename(reader::StreamReader)\n\nReturn if the current node of reader has a node name.\n\n\n\n"
+    "text": "hasnodename(reader::StreamReader)\n\nReturn if the current node of reader has a node name.\n\n\n\n\n\n"
 },
 
 {
     "location": "reference.html#Streaming-reader-1",
-    "page": "References",
+    "page": "Reference",
     "title": "Streaming reader",
     "category": "section",
     "text": "expandtree(::StreamReader)\nnodetype(::StreamReader)\nnodename(::StreamReader)\nnodecontent(::StreamReader)\nnodedepth(::StreamReader)\nnamespace(::StreamReader)\nhasnodecontent(::StreamReader)\nhasnodename(::StreamReader)"
