@@ -19,14 +19,12 @@ end
 # Document properties
 # -------------------
 
-if Base.isdefined(Base, :getproperty)
-    @inline function Base.getproperty(doc::Document, name::Symbol)
-        name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
-        name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :
-        name == :root     ? (hasroot(doc)     ? root(doc)     : nothing) :
-        name == :dtd      ? (hasdtd(doc)      ? dtd(doc)      : nothing) :
-        Core.getfield(doc, name)
-    end
+@inline function Base.getproperty(doc::Document, name::Symbol)
+    name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
+    name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :
+    name == :root     ? (hasroot(doc)     ? root(doc)     : nothing) :
+    name == :dtd      ? (hasdtd(doc)      ? dtd(doc)      : nothing) :
+    Core.getfield(doc, name)
 end
 
 

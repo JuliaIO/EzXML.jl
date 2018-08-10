@@ -338,33 +338,31 @@ end
         end
     end
 
-    if isdefined(Base, :getproperty)
-        input = IOBuffer("""
-        <html xmlns="http://www.w3.org/1999/xhtml">
-            <head><title>Hey</title></head>
-            <body/>
-        </html>
-        """)
-        names = String[]
-        reader = EzXML.StreamReader(input)
-        for typ in reader
-            @test reader.:type === typ
-            push!(names, reader.name)
-            if reader.name == "head" && reader.:type == EzXML.READER_ELEMENT
-                @test reader.depth == 1
-                @test reader.namespace == "http://www.w3.org/1999/xhtml"
-            elseif reader.name == "title" && reader.:type == EzXML.READER_ELEMENT
-                @test reader.depth == 2
-                @test reader.content == "Hey"
-                @test reader.namespace == "http://www.w3.org/1999/xhtml"
-            elseif reader.:type == EzXML.READER_END_ELEMENT
-                @test !hasnodecontent(reader)
-                @test reader.content === nothing
-            end
+    input = IOBuffer("""
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head><title>Hey</title></head>
+        <body/>
+    </html>
+    """)
+    names = String[]
+    reader = EzXML.StreamReader(input)
+    for typ in reader
+        @test reader.:type === typ
+        push!(names, reader.name)
+        if reader.name == "head" && reader.:type == EzXML.READER_ELEMENT
+            @test reader.depth == 1
+            @test reader.namespace == "http://www.w3.org/1999/xhtml"
+        elseif reader.name == "title" && reader.:type == EzXML.READER_ELEMENT
+            @test reader.depth == 2
+            @test reader.content == "Hey"
+            @test reader.namespace == "http://www.w3.org/1999/xhtml"
+        elseif reader.:type == EzXML.READER_END_ELEMENT
+            @test !hasnodecontent(reader)
+            @test reader.content === nothing
         end
-        @test "head" ∈ names
-        @test "title" ∈ names
     end
+    @test "head" ∈ names
+    @test "title" ∈ names
 
     @test_throws EzXML.XMLError iterate(EzXML.StreamReader(IOBuffer("not xml")))
 
@@ -832,85 +830,82 @@ end
     end
 end
 
-if isdefined(Base, :getproperty)
-    @assert isdefined(Base, :setproperty!)
-    @testset "Properties" begin
-        doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
-        @test doc.version == "1.0"
-        @test doc.encoding === nothing
-        doc = readxml(joinpath(dirname(@__FILE__), "sample2.xml"))
-        @test doc.version == "1.0"
-        @test doc.encoding == "UTF-8"
+@testset "Properties" begin
+    doc = readxml(joinpath(dirname(@__FILE__), "sample1.xml"))
+    @test doc.version == "1.0"
+    @test doc.encoding === nothing
+    doc = readxml(joinpath(dirname(@__FILE__), "sample2.xml"))
+    @test doc.version == "1.0"
+    @test doc.encoding == "UTF-8"
 
-        doc = parsexml("<root/>")
-        @test doc.node isa EzXML.Node
-        @test doc.node.type === EzXML.DOCUMENT_NODE
-        @test doc.node.name === nothing
-        @test doc.node.path == "/"
-        @test doc.node.content == ""
-        @test doc.node.namespace === nothing
-        @test doc.root isa EzXML.Node
-        @test doc.root.type === EzXML.ELEMENT_NODE
-        @test doc.root.name == "root"
-        @test doc.root.path == "/root"
-        @test doc.root.content == ""
-        @test doc.root.namespace === nothing
-        @test doc.dtd === nothing
+    doc = parsexml("<root/>")
+    @test doc.node isa EzXML.Node
+    @test doc.node.type === EzXML.DOCUMENT_NODE
+    @test doc.node.name === nothing
+    @test doc.node.path == "/"
+    @test doc.node.content == ""
+    @test doc.node.namespace === nothing
+    @test doc.root isa EzXML.Node
+    @test doc.root.type === EzXML.ELEMENT_NODE
+    @test doc.root.name == "root"
+    @test doc.root.path == "/root"
+    @test doc.root.content == ""
+    @test doc.root.namespace === nothing
+    @test doc.dtd === nothing
 
-        doc = parsexml("""<root attr="100">some content</root>""")
-        @test doc.root.content == "some content"
-        attr = attributes(doc.root)[1]
-        @test attr.type === EzXML.ATTRIBUTE_NODE
-        @test attr.name == "attr"
-        @test attr.path == "/root/@attr"
-        @test attr.content == "100"
-        @test attr.namespace === nothing
+    doc = parsexml("""<root attr="100">some content</root>""")
+    @test doc.root.content == "some content"
+    attr = attributes(doc.root)[1]
+    @test attr.type === EzXML.ATTRIBUTE_NODE
+    @test attr.name == "attr"
+    @test attr.path == "/root/@attr"
+    @test attr.content == "100"
+    @test attr.namespace === nothing
 
-        doc = parsexml("""
-        <html xmlns="http://www.w3.org/1999/xhtml">
-            <head><title>Title</title></head>
-            <body>Body</body>
-        </html>
-        """)
-        @test doc.root.namespace == "http://www.w3.org/1999/xhtml"
-        head = firstelement(doc.root)
-        body = lastelement(doc.root)
-        @test head.namespace == body.namespace == "http://www.w3.org/1999/xhtml"
+    doc = parsexml("""
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head><title>Title</title></head>
+        <body>Body</body>
+    </html>
+    """)
+    @test doc.root.namespace == "http://www.w3.org/1999/xhtml"
+    head = firstelement(doc.root)
+    body = lastelement(doc.root)
+    @test head.namespace == body.namespace == "http://www.w3.org/1999/xhtml"
 
-        # node traversal
-        doc = parsexml("""
-        <root>
-            <c1/>
-            <c2/>
-            <c3/>
-        </root>
-        """)
-        @test doc.root.document === doc
-        @test doc.root.parentnode === doc.node
-        @test doc.root.parentelement === nothing
-        @test doc.root.firstnode.type === EzXML.TEXT_NODE
-        @test doc.root.lastnode.type === EzXML.TEXT_NODE
-        @test doc.root.firstelement.name == "c1"
-        @test doc.root.lastelement.name  == "c3"
-        @test doc.root.firstnode.nextnode === doc.root.firstelement
-        @test doc.root.firstnode.prevnode === nothing
-        @test doc.root.firstelement.nextelement === doc.root.lastelement.prevelement
+    # node traversal
+    doc = parsexml("""
+    <root>
+        <c1/>
+        <c2/>
+        <c3/>
+    </root>
+    """)
+    @test doc.root.document === doc
+    @test doc.root.parentnode === doc.node
+    @test doc.root.parentelement === nothing
+    @test doc.root.firstnode.type === EzXML.TEXT_NODE
+    @test doc.root.lastnode.type === EzXML.TEXT_NODE
+    @test doc.root.firstelement.name == "c1"
+    @test doc.root.lastelement.name  == "c3"
+    @test doc.root.firstnode.nextnode === doc.root.firstelement
+    @test doc.root.firstnode.prevnode === nothing
+    @test doc.root.firstelement.nextelement === doc.root.lastelement.prevelement
 
-        # setproperty!
-        elm = ElementNode("foo")
-        # name
-        @test elm.name == "foo"
-        elm.name = "bar"
-        @test elm.name == "bar"
-        elm.name = 100
-        @test elm.name == "100"
-        # content
-        @test elm.content == ""
-        elm.content = "hi there"
-        @test elm.content == "hi there"
-        elm.content = 3.14
-        @test elm.content == "3.14"
-    end
+    # setproperty!
+    elm = ElementNode("foo")
+    # name
+    @test elm.name == "foo"
+    elm.name = "bar"
+    @test elm.name == "bar"
+    elm.name = 100
+    @test elm.name == "100"
+    # content
+    @test elm.content == ""
+    elm.content = "hi there"
+    @test elm.content == "hi there"
+    elm.content = 3.14
+    @test elm.content == "3.14"
 end
 
 @testset "Construction" begin
@@ -1138,7 +1133,7 @@ end
 @testset "Validation" begin
     dtdfile = joinpath(dirname(@__FILE__), "note.dtd")
     system = relpath(dtdfile)
-    if isdefined(Sys, :iswindows) ? Sys.iswindows() : is_windows()
+    if Sys.iswindows()
         system = replace(system, '\\' => '/')
     end
 
@@ -1306,8 +1301,8 @@ end
 # Check no uncaught errors.
 @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
 
-if isdefined(Sys, :isunix) ? Sys.isunix() : is_unix()
-    julia = joinpath(isdefined(Sys, :BINDIR) ? Sys.BINDIR : JULIA_HOME, "julia")
+if Sys.isunix()
+    julia = joinpath(Sys.BINDIR, "julia")
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do

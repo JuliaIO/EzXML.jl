@@ -18,15 +18,13 @@ mutable struct StreamReader
     end
 end
 
-if isdefined(Base, :getproperty)
-    @inline function Base.getproperty(reader::StreamReader, name::Symbol)
-        name == :type      ? nodetype(reader)                                         :
-        name == :depth     ? nodedepth(reader)                                        :
-        name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
-        name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
-        name == :namespace ? namespace(reader)                                        :
-        Core.getfield(reader, name)
-    end
+@inline function Base.getproperty(reader::StreamReader, name::Symbol)
+    name == :type      ? nodetype(reader)                                         :
+    name == :depth     ? nodedepth(reader)                                        :
+    name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
+    name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
+    name == :namespace ? namespace(reader)                                        :
+    Core.getfield(reader, name)
 end
 
 function Base.show(io::IO, reader::StreamReader)

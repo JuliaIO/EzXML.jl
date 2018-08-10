@@ -387,43 +387,39 @@ end
 # Node properties
 # ---------------
 
-if isdefined(Base, :getproperty)
-    @inline function Base.getproperty(node::Node, name::Symbol)
-        # node properties
-        name == :type      ? nodetype(node)                                   :
-        name == :name      ? (hasnodename(node)  ? nodename(node)  : nothing) :
-        name == :path      ? nodepath(node)                                   :
-        name == :content   ? nodecontent(node)                                :
-        name == :namespace ? (hasnamespace(node) ? namespace(node) : nothing) :
-        # tree traversal
-        name == :document      ? (hasdocument(node)      ? document(node)      : nothing) :
-        name == :parentnode    ? (hasparentnode(node)    ? parentnode(node)    : nothing) :
-        name == :parentelement ? (hasparentelement(node) ? parentelement(node) : nothing) :
-        name == :firstnode     ? (hasnode(node)          ? firstnode(node)     : nothing) :
-        name == :lastnode      ? (hasnode(node)          ? lastnode(node)      : nothing) :
-        name == :firstelement  ? (haselement(node)       ? firstelement(node)  : nothing) :
-        name == :lastelement   ? (haselement(node)       ? lastelement(node)   : nothing) :
-        name == :nextnode      ? (hasnextnode(node)      ? nextnode(node)      : nothing) :
-        name == :prevnode      ? (hasprevnode(node)      ? prevnode(node)      : nothing) :
-        name == :nextelement   ? (hasnextelement(node)   ? nextelement(node)   : nothing) :
-        name == :prevelement   ? (hasprevelement(node)   ? prevelement(node)   : nothing) :
-        # data fields
-        Core.getfield(node, name)
-    end
+@inline function Base.getproperty(node::Node, name::Symbol)
+    # node properties
+    name == :type      ? nodetype(node)                                   :
+    name == :name      ? (hasnodename(node)  ? nodename(node)  : nothing) :
+    name == :path      ? nodepath(node)                                   :
+    name == :content   ? nodecontent(node)                                :
+    name == :namespace ? (hasnamespace(node) ? namespace(node) : nothing) :
+    # tree traversal
+    name == :document      ? (hasdocument(node)      ? document(node)      : nothing) :
+    name == :parentnode    ? (hasparentnode(node)    ? parentnode(node)    : nothing) :
+    name == :parentelement ? (hasparentelement(node) ? parentelement(node) : nothing) :
+    name == :firstnode     ? (hasnode(node)          ? firstnode(node)     : nothing) :
+    name == :lastnode      ? (hasnode(node)          ? lastnode(node)      : nothing) :
+    name == :firstelement  ? (haselement(node)       ? firstelement(node)  : nothing) :
+    name == :lastelement   ? (haselement(node)       ? lastelement(node)   : nothing) :
+    name == :nextnode      ? (hasnextnode(node)      ? nextnode(node)      : nothing) :
+    name == :prevnode      ? (hasprevnode(node)      ? prevnode(node)      : nothing) :
+    name == :nextelement   ? (hasnextelement(node)   ? nextelement(node)   : nothing) :
+    name == :prevelement   ? (hasprevelement(node)   ? prevelement(node)   : nothing) :
+    # data fields
+    Core.getfield(node, name)
 end
 
-if isdefined(Base, :setproperty!)
-    @inline function Base.setproperty!(node::Node, name::Symbol, x)
-        # node properties
-        if name == :name
-            setnodename!(node, string(x))
-        elseif name == :content
-            setnodecontent!(node, string(x))
-        else
-            Core.setfield!(node, name, convert(fieldtype(Node, name), x))
-        end
-        return node
+@inline function Base.setproperty!(node::Node, name::Symbol, x)
+    # node properties
+    if name == :name
+        setnodename!(node, string(x))
+    elseif name == :content
+        setnodecontent!(node, string(x))
+    else
+        Core.setfield!(node, name, convert(fieldtype(Node, name), x))
     end
+    return node
 end
 
 
