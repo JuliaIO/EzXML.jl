@@ -130,14 +130,6 @@ function Base.findlast(xpath::AbstractString, node::Node, ns=namespaces(node))
     return isempty(nodes) ? nothing : last(nodes)
 end
 
-# Deprecated
-Base.findall(doc::Document, xpath::AbstractString) = findall(xpath, doc)
-Base.findfirst(doc::Document, xpath::AbstractString) = first(findall(xpath, doc))
-Base.findlast(doc::Document, xpath::AbstractString) = last(findall(xpath, doc))
-Base.findall(node::Node, xpath::AbstractString, ns=namespaces(node)) = findall(xpath, node, ns)
-Base.findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) = first(findall(xpath, node, ns))
-Base.findlast(node::Node, xpath::AbstractString, ns=namespaces(node)) = last(findall(xpath, node, ns))
-
 function new_xpath_context(doc)
     context_ptr = ccall(
         (:xmlXPathNewContext, libxml2),
