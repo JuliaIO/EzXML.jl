@@ -1,4 +1,4 @@
-<p align="center"><img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="250" /></p>
+<p align="center"><img src="/docs/EzXML.jl.png" alt="EzXML.jl Logo" width="350" /></p>
 
 EzXML.jl - XML/HTML tools for primates
 ======================================
@@ -28,13 +28,13 @@ Installation
 
 Install EzXML.jl as follows:
 ```
-julia -e 'Pkg.add("EzXML")'
+julia -e 'using Pkg; Pkg.add("EzXML")'
 ```
 
 This package depends on [libxml2](http://xmlsoft.org/), which will be installed
 automatically from <https://github.com/bicycle1885/XML2Builder> via
-[BinaryProvider.jl](https://github.com/JuliaPackaging/BinaryProvider.jl).  Most
-of common platforms (Windows, Linux, and macOS) are now supported.
+[BinaryProvider.jl](https://github.com/JuliaPackaging/BinaryProvider.jl).
+Windows, Linux, and macOS are now supported.
 
 Usage
 -----
@@ -82,7 +82,7 @@ end
 Quick reference
 ---------------
 
-See the [reference page](https://bicycle1885.github.io/EzXML.jl/latest/references.html) or docstrings for more details.
+See the [reference page](https://bicycle1885.github.io/EzXML.jl/stable/reference.html) or docstrings for more details.
 
 Types:
 * `EzXML.Document`: an XML/HTML document
@@ -98,11 +98,11 @@ IO:
 
 Accessors:
 * Node information: `nodetype(node)`, `nodepath(node)`, `nodename(node)`, `nodecontent(node)`, `setnodename!(node, name)`, `setnodecontent!(node, content)`
-* Node property (Julia ≥ 0.7): `node.type`, `node.name`, `node.path`, `node.content`, `node.namespace`
+* Node property: `node.type`, `node.name`, `node.path`, `node.content`, `node.namespace`
 * Document:
     - Property: `version(doc)`, `encoding(doc)`, `hasversion(doc)`, `hasencoding(doc)`
     - Node: `root(doc)`, `dtd(doc)`, `hasroot(doc)`, `hasdtd(doc)`, `setroot!(doc, element_node)`, `setdtd!(doc, dtd_node)`
-* Document property (Julia ≥ 0.7): `doc.version`, `doc.encoding`, `doc.node`, `doc.root`, `doc.dtd`
+* Document property: `doc.version`, `doc.encoding`, `doc.node`, `doc.root`, `doc.dtd`
 * Attributes: `node[name]`, `node[name] = value`, `haskey(node, name)`, `delete!(node, name)`
 * Node predicate:
     * Document: `hasdocument(node)`
