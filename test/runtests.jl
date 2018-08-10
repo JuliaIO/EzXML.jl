@@ -5,11 +5,6 @@ else
     using Test
 end
 
-import Compat:
-    Compat,
-    occursin,
-    devnull
-
 # Unit tests
 # ----------
 
@@ -102,7 +97,7 @@ end
         &#124
         <a href="http://mbgd.genome.ad.jp/sparql/index_2015.php">To Previous Version (2015)</a>
         """)
-        Compat.@info("the following two warnings are expected:")
+        @info("the following two warnings are expected:")
         doc = readhtml(buf)
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
@@ -176,7 +171,7 @@ end
         @test_throws EzXML.XMLError parsexml("abracadabra")
         @test_throws EzXML.XMLError parsexml("""<?xml version="1.0"?>""")
 
-        Compat.@info("the following warning is expected:")
+        @info("the following warning is expected:")
         @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
     end
 

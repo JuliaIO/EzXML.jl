@@ -177,7 +177,7 @@ function Base.eltype(::Type{StreamReader})
     return ReaderType
 end
 
-function Compat.IteratorSize(::Type{StreamReader})
+function Base.IteratorSize(::Type{StreamReader})
     return Base.SizeUnknown()
 end
 

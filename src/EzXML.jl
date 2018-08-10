@@ -101,16 +101,8 @@ export
     # exported from Compat (Julia 0.6) or Base (Julia 0.7)
     findall
 
-import Compat:
-    Compat,
-    Cvoid,
-    stdin,
-    stdout,
-    bytesavailable,
-    findall,
-    @cfunction
-using Compat.Libdl
-using Compat.Printf: @printf
+using Libdl
+using Printf: @printf
 
 # Load libxml2.
 const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")

@@ -1366,7 +1366,7 @@ function Base.eltype(::Type{T}) where {T<:AbstractNodeIterator}
     return Node
 end
 
-function Compat.IteratorSize(::Type{T}) where {T<:AbstractNodeIterator}
+function Base.IteratorSize(::Type{T}) where {T<:AbstractNodeIterator}
     return Base.SizeUnknown()
 end
 
