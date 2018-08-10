@@ -28,7 +28,7 @@ Installation
 
 Install EzXML.jl as follows:
 ```
-julia -e 'Pkg.add("EzXML")'
+julia -e 'using Pkg; Pkg.add("EzXML")'
 ```
 
 This package depends on [libxml2](http://xmlsoft.org/), which will be installed
