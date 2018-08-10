@@ -1216,15 +1216,6 @@ end
     @test findfirst("bambam", root(doc)) === nothing
     @test findlast("bambam", root(doc)) === nothing
 
-    # TODO: remove these tests; deprecated functions
-    @test_throws BoundsError findfirst(doc, "bambam")
-    @test_throws BoundsError findlast(doc, "bambam")
-    @test_throws BoundsError findfirst(root(doc), "bambam")
-    @test_throws BoundsError findlast(root(doc), "bambam")
-    @inferred findall(doc, "root")
-    @inferred findfirst(doc, "root")
-    @inferred findlast(doc, "root")
-
     go = readxml(joinpath(dirname(@__FILE__), "go.sample.xml"))
     go_uri =  "http://www.geneontology.org/dtds/go.dtd#"
     @test findall("/go:go", root(go)) == [root(go)]
