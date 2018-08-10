@@ -96,10 +96,7 @@ export
     readdtd,
     validate,
     nodedepth,
-    expandtree,
-
-    # exported from Compat (Julia 0.6) or Base (Julia 0.7)
-    findall
+    expandtree
 
 using Libdl
 using Printf: @printf
