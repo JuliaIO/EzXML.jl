@@ -82,6 +82,48 @@ const READER_END_ELEMENT            = ReaderType(15)
 const READER_END_ENTITY             = ReaderType(16)
 const READER_XML_DECLARATION        = ReaderType(17)
 
+function Base.convert(::Type{Symbol},x::ReaderType)
+    if x == READER_NONE
+        return :READER_NONE
+    elseif x == READER_ELEMENT
+        return :READER_ELEMENT
+    elseif x == READER_ATTRIBUTE
+        return :READER_ATTRIBUTE
+    elseif x == READER_TEXT
+        return :READER_TEXT
+    elseif x == READER_CDATA
+        return :READER_CDATA
+    elseif x == READER_ENTITY_REFERENCE
+        return :READER_ENTITY_REFERENCE
+    elseif x == READER_ENTITY
+        return :READER_ENTITY
+    elseif x == READER_PROCESSING_INSTRUCTION
+        return :READER_PROCESSING_INSTRUCTION
+    elseif x == READER_COMMENT
+        return :READER_COMMENT
+    elseif x == READER_DOCUMENT
+        return :READER_DOCUMENT
+    elseif x == READER_DOCUMENT_TYPE
+        return :READER_DOCUMENT_TYPE
+    elseif x == READER_DOCUMENT_FRAGMENT
+        return :READER_DOCUMENT_FRAGMENT
+    elseif x == READER_NOTATION
+        return :READER_NOTATION
+    elseif x == READER_WHITESPACE
+        return :READER_WHITESPACE
+    elseif x == READER_SIGNIFICANT_WHITESPACE
+        return :READER_SIGNIFICANT_WHITESPACE
+    elseif x == READER_END_ELEMENT
+        return :READER_END_ELEMENT
+    elseif x == READER_END_ENTITY
+        return :READER_END_ENTITY
+    elseif x == READER_XML_DECLARATION
+        return :READER_XML_DECLARATION
+    else
+        @assert false "unknown reader type"
+    end
+end
+
 function Base.show(io::IO, x::ReaderType)
     if x == READER_NONE
         print(io, "READER_NONE")
@@ -294,21 +336,123 @@ function nodecontent(reader::StreamReader)
     return content
 end
 
-function Base.haskey(reader::StreamReader, name::AbstractString)
-    value_ptr = ccall(
-        (:xmlTextReaderGetAttribute, libxml2),
-        Cstring,
-        (Ptr{Cvoid}, Cstring),
-        reader.ptr, name)
-    return value_ptr != C_NULL
+function hasnodevalue(reader::StreamReader)
+    r = ccall(
+       (:xmlTextReaderHasValue, libxml2),
+       Cint,
+       (Ptr{Cvoid},),
+       reader.ptr)
+    return r == 1
 end
 
-function Base.getindex(reader::StreamReader, name::AbstractString)
+function nodevalue(reader::StreamReader)
+    value_ptr = ccall(
+        (:xmlTextReaderConstValue, libxml2),
+        Cstring,
+        (Ptr{Cvoid},),
+        reader.ptr)
+    if value_ptr == C_NULL
+        return nothing
+    else
+        return unsafe_string(value_ptr)
+    end
+end
+
+function hasnodeattributes(reader::StreamReader)
+    r = ccall(
+       (:xmlTextReaderHasAttributes, libxml2),
+       Cint,
+       (Ptr{Cvoid},),
+       reader.ptr)
+    return r == 1
+end
+
+mutable struct AttributeReader
+    reader::EzXML.StreamReader
+
+    function AttributeReader(reader::EzXML.StreamReader)
+        if nodetype(reader) != READER_ELEMENT
+            throw(InvalidStateException("Reader not an Element",convert(Symbol,nodetype(reader))))
+        end
+        return new(reader)
+    end
+end
+
+function Base.iterate(attrs::AttributeReader, state = nothing)
+    r = ccall(
+        (:xmlTextReaderMoveToNextAttribute, EzXML.libxml2),
+        Cint,
+        (Ptr{Cvoid},),
+        attrs.reader.ptr)
+    if r == 1
+        return (attrs.reader, nothing)
+    else
+        ccall(
+        (:xmlTextReaderMoveToElement, EzXML.libxml2),
+        Cint,
+        (Ptr{Cvoid},),
+        attrs.reader.ptr)
+        return nothing
+    end
+end
+
+eachattribute(reader::StreamReader) = AttributeReader(reader)
+
+function nodeattributecount(reader::StreamReader)
+    r = ccall(
+        (:xmlTextReaderAttributeCount, EzXML.libxml2),
+        Cint,
+        (Ptr{Cvoid},),
+        reader.ptr)
+    return Int(r)
+end
+
+function nodeattributes(reader::StreamReader)
+    attrs = Dict{String,String}()
+    for attr in eachattribute(reader)
+        attrs[nodename(attr)] = nodevalue(attr)
+    end
+    return attrs
+end
+
+function _getattr(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
         Cstring,
         (Ptr{Cvoid}, Cstring),
         reader.ptr, name)
+end
+
+function _getattr(reader::StreamReader, no::Integer)
+    value_ptr = ccall(
+        (:xmlTextReaderGetAttribute, libxml2),
+        Cstring,
+        (Ptr{Cvoid}, Cint),
+        reader.ptr, Cint(no))
+end
+
+"""
+    haskey(reader::StreamReader, key::Union{Integer,AbstractString})
+
+Check if current node of `reader` has attribute `key`.
+"""
+function Base.haskey(reader::StreamReader, key::Union{Integer,AbstractString})
+    value_ptr = _getattr(reader,key)
+    ret = value_ptr != C_NULL
+    Libc.free(value_ptr)
+    return ret
+end
+
+"""
+    getindex(reader::StreamReader, key::Union{Integer,AbstractString})
+
+Get attribute `key` at current node of `reader`.
+"""
+function Base.getindex(reader::StreamReader, key::Union{Integer,AbstractString})
+    value_ptr = _getattr(reader,key)
+    if value_ptr == C_NULL
+        throw(KeyError(key))
+    end
     value = unsafe_string(value_ptr)
     Libc.free(value_ptr)
     return value

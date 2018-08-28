@@ -96,7 +96,12 @@ export
     readdtd,
     validate,
     nodedepth,
-    expandtree
+    expandtree,
+    hasnodevalue,
+    nodevalue,
+    hasnodeattributes,
+    nodeattributes,
+    nodeattributecount
 
 using Libdl
 using Printf: @printf
