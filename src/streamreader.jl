@@ -321,6 +321,8 @@ end
     nodecontent(reader::StreamReader)
 
 Return the content of the current node of `reader`.
+
+Note: Nodes of `READER_ATTRIBUTE` will crash with `nodecontent`, use `nodevalue` instead.
 """
 function nodecontent(reader::StreamReader)
     content_ptr = ccall(
@@ -336,6 +338,11 @@ function nodecontent(reader::StreamReader)
     return content
 end
 
+"""
+    hasnodevalue(reader::StreamReader)
+
+Return if the current node of `reader` has a value.
+"""
 function hasnodevalue(reader::StreamReader)
     r = ccall(
        (:xmlTextReaderHasValue, libxml2),
@@ -345,6 +352,13 @@ function hasnodevalue(reader::StreamReader)
     return r == 1
 end
 
+"""
+    nodevalue(reader::StreamReader)
+
+Return the value of the current node of `reader`.
+
+This can be different from `nodecontent`.
+"""
 function nodevalue(reader::StreamReader)
     value_ptr = ccall(
         (:xmlTextReaderConstValue, libxml2),
@@ -358,6 +372,12 @@ function nodevalue(reader::StreamReader)
     end
 end
 
+
+"""
+    hasnodeattributes(reader::StreamReader)
+
+Return if the current node of 'reader' has attributes
+"""
 function hasnodeattributes(reader::StreamReader)
     r = ccall(
        (:xmlTextReaderHasAttributes, libxml2),
@@ -378,6 +398,14 @@ mutable struct AttributeReader
     end
 end
 
+function Base.eltype(::Type{AttributeReader})
+    return AttributeReader
+end
+
+function Base.IteratorSize(::Type{AttributeReader})
+    return Base.SizeUnknown()
+end
+
 function Base.iterate(attrs::AttributeReader, state = nothing)
     r = ccall(
         (:xmlTextReaderMoveToNextAttribute, EzXML.libxml2),
@@ -396,8 +424,18 @@ function Base.iterate(attrs::AttributeReader, state = nothing)
     end
 end
 
+"""
+    nodeattributecount(reader::StreamReader)
+
+Return a AttributeReader for the current node of `reader`
+"""
 eachattribute(reader::StreamReader) = AttributeReader(reader)
 
+"""
+    nodeattributecount(reader::StreamReader)
+
+Return the number of attributes in the current node of `reader`.
+"""
 function nodeattributecount(reader::StreamReader)
     r = ccall(
         (:xmlTextReaderAttributeCount, EzXML.libxml2),
@@ -407,6 +445,11 @@ function nodeattributecount(reader::StreamReader)
     return Int(r)
 end
 
+"""
+    nodeattributes(reader::StreamReader)
+
+Return a dictionary of the attributes in the current node of `reader`.
+"""
 function nodeattributes(reader::StreamReader)
     attrs = Dict{String,String}()
     for attr in eachattribute(reader)
