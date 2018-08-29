@@ -266,6 +266,7 @@ end
     end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, -1))
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
+    @test_throws AssertionError convert(Symbol, EzXML.ReaderType(18))
 
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
     reader = open(EzXML.StreamReader, sample2)
@@ -410,9 +411,15 @@ end
     for typ in reader
         if typ == EzXML.READER_ELEMENT
             if EzXML.nodename(reader) == "a"
+                @test !EzXML.hasnodevalue(reader)
+                @test EzXML.nodevalue(reader) === nothing
                 @test EzXML.hasnodeattributes(reader)
                 @test EzXML.nodeattributecount(reader) == 2
                 @test EzXML.nodeattributes(reader) == Dict{String,String}("attr1"=>"", "attr2"=>"This is cool")
+                @test reader[0] == ""
+                @test reader[1] == "This is cool"
+                @test_throws KeyError reader[2]
+                @test_throws KeyError reader["noattr"]
                 for (i,attr) in enumerate(EzXML.eachattribute(reader))
                     @test EzXML.hasnodevalue(attr)
                     @test EzXML.nodedepth(attr) == 1
@@ -429,10 +436,11 @@ end
                 @test EzXML.nodeattributes(reader) == Dict{String,String}()
                 @test EzXML.nodeattributecount(reader) == 0
             end
+        elseif typ == EzXML.READER_END_ELEMENT
+            @test_throws InvalidStateException EzXML.eachattribute(reader)
         end
     end
     close(reader)
-
 
     # memory management test (XPath)
     # FIXME: support XPath
