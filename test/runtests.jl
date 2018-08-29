@@ -234,12 +234,35 @@ end
 end
 
 @testset "Stream Reader" begin
+    readertypeSymbol = Dict{EzXML.ReaderType, Symbol}(
+        EzXML.READER_NONE => :READER_NONE,
+        EzXML.READER_ELEMENT => :READER_ELEMENT,
+        EzXML.READER_ATTRIBUTE => :READER_ATTRIBUTE,
+        EzXML.READER_TEXT => :READER_TEXT,
+        EzXML.READER_CDATA => :READER_CDATA,
+        EzXML.READER_ENTITY_REFERENCE => :READER_ENTITY_REFERENCE,
+        EzXML.READER_ENTITY => :READER_ENTITY,
+        EzXML.READER_PROCESSING_INSTRUCTION => :READER_PROCESSING_INSTRUCTION,
+        EzXML.READER_COMMENT => :READER_COMMENT,
+        EzXML.READER_DOCUMENT => :READER_DOCUMENT,
+        EzXML.READER_DOCUMENT_TYPE => :READER_DOCUMENT_TYPE,
+        EzXML.READER_DOCUMENT_FRAGMENT => :READER_DOCUMENT_FRAGMENT,
+        EzXML.READER_NOTATION => :READER_NOTATION,
+        EzXML.READER_WHITESPACE => :READER_WHITESPACE,
+        EzXML.READER_SIGNIFICANT_WHITESPACE => :READER_SIGNIFICANT_WHITESPACE,
+        EzXML.READER_END_ELEMENT => :READER_END_ELEMENT,
+        EzXML.READER_END_ENTITY => :READER_END_ENTITY,
+        EzXML.READER_XML_DECLARATION => :READER_XML_DECLARATION
+    )
+
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
+
         @test t == i
         @test occursin(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
+        @test  convert(Symbol,t) === readertypeSymbol[t]
     end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, -1))
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))

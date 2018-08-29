@@ -43,6 +43,7 @@ else
     @assert false "invalid Cint size"
 end
 
+
 function ReaderType(x::Integer)
     return convert(ReaderType, x)
 end
@@ -54,6 +55,8 @@ end
 function Base.convert(::Type{T}, x::ReaderType) where {T<:Integer}
     return convert(T, reinterpret(Cint, x))
 end
+
+Base.hash(x::ReaderType) = hash(convert(Cint,x))
 
 function Base.convert(::Type{ReaderType}, x::ReaderType)
     return x
