@@ -471,7 +471,7 @@ end
 
 function _getattr(reader::StreamReader, no::Integer)
     value_ptr = ccall(
-        (:xmlTextReaderGetAttribute, libxml2),
+        (:xmlTextReaderGetAttributeNo, libxml2),
         Cstring,
         (Ptr{Cvoid}, Cint),
         reader.ptr, Cint(no))
