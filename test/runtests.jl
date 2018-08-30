@@ -410,34 +410,34 @@ end
     """))
     for typ in reader
         if typ == EzXML.READER_ELEMENT
-            if EzXML.nodename(reader) == "a"
-                @test !EzXML.hasnodevalue(reader)
-                @test EzXML.nodevalue(reader) === nothing
-                @test EzXML.hasnodeattributes(reader)
-                @test EzXML.nodeattributecount(reader) == 2
-                @test EzXML.nodeattributes(reader) == Dict{String,String}("attr1"=>"", "attr2"=>"This is cool")
+            if nodename(reader) == "a"
+                @test !hasnodevalue(reader)
+                @test_throws ArgumentError nodevalue(reader)
+                @test hasnodeattributes(reader)
+                @test countattributes(reader) == 2
+                @test nodeattributes(reader) == Dict{String,String}("attr1"=>"", "attr2"=>"This is cool")
                 @test reader[0] == ""
                 @test reader[1] == "This is cool"
                 @test_throws KeyError reader[2]
                 @test_throws KeyError reader["noattr"]
-                for (i,attr) in enumerate(EzXML.eachattribute(reader))
-                    @test EzXML.hasnodevalue(attr)
-                    @test EzXML.nodedepth(attr) == 1
+                for (i,attr) in enumerate(eachattribute(reader))
+                    @test hasnodevalue(attr)
+                    @test nodedepth(attr) == 1
                     if i == 1
-                        @test EzXML.nodename(attr) == "attr1"
-                        @test EzXML.nodevalue(attr) == ""
+                        @test nodename(attr) == "attr1"
+                        @test nodevalue(attr) == ""
                     else
-                        @test EzXML.nodename(attr) == "attr2"
-                        @test EzXML.nodevalue(attr) == "This is cool"
+                        @test nodename(attr) == "attr2"
+                        @test nodevalue(attr) == "This is cool"
                     end
                 end
             elseif EzXML.nodename(reader) == "b"
-                @test !EzXML.hasnodeattributes(reader)
-                @test EzXML.nodeattributes(reader) == Dict{String,String}()
-                @test EzXML.nodeattributecount(reader) == 0
+                @test !hasnodeattributes(reader)
+                @test nodeattributes(reader) == Dict{String,String}()
+                @test countattributes(reader) == 0
             end
         elseif typ == EzXML.READER_END_ELEMENT
-            @test_throws InvalidStateException EzXML.eachattribute(reader)
+            @test_throws ArgumentError eachattribute(reader)
         end
     end
     close(reader)
