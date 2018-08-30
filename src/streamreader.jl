@@ -428,9 +428,9 @@ function Base.iterate(attrs::AttributeReader, state = nothing)
 end
 
 """
-    nodeattributecount(reader::StreamReader)
+    eachattribute(reader::StreamReader)
 
-Return a AttributeReader for the current node of `reader`
+Return an AttributeReader for the current node of `reader`
 """
 eachattribute(reader::StreamReader) = AttributeReader(reader)
 
