@@ -100,8 +100,7 @@ export
     hasnodevalue,
     nodevalue,
     hasnodeattributes,
-    nodeattributes,
-    nodeattributecount
+    nodeattributes
 
 using Libdl
 using Printf: @printf
