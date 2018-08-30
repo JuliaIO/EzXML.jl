@@ -460,7 +460,7 @@ function nodeattributes(reader::StreamReader)
     return attrs
 end
 
-function _getattr(reader::StreamReader, name::AbstractString)
+function attribute_ptr(reader::StreamReader, name::AbstractString)
     value_ptr = ccall(
         (:xmlTextReaderGetAttribute, libxml2),
         Cstring,
@@ -468,7 +468,7 @@ function _getattr(reader::StreamReader, name::AbstractString)
         reader.ptr, name)
 end
 
-function _getattr(reader::StreamReader, no::Integer)
+function attribute_ptr(reader::StreamReader, no::Integer)
     value_ptr = ccall(
         (:xmlTextReaderGetAttributeNo, libxml2),
         Cstring,
@@ -482,7 +482,7 @@ end
 Check if current node of `reader` has attribute `key`.
 """
 function Base.haskey(reader::StreamReader, key::Union{Integer,AbstractString})
-    value_ptr = _getattr(reader,key)
+    value_ptr = attribute_ptr(reader,key)
     ret = value_ptr != C_NULL
     Libc.free(value_ptr)
     return ret
@@ -494,7 +494,7 @@ end
 Get attribute `key` at current node of `reader`.
 """
 function Base.getindex(reader::StreamReader, key::Union{Integer,AbstractString})
-    value_ptr = _getattr(reader,key)
+    value_ptr = attribute_ptr(reader,key)
     if value_ptr == C_NULL
         throw(KeyError(key))
     end
