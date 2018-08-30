@@ -435,11 +435,11 @@ Return an AttributeReader for the current node of `reader`
 eachattribute(reader::StreamReader) = AttributeReader(reader)
 
 """
-    nodeattributecount(reader::StreamReader)
+    countattributes(reader::StreamReader)
 
 Return the number of attributes in the current node of `reader`.
 """
-function nodeattributecount(reader::StreamReader)
+function countattributes(reader::StreamReader)
     r = ccall(
         (:xmlTextReaderAttributeCount, EzXML.libxml2),
         Cint,
