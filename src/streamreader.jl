@@ -418,11 +418,12 @@ function Base.iterate(attrs::AttributeReader, state = nothing)
     if r == 1
         return (attrs.reader, nothing)
     else
-        ccall(
-        (:xmlTextReaderMoveToElement, EzXML.libxml2),
-        Cint,
-        (Ptr{Cvoid},),
-        attrs.reader.ptr)
+        r = ccall(
+            (:xmlTextReaderMoveToElement, EzXML.libxml2),
+            Cint,
+            (Ptr{Cvoid},),
+            attrs.reader.ptr)
+        @assert r == 1
         return nothing
     end
 end
