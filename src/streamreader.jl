@@ -368,7 +368,7 @@ function nodevalue(reader::StreamReader)
         (Ptr{Cvoid},),
         reader.ptr)
     if value_ptr == C_NULL
-        return nothing
+        throw(ArgumentError("Node does not have a value"))
     else
         return unsafe_string(value_ptr)
     end
