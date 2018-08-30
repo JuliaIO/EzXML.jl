@@ -386,6 +386,7 @@ function hasnodeattributes(reader::StreamReader)
        Cint,
        (Ptr{Cvoid},),
        reader.ptr)
+    @assert r >= 0 "XML Error Detected"
     return r == 1
 end
 
