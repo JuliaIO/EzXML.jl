@@ -391,18 +391,18 @@ function hasnodeattributes(reader::StreamReader)
 end
 
 mutable struct AttributeReader
-    reader::EzXML.StreamReader
+    reader::StreamReader
 
     function AttributeReader(reader::EzXML.StreamReader)
         if nodetype(reader) != READER_ELEMENT
-            throw(InvalidStateException("Reader not an Element",convert(Symbol,nodetype(reader))))
+            throw(ArgumentError("Reader not an Element Node"))
         end
         return new(reader)
     end
 end
 
 function Base.eltype(::Type{AttributeReader})
-    return AttributeReader
+    return StreamReader
 end
 
 function Base.IteratorSize(::Type{AttributeReader})
