@@ -410,7 +410,7 @@ end
                         @test nodevalue(attr) == "This is cool"
                     end
                 end
-            elseif EzXML.nodename(reader) == "b"
+            elseif nodename(reader) == "b"
                 @test !hasnodeattributes(reader)
                 @test nodeattributes(reader) == Dict{String,String}()
                 @test countattributes(reader) == 0
