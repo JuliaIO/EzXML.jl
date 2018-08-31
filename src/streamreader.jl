@@ -84,47 +84,6 @@ const READER_END_ELEMENT            = ReaderType(15)
 const READER_END_ENTITY             = ReaderType(16)
 const READER_XML_DECLARATION        = ReaderType(17)
 
-function Base.convert(::Type{Symbol},x::ReaderType)
-    if x == READER_NONE
-        return :READER_NONE
-    elseif x == READER_ELEMENT
-        return :READER_ELEMENT
-    elseif x == READER_ATTRIBUTE
-        return :READER_ATTRIBUTE
-    elseif x == READER_TEXT
-        return :READER_TEXT
-    elseif x == READER_CDATA
-        return :READER_CDATA
-    elseif x == READER_ENTITY_REFERENCE
-        return :READER_ENTITY_REFERENCE
-    elseif x == READER_ENTITY
-        return :READER_ENTITY
-    elseif x == READER_PROCESSING_INSTRUCTION
-        return :READER_PROCESSING_INSTRUCTION
-    elseif x == READER_COMMENT
-        return :READER_COMMENT
-    elseif x == READER_DOCUMENT
-        return :READER_DOCUMENT
-    elseif x == READER_DOCUMENT_TYPE
-        return :READER_DOCUMENT_TYPE
-    elseif x == READER_DOCUMENT_FRAGMENT
-        return :READER_DOCUMENT_FRAGMENT
-    elseif x == READER_NOTATION
-        return :READER_NOTATION
-    elseif x == READER_WHITESPACE
-        return :READER_WHITESPACE
-    elseif x == READER_SIGNIFICANT_WHITESPACE
-        return :READER_SIGNIFICANT_WHITESPACE
-    elseif x == READER_END_ELEMENT
-        return :READER_END_ELEMENT
-    elseif x == READER_END_ENTITY
-        return :READER_END_ENTITY
-    elseif x == READER_XML_DECLARATION
-        return :READER_XML_DECLARATION
-    else
-        @assert false "unknown reader type"
-    end
-end
 
 function Base.show(io::IO, x::ReaderType)
     if x == READER_NONE
