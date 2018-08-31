@@ -393,7 +393,7 @@ end
 mutable struct AttributeReader
     reader::StreamReader
 
-    function AttributeReader(reader::EzXML.StreamReader)
+    function AttributeReader(reader::StreamReader)
         if nodetype(reader) != READER_ELEMENT
             throw(ArgumentError("Reader not an Element Node"))
         end
@@ -411,7 +411,7 @@ end
 
 function Base.iterate(attrs::AttributeReader, state = nothing)
     r = ccall(
-        (:xmlTextReaderMoveToNextAttribute, EzXML.libxml2),
+        (:xmlTextReaderMoveToNextAttribute, libxml2),
         Cint,
         (Ptr{Cvoid},),
         attrs.reader.ptr)
@@ -420,7 +420,7 @@ function Base.iterate(attrs::AttributeReader, state = nothing)
     else
         if nodetype(attrs.reader) == READER_ATTRIBUTE
             r = ccall(
-                (:xmlTextReaderMoveToElement, EzXML.libxml2),
+                (:xmlTextReaderMoveToElement, libxml2),
                 Cint,
                 (Ptr{Cvoid},),
                 attrs.reader.ptr)
@@ -444,7 +444,7 @@ Return the number of attributes in the current node of `reader`.
 """
 function countattributes(reader::StreamReader)
     r = ccall(
-        (:xmlTextReaderAttributeCount, EzXML.libxml2),
+        (:xmlTextReaderAttributeCount, libxml2),
         Cint,
         (Ptr{Cvoid},),
         reader.ptr)
