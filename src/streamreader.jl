@@ -264,6 +264,9 @@ end
 Return if the current node of `reader` has content.
 """
 function hasnodecontent(reader::StreamReader)
+    if nodetype(reader) == READER_ATTRIBUTE
+        return false
+    end
     # TODO: this allocates memory; any way to avoid it?
     ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
@@ -282,10 +285,11 @@ end
     nodecontent(reader::StreamReader)
 
 Return the content of the current node of `reader`.
-
-Note: Nodes of `READER_ATTRIBUTE` will crash with `nodecontent`, use `nodevalue` instead.
 """
 function nodecontent(reader::StreamReader)
+    if nodetype(reader) == READER_ATTRIBUTE
+        throw(ArgumentError("no content"))
+    end
     content_ptr = ccall(
         (:xmlTextReaderReadString, libxml2),
         Cstring,
