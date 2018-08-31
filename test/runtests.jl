@@ -234,10 +234,8 @@ end
 end
 
 @testset "Stream Reader" begin
-
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
-
         @test t == i
         @test occursin(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
