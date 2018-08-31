@@ -477,7 +477,7 @@ function attribute_ptr(reader::StreamReader, no::Integer)
         (:xmlTextReaderGetAttributeNo, libxml2),
         Cstring,
         (Ptr{Cvoid}, Cint),
-        reader.ptr, Cint(no))
+        reader.ptr, Cint(no - 1))
 end
 
 """

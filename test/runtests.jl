@@ -416,9 +416,9 @@ end
                 @test hasnodeattributes(reader)
                 @test countattributes(reader) == 2
                 @test nodeattributes(reader) == Dict{String,String}("attr1"=>"", "attr2"=>"This is cool")
-                @test reader[0] == ""
-                @test reader[1] == "This is cool"
-                @test_throws KeyError reader[2]
+                @test reader[1] == ""
+                @test reader[2] == "This is cool"
+                @test_throws KeyError reader[3]
                 @test_throws KeyError reader["noattr"]
                 for (i,attr) in enumerate(eachattribute(reader))
                     @test hasnodevalue(attr)
