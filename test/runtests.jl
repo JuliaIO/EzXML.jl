@@ -245,7 +245,6 @@ end
     end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, -1))
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
-    @test_throws AssertionError convert(Symbol, EzXML.ReaderType(18))
 
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
     reader = open(EzXML.StreamReader, sample2)
