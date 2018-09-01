@@ -629,7 +629,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Reference",
     "title": "EzXML.eachattribute",
     "category": "function",
-    "text": "eachattribute(node::Node)\n\nCreate an iterator of attributes.\n\n\n\n\n\neachattribute(reader::StreamReader)\n\nReturn an AttributeReader for the current node of reader\n\n\n\n\n\n"
+    "text": "eachattribute(node::Node)\n\nCreate an iterator of attributes.\n\n\n\n\n\neachattribute(reader::StreamReader)\n\nReturn an AttributeReader object for the current node of reader\n\n\n\n\n\n"
 },
 
 {
