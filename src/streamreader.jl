@@ -84,7 +84,6 @@ const READER_END_ELEMENT            = ReaderType(15)
 const READER_END_ENTITY             = ReaderType(16)
 const READER_XML_DECLARATION        = ReaderType(17)
 
-
 function Base.show(io::IO, x::ReaderType)
     if x == READER_NONE
         print(io, "READER_NONE")
@@ -332,11 +331,9 @@ function nodevalue(reader::StreamReader)
         reader.ptr)
     if value_ptr == C_NULL
         throw(ArgumentError("no node value"))
-    else
-        return unsafe_string(value_ptr)
     end
+    return unsafe_string(value_ptr)
 end
-
 
 """
     hasnodeattributes(reader::StreamReader)
@@ -349,7 +346,7 @@ function hasnodeattributes(reader::StreamReader)
        Cint,
        (Ptr{Cvoid},),
        reader.ptr)
-    @assert r >= 0 "XML Error Detected"
+    @assert r ≥ 0 "XML Error Detected"
     return r == 1
 end
 
@@ -372,38 +369,37 @@ function Base.IteratorSize(::Type{AttributeReader})
     return Base.SizeUnknown()
 end
 
-function Base.iterate(attrs::AttributeReader, state = nothing)
+function Base.iterate(attrs::AttributeReader, state=nothing)
     r = ccall(
         (:xmlTextReaderMoveToNextAttribute, libxml2),
         Cint,
         (Ptr{Cvoid},),
         attrs.reader.ptr)
     if r == 1
-        return (attrs.reader, nothing)
-    else
-        if nodetype(attrs.reader) == READER_ATTRIBUTE
-            r = ccall(
-                (:xmlTextReaderMoveToElement, libxml2),
-                Cint,
-                (Ptr{Cvoid},),
-                attrs.reader.ptr)
-            @assert r == 1
-        end
-        return nothing
+        return attrs.reader, nothing
     end
+    if nodetype(attrs.reader) == READER_ATTRIBUTE
+        r = ccall(
+            (:xmlTextReaderMoveToElement, libxml2),
+            Cint,
+            (Ptr{Cvoid},),
+            attrs.reader.ptr)
+        @assert r == 1
+    end
+    return nothing
 end
 
 """
     eachattribute(reader::StreamReader)
 
-Return an AttributeReader for the current node of `reader`
+Return an `AttributeReader` object for the current node of `reader`
 """
 eachattribute(reader::StreamReader) = AttributeReader(reader)
 
 """
     countattributes(reader::StreamReader)
 
-Return the number of attributes in the current node of `reader`.
+Count the number of attributes in the current node of `reader`.
 """
 function countattributes(reader::StreamReader)
     r = ccall(
@@ -449,7 +445,7 @@ end
 Check if current node of `reader` has attribute `key`.
 """
 function Base.haskey(reader::StreamReader, key::Union{Integer,AbstractString})
-    value_ptr = attribute_ptr(reader,key)
+    value_ptr = attribute_ptr(reader, key)
     ret = value_ptr != C_NULL
     Libc.free(value_ptr)
     return ret
@@ -461,7 +457,7 @@ end
 Get attribute `key` at current node of `reader`.
 """
 function Base.getindex(reader::StreamReader, key::Union{Integer,AbstractString})
-    value_ptr = attribute_ptr(reader,key)
+    value_ptr = attribute_ptr(reader, key)
     if value_ptr == C_NULL
         throw(KeyError(key))
     end
