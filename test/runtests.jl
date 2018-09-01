@@ -396,7 +396,7 @@ end
                 @test reader[2] == "This is cool"
                 @test_throws KeyError reader[3]
                 @test_throws KeyError reader["noattr"]
-                for (i,attr) in enumerate(eachattribute(reader))
+                for (i, attr) in enumerate(eachattribute(reader))
                     @test hasnodevalue(attr)
                     @test nodedepth(attr) == 1
                     if i == 1
