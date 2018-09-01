@@ -379,6 +379,45 @@ end
     end
     @test true
 
+    reader = EzXML.StreamReader(IOBuffer("""
+    <a attr1="" attr2="This is cool">
+        <b/>
+    </a>
+    """))
+    for typ in reader
+        if typ == EzXML.READER_ELEMENT
+            if nodename(reader) == "a"
+                @test !hasnodevalue(reader)
+                @test_throws ArgumentError nodevalue(reader)
+                @test hasnodeattributes(reader)
+                @test countattributes(reader) == 2
+                @test nodeattributes(reader) == Dict{String,String}("attr1"=>"", "attr2"=>"This is cool")
+                @test reader[1] == ""
+                @test reader[2] == "This is cool"
+                @test_throws KeyError reader[3]
+                @test_throws KeyError reader["noattr"]
+                for (i,attr) in enumerate(eachattribute(reader))
+                    @test hasnodevalue(attr)
+                    @test nodedepth(attr) == 1
+                    if i == 1
+                        @test nodename(attr) == "attr1"
+                        @test nodevalue(attr) == ""
+                    else
+                        @test nodename(attr) == "attr2"
+                        @test nodevalue(attr) == "This is cool"
+                    end
+                end
+            elseif nodename(reader) == "b"
+                @test !hasnodeattributes(reader)
+                @test nodeattributes(reader) == Dict{String,String}()
+                @test countattributes(reader) == 0
+            end
+        elseif typ == EzXML.READER_END_ELEMENT
+            @test_throws ArgumentError eachattribute(reader)
+        end
+    end
+    close(reader)
+
     # memory management test (XPath)
     # FIXME: support XPath
     #for _ in 1:10
