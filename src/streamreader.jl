@@ -137,14 +137,14 @@ end
 function StreamReader(input::IO)
     readcb = make_read_callback()
     closecb = C_NULL
-    context = pointer_from_objref(input)
+    context = input
     uri = C_NULL
     encoding = C_NULL
     options = 0
     reader_ptr = @check ccall(
         (:xmlReaderForIO, libxml2),
         Ptr{_TextReader},
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ref{IO}, Cstring, Cstring, Cint),
         readcb, closecb, context, uri, encoding, options) != C_NULL
     return StreamReader(reader_ptr, input)
 end
