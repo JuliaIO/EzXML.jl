@@ -350,7 +350,7 @@ function hasnodeattributes(reader::StreamReader)
     return r == 1
 end
 
-mutable struct AttributeReader
+struct AttributeReader
     reader::StreamReader
 
     function AttributeReader(reader::StreamReader)
