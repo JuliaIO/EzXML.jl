@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · EzXML.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>EzXML.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li class="current"><a class="toctext" href="index.html">Home</a><ul class="internal"></ul></li><li><a class="toctext" href="manual.html">Manual</a></li><li><a class="toctext" href="reference.html">Reference</a></li><li><a class="toctext" href="devnotes.html">Developer Notes</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="index.html">Home</a></li></ul><a class="edit-page" href="https://github.com/bicycle1885/EzXML.jl/blob/master/docs/src/index.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Home</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Home-1" href="#Home-1">Home</a></h1><p>EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and consistent, and provide a range of functionalities including:</p><ul><li>Reading and writing XML/HTML documents.</li><li>Traversing XML/HTML trees with DOM interfaces.</li><li>Searching elements using XPath.</li><li>Proper namespace handling.</li><li>Capturing error messages.</li><li>Automatic memory management.</li><li>Document validation.</li><li>Streaming parsing for large XML files.</li></ul><p>Here is an example of parsing and traversing an XML document:</p><pre><code class="language-julia"># Load the package.
+using EzXML
+
+# Parse an XML string
+# (use `readxml(&lt;filename&gt;)` to read a document from a file).
+doc = parsexml(&quot;&quot;&quot;
+&lt;primates&gt;
+    &lt;genus name=&quot;Homo&quot;&gt;
+        &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
+    &lt;/genus&gt;
+    &lt;genus name=&quot;Pan&quot;&gt;
+        &lt;species name=&quot;paniscus&quot;&gt;Bonobo&lt;/species&gt;
+        &lt;species name=&quot;troglodytes&quot;&gt;Chimpanzee&lt;/species&gt;
+    &lt;/genus&gt;
+&lt;/primates&gt;
+&quot;&quot;&quot;)
+
+# Get the root element from `doc`.
+primates = root(doc)
+
+# Iterate over child elements.
+for genus in eachelement(primates)
+    # Get an attribute value by name.
+    genus_name = genus[&quot;name&quot;]
+    println(&quot;- &quot;, genus_name)
+    for species in eachelement(genus)
+        # Get the content within an element.
+        species_name = nodecontent(species)
+        println(&quot;  └ &quot;, species[&quot;name&quot;], &quot; (&quot;, species_name, &quot;)&quot;)
+    end
+end
+println()
+
+# Find texts using XPath query.
+for species_name in nodecontent.(findall(&quot;//species/text()&quot;, primates))
+    println(&quot;- &quot;, species_name)
+end</code></pre><p>If you are new to this package, read <a href="manual.html">the manual page</a> first. It provides a general guide to the package. <a href="reference.html">The reference page</a> offers a full documentation for each function, and <a href="devnotes.html">the developer notes page</a> explains about the internal design for developers.</p><footer><hr/><a class="next" href="manual.html"><span class="direction">Next</span><span class="title">Manual</span></a></footer></article></body></html>
