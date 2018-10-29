@@ -1,8 +1,5 @@
 name = "EzXML"
 uuid = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
-keywords = ["package", "xml"]
-license = "MIT"
-desc = "EzXML"
 version = "0.9.0"
 
 [deps]
