@@ -1,3 +1,5 @@
 using Pkg
+pkgspec = PackageSpec(path=pwd())
 Pkg.instantiate()
-Pkg.develop(PackageSpec(path=pwd()))
+Pkg.develop(pkgspec)
+Pkg.build(pkgspec)
