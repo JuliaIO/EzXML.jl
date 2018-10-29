@@ -1,5 +1,4 @@
 using Pkg
-pkgspec = PackageSpec(path=pwd())
 Pkg.instantiate()
-Pkg.develop(pkgspec)
-#Pkg.build(pkgspec)
+Pkg.develop(PackageSpec(path=pwd()))
+Pkg.build("EzXML")
