@@ -1,7 +1,7 @@
 var documenterSearchIndex = {"docs": [
 
 {
-    "location": "index.html#",
+    "location": "#",
     "page": "Home",
     "title": "Home",
     "category": "page",
@@ -9,7 +9,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#Home-1",
+    "location": "#Home-1",
     "page": "Home",
     "title": "Home",
     "category": "section",
@@ -17,7 +17,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#",
+    "location": "manual/#",
     "page": "Manual",
     "title": "Manual",
     "category": "page",
@@ -25,7 +25,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#Manual-1",
+    "location": "manual/#Manual-1",
     "page": "Manual",
     "title": "Manual",
     "category": "section",
@@ -33,7 +33,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#Data-types-1",
+    "location": "manual/#Data-types-1",
     "page": "Manual",
     "title": "Data types",
     "category": "section",
@@ -41,7 +41,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#DOM-1",
+    "location": "manual/#DOM-1",
     "page": "Manual",
     "title": "DOM",
     "category": "section",
@@ -49,7 +49,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#XPath-1",
+    "location": "manual/#XPath-1",
     "page": "Manual",
     "title": "XPath",
     "category": "section",
@@ -57,7 +57,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "manual.html#Streaming-API-1",
+    "location": "manual/#Streaming-API-1",
     "page": "Manual",
     "title": "Streaming API",
     "category": "section",
@@ -65,7 +65,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#",
+    "location": "reference/#",
     "page": "Reference",
     "title": "Reference",
     "category": "page",
@@ -73,7 +73,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Reference-1",
+    "location": "reference/#Reference-1",
     "page": "Reference",
     "title": "Reference",
     "category": "section",
@@ -81,7 +81,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.Document",
+    "location": "reference/#EzXML.Document",
     "page": "Reference",
     "title": "EzXML.Document",
     "category": "type",
@@ -89,7 +89,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.Node",
+    "location": "reference/#EzXML.Node",
     "page": "Reference",
     "title": "EzXML.Node",
     "category": "type",
@@ -97,7 +97,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.StreamReader",
+    "location": "reference/#EzXML.StreamReader",
     "page": "Reference",
     "title": "EzXML.StreamReader",
     "category": "type",
@@ -105,7 +105,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.XMLError",
+    "location": "reference/#EzXML.XMLError",
     "page": "Reference",
     "title": "EzXML.XMLError",
     "category": "type",
@@ -113,7 +113,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Types-1",
+    "location": "reference/#Types-1",
     "page": "Reference",
     "title": "Types",
     "category": "section",
@@ -121,7 +121,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.parsexml",
+    "location": "reference/#EzXML.parsexml",
     "page": "Reference",
     "title": "EzXML.parsexml",
     "category": "function",
@@ -129,7 +129,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.parsehtml",
+    "location": "reference/#EzXML.parsehtml",
     "page": "Reference",
     "title": "EzXML.parsehtml",
     "category": "function",
@@ -137,7 +137,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.readxml",
+    "location": "reference/#EzXML.readxml",
     "page": "Reference",
     "title": "EzXML.readxml",
     "category": "function",
@@ -145,7 +145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.readhtml",
+    "location": "reference/#EzXML.readhtml",
     "page": "Reference",
     "title": "EzXML.readhtml",
     "category": "function",
@@ -153,7 +153,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.prettyprint",
+    "location": "reference/#EzXML.prettyprint",
     "page": "Reference",
     "title": "EzXML.prettyprint",
     "category": "function",
@@ -161,7 +161,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#I/O-1",
+    "location": "reference/#I/O-1",
     "page": "Reference",
     "title": "I/O",
     "category": "section",
@@ -169,7 +169,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.XMLDocument",
+    "location": "reference/#EzXML.XMLDocument",
     "page": "Reference",
     "title": "EzXML.XMLDocument",
     "category": "function",
@@ -177,7 +177,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.HTMLDocument",
+    "location": "reference/#EzXML.HTMLDocument",
     "page": "Reference",
     "title": "EzXML.HTMLDocument",
     "category": "function",
@@ -185,7 +185,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.XMLDocumentNode",
+    "location": "reference/#EzXML.XMLDocumentNode",
     "page": "Reference",
     "title": "EzXML.XMLDocumentNode",
     "category": "function",
@@ -193,7 +193,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.HTMLDocumentNode",
+    "location": "reference/#EzXML.HTMLDocumentNode",
     "page": "Reference",
     "title": "EzXML.HTMLDocumentNode",
     "category": "function",
@@ -201,7 +201,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.ElementNode",
+    "location": "reference/#EzXML.ElementNode",
     "page": "Reference",
     "title": "EzXML.ElementNode",
     "category": "function",
@@ -209,7 +209,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.TextNode",
+    "location": "reference/#EzXML.TextNode",
     "page": "Reference",
     "title": "EzXML.TextNode",
     "category": "function",
@@ -217,7 +217,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.CommentNode",
+    "location": "reference/#EzXML.CommentNode",
     "page": "Reference",
     "title": "EzXML.CommentNode",
     "category": "function",
@@ -225,7 +225,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.CDataNode",
+    "location": "reference/#EzXML.CDataNode",
     "page": "Reference",
     "title": "EzXML.CDataNode",
     "category": "function",
@@ -233,7 +233,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.AttributeNode",
+    "location": "reference/#EzXML.AttributeNode",
     "page": "Reference",
     "title": "EzXML.AttributeNode",
     "category": "function",
@@ -241,7 +241,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.DTDNode",
+    "location": "reference/#EzXML.DTDNode",
     "page": "Reference",
     "title": "EzXML.DTDNode",
     "category": "function",
@@ -249,7 +249,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Constructors-1",
+    "location": "reference/#Constructors-1",
     "page": "Reference",
     "title": "Constructors",
     "category": "section",
@@ -257,7 +257,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Node-types-1",
+    "location": "reference/#Node-types-1",
     "page": "Reference",
     "title": "Node types",
     "category": "section",
@@ -265,7 +265,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodetype-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.nodetype-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.nodetype",
     "category": "method",
@@ -273,7 +273,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodepath-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.nodepath-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.nodepath",
     "category": "method",
@@ -281,7 +281,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodename-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.nodename-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.nodename",
     "category": "method",
@@ -289,7 +289,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodecontent-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.nodecontent-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.nodecontent",
     "category": "method",
@@ -297,7 +297,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.namespace-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.namespace-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.namespace",
     "category": "method",
@@ -305,7 +305,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.namespaces-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.namespaces-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.namespaces",
     "category": "method",
@@ -313,7 +313,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnodename-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.hasnodename-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.hasnodename",
     "category": "method",
@@ -321,7 +321,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnamespace-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.hasnamespace-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.hasnamespace",
     "category": "method",
@@ -329,7 +329,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.iselement-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.iselement-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.iselement",
     "category": "method",
@@ -337,7 +337,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.isattribute-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.isattribute-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.isattribute",
     "category": "method",
@@ -345,7 +345,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.istext-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.istext-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.istext",
     "category": "method",
@@ -353,7 +353,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.iscdata-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.iscdata-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.iscdata",
     "category": "method",
@@ -361,7 +361,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.iscomment-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.iscomment-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.iscomment",
     "category": "method",
@@ -369,7 +369,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.isdtd-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.isdtd-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.isdtd",
     "category": "method",
@@ -377,7 +377,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.countnodes-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.countnodes-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.countnodes",
     "category": "method",
@@ -385,7 +385,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.countelements-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.countelements-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.countelements",
     "category": "method",
@@ -393,7 +393,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.countattributes-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.countattributes-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.countattributes",
     "category": "method",
@@ -401,7 +401,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.systemID-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.systemID-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.systemID",
     "category": "method",
@@ -409,7 +409,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.externalID-Tuple{EzXML.Node}",
+    "location": "reference/#EzXML.externalID-Tuple{EzXML.Node}",
     "page": "Reference",
     "title": "EzXML.externalID",
     "category": "method",
@@ -417,7 +417,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Node-accessors-1",
+    "location": "reference/#Node-accessors-1",
     "page": "Reference",
     "title": "Node accessors",
     "category": "section",
@@ -425,7 +425,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.setnodename!-Tuple{EzXML.Node,AbstractString}",
+    "location": "reference/#EzXML.setnodename!-Tuple{EzXML.Node,AbstractString}",
     "page": "Reference",
     "title": "EzXML.setnodename!",
     "category": "method",
@@ -433,7 +433,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.setnodecontent!-Tuple{EzXML.Node,AbstractString}",
+    "location": "reference/#EzXML.setnodecontent!-Tuple{EzXML.Node,AbstractString}",
     "page": "Reference",
     "title": "EzXML.setnodecontent!",
     "category": "method",
@@ -441,7 +441,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Node-modifiers-1",
+    "location": "reference/#Node-modifiers-1",
     "page": "Reference",
     "title": "Node modifiers",
     "category": "section",
@@ -449,7 +449,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.version",
+    "location": "reference/#EzXML.version",
     "page": "Reference",
     "title": "EzXML.version",
     "category": "function",
@@ -457,7 +457,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.encoding",
+    "location": "reference/#EzXML.encoding",
     "page": "Reference",
     "title": "EzXML.encoding",
     "category": "function",
@@ -465,7 +465,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasversion",
+    "location": "reference/#EzXML.hasversion",
     "page": "Reference",
     "title": "EzXML.hasversion",
     "category": "function",
@@ -473,7 +473,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasencoding",
+    "location": "reference/#EzXML.hasencoding",
     "page": "Reference",
     "title": "EzXML.hasencoding",
     "category": "function",
@@ -481,7 +481,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Document-properties-1",
+    "location": "reference/#Document-properties-1",
     "page": "Reference",
     "title": "Document properties",
     "category": "section",
@@ -489,7 +489,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.document",
+    "location": "reference/#EzXML.document",
     "page": "Reference",
     "title": "EzXML.document",
     "category": "function",
@@ -497,7 +497,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.root",
+    "location": "reference/#EzXML.root",
     "page": "Reference",
     "title": "EzXML.root",
     "category": "function",
@@ -505,7 +505,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.dtd",
+    "location": "reference/#EzXML.dtd",
     "page": "Reference",
     "title": "EzXML.dtd",
     "category": "function",
@@ -513,7 +513,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.parentnode",
+    "location": "reference/#EzXML.parentnode",
     "page": "Reference",
     "title": "EzXML.parentnode",
     "category": "function",
@@ -521,7 +521,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.parentelement",
+    "location": "reference/#EzXML.parentelement",
     "page": "Reference",
     "title": "EzXML.parentelement",
     "category": "function",
@@ -529,7 +529,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.firstnode",
+    "location": "reference/#EzXML.firstnode",
     "page": "Reference",
     "title": "EzXML.firstnode",
     "category": "function",
@@ -537,7 +537,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.lastnode",
+    "location": "reference/#EzXML.lastnode",
     "page": "Reference",
     "title": "EzXML.lastnode",
     "category": "function",
@@ -545,7 +545,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.firstelement",
+    "location": "reference/#EzXML.firstelement",
     "page": "Reference",
     "title": "EzXML.firstelement",
     "category": "function",
@@ -553,7 +553,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.lastelement",
+    "location": "reference/#EzXML.lastelement",
     "page": "Reference",
     "title": "EzXML.lastelement",
     "category": "function",
@@ -561,7 +561,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nextnode",
+    "location": "reference/#EzXML.nextnode",
     "page": "Reference",
     "title": "EzXML.nextnode",
     "category": "function",
@@ -569,7 +569,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.prevnode",
+    "location": "reference/#EzXML.prevnode",
     "page": "Reference",
     "title": "EzXML.prevnode",
     "category": "function",
@@ -577,7 +577,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nextelement",
+    "location": "reference/#EzXML.nextelement",
     "page": "Reference",
     "title": "EzXML.nextelement",
     "category": "function",
@@ -585,7 +585,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.prevelement",
+    "location": "reference/#EzXML.prevelement",
     "page": "Reference",
     "title": "EzXML.prevelement",
     "category": "function",
@@ -593,7 +593,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.eachnode",
+    "location": "reference/#EzXML.eachnode",
     "page": "Reference",
     "title": "EzXML.eachnode",
     "category": "function",
@@ -601,7 +601,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodes",
+    "location": "reference/#EzXML.nodes",
     "page": "Reference",
     "title": "EzXML.nodes",
     "category": "function",
@@ -609,7 +609,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.eachelement",
+    "location": "reference/#EzXML.eachelement",
     "page": "Reference",
     "title": "EzXML.eachelement",
     "category": "function",
@@ -617,7 +617,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.elements",
+    "location": "reference/#EzXML.elements",
     "page": "Reference",
     "title": "EzXML.elements",
     "category": "function",
@@ -625,7 +625,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.eachattribute",
+    "location": "reference/#EzXML.eachattribute",
     "page": "Reference",
     "title": "EzXML.eachattribute",
     "category": "function",
@@ -633,7 +633,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.attributes",
+    "location": "reference/#EzXML.attributes",
     "page": "Reference",
     "title": "EzXML.attributes",
     "category": "function",
@@ -641,7 +641,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasroot",
+    "location": "reference/#EzXML.hasroot",
     "page": "Reference",
     "title": "EzXML.hasroot",
     "category": "function",
@@ -649,7 +649,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasdtd",
+    "location": "reference/#EzXML.hasdtd",
     "page": "Reference",
     "title": "EzXML.hasdtd",
     "category": "function",
@@ -657,7 +657,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnode",
+    "location": "reference/#EzXML.hasnode",
     "page": "Reference",
     "title": "EzXML.hasnode",
     "category": "function",
@@ -665,7 +665,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnextnode",
+    "location": "reference/#EzXML.hasnextnode",
     "page": "Reference",
     "title": "EzXML.hasnextnode",
     "category": "function",
@@ -673,7 +673,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasprevnode",
+    "location": "reference/#EzXML.hasprevnode",
     "page": "Reference",
     "title": "EzXML.hasprevnode",
     "category": "function",
@@ -681,7 +681,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.haselement",
+    "location": "reference/#EzXML.haselement",
     "page": "Reference",
     "title": "EzXML.haselement",
     "category": "function",
@@ -689,7 +689,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnextelement",
+    "location": "reference/#EzXML.hasnextelement",
     "page": "Reference",
     "title": "EzXML.hasnextelement",
     "category": "function",
@@ -697,7 +697,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasprevelement",
+    "location": "reference/#EzXML.hasprevelement",
     "page": "Reference",
     "title": "EzXML.hasprevelement",
     "category": "function",
@@ -705,7 +705,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasdocument",
+    "location": "reference/#EzXML.hasdocument",
     "page": "Reference",
     "title": "EzXML.hasdocument",
     "category": "function",
@@ -713,7 +713,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasparentnode",
+    "location": "reference/#EzXML.hasparentnode",
     "page": "Reference",
     "title": "EzXML.hasparentnode",
     "category": "function",
@@ -721,7 +721,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasparentelement",
+    "location": "reference/#EzXML.hasparentelement",
     "page": "Reference",
     "title": "EzXML.hasparentelement",
     "category": "function",
@@ -729,7 +729,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#DOM-tree-accessors-1",
+    "location": "reference/#DOM-tree-accessors-1",
     "page": "Reference",
     "title": "DOM tree accessors",
     "category": "section",
@@ -737,7 +737,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.setroot!",
+    "location": "reference/#EzXML.setroot!",
     "page": "Reference",
     "title": "EzXML.setroot!",
     "category": "function",
@@ -745,7 +745,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.setdtd!",
+    "location": "reference/#EzXML.setdtd!",
     "page": "Reference",
     "title": "EzXML.setdtd!",
     "category": "function",
@@ -753,7 +753,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.link!",
+    "location": "reference/#EzXML.link!",
     "page": "Reference",
     "title": "EzXML.link!",
     "category": "function",
@@ -761,7 +761,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.linknext!",
+    "location": "reference/#EzXML.linknext!",
     "page": "Reference",
     "title": "EzXML.linknext!",
     "category": "function",
@@ -769,7 +769,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.linkprev!",
+    "location": "reference/#EzXML.linkprev!",
     "page": "Reference",
     "title": "EzXML.linkprev!",
     "category": "function",
@@ -777,7 +777,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.unlink!",
+    "location": "reference/#EzXML.unlink!",
     "page": "Reference",
     "title": "EzXML.unlink!",
     "category": "function",
@@ -785,7 +785,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.addelement!",
+    "location": "reference/#EzXML.addelement!",
     "page": "Reference",
     "title": "EzXML.addelement!",
     "category": "function",
@@ -793,7 +793,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#DOM-tree-modifiers-1",
+    "location": "reference/#DOM-tree-modifiers-1",
     "page": "Reference",
     "title": "DOM tree modifiers",
     "category": "section",
@@ -801,7 +801,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findall-Tuple{AbstractString,EzXML.Document}",
+    "location": "reference/#Base.findall-Tuple{AbstractString,EzXML.Document}",
     "page": "Reference",
     "title": "Base.findall",
     "category": "method",
@@ -809,7 +809,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findfirst-Tuple{AbstractString,EzXML.Document}",
+    "location": "reference/#Base.findfirst-Tuple{AbstractString,EzXML.Document}",
     "page": "Reference",
     "title": "Base.findfirst",
     "category": "method",
@@ -817,7 +817,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findlast-Tuple{AbstractString,EzXML.Document}",
+    "location": "reference/#Base.findlast-Tuple{AbstractString,EzXML.Document}",
     "page": "Reference",
     "title": "Base.findlast",
     "category": "method",
@@ -825,7 +825,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findall-Tuple{AbstractString,EzXML.Node}",
+    "location": "reference/#Base.findall-Tuple{AbstractString,EzXML.Node}",
     "page": "Reference",
     "title": "Base.findall",
     "category": "method",
@@ -833,7 +833,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findfirst-Tuple{AbstractString,EzXML.Node}",
+    "location": "reference/#Base.findfirst-Tuple{AbstractString,EzXML.Node}",
     "page": "Reference",
     "title": "Base.findfirst",
     "category": "method",
@@ -841,7 +841,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Base.findlast-Tuple{AbstractString,EzXML.Node}",
+    "location": "reference/#Base.findlast-Tuple{AbstractString,EzXML.Node}",
     "page": "Reference",
     "title": "Base.findlast",
     "category": "method",
@@ -849,7 +849,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#XPath-query-1",
+    "location": "reference/#XPath-query-1",
     "page": "Reference",
     "title": "XPath query",
     "category": "section",
@@ -857,7 +857,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.validate",
+    "location": "reference/#EzXML.validate",
     "page": "Reference",
     "title": "EzXML.validate",
     "category": "function",
@@ -865,7 +865,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.readdtd",
+    "location": "reference/#EzXML.readdtd",
     "page": "Reference",
     "title": "EzXML.readdtd",
     "category": "function",
@@ -873,7 +873,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Validation-1",
+    "location": "reference/#Validation-1",
     "page": "Reference",
     "title": "Validation",
     "category": "section",
@@ -881,7 +881,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Reader-node-types-1",
+    "location": "reference/#Reader-node-types-1",
     "page": "Reference",
     "title": "Reader node types",
     "category": "section",
@@ -889,7 +889,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.expandtree-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.expandtree-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.expandtree",
     "category": "method",
@@ -897,7 +897,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodetype-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.nodetype-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.nodetype",
     "category": "method",
@@ -905,7 +905,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodename-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.nodename-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.nodename",
     "category": "method",
@@ -913,7 +913,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodecontent-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.nodecontent-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.nodecontent",
     "category": "method",
@@ -921,7 +921,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.nodedepth-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.nodedepth-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.nodedepth",
     "category": "method",
@@ -929,7 +929,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.namespace-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.namespace-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.namespace",
     "category": "method",
@@ -937,7 +937,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnodecontent-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.hasnodecontent-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.hasnodecontent",
     "category": "method",
@@ -945,7 +945,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#EzXML.hasnodename-Tuple{EzXML.StreamReader}",
+    "location": "reference/#EzXML.hasnodename-Tuple{EzXML.StreamReader}",
     "page": "Reference",
     "title": "EzXML.hasnodename",
     "category": "method",
@@ -953,7 +953,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "reference.html#Streaming-reader-1",
+    "location": "reference/#Streaming-reader-1",
     "page": "Reference",
     "title": "Streaming reader",
     "category": "section",
@@ -961,7 +961,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "devnotes.html#",
+    "location": "devnotes/#",
     "page": "Developer Notes",
     "title": "Developer Notes",
     "category": "page",
@@ -969,7 +969,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "devnotes.html#Developer-Notes-1",
+    "location": "devnotes/#Developer-Notes-1",
     "page": "Developer Notes",
     "title": "Developer Notes",
     "category": "section",
