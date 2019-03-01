@@ -1,5 +1,6 @@
 name = "EzXML"
 version = "0.9.0"
+authors = ["Kenta Sato <bicycle1885@gmail.com>"]
 uuid = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 
 [deps]
