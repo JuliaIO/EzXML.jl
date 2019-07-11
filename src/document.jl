@@ -110,6 +110,7 @@ function parsehtml(htmlstring::AbstractString)
         Ptr{_Node},
         (Cstring, Cint, Cstring, Cstring, Cint),
         htmlstring, sizeof(htmlstring), url, encoding, options) != C_NULL
+    show_warnings()
     return Document(doc_ptr)
 end
 
