@@ -16,10 +16,10 @@ EzXML.Node
 julia&gt; print(doc)  # print an XML-formatted text
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 </code></pre><p>The text just before the <code>@</code> sign shows the node type (in this example, <code>DOCUMENT_NODE</code>), and the text just after <code>@</code> shows the pointer address (<code>0x00007fd9f1f14370</code>) to a node struct of libxml2.</p><p>Let&#39;s add a root node to the document and a text node to the root node:</p><pre><code class="language-julia-repl">julia&gt; elm = ElementNode(&quot;root&quot;)  # create an element node
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f2a1b5f0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[root]@0x00007fd9f2a1b5f0&gt;)
 
 julia&gt; setroot!(doc, elm)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f2a1b5f0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[root]@0x00007fd9f2a1b5f0&gt;)
 
 julia&gt; print(doc)
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -41,7 +41,7 @@ julia&gt; print(String(read(&quot;out.xml&quot;)))
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;root&gt;some text&lt;/root&gt;
 </code></pre><p>A <code>Node</code> object has some properties. The most important one would be the <code>type</code> property, which we already saw in the example above. Other properties (<code>name</code>, <code>path</code>, <code>content</code> and <code>namespace</code>) are demonstrated in the following example. The value of a property will be <code>nothing</code> when there is no corresponding value.</p><pre><code class="language-julia-repl">julia&gt; elm = ElementNode(&quot;element&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f44122f0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[element]@0x00007fd9f44122f0&gt;)
 
 julia&gt; println(elm)
 &lt;element/&gt;
@@ -91,19 +91,19 @@ julia&gt; txt.path
 julia&gt; txt.content
 &quot;  text  &quot;
 </code></pre><p><code>addelement!(&lt;parent&gt;, &lt;child&gt;, [&lt;content&gt;])</code> is handy when you want to add a child element to an existing node:</p><pre><code class="language-julia-repl">julia&gt; user = ElementNode(&quot;User&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f427c510&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[User]@0x00007fd9f427c510&gt;)
 
 julia&gt; println(user)
 &lt;User/&gt;
 
 julia&gt; addelement!(user, &quot;id&quot;, &quot;167492&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f41ad580&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[id]@0x00007fd9f41ad580&gt;)
 
 julia&gt; println(user)
 &lt;User&gt;&lt;id&gt;167492&lt;/id&gt;&lt;/User&gt;
 
 julia&gt; addelement!(user, &quot;name&quot;, &quot;Kumiko Oumae&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f42942d0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[name]@0x00007fd9f42942d0&gt;)
 
 julia&gt; println(user)
 &lt;User&gt;&lt;id&gt;167492&lt;/id&gt;&lt;name&gt;Kumiko Oumae&lt;/name&gt;&lt;/User&gt;
@@ -112,30 +112,7 @@ julia&gt; prettyprint(user)
 &lt;User&gt;
   &lt;id&gt;167492&lt;/id&gt;
   &lt;name&gt;Kumiko Oumae&lt;/name&gt;
-&lt;/User&gt;</code></pre><p>On Julia 0.6, these properties can be accessed via accessor functions:</p><pre><code class="language-julia-repl">julia&gt; elm = ElementNode(&quot;element&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f41acbc0&gt;)
-
-julia&gt; nodetype(elm)
-ELEMENT_NODE
-
-julia&gt; nodename(elm)
-&quot;element&quot;
-
-julia&gt; nodepath(elm)
-&quot;/element&quot;
-
-julia&gt; nodecontent(elm)
-&quot;&quot;
-
-julia&gt; println(elm)
-&lt;element/&gt;
-
-julia&gt; setnodecontent!(elm, &quot;content&quot;)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f41acbc0&gt;)
-
-julia&gt; println(elm)
-&lt;element&gt;content&lt;/element&gt;
-</code></pre><h2><a class="nav-anchor" id="DOM-1" href="#DOM-1">DOM</a></h2><p>The DOM (Document Object Model) API regards an XML document as a tree of nodes. There is a root node at the top of a document tree and each node has zero or more child nodes. Some nodes (e.g. texts, attributes, etc.) cannot have child nodes.</p><p>For the demonstration purpose, save the next XML in &quot;primates.xml&quot; file.</p><pre><code class="language-none">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;/User&gt;</code></pre><h2><a class="nav-anchor" id="DOM-1" href="#DOM-1">DOM</a></h2><p>The DOM (Document Object Model) API regards an XML document as a tree of nodes. There is a root node at the top of a document tree and each node has zero or more child nodes. Some nodes (e.g. texts, attributes, etc.) cannot have child nodes.</p><p>For the demonstration purpose, save the next XML in &quot;primates.xml&quot; file.</p><pre><code class="language-none">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;primates&gt;
     &lt;genus name=&quot;Homo&quot;&gt;
         &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
@@ -152,15 +129,12 @@ julia&gt; data = String(read(&quot;primates.xml&quot;));
 julia&gt; doc = parsexml(data)
 EzXML.Document(EzXML.Node(&lt;DOCUMENT_NODE@0x00007fd9f4051f80&gt;))
 </code></pre><p>Before traversing a document we need to get the root of the document tree. The <code>.root</code> property returns the root element (if any) of a document:</p><pre><code class="language-julia-repl">julia&gt; primates = doc.root  # get the root element
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4086880&gt;)
-
-julia&gt; root(doc)  # on Julia 0.6
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4086880&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[primates]@0x00007fd9f4086880&gt;)
 
 julia&gt; genus = elements(primates)  # `elements` returns all child elements.
 2-element Array{EzXML.Node,1}:
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
 
 julia&gt; genus[1].type, genus[1].name
 (ELEMENT_NODE, &quot;genus&quot;)
@@ -192,7 +166,7 @@ julia&gt; println(genus[1])  # the &quot;genus&quot; element has been updated
 EzXML.Node(&lt;TEXT_NODE@0x00007fd9f409f200&gt;)
 
 julia&gt; primates.firstelement
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
 
 julia&gt; primates.firstelement == genus[1]
 true
@@ -201,7 +175,7 @@ julia&gt; primates.lastnode
 EzXML.Node(&lt;TEXT_NODE@0x00007fd9f404bec0&gt;)
 
 julia&gt; primates.lastelement
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
 
 julia&gt; primates.lastelement === genus[2]
 true
@@ -214,53 +188,53 @@ true
            @show node
        end
 node = EzXML.Node(&lt;TEXT_NODE@0x00007fd9f409f200&gt;)
-node = EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
+node = EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
 node = EzXML.Node(&lt;TEXT_NODE@0x00007fd9f4060f70&gt;)
-node = EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+node = EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
 node = EzXML.Node(&lt;TEXT_NODE@0x00007fd9f404bec0&gt;)
 
 julia&gt; for node in eachelement(primates)
            @show node
        end
-node = EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
-node = EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+node = EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
+node = EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
 
 julia&gt; nodes(primates)
 5-element Array{EzXML.Node,1}:
  EzXML.Node(&lt;TEXT_NODE@0x00007fd9f409f200&gt;)
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
  EzXML.Node(&lt;TEXT_NODE@0x00007fd9f4060f70&gt;)
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
  EzXML.Node(&lt;TEXT_NODE@0x00007fd9f404bec0&gt;)
 
 julia&gt; elements(primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f4041a40&gt;)
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fd9f40828e0&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f4041a40&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fd9f40828e0&gt;)
 </code></pre><h2><a class="nav-anchor" id="XPath-1" href="#XPath-1">XPath</a></h2><p><a href="https://en.wikipedia.org/wiki/XPath">XPath</a> is a query language for XML. You can retrieve target elements using a short query string. For example, <code>&quot;//genus/species&quot;</code> selects all &quot;species&quot; elements just under a &quot;genus&quot; element.</p><p>The <code>findall</code>, <code>findfirst</code> and <code>findlast</code> functions are overloaded for XPath query and return a vector of selected nodes:</p><pre><code class="language-julia-repl">julia&gt; primates = readxml(&quot;primates.xml&quot;)
 EzXML.Document(EzXML.Node(&lt;DOCUMENT_NODE@0x00007fbeddc2a1d0&gt;))
 
 julia&gt; findall(&quot;/primates&quot;, primates)  # Find the &quot;primates&quot; element just under the document
 1-element Array{EzXML.Node,1}:
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc1e190&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[primates]@0x00007fbeddc1e190&gt;)
 
 julia&gt; findall(&quot;//genus&quot;, primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc16ea0&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fbeddc12c50&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fbeddc16ea0&gt;)
 
 julia&gt; findfirst(&quot;//genus&quot;, primates)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fbeddc12c50&gt;)
 
 julia&gt; findlast(&quot;//genus&quot;, primates)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc16ea0&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fbeddc16ea0&gt;)
 
 julia&gt; println(findfirst(&quot;//genus&quot;, primates))
 &lt;genus name=&quot;Homo&quot;&gt;
         &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
     &lt;/genus&gt;
 </code></pre><p>If you would like to change the starting node of a query, you can pass the node as the second argument of <code>find*</code>:</p><pre><code class="language-julia-repl">julia&gt; genus = findfirst(&quot;//genus&quot;, primates)
-EzXML.Node(&lt;ELEMENT_NODE@0x00007fbeddc12c50&gt;)
+EzXML.Node(&lt;ELEMENT_NODE[genus]@0x00007fbeddc12c50&gt;)
 
 julia&gt; println(genus)
 &lt;genus name=&quot;Homo&quot;&gt;
@@ -288,7 +262,7 @@ julia&gt; ns = namespace(doc.root)  # get the namespace
 
 julia&gt; findall(&quot;/x:parent/x:child&quot;, doc.root, [&quot;x&quot;=&gt;ns])  # specify its prefix as &quot;x&quot;
 1-element Array{EzXML.Node,1}:
- EzXML.Node(&lt;ELEMENT_NODE@0x00007fdc6774c990&gt;)
+ EzXML.Node(&lt;ELEMENT_NODE[child]@0x00007fdc6774c990&gt;)
 </code></pre><h2><a class="nav-anchor" id="Streaming-API-1" href="#Streaming-API-1">Streaming API</a></h2><p>In addition to the DOM API, EzXML.jl provides a streaming reader of XML files. The streaming reader processes, as the name suggests, a stream of XML data by incrementally reading data from a file instead of reading a whole XML tree into the memory. This enables processing extremely large files with limited memory.</p><p>Let&#39;s use the following XML file (undirected.graphml) that represents an undirected graph in the <a href="http://graphml.graphdrawing.org/">GraphML</a> format (slightly simplified for brevity):</p><pre><code class="language-none">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;graphml&gt;
     &lt;graph edgedefault=&quot;undirected&quot;&gt;
@@ -405,36 +379,4 @@ julia&gt; for typ in reader
 (typ, reader.name) = (READER_END_ELEMENT, &quot;graphml&quot;)
 
 julia&gt; close(reader)
-</code></pre><hr/><p><strong>(NOTE: This paragraph is for the backward compatibility of Julia 0.6. If you don&#39;t need to support Julia 0.6, you should use the <code>iterate</code> method instead.)</strong> Iteration is advanced by the <code>done(&lt;reader&gt;)</code> method, which updates the current reading position of the reader and returns <code>false</code> when there is at least one node to read from the stream:</p><pre><code class="language-none">julia&gt; reader = open(EzXML.StreamReader, &quot;undirected.graphml&quot;)
-EzXML.StreamReader(&lt;READER_NONE@0x00007f9fe8d67340&gt;)
-
-julia&gt; done(reader)  # Read the 1st node.
-false
-
-julia&gt; nodetype(reader)
-READER_ELEMENT
-
-julia&gt; nodename(reader)
-&quot;graphml&quot;
-
-julia&gt; done(reader)  # Read the 2nd node.
-false
-
-julia&gt; nodetype(reader)
-READER_SIGNIFICANT_WHITESPACE
-
-julia&gt; nodename(reader)
-&quot;#text&quot;
-
-julia&gt; done(reader)  # Read the 3rd node.
-false
-
-julia&gt; nodetype(reader)
-READER_ELEMENT
-
-julia&gt; nodename(reader)
-&quot;graph&quot;
-
-julia&gt; reader[&quot;edgedefault&quot;]
-&quot;undirected&quot;
 </code></pre><footer><hr/><a class="previous" href="../"><span class="direction">Previous</span><span class="title">Home</span></a><a class="next" href="../reference/"><span class="direction">Next</span><span class="title">Reference</span></a></footer></article></body></html>
