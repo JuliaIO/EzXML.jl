@@ -191,34 +191,6 @@ julia> prettyprint(user)
 </User>
 ```
 
-On Julia 0.6, these properties can be accessed via accessor functions:
-```jldoctest
-julia> elm = ElementNode("element")
-EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f41acbc0>)
-
-julia> nodetype(elm)
-ELEMENT_NODE
-
-julia> nodename(elm)
-"element"
-
-julia> nodepath(elm)
-"/element"
-
-julia> nodecontent(elm)
-""
-
-julia> println(elm)
-<element/>
-
-julia> setnodecontent!(elm, "content")
-EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f41acbc0>)
-
-julia> println(elm)
-<element>content</element>
-
-```
-
 
 DOM
 ---
@@ -259,9 +231,6 @@ Before traversing a document we need to get the root of the document tree.
 The `.root` property returns the root element (if any) of a document:
 ```jldoctest dom
 julia> primates = doc.root  # get the root element
-EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
-
-julia> root(doc)  # on Julia 0.6
 EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
 
 julia> genus = elements(primates)  # `elements` returns all child elements.
@@ -662,48 +631,5 @@ julia> for typ in reader
 (typ, reader.name) = (READER_END_ELEMENT, "graphml")
 
 julia> close(reader)
-
-```
-
----
-
-**(NOTE: This paragraph is for the backward compatibility of Julia 0.6. If you
-don't need to support Julia 0.6, you should use the `iterate` method
-instead.)** Iteration is advanced by the `done(<reader>)` method, which updates
-the current reading position of the reader and returns `false` when there is at
-least one node to read from the stream:
-```
-julia> reader = open(EzXML.StreamReader, "undirected.graphml")
-EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
-
-julia> done(reader)  # Read the 1st node.
-false
-
-julia> nodetype(reader)
-READER_ELEMENT
-
-julia> nodename(reader)
-"graphml"
-
-julia> done(reader)  # Read the 2nd node.
-false
-
-julia> nodetype(reader)
-READER_SIGNIFICANT_WHITESPACE
-
-julia> nodename(reader)
-"#text"
-
-julia> done(reader)  # Read the 3rd node.
-false
-
-julia> nodetype(reader)
-READER_ELEMENT
-
-julia> nodename(reader)
-"graph"
-
-julia> reader["edgedefault"]
-"undirected"
 
 ```
