@@ -1,5 +1,15 @@
 using EzXML
 using Test
+using Logging: SimpleLogger, with_logger
+
+# Capture logging messages using a local logger.
+function capture_logging_messages(proc)
+    buf = IOBuffer()
+    ret = with_logger(proc, SimpleLogger(buf))
+    messages = String(take!(buf))
+    return ret, messages
+end
+
 
 # Unit tests
 # ----------
@@ -93,10 +103,13 @@ end
         &#124
         <a href="http://mbgd.genome.ad.jp/sparql/index_2015.php">To Previous Version (2015)</a>
         """)
-        @info("the following two warnings are expected:")
-        doc = readhtml(buf)
+        doc, messages = capture_logging_messages() do
+            readhtml(buf)
+        end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
+        @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 2)", messages)
+        @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 4)", messages)
     end
 end
 
@@ -167,8 +180,10 @@ end
         @test_throws EzXML.XMLError parsexml("abracadabra")
         @test_throws EzXML.XMLError parsexml("""<?xml version="1.0"?>""")
 
-        @info("the following warning is expected:")
-        @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
+        _, messages = capture_logging_messages() do
+            @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
+        end
+        @test occursin("caught 4 errors; showing the first one", messages)
     end
 
     @testset "HTML" begin
