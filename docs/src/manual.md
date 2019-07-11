@@ -72,10 +72,10 @@ The text just before the `@` sign shows the node type (in this example,
 Let's add a root node to the document and a text node to the root node:
 ```jldoctest doc
 julia> elm = ElementNode("root")  # create an element node
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f2a1b5f0>)
+EzXML.Node(<ELEMENT_NODE[root]@0x00007fd9f2a1b5f0>)
 
 julia> setroot!(doc, elm)
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f2a1b5f0>)
+EzXML.Node(<ELEMENT_NODE[root]@0x00007fd9f2a1b5f0>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -111,7 +111,7 @@ The value of a property will be `nothing` when there is no corresponding value.
 
 ```jldoctest
 julia> elm = ElementNode("element")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f44122f0>)
+EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f44122f0>)
 
 julia> println(elm)
 <element/>
@@ -167,19 +167,19 @@ julia> txt.content
 child element to an existing node:
 ```jldoctest
 julia> user = ElementNode("User")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f427c510>)
+EzXML.Node(<ELEMENT_NODE[User]@0x00007fd9f427c510>)
 
 julia> println(user)
 <User/>
 
 julia> addelement!(user, "id", "167492")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f41ad580>)
+EzXML.Node(<ELEMENT_NODE[id]@0x00007fd9f41ad580>)
 
 julia> println(user)
 <User><id>167492</id></User>
 
 julia> addelement!(user, "name", "Kumiko Oumae")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f42942d0>)
+EzXML.Node(<ELEMENT_NODE[name]@0x00007fd9f42942d0>)
 
 julia> println(user)
 <User><id>167492</id><name>Kumiko Oumae</name></User>
@@ -194,7 +194,7 @@ julia> prettyprint(user)
 On Julia 0.6, these properties can be accessed via accessor functions:
 ```jldoctest
 julia> elm = ElementNode("element")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f41acbc0>)
+EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f41acbc0>)
 
 julia> nodetype(elm)
 ELEMENT_NODE
@@ -212,7 +212,7 @@ julia> println(elm)
 <element/>
 
 julia> setnodecontent!(elm, "content")
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f41acbc0>)
+EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f41acbc0>)
 
 julia> println(elm)
 <element>content</element>
@@ -259,15 +259,15 @@ Before traversing a document we need to get the root of the document tree.
 The `.root` property returns the root element (if any) of a document:
 ```jldoctest dom
 julia> primates = doc.root  # get the root element
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f4086880>)
+EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
 
 julia> root(doc)  # on Julia 0.6
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f4086880>)
+EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
 
 julia> genus = elements(primates)  # `elements` returns all child elements.
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
 julia> genus[1].type, genus[1].name
 (ELEMENT_NODE, "genus")
@@ -328,7 +328,7 @@ julia> primates.firstnode
 EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
 
 julia> primates.firstelement
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
+EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
 
 julia> primates.firstelement == genus[1]
 true
@@ -337,7 +337,7 @@ julia> primates.lastnode
 EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
 
 julia> primates.lastelement
-EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
 julia> primates.lastelement === genus[2]
 true
@@ -382,29 +382,29 @@ julia> for node in eachnode(primates)
            @show node
        end
 node = EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
-node = EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
+node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
 node = EzXML.Node(<TEXT_NODE@0x00007fd9f4060f70>)
-node = EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 node = EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
 
 julia> for node in eachelement(primates)
            @show node
        end
-node = EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
-node = EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
+node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
 julia> nodes(primates)
 5-element Array{EzXML.Node,1}:
  EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
  EzXML.Node(<TEXT_NODE@0x00007fd9f4060f70>)
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
  EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
 
 julia> elements(primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f4041a40>)
- EzXML.Node(<ELEMENT_NODE@0x00007fd9f40828e0>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
 ```
 
@@ -423,18 +423,18 @@ EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
 
 julia> findall("/primates", primates)  # Find the "primates" element just under the document
 1-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE@0x00007fbeddc1e190>)
+ EzXML.Node(<ELEMENT_NODE[primates]@0x00007fbeddc1e190>)
 
 julia> findall("//genus", primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
- EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
+ EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc16ea0>)
 
 julia> findfirst("//genus", primates)
-EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
+EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
 
 julia> findlast("//genus", primates)
-EzXML.Node(<ELEMENT_NODE@0x00007fbeddc16ea0>)
+EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc16ea0>)
 
 julia> println(findfirst("//genus", primates))
 <genus name="Homo">
@@ -447,7 +447,7 @@ If you would like to change the starting node of a query, you can pass the node
 as the second argument of `find*`:
 ```jldoctest xpath
 julia> genus = findfirst("//genus", primates)
-EzXML.Node(<ELEMENT_NODE@0x00007fbeddc12c50>)
+EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
 
 julia> println(genus)
 <genus name="Homo">
@@ -490,7 +490,7 @@ julia> ns = namespace(doc.root)  # get the namespace
 
 julia> findall("/x:parent/x:child", doc.root, ["x"=>ns])  # specify its prefix as "x"
 1-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE@0x00007fdc6774c990>)
+ EzXML.Node(<ELEMENT_NODE[child]@0x00007fdc6774c990>)
 
 ```
 
