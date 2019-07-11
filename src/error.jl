@@ -76,7 +76,7 @@ function throw_xml_error()
     if isempty(XML_GLOBAL_ERROR_STACK)
         error("unknown error of libxml2")
     elseif length(XML_GLOBAL_ERROR_STACK) > 1
-        @warn("caught $(length(XML_GLOBAL_ERROR_STACK)) errors; show the first one")
+        @warn("caught $(length(XML_GLOBAL_ERROR_STACK)) errors; showing the first one")
     end
     # DEBUG
     # for err in XML_GLOBAL_ERROR_STACK
