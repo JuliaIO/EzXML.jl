@@ -124,13 +124,4 @@ function __init__()
     init_error_handler()
 end
 
-# deprcated methods
-import Base: findall, findfirst, findlast
-@deprecate findall(doc::Document, xpath::AbstractString)   findall(xpath, doc)
-@deprecate findfirst(doc::Document, xpath::AbstractString) findfirst(xpath, doc)
-@deprecate findlast(doc::Document, xpath::AbstractString)  findlast(xpath, doc)
-@deprecate findall(node::Node, xpath::AbstractString, ns=namespaces(node))   findall(xpath, node, ns)
-@deprecate findfirst(node::Node, xpath::AbstractString, ns=namespaces(node)) findfirst(xpath, node, ns)
-@deprecate findlast(node::Node, xpath::AbstractString, ns=namespaces(node))  findlast(xpath, node, ns)
-
 end # module
