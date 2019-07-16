@@ -237,8 +237,8 @@ end
 """
 A proxy type to libxml2's node struct.
 
-Properties (Julia ≥ 0.7)
-------------------------
+Properties
+----------
 
 | Name | Type | Description |
 |:---- |:---- |:------------|
