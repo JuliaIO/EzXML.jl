@@ -1,7 +1,7 @@
 name = "EzXML"
 uuid = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
 authors = ["Kenta Sato <bicycle1885@gmail.com>"]
-version = "0.9.3"
+version = "0.9.4"
 
 [deps]
 BinaryProvider = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
