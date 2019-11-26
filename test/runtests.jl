@@ -1287,8 +1287,9 @@ end
         <term><accession>GO:0000001</accession></term>
     </go>
     """)
-    @test isempty(findall("term", root(doc)))
-    @test isempty(findall("./term", root(doc)))
+    warnmsg = "ignored the empty prefix for 'http://www.geneontology.org/dtds/go.dtd#'; expected to be non-empty"
+    @test isempty(@test_logs (:warn, warnmsg) findall("term", root(doc)))
+    @test isempty(@test_logs (:warn, warnmsg) findall("./term", root(doc)))
     @test findall("go:term", root(doc), ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
     @test findall("./go:term", root(doc), ["go" => "http://www.geneontology.org/dtds/go.dtd#"]) == elements(root(doc))
 

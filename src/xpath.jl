@@ -81,7 +81,9 @@ function Base.findall(xpath::AbstractString, node::Node, ns=namespaces(node))
         throw_xml_error()
     end
     for (prefix, uri) in ns
-        if !isempty(prefix)
+        if isempty(prefix)
+            @warn "ignored the empty prefix for '$(uri)'; expected to be non-empty"
+        else
             ret = register_namespace!(context_ptr, prefix, uri)
             @assert ret == 0
         end
