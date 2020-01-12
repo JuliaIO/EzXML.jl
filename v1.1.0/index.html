@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · EzXML.jl</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">EzXML.jl</span></div><form class="docs-search" action="search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a></li><li><a class="tocitem" href="manual/">Manual</a></li><li><a class="tocitem" href="reference/">Reference</a></li><li><a class="tocitem" href="devnotes/">Developer Notes</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/bicycle1885/EzXML.jl/blob/master/docs/src/index.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Home-1"><a class="docs-heading-anchor" href="#Home-1">Home</a><a class="docs-heading-anchor-permalink" href="#Home-1" title="Permalink"></a></h1><p>EzXML.jl is a package for handling XML and HTML documents. The APIs are simple and consistent, and provide a range of functionalities including:</p><ul><li>Reading and writing XML/HTML documents.</li><li>Traversing XML/HTML trees with DOM interfaces.</li><li>Searching elements using XPath.</li><li>Proper namespace handling.</li><li>Capturing error messages.</li><li>Automatic memory management.</li><li>Document validation.</li><li>Streaming parsing for large XML files.</li></ul><p>Here is an example of parsing and traversing an XML document:</p><pre><code class="language-julia"># Load the package.
+using EzXML
+
+# Parse an XML string
+# (use `readxml(&lt;filename&gt;)` to read a document from a file).
+doc = parsexml(&quot;&quot;&quot;
+&lt;primates&gt;
+    &lt;genus name=&quot;Homo&quot;&gt;
+        &lt;species name=&quot;sapiens&quot;&gt;Human&lt;/species&gt;
+    &lt;/genus&gt;
+    &lt;genus name=&quot;Pan&quot;&gt;
+        &lt;species name=&quot;paniscus&quot;&gt;Bonobo&lt;/species&gt;
+        &lt;species name=&quot;troglodytes&quot;&gt;Chimpanzee&lt;/species&gt;
+    &lt;/genus&gt;
+&lt;/primates&gt;
+&quot;&quot;&quot;)
+
+# Get the root element from `doc`.
+primates = root(doc)
+
+# Iterate over child elements.
+for genus in eachelement(primates)
+    # Get an attribute value by name.
+    genus_name = genus[&quot;name&quot;]
+    println(&quot;- &quot;, genus_name)
+    for species in eachelement(genus)
+        # Get the content within an element.
+        species_name = nodecontent(species)
+        println(&quot;  └ &quot;, species[&quot;name&quot;], &quot; (&quot;, species_name, &quot;)&quot;)
+    end
+end
+println()
+
+# Find texts using XPath query.
+for species_name in nodecontent.(findall(&quot;//species/text()&quot;, primates))
+    println(&quot;- &quot;, species_name)
+end</code></pre><p>If you are new to this package, read <a href="manual/">the manual page</a> first. It provides a general guide to the package. <a href="reference/">The reference page</a> offers a full documentation for each function, and <a href="devnotes/">the developer notes page</a> explains about the internal design for developers.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="manual/">Manual »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Sunday 12 January 2020 12:15">Sunday 12 January 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
