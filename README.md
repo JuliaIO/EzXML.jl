@@ -29,11 +29,8 @@ Install EzXML.jl as follows:
 julia -e 'using Pkg; Pkg.add("EzXML")'
 ```
 
-This package depends on [libxml2](http://xmlsoft.org/) 2.9.9, which will be
-installed automatically from
-[Yggdrasil](https://github.com/JuliaPackaging/Yggdrasil/releases/tag/XML2-v2.9.9%2B0)
-via [BinaryProvider.jl](https://github.com/JuliaPackaging/BinaryProvider.jl).
-Windows, Linux, macOS, and FreeBSD are now supported.
+This package depends on [libxml2](http://xmlsoft.org/) 2.9.9, which will be automatically installed as an artifact via [XML2_jll.jl](https://github.com/JuliaBinaryWrappers/XML2_jll.jl) if you use Julia 1.3 or later.
+Currently, Windows, Linux, macOS, and FreeBSD are now supported.
 
 Usage
 -----
