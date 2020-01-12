@@ -102,16 +102,8 @@ export
     hasnodeattributes,
     nodeattributes
 
-using Libdl
 using Printf: @printf
-
-# Load libxml2.
-const libxml2path = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
-if !isfile(libxml2path)
-    error("EzXML.jl is not installed properly, run Pkg.build(\"EzXML\") and restart Julia.")
-end
-include(libxml2path)
-check_deps()
+using XML2_jll: libxml2
 
 include("error.jl")
 include("node.jl")
