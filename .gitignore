@@ -4,9 +4,6 @@ Manifest.toml
 *.jl.mem
 /.envrc
 /libxml2*
-/deps/build.log
-/deps/deps.jl
-/deps/usr/
 /docs/out.xml
 /docs/build/
 /docs/site/
