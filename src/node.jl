@@ -296,7 +296,7 @@ function ismanaged(node::Node)
 end
 
 function Base.show(io::IO, node::Node)
-    prefix = isdefined(Main, :Node) ? "Node" : "EzXML.Node"
+    prefix = "EzXML.Node"
     ntype = nodetype(node)
     if ntype ∈ (ELEMENT_NODE, ATTRIBUTE_NODE) && hasnodename(node)
         desc = string(repr(ntype), '[', nodename(node), ']')

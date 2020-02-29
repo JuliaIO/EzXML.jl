@@ -28,7 +28,7 @@ end
 end
 
 function Base.show(io::IO, reader::StreamReader)
-    prefix = isdefined(Main, :StreamReader) ? "StreamReader" : "EzXML.StreamReader"
+    prefix = "EzXML.StreamReader"
     nodetype_reader = repr(nodetype(reader))
     print(io, "$(prefix)(<$(nodetype_reader)>)")
 end
