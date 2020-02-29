@@ -1308,7 +1308,7 @@ end
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
         reader = open(EzXML.StreamReader, sample2)
-        @test occursin(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
+        @test occursin(r"^EzXML.StreamReader\(<[A-Z_]+>\)$", repr(reader))
         close(reader)
     end
 
