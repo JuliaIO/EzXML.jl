@@ -303,7 +303,7 @@ function Base.show(io::IO, node::Node)
     else
         desc = repr(ntype)
     end
-    @printf(io, "%s(<%s>)", prefix, desc)
+    print(io, "$(prefix)(<$(desc)>)")
 end
 
 function Base.print(io::IO, node::Node)
