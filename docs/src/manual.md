@@ -49,13 +49,13 @@ constructor:
 julia> using EzXML
 
 julia> doc = XMLDocument()
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd9f1f14370>))
+EzXML.Document(Node(<DOCUMENT_NODE>))
 
 julia> typeof(doc)
 EzXML.Document
 
 julia> doc.node
-EzXML.Node(<DOCUMENT_NODE@0x00007fd9f1f14370>)
+Node(<DOCUMENT_NODE>)
 
 julia> typeof(doc.node)
 EzXML.Node
@@ -72,20 +72,20 @@ The text just before the `@` sign shows the node type (in this example,
 Let's add a root node to the document and a text node to the root node:
 ```jldoctest doc
 julia> elm = ElementNode("root")  # create an element node
-EzXML.Node(<ELEMENT_NODE[root]@0x00007fd9f2a1b5f0>)
+Node(<ELEMENT_NODE[root]>)
 
 julia> setroot!(doc, elm)
-EzXML.Node(<ELEMENT_NODE[root]@0x00007fd9f2a1b5f0>)
+Node(<ELEMENT_NODE[root]>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
 <root/>
 
 julia> txt = TextNode("some text")  # create a text node
-EzXML.Node(<TEXT_NODE@0x00007fd9f2a81ee0>)
+Node(<TEXT_NODE>)
 
 julia> link!(elm, txt)
-EzXML.Node(<TEXT_NODE@0x00007fd9f2a81ee0>)
+Node(<TEXT_NODE>)
 
 julia> print(doc)
 <?xml version="1.0" encoding="UTF-8"?>
@@ -111,7 +111,7 @@ The value of a property will be `nothing` when there is no corresponding value.
 
 ```jldoctest
 julia> elm = ElementNode("element")
-EzXML.Node(<ELEMENT_NODE[element]@0x00007fd9f44122f0>)
+Node(<ELEMENT_NODE[element]>)
 
 julia> println(elm)
 <element/>
@@ -144,7 +144,7 @@ julia> println(elm)
 <ELEMENT>some text</ELEMENT>
 
 julia> txt = TextNode("  text  ")
-EzXML.Node(<TEXT_NODE@0x00007fd9f441f3f0>)
+Node(<TEXT_NODE>)
 
 julia> println(txt)
   text
@@ -167,19 +167,19 @@ julia> txt.content
 child element to an existing node:
 ```jldoctest
 julia> user = ElementNode("User")
-EzXML.Node(<ELEMENT_NODE[User]@0x00007fd9f427c510>)
+Node(<ELEMENT_NODE[User]>)
 
 julia> println(user)
 <User/>
 
 julia> addelement!(user, "id", "167492")
-EzXML.Node(<ELEMENT_NODE[id]@0x00007fd9f41ad580>)
+Node(<ELEMENT_NODE[id]>)
 
 julia> println(user)
 <User><id>167492</id></User>
 
 julia> addelement!(user, "name", "Kumiko Oumae")
-EzXML.Node(<ELEMENT_NODE[name]@0x00007fd9f42942d0>)
+Node(<ELEMENT_NODE[name]>)
 
 julia> println(user)
 <User><id>167492</id><name>Kumiko Oumae</name></User>
@@ -218,12 +218,12 @@ Likewise, `parsexml(<string or byte array>)` parses an XML string or a byte
 array in memory and builds a document object:
 ```jldoctest dom
 julia> doc = readxml("primates.xml")
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd9f410a5f0>))
+EzXML.Document(Node(<DOCUMENT_NODE>))
 
 julia> data = String(read("primates.xml"));
 
 julia> doc = parsexml(data)
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fd9f4051f80>))
+EzXML.Document(Node(<DOCUMENT_NODE>))
 
 ```
 
@@ -231,12 +231,12 @@ Before traversing a document we need to get the root of the document tree.
 The `.root` property returns the root element (if any) of a document:
 ```jldoctest dom
 julia> primates = doc.root  # get the root element
-EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
+Node(<ELEMENT_NODE[primates]>)
 
 julia> genus = elements(primates)  # `elements` returns all child elements.
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
+ Node(<ELEMENT_NODE[genus]>)
+ Node(<ELEMENT_NODE[genus]>)
 
 julia> genus[1].type, genus[1].name
 (ELEMENT_NODE, "genus")
@@ -294,19 +294,19 @@ indicate a node type the property (function) is interested in. For example,
 but `.firstelement` always returns the first element node (if any):
 ```jldoctest dom
 julia> primates.firstnode
-EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
+Node(<TEXT_NODE>)
 
 julia> primates.firstelement
-EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
+Node(<ELEMENT_NODE[genus]>)
 
 julia> primates.firstelement == genus[1]
 true
 
 julia> primates.lastnode
-EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
+Node(<TEXT_NODE>)
 
 julia> primates.lastelement
-EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
+Node(<ELEMENT_NODE[genus]>)
 
 julia> primates.lastelement === genus[2]
 true
@@ -350,30 +350,30 @@ and elements, respectively:
 julia> for node in eachnode(primates)
            @show node
        end
-node = EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
-node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
-node = EzXML.Node(<TEXT_NODE@0x00007fd9f4060f70>)
-node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
-node = EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
+node = Node(<TEXT_NODE>)
+node = Node(<ELEMENT_NODE[genus]>)
+node = Node(<TEXT_NODE>)
+node = Node(<ELEMENT_NODE[genus]>)
+node = Node(<TEXT_NODE>)
 
 julia> for node in eachelement(primates)
            @show node
        end
-node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
-node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
+node = Node(<ELEMENT_NODE[genus]>)
+node = Node(<ELEMENT_NODE[genus]>)
 
 julia> nodes(primates)
 5-element Array{EzXML.Node,1}:
- EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
- EzXML.Node(<TEXT_NODE@0x00007fd9f4060f70>)
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
- EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
+ Node(<TEXT_NODE>)
+ Node(<ELEMENT_NODE[genus]>)
+ Node(<TEXT_NODE>)
+ Node(<ELEMENT_NODE[genus]>)
+ Node(<TEXT_NODE>)
 
 julia> elements(primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
+ Node(<ELEMENT_NODE[genus]>)
+ Node(<ELEMENT_NODE[genus]>)
 
 ```
 
@@ -388,22 +388,22 @@ The `findall`, `findfirst` and `findlast` functions are overloaded for XPath
 query and return a vector of selected nodes:
 ```jldoctest xpath
 julia> primates = readxml("primates.xml")
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
+EzXML.Document(Node(<DOCUMENT_NODE>))
 
 julia> findall("/primates", primates)  # Find the "primates" element just under the document
 1-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE[primates]@0x00007fbeddc1e190>)
+ Node(<ELEMENT_NODE[primates]>)
 
 julia> findall("//genus", primates)
 2-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
- EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc16ea0>)
+ Node(<ELEMENT_NODE[genus]>)
+ Node(<ELEMENT_NODE[genus]>)
 
 julia> findfirst("//genus", primates)
-EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
+Node(<ELEMENT_NODE[genus]>)
 
 julia> findlast("//genus", primates)
-EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc16ea0>)
+Node(<ELEMENT_NODE[genus]>)
 
 julia> println(findfirst("//genus", primates))
 <genus name="Homo">
@@ -416,7 +416,7 @@ If you would like to change the starting node of a query, you can pass the node
 as the second argument of `find*`:
 ```jldoctest xpath
 julia> genus = findfirst("//genus", primates)
-EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
+Node(<ELEMENT_NODE[genus]>)
 
 julia> println(genus)
 <genus name="Homo">
@@ -445,7 +445,7 @@ julia> doc = parsexml("""
            <child/>
        </parent>
        """)
-EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))
+EzXML.Document(Node(<DOCUMENT_NODE>))
 
 julia> findall("/parent/child", doc.root)  # nothing will be found
 0-element Array{EzXML.Node,1}
@@ -459,7 +459,7 @@ julia> ns = namespace(doc.root)  # get the namespace
 
 julia> findall("/x:parent/x:child", doc.root, ["x"=>ns])  # specify its prefix as "x"
 1-element Array{EzXML.Node,1}:
- EzXML.Node(<ELEMENT_NODE[child]@0x00007fdc6774c990>)
+ Node(<ELEMENT_NODE[child]>)
 
 ```
 
@@ -495,7 +495,7 @@ thing you needs to do is to create an `EzXML.StreamReader` object using the
 `open` function:
 ```jldoctest stream
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
-EzXML.StreamReader(<READER_NONE@0x00007f9fe8d67340>)
+StreamReader(<READER_NONE>)
 
 ```
 
@@ -548,7 +548,7 @@ available from the file. When you finished reading data, you need to call
 `close(reader)` to release allocated resources:
 ```jldoctest
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
-EzXML.StreamReader(<READER_NONE@0x00007fd642e80d90>)
+StreamReader(<READER_NONE>)
 
 julia> while (item = iterate(reader)) != nothing
            @show reader.type, reader.name
@@ -599,7 +599,7 @@ iterable via the `for` loop. Therefore, you can iterate over all components
 without explicitly calling `iterate` as follows:
 ```jldoctest
 julia> reader = open(EzXML.StreamReader, "undirected.graphml")
-EzXML.StreamReader(<READER_NONE@0x00007fd642e9a6b0>)
+StreamReader(<READER_NONE>)
 
 julia> for typ in reader
            @show typ, reader.name
