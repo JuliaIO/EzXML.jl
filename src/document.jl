@@ -51,6 +51,12 @@ function HTMLDocument(uri=nothing, externalID=nothing)
     return Document(node.ptr)
 end
 
+function Base.show(io::IO, doc::Document)
+    prefix = "EzXML.Document"
+    node = repr(doc.node)
+    print(io, "$(prefix)($node)")
+end
+
 function Base.print(io::IO, doc::Document)
     print(io, doc.node)
 end
