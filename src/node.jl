@@ -365,9 +365,9 @@ function store_proxy_pointer!(node, ptr)
 end
 
 # Finalize a Node object.
-function finalize_node(node)
+function finalize_node(node::Node)
     node_ptr = node.ptr
-    if node === node.owner
+    GC.@preserve node if node === node.owner
         # detach pointers to C structs of descendant nodes
         traverse_tree(node_ptr) do ptr
             str = unsafe_load(ptr)
