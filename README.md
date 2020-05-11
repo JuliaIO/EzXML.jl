@@ -5,8 +5,7 @@ EzXML.jl - XML/HTML tools for primates
 
 [![Docs Stable][docs-stable-img]][docs-stable-url]
 [![Docs Latest][docs-latest-img]][docs-latest-url]
-[![TravisCI Status][travisci-img]][travisci-url]
-[![Appveyor Status][appveyor-img]][appveyor-url]
+[![CI Status][ci-status-img]][ci-status-url]
 [![codecov.io][codecov-img]][codecov-url]
 
 EzXML.jl is a package to handle XML/HTML documents for primates.
@@ -153,9 +152,7 @@ Other XML/HTML packages in Julia
 [docs-stable-url]: https://bicycle1885.github.io/EzXML.jl/stable
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest
-[travisci-img]: https://travis-ci.org/bicycle1885/EzXML.jl.svg?branch=master
-[travisci-url]: https://travis-ci.org/bicycle1885/EzXML.jl
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/n5d7o2mmy8ckdjc8?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/bicycle1885/ezxml-jl
 [codecov-img]: http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master
 [codecov-url]: http://codecov.io/github/bicycle1885/EzXML.jl?branch=master
+[ci-status-img]: https://github.com/bicycle1885/EzXML.jl/workflows/CI/badge.svg
+[ci-status-url]: https://github.com/bicycle1885/EzXML.jl/actions
