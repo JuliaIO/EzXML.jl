@@ -365,9 +365,9 @@ function store_proxy_pointer!(node, ptr)
 end
 
 # Finalize a Node object.
-function finalize_node(node)
+function finalize_node(node::Node)
     node_ptr = node.ptr
-    if node === node.owner
+    GC.@preserve node if node === node.owner
         # detach pointers to C structs of descendant nodes
         traverse_tree(node_ptr) do ptr
             str = unsafe_load(ptr)
@@ -377,7 +377,7 @@ function finalize_node(node)
             end
         end
         # free the descendants
-        if unsafe_load(node_ptr).typ == DOCUMENT_NODE
+        if unsafe_load(node_ptr).typ ∈ (DOCUMENT_NODE, HTML_DOCUMENT_NODE)
             ccall((:xmlFreeDoc, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
         else
             ccall((:xmlFreeNode, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
