@@ -88,8 +88,10 @@ function throw_xml_error()
 end
 
 # Show warning massages if any.
-function show_warnings()
+function show_warnings(; noerror = false, nowarning = true)
     for err in XML_GLOBAL_ERROR_STACK
+        noerror && err.level == XML_ERR_ERROR && continue
+        nowarning && err.level == XML_ERR_WARNING && continue
         buf = IOBuffer()
         showerror(buf, err)
         @warn(String(take!(buf)))
