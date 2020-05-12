@@ -377,7 +377,7 @@ function finalize_node(node::Node)
             end
         end
         # free the descendants
-        if unsafe_load(node_ptr).typ == DOCUMENT_NODE
+        if unsafe_load(node_ptr).typ ∈ (DOCUMENT_NODE, HTML_DOCUMENT_NODE)
             ccall((:xmlFreeDoc, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
         else
             ccall((:xmlFreeNode, libxml2), Cvoid, (Ptr{Cvoid},), node_ptr)
