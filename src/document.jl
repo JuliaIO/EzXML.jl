@@ -68,29 +68,58 @@ function prettyprint(io::IO, doc::Document)
     prettyprint(io, doc.node)
 end
 
+# enum xmlParserOption flags (incomplete)
+const PARSE_NOERROR   = Cint(32)
+const PARSE_NOWARNING = Cint(64)
+const PARSE_PEDANTIC  = Cint(128)
+const PARSE_NOBLANKS  = Cint(256)
+const PARSE_NODICT    = Cint(4096)
+
+function parse_options(;
+        noerror::Bool   = false,
+        nowarning::Bool = false,
+        pedantic::Bool  = false,
+        noblanks::Bool  = false,
+    )
+    options = PARSE_NODICT  # do not reuse the context dictionary
+    noerror  && (options |= PARSE_NOERROR)
+    noblanks && (options |= PARSE_NOBLANKS)
+    pedantic && (options |= PARSE_PEDANTIC)
+    noblanks && (options |= PARSE_NOBLANKS)
+    return options
+end
+
 """
-    parsexml(xmlstring)
+    parsexml(xmlstring; options...)
 
 Parse `xmlstring` and create an XML document.
+
+## Parsing Options
+
+- `noerror = false`: suppress error reports
+- `nowarning = false`: suppress warning reports
+- `pedantic = false`: pedantic error reporting
+- `noblanks = false`: remove blank nodes
 """
-function parsexml(xmlstring::AbstractString)
+function parsexml(xmlstring::AbstractString; options...)
     if isempty(xmlstring)
         throw(ArgumentError("empty XML string"))
     end
+    opts = parse_options(; options...)
     doc_ptr = @check ccall(
-        (:xmlParseMemory, libxml2),
+        (:xmlReadMemory, libxml2),
         Ptr{_Node},
-        (Cstring, Cint),
-        xmlstring, sizeof(xmlstring)) != C_NULL
+        (Cstring, Cint, Cstring, Cstring, Cint),
+        xmlstring, sizeof(xmlstring), C_NULL, C_NULL, opts) != C_NULL
     return Document(doc_ptr)
 end
 
-function parsexml(xmldata::Vector{UInt8})
-    return parsexml(String(xmldata))
+function parsexml(xmldata::Vector{UInt8}; options...)
+    return parsexml(String(xmldata); options...)
 end
 
-function parsexml(xmldata::Base.CodeUnits{UInt8,String})
-    return parsexml(String(xmldata))
+function parsexml(xmldata::Base.CodeUnits{UInt8,String}; options...)
+    return parsexml(String(xmldata); options...)
 end
 
 """
@@ -123,39 +152,38 @@ function parsehtml(htmldata::Base.CodeUnits{UInt8,String})
 end
 
 """
-    readxml(filename)
+    readxml(filename; options...)
 
 Read `filename` and create an XML document.
 """
-function readxml(filename::AbstractString)
+function readxml(filename::AbstractString; options...)
     encoding = C_NULL
-    # Do not reuse the context dictionary.
-    options = 1 << 12
+    opts = parse_options(; options...)
     doc_ptr = @check ccall(
         (:xmlReadFile, libxml2),
         Ptr{_Node},
         (Cstring, Ptr{UInt8}, Cint),
-        filename, encoding, options) != C_NULL
+        filename, encoding, opts) != C_NULL
     return Document(doc_ptr)
 end
 
 """
-    readxml(input::IO)
+    readxml(input::IO; options...)
 
 Read `input` and create an XML document.
 """
-function readxml(input::IO)
+function readxml(input::IO; options...)
     readcb = make_read_callback()
     closecb = C_NULL
     context = pointer_from_objref(input)
     uri = C_NULL
     encoding = C_NULL
-    options = 0
+    opts = parse_options(options...)
     doc_ptr = @check ccall(
         (:xmlReadIO, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
-        readcb, closecb, context, uri, encoding, options) != C_NULL
+        readcb, closecb, context, uri, encoding, opts) != C_NULL
     return Document(doc_ptr)
 end
 
