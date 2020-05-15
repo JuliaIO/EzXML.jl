@@ -1462,7 +1462,7 @@ struct AttributeIterator <: AbstractNodeIterator
     node::Node
 end
 
-function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.getfield(node, :ptr)))
+function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(getfield(iter.node, :ptr)))
     cur_ptr == C_NULL && return nothing
     return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
 end
