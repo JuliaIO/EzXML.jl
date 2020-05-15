@@ -613,7 +613,7 @@ end
 Return if `node` has a parent node.
 """
 function hasparentnode(node::Node)
-    return parent_ptr(node.ptr) != C_NULL
+    return parent_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -625,7 +625,7 @@ function parentnode(node::Node)
     if !hasparentnode(node)
         throw(ArgumentError("no parent node"))
     end
-    return Node(parent_ptr(node.ptr))
+    return Node(parent_ptr(getfield(node, :ptr)))
 end
 
 """
@@ -634,7 +634,7 @@ end
 Return if `node` has a parent node.
 """
 function hasparentelement(node::Node)
-    par_ptr = parent_ptr(node.ptr)
+    par_ptr = parent_ptr(getfield(node, :ptr))
     if par_ptr == C_NULL
         return false
     end
@@ -650,7 +650,7 @@ function parentelement(node::Node)
     if !hasparentelement(node)
         throw(ArgumentError("no parent element"))
     end
-    return Node(parent_ptr(node.ptr))
+    return Node(parent_ptr(getfield(node, :ptr)))
 end
 
 """
@@ -659,7 +659,7 @@ end
 Return if `node` has a child node.
 """
 function hasnode(node::Node)
-    return first_node_ptr(node.ptr) != C_NULL
+    return first_node_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -671,7 +671,7 @@ function firstnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(first_node_ptr(node.ptr), ismanaged(node))
+    return Node(first_node_ptr(getfield(node, :ptr)), ismanaged(node))
 end
 
 """
@@ -683,7 +683,7 @@ function lastnode(node::Node)
     if !hasnode(node)
         throw(ArgumentError("no child nodes"))
     end
-    return Node(last_node_ptr(node.ptr), ismanaged(node))
+    return Node(last_node_ptr(getfield(node, :ptr)), ismanaged(node))
 end
 
 """
@@ -692,7 +692,7 @@ end
 Return if `node` has a child element.
 """
 function haselement(node::Node)
-    return first_element_ptr(node.ptr) != C_NULL
+    return first_element_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -704,7 +704,7 @@ function firstelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    return Node(first_element_ptr(node.ptr), ismanaged(node))
+    return Node(first_element_ptr(getfield(node, :ptr)), ismanaged(node))
 end
 
 """
@@ -716,7 +716,7 @@ function lastelement(node::Node)
     if !haselement(node)
         throw(ArgumentError("no child elements"))
     end
-    return Node(last_element_ptr(node.ptr), ismanaged(node))
+    return Node(last_element_ptr(getfield(node, :ptr)), ismanaged(node))
 end
 
 """
@@ -725,7 +725,7 @@ end
 Return if `node` has a next node.
 """
 function hasnextnode(node::Node)
-    return next_node_ptr(node.ptr) != C_NULL
+    return next_node_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -737,7 +737,7 @@ function nextnode(node::Node)
     if !hasnextnode(node)
         throw(ArgumentError("no next node"))
     end
-    return Node(next_node_ptr(node.ptr))
+    return Node(next_node_ptr(getfield(node, :ptr)))
 end
 
 """
@@ -746,7 +746,7 @@ end
 Return if `node` has a previous node.
 """
 function hasprevnode(node::Node)
-    return prev_node_ptr(node.ptr) != C_NULL
+    return prev_node_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -758,7 +758,7 @@ function prevnode(node::Node)
     if !hasprevnode(node)
         throw(ArgumentError("no previous node"))
     end
-    return Node(prev_node_ptr(node.ptr))
+    return Node(prev_node_ptr(getfield(node, :ptr)))
 end
 
 """
@@ -767,7 +767,7 @@ end
 Return if `node` has a next node.
 """
 function hasnextelement(node::Node)
-    return next_element_ptr(node.ptr) != C_NULL
+    return next_element_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -779,7 +779,7 @@ function nextelement(node::Node)
     if !hasnextelement(node)
         throw(ArgumentError("no next elements"))
     end
-    return Node(next_element_ptr(node.ptr))
+    return Node(next_element_ptr(getfield(node, :ptr)))
 end
 
 """
@@ -788,7 +788,7 @@ end
 Return if `node` has a previous node.
 """
 function hasprevelement(node::Node)
-    return prev_element_ptr(node.ptr) != C_NULL
+    return prev_element_ptr(getfield(node, :ptr)) != C_NULL
 end
 
 """
@@ -800,7 +800,7 @@ function prevelement(node::Node)
     if !hasprevelement(node)
         throw(ArgumentError("no previous elements"))
     end
-    return Node(prev_element_ptr(node.ptr))
+    return Node(prev_element_ptr(getfield(node, :ptr)))
 end
 
 
@@ -814,7 +814,7 @@ Count the number of child nodes of `parent`.
 """
 function countnodes(parent::Node)
     n = 0
-    cur_ptr = first_node_ptr(parent.ptr)
+    cur_ptr = first_node_ptr(getfield(parent, :ptr))
     while cur_ptr != C_NULL
         n += 1
         cur_ptr = next_node_ptr(cur_ptr)
@@ -832,7 +832,7 @@ function countelements(parent::Node)
         (:xmlChildElementCount, libxml2),
         Culong,
         (Ptr{Cvoid},),
-        parent.ptr)
+        getfield(parent, :ptr))
     return Int(n)
 end
 
@@ -846,7 +846,7 @@ function countattributes(elem::Node)
         throw(ArgumentError("not an element node"))
     end
     n = 0
-    cur_ptr = property_ptr(elem.ptr)
+    cur_ptr = property_ptr(getfield(elem, :ptr))
     while cur_ptr != C_NULL
         n += 1
         cur_ptr = next_node_ptr(cur_ptr)
@@ -869,7 +869,7 @@ function link!(parent::Node, child::Node)
         (:xmlAddChild, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}),
-        parent.ptr, child.ptr) != C_NULL
+        getfield(parent, :ptr), getfield(child, :ptr)) != C_NULL
     update_owners!(child, parent.owner)
     return child
 end
@@ -885,7 +885,7 @@ function linknext!(target::Node, node::Node)
         (:xmlAddNextSibling, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}),
-        target.ptr, node.ptr) != C_NULL
+        getfield(target, :ptr), getfield(node, :ptr)) != C_NULL
     update_owners!(node, target.owner)
     return node
 end
@@ -901,7 +901,7 @@ function linkprev!(target::Node, node::Node)
         (:xmlAddPrevSibling, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}),
-        target.ptr, node.ptr) != C_NULL
+        getfield(target, :ptr), getfield(node, :ptr)) != C_NULL
     update_owners!(node, target.owner)
     return node
 end
@@ -923,12 +923,12 @@ function unlink!(node::Node)
         (:xmlUnlinkNode, libxml2),
         Cvoid,
         (Ptr{Cvoid},),
-        node.ptr)
+        getfield(node, :ptr))
     ccall(
         (:xmlSetTreeDoc, libxml2),
         Cvoid,
         (Ptr{Cvoid}, Ptr{Cvoid}),
-        node.ptr, C_NULL)
+        getfield(node, :ptr), C_NULL)
     update_owners!(node, node)
     return node
 end
@@ -945,7 +945,7 @@ function addelement!(parent::Node, name::AbstractString)
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring),
-        parent.ptr, ns_ptr, name, content_ptr) != C_NULL
+        getfield(parent, :ptr), ns_ptr, name, content_ptr) != C_NULL
     return Node(node_ptr)
 end
 
@@ -960,7 +960,7 @@ function addelement!(parent::Node, name::AbstractString, content::AbstractString
         (:xmlNewTextChild, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring),
-        parent.ptr, ns_ptr, name, content) != C_NULL
+        getfield(parent, :ptr), ns_ptr, name, content) != C_NULL
     return Node(node_ptr)
 end
 
@@ -985,7 +985,7 @@ end
 Return the type of `node` as an integer.
 """
 function nodetype(node::Node)
-    node_str = unsafe_load(node.ptr)
+    node_str = unsafe_load(getfield(node, :ptr))
     return convert(NodeType, node_str.typ)
 end
 
@@ -999,7 +999,7 @@ function nodepath(node::Node)
         (:xmlGetNodePath, libxml2),
         Cstring,
         (Ptr{Cvoid},),
-        node.ptr) != C_NULL
+        getfield(node, :ptr)) != C_NULL
     str = unsafe_string(str_ptr)
     Libc.free(str_ptr)
     return str
@@ -1087,7 +1087,7 @@ end
 Return if `node` has a node name.
 """
 function hasnodename(node::Node)
-    return unsafe_load(node.ptr).name != C_NULL
+    return unsafe_load(getfield(node, :ptr)).name != C_NULL
 end
 
 """
@@ -1096,7 +1096,7 @@ end
 Return the node name of `node`.
 """
 function nodename(node::Node)
-    node_str = unsafe_load(node.ptr)
+    node_str = unsafe_load(getfield(node, :ptr))
     if node_str.name == C_NULL
         throw(ArgumentError("no node name"))
     end
@@ -1113,7 +1113,7 @@ function setnodename!(node::Node, name::AbstractString)
         (:xmlNodeSetName, libxml2),
         Cvoid,
         (Ptr{Cvoid}, Cstring),
-        node.ptr, name)
+        getfield(node, :ptr), name)
     return node
 end
 
@@ -1127,7 +1127,7 @@ function nodecontent(node::Node)
         (:xmlNodeGetContent, libxml2),
         Cstring,
         (Ptr{Cvoid},),
-        node.ptr) != C_NULL
+        getfield(node, :ptr)) != C_NULL
     str = unsafe_string(str_ptr)
     Libc.free(str_ptr)
     return str
@@ -1143,7 +1143,7 @@ function setnodecontent!(node::Node, content::AbstractString)
         (:xmlNodeSetContentLen, libxml2),
         Cvoid,
         (Ptr{Cvoid}, Cstring, Cint),
-        node.ptr, content, sizeof(content))
+        getfield(node, :ptr), content, sizeof(content))
     return node
 end
 
@@ -1156,7 +1156,7 @@ function systemID(node::Node)
     if !isdtd(node)
         throw(ArgumentError("not a DTD node"))
     end
-    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, node.ptr)).systemID)
+    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, getfield(node, :ptr))).systemID)
 end
 
 """
@@ -1168,7 +1168,7 @@ function externalID(node::Node)
     if !isdtd(node)
         throw(ArgumentError("not a DTD node"))
     end
-    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, node.ptr)).externalID)
+    return unsafe_string(unsafe_load(convert(Ptr{_Dtd}, getfield(node, :ptr))).externalID)
 end
 
 
@@ -1182,7 +1182,7 @@ function Base.getindex(node::Node, attr::AbstractString)
             (:xmlGetNoNsProp, libxml2),
             Cstring,
             (Ptr{Cvoid}, Cstring),
-            node.ptr, attr)
+            getfield(node, :ptr), attr)
     else
         prefix = attr[1:i-1]
         ns_ptr = search_ns_ptr(node, prefix)
@@ -1194,7 +1194,7 @@ function Base.getindex(node::Node, attr::AbstractString)
             (:xmlGetNsProp, libxml2),
             Cstring,
             (Ptr{Cvoid}, Cstring, Cstring),
-            node.ptr, ncname, unsafe_load(ns_ptr).href)
+            getfield(node, :ptr), ncname, unsafe_load(ns_ptr).href)
     end
     if str_ptr == C_NULL
         throw(KeyError(attr))
@@ -1211,7 +1211,7 @@ function Base.haskey(node::Node, attr::AbstractString)
             (:xmlHasNsProp, libxml2),
             Ptr{_Node},
             (Ptr{Cvoid}, Cstring, Cstring),
-            node.ptr, attr, C_NULL)
+            getfield(node, :ptr), attr, C_NULL)
     else
         prefix = attr[1:i-1]
         ns_ptr = search_ns_ptr(node, prefix)
@@ -1223,7 +1223,7 @@ function Base.haskey(node::Node, attr::AbstractString)
             (:xmlHasNsProp, libxml2),
             Ptr{_Node},
             (Ptr{Cvoid}, Cstring, Cstring),
-            node.ptr, ncname, unsafe_load(ns_ptr).href)
+            getfield(node, :ptr), ncname, unsafe_load(ns_ptr).href)
     end
     return prop_ptr != C_NULL
 end
@@ -1234,7 +1234,7 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
         (:xmlSetProp, libxml2),
         Ptr{_Node},
         (Ptr{Cvoid}, Cstring, Cstring),
-        node.ptr, attr, string(val)) != C_NULL
+        getfield(node, :ptr), attr, string(val)) != C_NULL
     return node
 end
 
@@ -1246,7 +1246,7 @@ function Base.delete!(node::Node, attr::AbstractString)
             (:xmlUnsetProp, libxml2),
             Cint,
             (Ptr{Cvoid}, Cstring),
-            node.ptr, attr)
+            getfield(node, :ptr), attr)
     else
         prefix = attr[1:i-1]
         ncname = attr[i+1:end]
@@ -1255,7 +1255,7 @@ function Base.delete!(node::Node, attr::AbstractString)
             (:xmlUnsetNsProp, libxml2),
             Cint,
             (Ptr{Cvoid}, Ptr{Cvoid}, Cstring),
-            node.ptr, ns_ptr, ncname)
+            getfield(node, :ptr), ns_ptr, ncname)
     end
     # ignore the returned value
     return node
@@ -1277,9 +1277,9 @@ Return if `node` is associated with a namespace.
 function hasnamespace(node::Node)
     t = nodetype(node)
     if t == ELEMENT_NODE
-        return unsafe_load(convert(Ptr{_Element}, node.ptr)).ns != C_NULL
+        return unsafe_load(convert(Ptr{_Element}, getfield(node, :ptr))).ns != C_NULL
     elseif t == ATTRIBUTE_NODE
-        return unsafe_load(convert(Ptr{_Attribute}, node.ptr)).ns != C_NULL
+        return unsafe_load(convert(Ptr{_Attribute}, getfield(node, :ptr))).ns != C_NULL
     else
         return false
     end
@@ -1293,9 +1293,9 @@ Return the namespace associated with `node`.
 function namespace(node::Node)
     t = nodetype(node)
     if t == ELEMENT_NODE
-        ns_ptr = unsafe_load(convert(Ptr{_Element}, node.ptr)).ns
+        ns_ptr = unsafe_load(convert(Ptr{_Element}, getfield(node, :ptr))).ns
     elseif t == ATTRIBUTE_NODE
-        ns_ptr = unsafe_load(convert(Ptr{_Attribute}, node.ptr)).ns
+        ns_ptr = unsafe_load(convert(Ptr{_Attribute}, getfield(node, :ptr))).ns
     else
         throw(ArgumentError("neither element nor attribute node"))
     end
@@ -1316,7 +1316,7 @@ function namespaces(node::Node)
         (:xmlGetNsList, libxml2),
         Ptr{Ptr{_Ns}},
         (Ptr{Cvoid}, Ptr{Cvoid}),
-        doc.node.ptr, node.ptr)
+        getfield(doc.node, :ptr), getfield(node, :ptr))
     if nslist_ptr == C_NULL
         # empty list
         return Pair{String,String}[]
@@ -1346,7 +1346,7 @@ function search_ns_ptr(node::Node, prefix::AbstractString)
         (:xmlSearchNs, libxml2),
         Ptr{_Ns},
         (Ptr{Cvoid}, Ptr{Cvoid}, Cstring),
-        unsafe_load(node.ptr).doc, node.ptr, prefix)
+        unsafe_load(getfield(node, :ptr)).doc, node.ptr, prefix)
     return ns_ptr
 end
 
@@ -1388,7 +1388,9 @@ struct ChildNodeIterator <: AbstractNodeIterator
 end
 
 function Base.iterate(iter::ChildNodeIterator)
-    cur_ptr = iter.backward ? last_node_ptr(iter.node.ptr) : first_node_ptr(iter.node.ptr)
+    ptr = getfield(iter.node, :ptr)
+
+    cur_ptr = iter.backward ? last_node_ptr(ptr) : first_node_ptr(ptr)
     cur_ptr == C_NULL && return nothing
     return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
 end
@@ -1423,7 +1425,8 @@ struct ChildElementIterator <: AbstractNodeIterator
 end
 
 function Base.iterate(iter::ChildElementIterator)
-    cur_ptr = iter.backward ? last_element_ptr(iter.node.ptr) : first_element_ptr(iter.node.ptr)
+    ptr = getfield(iter.node, :ptr)
+    cur_ptr = iter.backward ? last_element_ptr(ptr)  : first_element_ptr(ptr)
     cur_ptr == C_NULL && return nothing
     return Node(cur_ptr, ismanaged(iter.node)), cur_ptr
 end
@@ -1440,7 +1443,7 @@ end
 Create an iterator of attributes.
 """
 function eachattribute(node::Node)
-    if unsafe_load(node.ptr).typ != ELEMENT_NODE
+    if unsafe_load(getfield(node, :ptr)).typ != ELEMENT_NODE
         throw(ArgumentError("not an element node"))
     end
     return AttributeIterator(node)
@@ -1459,7 +1462,7 @@ struct AttributeIterator <: AbstractNodeIterator
     node::Node
 end
 
-function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.node.ptr))
+function Base.iterate(iter::AttributeIterator, cur_ptr::Ptr{_Node}=property_ptr(iter.getfield(node, :ptr)))
     cur_ptr == C_NULL && return nothing
     return Node(cur_ptr, ismanaged(iter.node)), next_node_ptr(cur_ptr)
 end
