@@ -360,7 +360,7 @@ end
 
 # Store a pointer value to the `_private` field.
 function store_proxy_pointer!(node, ptr)
-    unsafe_store!(convert(Ptr{UInt}, node.ptr), convert(UInt, ptr))
+    unsafe_store!(convert(Ptr{UInt}, getfield(node, :ptr)), convert(UInt, ptr))
     return node
 end
 
