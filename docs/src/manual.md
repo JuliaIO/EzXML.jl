@@ -16,7 +16,7 @@ go to the top of src/EzXML.jl, where you will see a long list of type and
 function names.
 
 EzXML.jl is built on top of [libxml2](http://xmlsoft.org/), a portable C library
-compliant to the XML standard. If you are no familiar with XML itself, the
+compliant to the XML standard. If you are not familiar with XML itself, the
 following links offer good resources to learn the basic concents of XML:
 - [XML Tutorial](https://www.w3schools.com/xml/default.asp)
 - [XML Tree](https://www.w3schools.com/xml/xml_tree.asp)
