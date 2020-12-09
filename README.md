@@ -61,7 +61,7 @@ doc = parsexml("""
 """)
 
 # Get the root element from `doc`.
-primates = root(doc)
+primates = root(doc)  # or `doc.root`
 
 # Iterate over child elements.
 for genus in eachelement(primates)
@@ -70,7 +70,7 @@ for genus in eachelement(primates)
     println("- ", genus_name)
     for species in eachelement(genus)
         # Get the content within an element.
-        species_name = nodecontent(species)
+        species_name = nodecontent(species)  # or `species.content`
         println("  └ ", species["name"], " (", species_name, ")")
     end
 end
