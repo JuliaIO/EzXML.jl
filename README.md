@@ -149,10 +149,10 @@ Other XML/HTML packages in Julia
 * [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
-[docs-stable-url]: https://bicycle1885.github.io/EzXML.jl/stable
+[docs-stable-url]: https://juliaio.github.io/EzXML.jl/stable
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: https://bicycle1885.github.io/EzXML.jl/latest
-[codecov-img]: http://codecov.io/github/bicycle1885/EzXML.jl/coverage.svg?branch=master
-[codecov-url]: http://codecov.io/github/bicycle1885/EzXML.jl?branch=master
-[ci-status-img]: https://github.com/bicycle1885/EzXML.jl/workflows/CI/badge.svg
-[ci-status-url]: https://github.com/bicycle1885/EzXML.jl/actions
+[docs-latest-url]: https://juliaio.github.io/EzXML.jl/latest
+[codecov-img]: http://codecov.io/github/juliaio/EzXML.jl/coverage.svg?branch=master
+[codecov-url]: http://codecov.io/github/juliaio/EzXML.jl?branch=master
+[ci-status-img]: https://github.com/juliaio/EzXML.jl/workflows/CI/badge.svg
+[ci-status-url]: https://github.com/juliaio/EzXML.jl/actions
