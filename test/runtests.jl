@@ -1350,6 +1350,7 @@ end
 
 if Sys.isunix()
     julia = joinpath(Sys.BINDIR, "julia")
+    julia = `$julia --startup-file=no`
     @testset "Examples" begin
         # Check examples work without error.
         cd(joinpath(dirname(@__FILE__), "..", "example")) do
