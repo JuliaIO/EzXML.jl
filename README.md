@@ -85,7 +85,7 @@ end
 Quick reference
 ---------------
 
-See the [reference page](https://bicycle1885.github.io/EzXML.jl/stable/reference/) or docstrings for more details.
+See the [reference page](https://juliaio.github.io/EzXML.jl/stable) or docstrings for more details.
 
 Types:
 * `EzXML.Document`: an XML/HTML document
