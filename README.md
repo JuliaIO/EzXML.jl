@@ -133,7 +133,9 @@ Constructors:
 * `EzXML.Node` type: `XMLDocumentNode(version="1.0")`, `HTMLDocumentNode(uri, externalID)`, `ElementNode(name)`, `TextNode(content)`, `CommentNode(content)`, `CDataNode(content)`, `AttributeNode(name, value)`, `DTDNode(name, [systemID, [externalID]])`
 
 Queries:
-* XPath: `findall(xpath, doc|node)`, `findfirst(xpath, doc|node)`, `findlast(xpath, doc|node)`
+* XPath: `findall(xpath, doc|node)`, `findfirst(xpath, doc|node)`, `findlast(xpath, doc|node)`\
+  (Note the caveat on the combination of XPath and namespaces in the [manual](https://juliaio.github.io/EzXML.jl/stable/manual/#XPath-1))
+
 
 Examples
 --------
