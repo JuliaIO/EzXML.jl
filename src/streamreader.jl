@@ -18,6 +18,11 @@ mutable struct StreamReader
     end
 end
 
+Base.propertynames(x::StreamReader) = (
+    :type, :depth, :name, :content, :namespace,
+    fieldnames(typeof(x))...
+)
+
 @inline function Base.getproperty(reader::StreamReader, name::Symbol)
     name == :type      ? nodetype(reader)                                         :
     name == :depth     ? nodedepth(reader)                                        :

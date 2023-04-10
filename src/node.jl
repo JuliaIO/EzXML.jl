@@ -393,6 +393,11 @@ end
 # Node properties
 # ---------------
 
+Base.propertynames(x::Node) = (
+    :type, :name, :path, :content, :namespace, :document, :parentnode, :parentelement, :firstnode, :lastnode, :firstelement, :lastelement, :nextnode, :prevnode, :nextelement, :prevelement,
+    fieldnames(typeof(x))...
+)
+
 @inline function Base.getproperty(node::Node, name::Symbol)
     # node properties
     name == :type      ? nodetype(node)                                   :
