@@ -65,6 +65,15 @@ end
         @test version(doc) == "1.0"
         @test hasencoding(doc)
         @test encoding(doc) == "UTF-8"
+
+        # handle invalid xmlns
+        invalid_xmlns = joinpath(dirname(@__FILE__), "sample1.invalid_xmlns.xml")
+        doc, messages = capture_logging_messages() do
+            readxml(invalid_xmlns)
+        end
+        @test isa(doc, EzXML.Document)
+        @test occursin("Warning: XMLError: xmlns: URI This.is.invalid is not absolute from XML Namespace module (code: 100, line: 2)", messages)
+        @test isempty(EzXML.XML_GLOBAL_ERROR_STACK)
     end
 
     @testset "HTML" begin

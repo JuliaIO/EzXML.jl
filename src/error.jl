@@ -51,6 +51,9 @@ macro check(ex)
         if !$(ex)
             throw_xml_error()
         end
+        if !isempty(XML_GLOBAL_ERROR_STACK)
+            show_warnings()
+        end
         ret
     end
 end
