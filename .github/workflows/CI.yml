@@ -38,6 +38,6 @@ jobs:
           using Coverage
           LCOV.writefile("lcov.txt", process_folder())
           CODE
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v3
         with:
           file: ./lcov.txt
