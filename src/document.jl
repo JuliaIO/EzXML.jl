@@ -19,6 +19,11 @@ end
 # Document properties
 # -------------------
 
+Base.propertynames(x::Document) = (
+    :version, :encoding, :root, :dtd,
+    fieldnames(typeof(x))...
+)
+
 @inline function Base.getproperty(doc::Document, name::Symbol)
     name == :version  ? (hasversion(doc)  ? version(doc)  : nothing) :
     name == :encoding ? (hasencoding(doc) ? encoding(doc) : nothing) :

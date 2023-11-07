@@ -487,6 +487,7 @@ end
     @test nodetype(n) === EzXML.ELEMENT_NODE
     @test iselement(n)
     @test_throws ArgumentError document(n)
+    @test getproperty.(Ref(n), propertynames(n)) isa Tuple
 
     n = TextNode("some text")
     @test isa(n, EzXML.Node)
@@ -550,6 +551,7 @@ end
     @test nodetype(doc.node) === EzXML.DOCUMENT_NODE
     @test !hasroot(doc)
     @test_throws ArgumentError root(doc)
+    @test getproperty.(Ref(doc), propertynames(doc)) isa Tuple
 
     doc = HTMLDocument()
     @test isa(doc, EzXML.Document)
