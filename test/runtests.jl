@@ -183,7 +183,7 @@ end
         _, messages = capture_logging_messages() do
             @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
         end
-        @test occursin("caught 4 errors; showing the first one", messages)
+        @test occursin("caught 4 errors; throwing the first one", messages)
     end
 
     @testset "HTML" begin
