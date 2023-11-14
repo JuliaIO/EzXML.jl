@@ -1461,3 +1461,7 @@ if "stress" in ARGS
     unlink_xml()
     swap_xml()
 end
+
+using Aqua
+
+Aqua.test_all(EzXML; ambiguities=false)
