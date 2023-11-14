@@ -38,6 +38,7 @@ Version compatibility
 |:--------:|:------------:|
 | 1.0      | 1.0 or later |
 | 1.1      | 1.3 or later |
+| 1.2      | 1.6 or later |
 
 Usage
 -----
