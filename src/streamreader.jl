@@ -33,8 +33,9 @@ Base.propertynames(x::StreamReader) = (
 end
 
 function Base.show(io::IO, reader::StreamReader)
-    prefix = isdefined(Main, :StreamReader) ? "StreamReader" : "EzXML.StreamReader"
-    @printf(io, "%s(<%s@%p>)", prefix, repr(nodetype(reader)), reader.ptr)
+    prefix = "StreamReader"
+    nodetype_reader = repr(nodetype(reader))
+    print(io, "$(prefix)(<$(nodetype_reader)>)")
 end
 
 # Reader type (enum xmlReaderTypes).

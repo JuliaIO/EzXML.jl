@@ -296,14 +296,14 @@ function ismanaged(node::Node)
 end
 
 function Base.show(io::IO, node::Node)
-    prefix = isdefined(Main, :Node) ? "Node" : "EzXML.Node"
+    prefix = "Node"
     ntype = nodetype(node)
     if ntype ∈ (ELEMENT_NODE, ATTRIBUTE_NODE) && hasnodename(node)
         desc = string(repr(ntype), '[', nodename(node), ']')
     else
         desc = repr(ntype)
     end
-    @printf(io, "%s(<%s@%p>)", prefix, desc, node.ptr)
+    print(io, "$(prefix)(<$(desc)>)")
 end
 
 function Base.print(io::IO, node::Node)
