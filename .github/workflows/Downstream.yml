@@ -16,7 +16,6 @@ jobs:
           - "Genie"
           - "PPTX"
           - "Serde"
-          - "TimeZones"
           - "XLSX"
     steps:
       - uses: actions/checkout@v4

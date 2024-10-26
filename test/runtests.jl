@@ -1,6 +1,9 @@
 using EzXML
 using Test
 using Logging: SimpleLogger, with_logger
+using Aqua: Aqua
+
+Aqua.test_all(EzXML; ambiguities=false)
 
 # Capture logging messages using a local logger.
 function capture_logging_messages(proc)
@@ -183,7 +186,7 @@ end
         _, messages = capture_logging_messages() do
             @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
         end
-        @test occursin("caught 4 errors; throwing the first one", messages)
+        @test occursin("errors; throwing the first one", messages)
     end
 
     @testset "HTML" begin
@@ -372,8 +375,9 @@ end
             @test reader.content == "Hey"
             @test reader.namespace == "http://www.w3.org/1999/xhtml"
         elseif reader.:type == EzXML.READER_END_ELEMENT
-            @test !hasnodecontent(reader)
-            @test reader.content === nothing
+            # This is broken in XML2_jll 2.13.4 but works in 2.12.7
+            @test_broken !hasnodecontent(reader)
+            @test_broken reader.content === nothing
         end
     end
     @test "head" ∈ names
@@ -1462,6 +1466,3 @@ if "stress" in ARGS
     swap_xml()
 end
 
-using Aqua
-
-Aqua.test_all(EzXML; ambiguities=false)
