@@ -149,13 +149,13 @@ Other XML/HTML packages in Julia
 --------------------------------
 
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
-* [LibExpat.jl](https://github.com/amitmurthy/LibExpat.jl)
+* [LibExpat.jl](https://github.com/JuliaIO/LibExpat.jl)
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: https://juliaio.github.io/EzXML.jl/stable
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://juliaio.github.io/EzXML.jl/latest
-[codecov-img]: http://codecov.io/github/juliaio/EzXML.jl/coverage.svg?branch=master
-[codecov-url]: http://codecov.io/github/juliaio/EzXML.jl?branch=master
-[ci-status-img]: https://github.com/juliaio/EzXML.jl/workflows/CI/badge.svg
-[ci-status-url]: https://github.com/juliaio/EzXML.jl/actions
+[codecov-img]: https://codecov.io/gh/JuliaIO/EzXML.jl/branch/master/graph/badge.svg?token=ghRtgNZUhC
+[codecov-url]: https://codecov.io/gh/JuliaIO/EzXML.jl
+[ci-status-img]: https://github.com/JuliaIO/EzXML.jl/actions/workflows/CI.yml/badge.svg?branch=master
+[ci-status-url]: https://github.com/JuliaIO/EzXML.jl/actions/workflows/CI.yml
