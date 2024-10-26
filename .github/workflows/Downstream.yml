@@ -1,0 +1,42 @@
+name: Downstream
+on:
+  push:
+    branches: [master]
+    tags: [v*]
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - "Genie"
+          - "PPTX"
+          - "Serde"
+          - "TimeZones"
+          - "XLSX"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: 1
+          arch: x64
+          show-versioninfo: true
+      - uses: julia-actions/julia-buildpkg@latest
+      - name: Load this and run the downstream tests
+        shell: julia --color=yes {0}
+        run: |
+          using Pkg
+          Pkg.Registry.update()
+          Pkg.activate(;temp=true)
+          # force it to use this PR's version of the package
+          ENV["JULIA_PKG_DEVDIR"]= mktempdir()
+          Pkg.develop([
+            PackageSpec(path="."),
+            PackageSpec(name="${{ matrix.package }}"),
+          ])
+          Pkg.update()
+          Pkg.test("${{ matrix.package }}")
