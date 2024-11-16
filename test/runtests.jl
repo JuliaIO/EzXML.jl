@@ -375,9 +375,8 @@ end
             @test reader.content == "Hey"
             @test reader.namespace == "http://www.w3.org/1999/xhtml"
         elseif reader.:type == EzXML.READER_END_ELEMENT
-            # This is broken in XML2_jll 2.13.4 but works in 2.12.7
-            @test_broken !hasnodecontent(reader)
-            @test_broken reader.content === nothing
+            @test !hasnodecontent(reader)
+            @test reader.content === nothing
         end
     end
     @test "head" ∈ names
