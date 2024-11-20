@@ -1306,14 +1306,14 @@ end
 @testset "Misc" begin
     @testset "show" begin
         doc = parsexml("""<root attr="val"/>""")
-        @test occursin(r"^EzXML.Node\(<DOCUMENT_NODE@0x[a-f0-9]+>\)$", repr(doc.node))
-        @test occursin(r"^EzXML.Node\(<ELEMENT_NODE\[root\]@0x[a-f0-9]+>\)$", repr(root(doc)))
-        @test occursin(r"^EzXML.Node\(<ATTRIBUTE_NODE\[attr\]@0x[a-f0-9]+>\)$", repr(attributes(root(doc))[1]))
-        @test occursin(r"^EzXML.Document\(EzXML.Node\(<DOCUMENT_NODE@0x[a-f0-9]+>\)\)$", repr(doc))
+        @test occursin(r"^Node\(<DOCUMENT_NODE>\)$", repr(doc.node))
+        @test occursin(r"^Node\(<ELEMENT_NODE\[root\]>\)$", repr(root(doc)))
+        @test occursin(r"^Node\(<ATTRIBUTE_NODE\[attr\]>\)$", repr(attributes(root(doc))[1]))
+        @test occursin(r"^EzXML.Document\(Node\(<DOCUMENT_NODE>\)\)$", repr(doc))
 
         sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
         reader = open(EzXML.StreamReader, sample2)
-        @test occursin(r"^EzXML.StreamReader\(<[A-Z_]+@0x[a-f0-9]+>\)$", repr(reader))
+        @test occursin(r"^StreamReader\(<[A-Z_]+>\)$", repr(reader))
         close(reader)
     end
 

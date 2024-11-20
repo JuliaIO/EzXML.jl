@@ -102,7 +102,6 @@ export
     hasnodeattributes,
     nodeattributes
 
-using Printf: @printf
 using XML2_jll: libxml2
 
 include("error.jl")
