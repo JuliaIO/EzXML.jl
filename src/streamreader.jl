@@ -10,23 +10,23 @@ A streaming XML reader type.
 """
 mutable struct StreamReader
     ptr::Ptr{_TextReader}
-    input::Union{IO,Cvoid}
+    input_id::Union{UInt, Nothing}
 
-    function StreamReader(ptr::Ptr{_TextReader}, input=nothing)
+    function StreamReader(ptr::Ptr{_TextReader}, input_id::Union{UInt, Nothing} = nothing)
         @assert ptr != C_NULL
-        return new(ptr, input)
+        return new(ptr, input_id)
     end
 end
 
 Base.propertynames(x::StreamReader) = (
     :type, :depth, :name, :content, :namespace,
-    fieldnames(typeof(x))...
+    fieldnames(typeof(x))...,
 )
 
 @inline function Base.getproperty(reader::StreamReader, name::Symbol)
     name == :type      ? nodetype(reader)                                         :
     name == :depth     ? nodedepth(reader)                                        :
-    name == :name      ? (hasnodename(reader)    ? nodename(reader)    : nothing) :
+    name == :name      ? (hasnodename(reader) ? nodename(reader) : nothing)       :
     name == :content   ? (hasnodecontent(reader) ? nodecontent(reader) : nothing) :
     name == :namespace ? namespace(reader)                                        :
     Core.getfield(reader, name)
@@ -139,19 +139,69 @@ function Base.string(x::ReaderType)
     return sprint(print, x)
 end
 
+
+const GlobalIOMap = Dict{UInt, IO}()
+const GlobalIOMapCounter = Base.Threads.Atomic{UInt}(0)
+const GlobalIOLock = Base.Threads.ReentrantLock()
+
+function try_free_input(input_id::Union{UInt, Nothing})
+    if !isnothing(input_id)
+        lock(GlobalIOLock) do
+            if haskey(GlobalIOMap, input_id)
+                close(GlobalIOMap[input_id])
+                delete!(GlobalIOMap, input_id)
+            end
+        end
+    end
+end
+
+function make_read_callback_with_map(input::IO)
+    # Store the input stream in the global map.
+    # Passing the io pointer as a context is not safe because the pointer may be
+    # invalid when the callback is called. 
+    # See https://github.com/JuliaIO/EzXML.jl/issues/200
+    input_id = Base.Threads.atomic_add!(GlobalIOMapCounter, UInt(1))
+    lock(GlobalIOLock) do
+        GlobalIOMap[input_id] = input
+    end
+
+    # Passing an input stream as an argument is impossible to create a callback
+    # because Julia does not support C-callable closures yet.
+    return (input_id, @cfunction(Cint, (Cuint, Ptr{UInt8}, Cint)) do context, buffer, len
+        input = nothing
+        lock(GlobalIOLock) do
+            input = GlobalIOMap[UInt(context)]
+        end
+        avail = min(bytesavailable(input), len)
+        if avail > 0
+            unsafe_read(input, buffer, avail)
+            read = avail
+        elseif len > 0 && !eof(input)
+            # An input stream may return bytesavailable = 0 before reading data.
+            # So, read a byte to kick it ready.
+            unsafe_store!(buffer, Base.read(input, UInt8))
+            read = 1
+        else
+            read = 0
+        end
+        # debug
+        # @show unsafe_string(buffer, read)
+        return Cint(read)
+    end)
+end
+
 function StreamReader(input::IO)
-    readcb = make_read_callback()
+    (input_id, readcb) = make_read_callback_with_map(input)
     closecb = C_NULL
-    context = input
     uri = C_NULL
     encoding = C_NULL
     options = 0
     reader_ptr = @check ccall(
         (:xmlReaderForIO, libxml2),
         Ptr{_TextReader},
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ref{IO}, Cstring, Cstring, Cint),
-        readcb, closecb, context, uri, encoding, options) != C_NULL
-    return StreamReader(reader_ptr, input)
+        (Ptr{Cvoid}, Ptr{Cvoid}, Cuint, Cstring, Cstring, Cint),
+        readcb, closecb, input_id, uri, encoding, options) != C_NULL
+    return StreamReader(reader_ptr, input_id)
 end
 
 function Base.open(::Type{StreamReader}, filename::AbstractString)
@@ -172,9 +222,7 @@ function Base.close(reader::StreamReader)
         (Ptr{Cvoid},),
         reader.ptr)
     reader.ptr = C_NULL
-    if reader.input isa IO
-        close(reader.input)
-    end
+    try_free_input(reader.input_id)
     return nothing
 end
 
@@ -314,10 +362,10 @@ Return if the current node of `reader` has a value.
 """
 function hasnodevalue(reader::StreamReader)
     r = ccall(
-       (:xmlTextReaderHasValue, libxml2),
-       Cint,
-       (Ptr{Cvoid},),
-       getfield(reader, :ptr))
+        (:xmlTextReaderHasValue, libxml2),
+        Cint,
+        (Ptr{Cvoid},),
+        getfield(reader, :ptr))
     return r == 1
 end
 
@@ -347,10 +395,10 @@ Return if the current node of 'reader' has attributes
 """
 function hasnodeattributes(reader::StreamReader)
     r = ccall(
-       (:xmlTextReaderHasAttributes, libxml2),
-       Cint,
-       (Ptr{Cvoid},),
-       getfield(reader, :ptr))
+        (:xmlTextReaderHasAttributes, libxml2),
+        Cint,
+        (Ptr{Cvoid},),
+        getfield(reader, :ptr))
     @assert r ≥ 0 "XML Error Detected"
     return r == 1
 end
