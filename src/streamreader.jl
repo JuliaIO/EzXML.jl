@@ -16,6 +16,20 @@ mutable struct StreamReader
         @assert ptr != C_NULL
         return new(ptr, input)
     end
+    function StreamReader(input::IO)
+        readcb = make_read_callback(StreamReader)
+        closecb = C_NULL
+        uri = C_NULL
+        encoding = C_NULL
+        options = 0
+        reader = new(C_NULL, input)
+        reader.ptr = @check ccall(
+            (:xmlReaderForIO, libxml2),
+            Ptr{_TextReader},
+            (Ptr{Cvoid}, Ptr{Cvoid}, Ref{StreamReader}, Cstring, Cstring, Cint),
+            readcb, closecb, reader, uri, encoding, options) != C_NULL
+        return reader
+    end
 end
 
 Base.propertynames(x::StreamReader) = (
@@ -139,20 +153,7 @@ function Base.string(x::ReaderType)
     return sprint(print, x)
 end
 
-function StreamReader(input::IO)
-    readcb = make_read_callback()
-    closecb = C_NULL
-    context = input
-    uri = C_NULL
-    encoding = C_NULL
-    options = 0
-    reader_ptr = @check ccall(
-        (:xmlReaderForIO, libxml2),
-        Ptr{_TextReader},
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ref{IO}, Cstring, Cstring, Cint),
-        readcb, closecb, context, uri, encoding, options) != C_NULL
-    return StreamReader(reader_ptr, input)
-end
+read_callback_get_input(reader::StreamReader) = reader.input
 
 function Base.open(::Type{StreamReader}, filename::AbstractString)
     encoding = C_NULL
