@@ -13,6 +13,9 @@ function capture_logging_messages(proc)
     return ret, messages
 end
 
+# This simply creates an immutable ::IO object that behaves the same
+# as an IOBuffer for everything but memory management purposes.
+wrapped_buff(args...) = IOContext(IOBuffer(args...))
 
 # Unit tests
 # ----------
@@ -70,7 +73,7 @@ end
         @test encoding(doc) == "UTF-8"
     end
 
-    @testset "HTML" begin
+    @testset "HTML ($buff_f)" for buff_f in [IOBuffer, wrapped_buff]
         valid_file = joinpath(dirname(@__FILE__), "sample1.html")
         doc = readhtml(valid_file)
         @test isa(doc, EzXML.Document)
@@ -89,7 +92,7 @@ end
         #doc = open(readhtml, valid_file)
         #@test isa(doc, EzXML.Document)
         #@test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
-        buf = IOBuffer("""
+        buf = buff_f("""
         <html>
             <head><title>hey</title></head>
             <body>Hey</body>
@@ -99,7 +102,7 @@ end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
 
-        buf = IOBuffer("""
+        buf = buff_f("""
         <a href="http://mbgd.genome.ad.jp">MBGD</a>
         &#124
         <a href="https://github.com/qfo/OrthologyOntology">Ontology</a>
@@ -251,7 +254,7 @@ end
     end
 end
 
-@testset "Stream Reader" begin
+@testset "Stream Reader ($buff_f)" for buff_f in [IOBuffer, wrapped_buff]
     for i in 0:17
         t = convert(EzXML.ReaderType, i)
         @test t == i
@@ -343,7 +346,7 @@ end
     @test close(reader) === nothing
     @test !isopen(input)
 
-    input = IOBuffer("""
+    input = buff_f("""
     <root foo="FOO"/>
     """)
     reader = EzXML.StreamReader(input)
@@ -356,7 +359,7 @@ end
         end
     end
 
-    input = IOBuffer("""
+    input = buff_f("""
     <html xmlns="http://www.w3.org/1999/xhtml">
         <head><title>Hey</title></head>
         <body/>
@@ -382,11 +385,11 @@ end
     @test "head" ∈ names
     @test "title" ∈ names
 
-    @test_throws EzXML.XMLError iterate(EzXML.StreamReader(IOBuffer("not xml")))
+    @test_throws EzXML.XMLError iterate(EzXML.StreamReader(buff_f("not xml")))
 
     # memory management test
     for _ in 1:10
-        reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+        reader = EzXML.StreamReader(buff_f("<a><b/></a>"))
         for typ in reader
             if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
                 a = EzXML.expandtree(reader)
@@ -397,7 +400,7 @@ end
     end
     @test true
 
-    reader = EzXML.StreamReader(IOBuffer("""
+    reader = EzXML.StreamReader(buff_f("""
     <a attr1="" attr2="This is cool">
         <b/>
     </a>
@@ -439,7 +442,7 @@ end
     # memory management test (XPath)
     # FIXME: support XPath
     #for _ in 1:10
-    #    reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+    #    reader = EzXML.StreamReader(buff_f("<a><b/></a>"))
     #    for typ in reader
     #        if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
     #            a = EzXML.expandtree(reader)
@@ -449,7 +452,7 @@ end
     #    close(reader)
     #end
     #@test true
-    reader = EzXML.StreamReader(IOBuffer("<a><b/></a>"))
+    reader = EzXML.StreamReader(buff_f("<a><b/></a>"))
     for typ in reader
         if typ == EzXML.READER_ELEMENT && EzXML.nodename(reader) == "a"
             a = EzXML.expandtree(reader)

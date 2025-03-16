@@ -186,17 +186,16 @@ Read `input` and create an XML document.
 See [`parsexml`](@ref) for parsing options.
 """
 function readxml(input::IO; options...)
-    readcb = make_read_callback()
+    readcb = make_read_callback(typeof(input))
     closecb = C_NULL
-    context = pointer_from_objref(input)
     uri = C_NULL
     encoding = C_NULL
     opts, args = parse_options(; options...)
     doc_ptr = @check ccall(
         (:xmlReadIO, libxml2),
         Ptr{_Node},
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
-        readcb, closecb, context, uri, encoding, opts) != C_NULL
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ref{IO}, Cstring, Cstring, Cint),
+        readcb, closecb, input, uri, encoding, opts) != C_NULL
     show_warnings(; args...)
     return Document(doc_ptr)
 end
@@ -228,17 +227,16 @@ Read `input` and create an HTML document.
 See [`parsexml`](@ref) for parsing options.
 """
 function readhtml(input::IO; options...)
-    readcb = make_read_callback()
+    readcb = make_read_callback(typeof(input))
     closecb = C_NULL
-    context = pointer_from_objref(input)
     uri = C_NULL
     encoding = C_NULL
     opts, args = parse_options(; options...)
     doc_ptr = @check ccall(
         (:htmlReadIO, libxml2),
         Ptr{_Node},
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cstring, Cstring, Cint),
-        readcb, closecb, context, uri, encoding, opts) != C_NULL
+        (Ptr{Cvoid}, Ptr{Cvoid}, Ref{IO}, Cstring, Cstring, Cint),
+        readcb, closecb, input, uri, encoding, opts) != C_NULL
     show_warnings(; args...)
     return Document(doc_ptr)
 end
@@ -254,11 +252,13 @@ function Base.write(filename::AbstractString, doc::Document)
     return Int(ret)
 end
 
-function make_read_callback()
+read_callback_get_input(io::IO) = io
+
+function make_read_callback(::Type{Context}) where Context
     # Passing an input stream as an argument is impossible to create a callback
     # because Julia does not support C-callable closures yet.
-    return @cfunction(Cint, (Ref{IO}, Ptr{UInt8}, Cint)) do context, buffer, len
-        input = context
+    return @cfunction(Cint, (Ref{Context}, Ptr{UInt8}, Cint)) do context, buffer, len
+        input = read_callback_get_input(context)
         avail = min(bytesavailable(input), len)
         if avail > 0
             unsafe_read(input, buffer, avail)
