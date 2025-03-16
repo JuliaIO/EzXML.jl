@@ -148,6 +148,7 @@ Examples
 Other XML/HTML packages in Julia
 --------------------------------
 
+* [XML.jl](https://github.com/JuliaComputing/XML.jl)
 * [LightXML.jl](https://github.com/JuliaIO/LightXML.jl)
 * [LibExpat.jl](https://github.com/JuliaIO/LibExpat.jl)
 
