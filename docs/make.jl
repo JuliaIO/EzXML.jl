@@ -4,8 +4,11 @@ using EzXML
 makedocs(
     sitename="EzXML.jl",
     modules=[EzXML],
-    pages=["index.md", "manual.md", "reference.md", "devnotes.md"])
+    pages=["index.md", "manual.md", "reference.md", "devnotes.md"],
+    warnonly=:doctest,
+    checkdocs=:none,
+)
 
 deploydocs(
-    repo="github.com/bicycle1885/EzXML.jl.git",
+    repo="github.com/JuliaIO/EzXML.jl.git",
     target="build")

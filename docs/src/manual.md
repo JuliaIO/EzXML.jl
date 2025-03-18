@@ -234,7 +234,7 @@ julia> primates = doc.root  # get the root element
 EzXML.Node(<ELEMENT_NODE[primates]@0x00007fd9f4086880>)
 
 julia> genus = elements(primates)  # `elements` returns all child elements.
-2-element Array{EzXML.Node,1}:
+2-element Vector{EzXML.Node}:
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
@@ -363,7 +363,7 @@ node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
 node = EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
 julia> nodes(primates)
-5-element Array{EzXML.Node,1}:
+5-element Vector{EzXML.Node}:
  EzXML.Node(<TEXT_NODE@0x00007fd9f409f200>)
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
  EzXML.Node(<TEXT_NODE@0x00007fd9f4060f70>)
@@ -371,7 +371,7 @@ julia> nodes(primates)
  EzXML.Node(<TEXT_NODE@0x00007fd9f404bec0>)
 
 julia> elements(primates)
-2-element Array{EzXML.Node,1}:
+2-element Vector{EzXML.Node}:
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f4041a40>)
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fd9f40828e0>)
 
@@ -391,11 +391,11 @@ julia> primates = readxml("primates.xml")
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fbeddc2a1d0>))
 
 julia> findall("/primates", primates)  # Find the "primates" element just under the document
-1-element Array{EzXML.Node,1}:
+1-element Vector{EzXML.Node}:
  EzXML.Node(<ELEMENT_NODE[primates]@0x00007fbeddc1e190>)
 
 julia> findall("//genus", primates)
-2-element Array{EzXML.Node,1}:
+2-element Vector{EzXML.Node}:
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc12c50>)
  EzXML.Node(<ELEMENT_NODE[genus]@0x00007fbeddc16ea0>)
 
@@ -448,17 +448,17 @@ julia> doc = parsexml("""
 EzXML.Document(EzXML.Node(<DOCUMENT_NODE@0x00007fdc67710030>))
 
 julia> findall("/parent/child", doc.root)  # nothing will be found
-0-element Array{EzXML.Node,1}
+EzXML.Node[]
 
 julia> namespaces(doc.root)  # the default namespace has an empty prefix
-1-element Array{Pair{String,String},1}:
+1-element Vector{Pair{String, String}}:
  "" => "http://www.foobar.org"
 
 julia> ns = namespace(doc.root)  # get the namespace
 "http://www.foobar.org"
 
 julia> findall("/x:parent/x:child", doc.root, ["x"=>ns])  # specify its prefix as "x"
-1-element Array{EzXML.Node,1}:
+1-element Vector{EzXML.Node}:
  EzXML.Node(<ELEMENT_NODE[child]@0x00007fdc6774c990>)
 
 ```
