@@ -323,21 +323,37 @@ function prettyprint(io::IO, node::Node)
     dump_node(io, node, true)
 end
 
-# Dump `node` to `io`.
-function dump_node(io, node, format)
+function dump_node(io::IO, node::Node, format::Bool)
     if hasdocument(node)
         doc_ptr = document(node).node.ptr
     else
-        doc_ptr = C_NULL
+        doc_ptr = convert(Ptr{_Node}, C_NULL)
     end
-    buf = Buffer()
-    level = 0
-    len = @check ccall(
-        (:xmlNodeDump, libxml2),
-        Cint,
-        (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cint, Cint),
-        buf.ptr, doc_ptr, node.ptr, level, format) != -1
-    print(io, unsafe_string(unsafe_load(buf.ptr).content))
+    buf_ptr = @check ccall(
+        (:xmlBufCreate, libxml2),
+        Ptr{Cvoid},
+        ()) != C_NULL
+    try
+        level = 0
+        size = ccall(
+            (:xmlBufNodeDump, libxml2),
+            Csize_t,
+            (Ptr{Cvoid}, Ptr{Cvoid}, Ptr{Cvoid}, Cint, Cint),
+            buf_ptr, doc_ptr, node.ptr, level, format)
+        content_ptr = @check ccall(
+            (:xmlBufContent, libxml2),
+            Ptr{UInt8},
+            (Ptr{Cvoid},),
+            buf_ptr) != C_NULL
+        unsafe_write(io, content_ptr, size)
+        return nothing
+    finally
+        ccall(
+            (:xmlBufFree, libxml2),
+            Cvoid,
+            (Ptr{Cvoid},),
+            buf_ptr)
+    end
 end
 
 function Base.:(==)(n1::Node, n2::Node)
