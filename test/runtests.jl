@@ -114,8 +114,10 @@ end
         end
         @test isa(doc, EzXML.Document)
         @test nodetype(doc.node) === EzXML.HTML_DOCUMENT_NODE
-        @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 2)", messages)
-        @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 4)", messages)
+        # in XML2_jll v2.14 "Several non-standard syntax warnings were removed."
+        # https://github.com/GNOME/libxml2/blob/v2.14.4/NEWS#L90
+        # @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 2)", messages)
+        # @test occursin("Warning: XMLError: htmlParseCharRef: missing semicolon from HTML parser (code: 7, line: 4)", messages)
     end
 end
 
