@@ -192,6 +192,18 @@ end
             @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
         end
         @test occursin("errors; throwing the first one", messages)
+        # This is to test warnings are logged properly
+        doc, messages = capture_logging_messages() do
+            parsexml("""
+            <?xml version="1.0"?>
+            <root xmlns:ns="http://example.com">
+                <ns:element>
+                    <undeclared:child>content</undeclared:child>
+                </ns:element>
+            </root>
+            """)
+        end
+        @test !isempty(messages)
     end
 
     @testset "HTML" begin
