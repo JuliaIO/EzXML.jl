@@ -192,6 +192,7 @@ end
             @test_throws EzXML.XMLError parsexml("<gepa?>jgo<<<><<")
         end
         @test occursin("errors; throwing the first one", messages)
+
         # This is to test warnings are logged properly
         doc, messages = capture_logging_messages() do
             parsexml("""
