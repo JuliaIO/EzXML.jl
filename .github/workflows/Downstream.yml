@@ -13,10 +13,25 @@ jobs:
       fail-fast: false
       matrix:
         package:
+          - "CellMLToolkit"
+          - "DocumenterEpub"
+          - "FlowWorkspace"
+          - "ForSyDeIO"
           - "Genie"
+          - "MathML"
+          - "ODMXMLTools"
+          - "OMETIFF"
           - "OSMToolset"
+          - "Pioneer"
+          - "PlantGeom"
           - "PPTX"
+          - "QuakeML"
           - "Serde"
+          - "TCXReader"
+          - "VMRobotControl"
+          - "VulkanSpec"
+          - "WannierIO"
+          - "XbrlXML"
     steps:
       - uses: actions/checkout@v5
       - uses: julia-actions/setup-julia@v2
