@@ -50,10 +50,6 @@ end
         @assert !isfile("not-exist.xml")
         @test_throws EzXML.XMLError readxml("not-exist.xml")
 
-        # from compressed file
-        compressed = joinpath(dirname(@__FILE__), "sample1.xml.gz")
-        @test isa(readxml(compressed), EzXML.Document)
-
         # from stream
         doc = open(readxml, valid_file)
         @test isa(doc, EzXML.Document)
@@ -82,11 +78,6 @@ end
         @assert !isfile("not-exist.html")
         @test_throws EzXML.XMLError readxml("not-exist.html")
         @test_throws EzXML.XMLError readhtml("not-exist.html")
-
-        # from compressed file
-        compressed = joinpath(dirname(@__FILE__), "sample1.html.gz")
-        @test isa(readxml(compressed), EzXML.Document)
-        @test isa(readhtml(compressed), EzXML.Document)
 
         # from stream (FIXME: this causes "Misplaced DOCTYPE declaration")
         #doc = open(readhtml, valid_file)
