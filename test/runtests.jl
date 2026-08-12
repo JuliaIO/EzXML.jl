@@ -762,6 +762,7 @@ end
     @test child["foo"] == "X"
     @test child["y:foo"] == "Y"
     @test get(child, "y:foo", "BAR") == "Y"
+    @test get(child, "x:foo", "BAR") == "BAR"
     @test get(child, "bar", "BAR") == "BAR"
 
     doc = parsexml("""
