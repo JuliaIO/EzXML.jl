@@ -362,6 +362,8 @@ end
             @test !haskey(reader, "bar")
             @test reader["foo"] == "FOO"
             @test_throws ArgumentError namespace(reader)
+            @test get(reader, "foo", "bar") == "FOO"
+            @test get(reader, "bar", "BAR") == "BAR"
         end
     end
 
@@ -759,6 +761,9 @@ end
     @test haskey(child, "foo")
     @test child["foo"] == "X"
     @test child["y:foo"] == "Y"
+    @test get(child, "y:foo", "BAR") == "Y"
+    @test get(child, "x:foo", "BAR") == "BAR"
+    @test get(child, "bar", "BAR") == "BAR"
 
     doc = parsexml("""
     <root xmlns="http://xxx.com" xmlns:y="http://yyy.com">

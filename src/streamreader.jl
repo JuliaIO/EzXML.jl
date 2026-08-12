@@ -473,6 +473,22 @@ function Base.getindex(reader::StreamReader, key::Union{Integer,AbstractString})
     return value
 end
 
+
+"""
+    Base.get(reader::StreamReader, key::Union{Integer,AbstractString}, default::T)::Union{String, T} where T
+
+Get attribute `key` at current node of `reader`, return `default` if not available.
+"""
+function Base.get(reader::StreamReader, key::Union{Integer,AbstractString}, default::T)::Union{String, T} where T
+    value_ptr = attribute_ptr(reader, key)
+    if value_ptr == C_NULL
+        return default
+    end
+    value = unsafe_string(value_ptr)
+    Libc.free(value_ptr)
+    return value
+end
+
 """
     namespace(reader::StreamReader)
 

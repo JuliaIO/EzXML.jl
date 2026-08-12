@@ -1180,6 +1180,11 @@ end
 # Attributes
 # ----------
 
+"""
+    getindex(node::Node, attr::AbstractString)
+
+Get attribute `key` at current node of `reader`.
+"""
 function Base.getindex(node::Node, attr::AbstractString)
     i = findfirstchar(':', attr)
     if i == 0
@@ -1241,6 +1246,42 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
         (Ptr{Cvoid}, Cstring, Cstring),
         node.ptr, attr, string(val)) != C_NULL
     return node
+end
+
+"""
+    get(node::Node, attr::AbstractString, default::T)
+
+Get attribute `key` of `node`, return `default` if not available.
+"""
+function Base.get(node::Node, attr::AbstractString, default::T)::Union{String, T} where T
+    i = findfirstchar(':', attr)
+    if i == 0
+        str_ptr = ccall(
+            (:xmlGetNoNsProp, libxml2),
+            Cstring,
+            (Ptr{Cvoid}, Cstring),
+            node.ptr, attr)
+    else
+        prefix = attr[1:i-1]
+        ns_ptr = search_ns_ptr(node, prefix)
+        if ns_ptr == C_NULL
+            return default
+        end
+        ncname = attr[i+1:end]
+        str_ptr = ccall(
+            (:xmlGetNsProp, libxml2),
+            Cstring,
+            (Ptr{Cvoid}, Cstring, Cstring),
+            node.ptr, ncname, unsafe_load(ns_ptr).href)
+    end
+
+    if str_ptr == C_NULL
+        return default
+    end
+
+    str = unsafe_string(str_ptr)
+    Libc.free(str_ptr)
+    return str
 end
 
 function Base.delete!(node::Node, attr::AbstractString)
