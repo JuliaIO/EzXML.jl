@@ -1180,6 +1180,11 @@ end
 # Attributes
 # ----------
 
+"""
+    getindex(node::Node, attr::AbstractString)
+
+Get attribute `key` at current node of `reader`.
+"""
 function Base.getindex(node::Node, attr::AbstractString)
     i = findfirstchar(':', attr)
     if i == 0
@@ -1243,6 +1248,11 @@ function Base.setindex!(node::Node, val, attr::AbstractString)
     return node
 end
 
+"""
+    get(node::Node, attr::AbstractString, default::T)
+
+Get attribute `key` of `node`, return `default` if not available.
+"""
 function Base.get(node::Node, attr::AbstractString, default::T)::Union{String, T} where T
     i = findfirstchar(':', attr)
     if i == 0
