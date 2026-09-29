@@ -26,20 +26,15 @@ else
 end
 
 function NodeType(x::Integer)
-    return convert(NodeType, x)
+    return reinterpret(NodeType, Cint(x))
 end
+NodeType(r::NodeType) = r
 
-function Base.convert(::Type{NodeType}, x::Integer)
-    return reinterpret(NodeType, convert(Cint, x))
-end
-
-function Base.convert(::Type{T}, x::NodeType) where {T<:Integer}
-    return convert(T, reinterpret(Cint, x))
-end
-
-function Base.convert(::Type{NodeType}, x::NodeType)
-    return x
-end
+(::Type{T})(r::NodeType) where {T<:Integer} = convert(T, reinterpret(Cint, r))
+# ambiguity resolution
+Base.Bool(r::NodeType) = Bool(Cint(r))
+Base.Integer(r::NodeType) = Integer(Cint(r))
+Base.BigInt(r::NodeType) = BigInt(Cint(r))
 
 function Base.promote_rule(::Type{NodeType}, ::Type{T}) where {T<:Union{Cint,Int}}
     return T

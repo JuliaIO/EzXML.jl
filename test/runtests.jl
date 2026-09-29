@@ -27,9 +27,16 @@ wrapped_buff(args...) = IOContext(IOBuffer(args...))
         @test occursin(r"^[A-Z_]+_(NODE|DECL|START|END)$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.NodeType, t) === t
+        @test EzXML.NodeType(t) === t
+        @test Int(t) === i
+        @test Integer(t) === Cint(i)
+        @test BigInt(t) == i
     end
     @test_throws AssertionError repr(convert(EzXML.NodeType, 0))
     @test_throws AssertionError repr(convert(EzXML.NodeType, 100))
+    @test Bool(EzXML.NodeType(1))
+    @test !Bool(EzXML.NodeType(0))
+    @test_throws InexactError Bool(EzXML.NodeType(2))
 
     err = EzXML.XMLError(1, 77, "some parser error", EzXML.XML_ERR_ERROR, 123)
     @test isa(err, EzXML.XMLError)
@@ -267,9 +274,16 @@ end
         @test occursin(r"READER_[A-Z_]+$", repr(t))
         @test string(t) == string(i)
         @test convert(EzXML.ReaderType, t) === t
+        @test EzXML.ReaderType(t) === t
+        @test Int(t) === i
+        @test Integer(t) === Cint(i)
+        @test BigInt(t) == i
     end
     @test_throws AssertionError repr(convert(EzXML.ReaderType, -1))
     @test_throws AssertionError repr(convert(EzXML.ReaderType, 18))
+    @test Bool(EzXML.ReaderType(1))
+    @test !Bool(EzXML.ReaderType(0))
+    @test_throws InexactError Bool(EzXML.ReaderType(2))
 
     sample2 = joinpath(dirname(@__FILE__), "sample2.xml")
     reader = open(EzXML.StreamReader, sample2)

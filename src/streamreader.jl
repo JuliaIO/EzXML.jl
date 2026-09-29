@@ -64,22 +64,17 @@ else
 end
 
 function ReaderType(x::Integer)
-    return convert(ReaderType, x)
+    return reinterpret(ReaderType, Cint(x))
 end
+ReaderType(r::ReaderType) = r
 
-function Base.convert(::Type{ReaderType}, x::Integer)
-    return reinterpret(ReaderType, convert(Cint, x))
-end
-
-function Base.convert(::Type{T}, x::ReaderType) where {T<:Integer}
-    return convert(T, reinterpret(Cint, x))
-end
+(::Type{T})(r::ReaderType) where {T<:Integer} = convert(T, reinterpret(Cint, r))
+# ambiguity resolution
+Base.Bool(r::ReaderType) = Bool(Cint(r))
+Base.Integer(r::ReaderType) = Integer(Cint(r))
+Base.BigInt(r::ReaderType) = BigInt(Cint(r))
 
 Base.hash(x::ReaderType, h::UInt) = hash(convert(Cint,x), h)
-
-function Base.convert(::Type{ReaderType}, x::ReaderType)
-    return x
-end
 
 function Base.promote_rule(::Type{ReaderType}, ::Type{T}) where {T<:Union{Cint,Int}}
     return T
