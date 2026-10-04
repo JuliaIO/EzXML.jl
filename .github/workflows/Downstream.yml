@@ -48,9 +48,13 @@ jobs:
           Pkg.activate(;temp=true)
           # force it to use this PR's version of the package
           ENV["JULIA_PKG_DEVDIR"]= mktempdir()
+          downstream = "${{ matrix.package }}"
+          spec = downstream == "ForSyDeIO" ?
+            PackageSpec(url="https://github.com/forsyde/forsyde-io.git", subdir="julia-core") :
+            PackageSpec(name=downstream)
           Pkg.develop([
             PackageSpec(path="."),
-            PackageSpec(name="${{ matrix.package }}"),
+            spec,
           ])
           Pkg.update()
-          Pkg.test("${{ matrix.package }}")
+          Pkg.test(downstream)

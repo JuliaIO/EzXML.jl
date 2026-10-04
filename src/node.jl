@@ -41,6 +41,8 @@ function Base.convert(::Type{NodeType}, x::NodeType)
     return x
 end
 
+Base.hash(x::NodeType, h::UInt) = hash(convert(Cint, x), h)
+
 function Base.promote_rule(::Type{NodeType}, ::Type{T}) where {T<:Union{Cint,Int}}
     return T
 end

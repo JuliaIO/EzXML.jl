@@ -38,6 +38,17 @@ wrapped_buff(args...) = IOContext(IOBuffer(args...))
     @test take!(buf) == b"XMLError: some parser error from XML parser (code: 77, line: 123)"
 end
 
+@testset "NodeType dictionary keys and hash equality" begin
+    keys = [EzXML.NodeType(i) for i in 1:21]
+    @test length(Set(keys)) == 21
+    mapping = Dict{Any,Int}(x => i for (i,x) in enumerate(keys))
+    @test [mapping[Cint(i)] for i in 1:21] == collect(1:21)
+    @test mapping[EzXML.ELEMENT_NODE] == 1
+    for i in (0,1,3,9,21), seed in (UInt(0), UInt(1), typemax(UInt))
+        @test hash(EzXML.NodeType(i), seed) == hash(Cint(i), seed)
+    end
+end
+
 @testset "Reader" begin
     @testset "XML" begin
         valid_file = joinpath(dirname(@__FILE__), "sample1.xml")

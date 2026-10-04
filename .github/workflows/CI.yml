@@ -32,16 +32,16 @@ jobs:
           - os: ubuntu-latest
             version: '1.6'
             arch: x86
-          - os: macOS-13
+          - os: macos-15-intel
             version: '1'
             arch: x64
-          - os: macOS-13
+          - os: macos-15-intel
             version: 'pre'
             arch: x64
-          - os: macOS-14
+          - os: macos-latest
             version: '1'
             arch: aarch64
-          - os: macOS-14
+          - os: macos-latest
             version: 'pre'
             arch: aarch64
     steps:
