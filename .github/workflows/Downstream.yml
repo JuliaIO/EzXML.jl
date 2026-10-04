@@ -45,6 +45,7 @@ jobs:
         run: |
           using Pkg
           Pkg.Registry.update()
+          checkout = pwd()
           Pkg.activate(;temp=true)
           # force it to use this PR's version of the package
           ENV["JULIA_PKG_DEVDIR"]= mktempdir()
@@ -53,8 +54,12 @@ jobs:
             PackageSpec(url="https://github.com/forsyde/forsyde-io.git", subdir="julia-core") :
             PackageSpec(name=downstream)
           Pkg.develop([
-            PackageSpec(path="."),
+            PackageSpec(path=checkout),
             spec,
           ])
+          downstream_path = only(info.source for info in values(Pkg.dependencies()) if info.name == downstream)
+          # Subprocess test drivers use the package project, so resolve that project too.
+          Pkg.activate(downstream_path)
+          Pkg.develop(PackageSpec(path=checkout))
           Pkg.update()
-          Pkg.test(downstream)
+          Pkg.test()
